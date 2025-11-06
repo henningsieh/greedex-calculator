@@ -27,13 +27,13 @@ export const env = createEnv({
       .string()
       .refine((value) => value.startsWith("GOCSPX"), {
         message: "Must start with GOCSPX",
-      })
-      .min(7),
+      }),
   },
   client: {
-    // Add any client-side environment variables here if needed
+    NEXT_PUBLIC_BASE_URL: z.url(),
   },
   runtimeEnv: {
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
