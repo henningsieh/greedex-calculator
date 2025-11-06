@@ -2,7 +2,7 @@ import { UserSession } from "@/components/user-session";
 
 export function Navbar() {
   return (
-    <nav className="border-b">
+    <nav className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center px-4">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-2">

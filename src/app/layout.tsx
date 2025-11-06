@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Comfortaa, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 const comfortaa = Comfortaa({
   weight: ["300", "400", "500", "600", "700"],
@@ -27,8 +27,8 @@ export default function RootLayout({
       <body
         className={`${comfortaa.className} ${jetbrainsMono.variable} light antialiased`}
       >
-        <Navbar />
         {children}
+        <Toaster />
       </body>
     </html>
   );
