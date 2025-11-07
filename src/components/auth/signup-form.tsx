@@ -71,7 +71,7 @@ export function SignupForm({
       {...props}
       onSubmit={form.handleSubmit(onSubmit)}
     >
-      <FieldGroup className="gap-5">
+      <FieldGroup className="gap-6">
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="font-bold text-2xl">Create your account</h1>
           <p className="text-balance text-muted-foreground text-sm">
@@ -125,9 +125,9 @@ export function SignupForm({
           </Button>
           <FieldDescription className="px-6 text-center">
             Already have an account?{" "}
-            <Link href="/login" className="underline underline-offset-4">
-              Sign in
-            </Link>
+            <Button variant="link" asChild>
+              <Link href="/login">Sign in</Link>
+            </Button>
           </FieldDescription>
         </Field>
 

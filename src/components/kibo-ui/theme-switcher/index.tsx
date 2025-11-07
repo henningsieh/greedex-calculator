@@ -8,11 +8,6 @@ import { cn } from "@/lib/utils";
 
 const themes = [
   {
-    key: "system",
-    icon: Monitor,
-    label: "System theme",
-  },
-  {
     key: "light",
     icon: Sun,
     label: "Light theme",
@@ -21,6 +16,11 @@ const themes = [
     key: "dark",
     icon: Moon,
     label: "Dark theme",
+  },
+  {
+    key: "system",
+    icon: Monitor,
+    label: "System theme",
   },
 ];
 

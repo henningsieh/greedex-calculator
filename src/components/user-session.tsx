@@ -36,11 +36,11 @@ export function UserSession() {
     return (
       <div className="flex items-center">
         <Button variant="link" asChild className="px-2">
-          <Link href="/login">Login</Link>
+          <Link href="/login">Sign in</Link>
         </Button>
-        <Button variant="link" asChild className="px-2">
+        {/* <Button variant="link" asChild className="px-2">
           <Link href="/signup">Sign up</Link>
-        </Button>
+        </Button> */}
       </div>
     );
   }

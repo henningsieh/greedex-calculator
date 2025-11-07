@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  typedRoutes: true,
   reactCompiler: true,
 
   // allow image hosting from external domains

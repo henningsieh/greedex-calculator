@@ -67,11 +67,11 @@ export function LoginForm({
       {...props}
       onSubmit={form.handleSubmit(onSubmit)}
     >
-      <FieldGroup className="gap-5">
+      <FieldGroup className="gap-6">
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="font-bold text-2xl">Login to your account</h1>
+          <h1 className="font-bold text-2xl">Sign in to your account</h1>
           <p className="text-balance text-muted-foreground text-sm">
-            Enter your email below to login to your account
+            Enter your credentials below to sign in to your account
           </p>
         </div>
         <FormField
@@ -112,9 +112,9 @@ export function LoginForm({
           </Button>
           <FieldDescription className="text-center">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="underline underline-offset-4">
-              Sign up
-            </Link>
+            <Button variant="link" asChild>
+              <Link href="/signup">Sign up</Link>
+            </Button>
           </FieldDescription>
         </Field>
         <FieldSeparator className="my-4 font-bold">

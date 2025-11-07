@@ -156,9 +156,9 @@ export function VerifyEmailContent({
 
         <Field>
           <FieldDescription className="text-center">
-            <Link href="/login" className="underline underline-offset-4">
-              Back to login
-            </Link>
+            <Button variant="link" asChild>
+              <Link href="/login">Back to login</Link>
+            </Button>
           </FieldDescription>
         </Field>
       </FieldGroup>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import { ThemeSwitcher } from "@/components/kibo-ui/theme-switcher";
@@ -18,8 +19,14 @@ export function Navbar() {
       <div className="container mx-auto flex h-[63px] items-center">
         <div className="flex w-full items-center justify-between">
           <div className="flex gap-2">
-            {/* Logo or brand name would go here */}
-            <p className="font-bold text-2xl text-primary">
+            <Image
+              src="/greendex_logo_small.png"
+              alt="Logo"
+              width={84}
+              height={50}
+              // className="rounded-full"
+            />
+            <p className="-mb-1 hidden self-end font-bold text-2xl text-primary sm:block sm:text-3xl md:text-4xl">
               GREEN<span className="text-muted-foreground">DEX</span>
             </p>
           </div>
