@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Comfortaa, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+
+import "./globals.css";
 
 const comfortaa = Comfortaa({
   weight: ["300", "400", "500", "600", "700"],
@@ -23,12 +25,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${comfortaa.className} ${jetbrainsMono.variable} dark antialiased`}
+        className={`${comfortaa.className} ${jetbrainsMono.variable} antialiased`}
       >
-        {children}
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
