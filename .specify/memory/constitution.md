@@ -63,6 +63,29 @@ before merge.
 Rationale: Simpler code lowers risk, aids audits (privacy/security), and eases
 contribution from partner institutions.
 
+## Entities
+
+- **Organisation**: The entity that plans and implements international
+	projects. An Organisation represents a legal or educational institution
+	responsible for one or more Projects and for the associated administrative
+	data, consent flows, and membership management.
+- **Project**: A Project describes a single Erasmus+ activity or set of
+	activities, including title, description, start and end dates. A Project
+	logically belongs to an owning Organisation and references its Participants
+	and the activity dataset(s) used for CO₂ calculations.
+- **Participant**: A Participant is a pupil or student participating in a
+	Project. Participants travel to project locations and produce trip records
+	(mode, origin, destination, date) that feed the CO₂ calculations. Personal
+	data for Participants MUST be minimised and handled in compliance with
+	Principle I.
+
+All roles, membership relationships, and business logic for Organisations,
+Projects, and Participants MUST be implemented using the `Better-Auth`
+organization plugin (see `.github/instructions/better-auth.organisations.md.instructions.md`) and the
+project's `src/lib/better-auth` configuration. Use the plugin's organization,
+member, invitation and role APIs to model access control, ownership, teams,
+and role-based permissions for these entities.
+
 ## Technical & Compliance Constraints
 
 - **Stack**: Next.js 16 (App Router), custom server at `src/server.ts`,
