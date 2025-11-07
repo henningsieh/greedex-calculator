@@ -102,7 +102,7 @@ export function VerifyEmailContent({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <FieldGroup>
+      <FieldGroup className="gap-6">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="flex size-16 items-center justify-center rounded-full bg-primary/10">
             <Mail className="size-8 text-primary" />
@@ -153,14 +153,6 @@ export function VerifyEmailContent({
             resending.
           </FieldDescription>
         </div>
-
-        <Field>
-          <FieldDescription className="text-center">
-            <Button variant="link" asChild>
-              <Link href="/login">Back to login</Link>
-            </Button>
-          </FieldDescription>
-        </Field>
       </FieldGroup>
     </div>
   );

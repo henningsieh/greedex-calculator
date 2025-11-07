@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LogInIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -9,6 +10,14 @@ import * as z from "zod";
 import SocialButtons from "@/components/auth/social-buttons";
 import FormField from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
@@ -62,67 +71,83 @@ export function LoginForm({
   };
 
   return (
-    <form
-      className={cn("flex flex-col gap-6", className)}
-      {...props}
-      onSubmit={form.handleSubmit(onSubmit)}
-    >
-      <FieldGroup className="gap-6">
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="font-bold text-2xl">Sign in to your account</h1>
-          <p className="text-balance text-muted-foreground text-sm">
+    <Card>
+      <form
+        className={cn("flex flex-col gap-6", className)}
+        {...props}
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <CardHeader className="flex flex-col items-center gap-4 text-center">
+          <div className="flex size-16 items-center justify-center rounded-full bg-primary/10">
+            <LogInIcon className="size-8 text-primary" />
+          </div>
+          <CardTitle className="space-y-2">
+            <h1 className="font-bold text-2xl">Sign in to your account</h1>
+          </CardTitle>
+          <CardDescription>
             Enter your credentials below to sign in to your account
-          </p>
-        </div>
-        <FormField
-          name="email"
-          control={form.control}
-          label="Email"
-          id="email"
-          type="email"
-          placeholder="m@example.com"
-          inputProps={{ disabled: form.formState.isSubmitting }}
-        />
-        <FormField
-          name="password"
-          control={form.control}
-          label="Password"
-          id="password"
-          type="password"
-          rightLabel={
-            <button
-              type="button"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-              onClick={() => {
-                // TODO: Implement forgot password functionality
-              }}
-            >
-              Forgot your password?
-            </button>
-          }
-          inputProps={{ disabled: form.formState.isSubmitting }}
-        />
-        <Field>
-          <Button
-            type="submit"
-            variant="default"
-            disabled={form.formState.isSubmitting}
-          >
-            {form.formState.isSubmitting ? "Signing in..." : "Login"}
-          </Button>
-          <FieldDescription className="text-center">
-            Don&apos;t have an account?{" "}
-            <Button variant="link" asChild>
-              <Link href="/signup">Sign up</Link>
-            </Button>
-          </FieldDescription>
-        </Field>
-        <FieldSeparator className="my-4 font-bold">
-          Or continue with
-        </FieldSeparator>
+          </CardDescription>
+        </CardHeader>
 
-        <SocialButtons disabled={form.formState.isSubmitting} />
-      </FieldGroup>
-    </form>
+        <CardContent>
+          <FieldGroup className="gap-6">
+            <FormField
+              name="email"
+              control={form.control}
+              label="Email"
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              inputProps={{ disabled: form.formState.isSubmitting }}
+            />
+            <FormField
+              name="password"
+              control={form.control}
+              label="Password"
+              id="password"
+              type="password"
+              rightLabel={
+                <button
+                  type="button"
+                  className="ml-auto text-sm underline-offset-4 hover:underline"
+                  onClick={() => {
+                    // TODO: Implement forgot password functionality
+                  }}
+                >
+                  Forgot your password?
+                </button>
+              }
+              inputProps={{ disabled: form.formState.isSubmitting }}
+            />
+
+            <FieldSeparator className="my-4 font-bold">
+              Or continue with
+            </FieldSeparator>
+
+            <SocialButtons disabled={form.formState.isSubmitting} />
+          </FieldGroup>
+        </CardContent>
+
+        <CardFooter>
+          <div className="w-full">
+            <Field>
+              <Button
+                type="submit"
+                variant="default"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? "Signing in..." : "Login"}
+              </Button>
+              <FieldDescription className="text-center">
+                Don&apos;t have an account?{" "}
+                <Button variant="link" className="px-0 pl-1" asChild>
+                  <Link href="/signup">Sign up</Link>
+                </Button>
+              </FieldDescription>
+            </Field>
+          </div>
+        </CardFooter>
+      </form>
+    </Card>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -9,6 +10,14 @@ import * as z from "zod";
 import SocialButtons from "@/components/auth/social-buttons";
 import FormField from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
@@ -66,77 +75,92 @@ export function SignupForm({
   };
 
   return (
-    <form
-      className={cn("flex flex-col gap-6", className)}
-      {...props}
-      onSubmit={form.handleSubmit(onSubmit)}
-    >
-      <FieldGroup className="gap-6">
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="font-bold text-2xl">Create your account</h1>
-          <p className="text-balance text-muted-foreground text-sm">
+    <Card>
+      <form
+        className={cn("flex flex-col gap-6", className)}
+        {...props}
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <CardHeader className="flex flex-col items-center gap-4 text-center">
+          <div className="flex size-16 items-center justify-center rounded-full bg-primary/10">
+            <UserPlus className="size-8 text-primary" />
+          </div>
+          <CardTitle className="space-y-2">
+            <h1 className="font-bold text-2xl">Create your account</h1>
+          </CardTitle>
+          <CardDescription>
             Fill in the form below to create your account
-          </p>
-        </div>
-        <FormField
-          name="name"
-          control={form.control}
-          label="Full Name"
-          id="name"
-          type="text"
-          placeholder="John Doe"
-          inputProps={{ disabled: form.formState.isSubmitting }}
-        />
-        <FormField
-          name="email"
-          control={form.control}
-          label="Email"
-          id="email"
-          type="email"
-          placeholder="m@example.com"
-          description={
-            "We'll use this to contact you. We will not share your email with anyone else."
-          }
-          inputProps={{ disabled: form.formState.isSubmitting }}
-        />
-        <FormField
-          name="password"
-          control={form.control}
-          label="Password"
-          id="password"
-          type="password"
-          description={"Must be at least 8 characters long."}
-          inputProps={{ disabled: form.formState.isSubmitting }}
-        />
-        <FormField
-          name="confirmPassword"
-          control={form.control}
-          label="Confirm Password"
-          id="confirm-password"
-          type="password"
-          description={"Please confirm your password."}
-          inputProps={{ disabled: form.formState.isSubmitting }}
-        />
-        <Field>
-          <Button type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting
-              ? "Creating Account..."
-              : "Create Account"}
-          </Button>
-          <FieldDescription className="px-6 text-center">
-            Already have an account?{" "}
-            <Button variant="link" asChild>
-              <Link href="/login">Sign in</Link>
-            </Button>
-          </FieldDescription>
-        </Field>
+          </CardDescription>
+        </CardHeader>
 
-        <FieldSeparator className="my-4 font-bold">
-          Or continue with
-        </FieldSeparator>
+        <CardContent>
+          <FieldGroup className="gap-6">
+            <FormField
+              name="name"
+              control={form.control}
+              label="Full Name"
+              id="name"
+              type="text"
+              placeholder="John Doe"
+              inputProps={{ disabled: form.formState.isSubmitting }}
+            />
+            <FormField
+              name="email"
+              control={form.control}
+              label="Email"
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              description={
+                "We'll use this to contact you. We will not share your email with anyone else."
+              }
+              inputProps={{ disabled: form.formState.isSubmitting }}
+            />
+            <FormField
+              name="password"
+              control={form.control}
+              label="Password"
+              id="password"
+              type="password"
+              description={"Must be at least 8 characters long."}
+              inputProps={{ disabled: form.formState.isSubmitting }}
+            />
+            <FormField
+              name="confirmPassword"
+              control={form.control}
+              label="Confirm Password"
+              id="confirm-password"
+              type="password"
+              description={"Please confirm your password."}
+              inputProps={{ disabled: form.formState.isSubmitting }}
+            />
 
-        <SocialButtons disabled={form.formState.isSubmitting} />
-      </FieldGroup>
-    </form>
+            <FieldSeparator className="my-4 font-bold">
+              Or continue with
+            </FieldSeparator>
+
+            <SocialButtons disabled={form.formState.isSubmitting} />
+          </FieldGroup>
+        </CardContent>
+
+        <CardFooter>
+          <div className="w-full">
+            <Field>
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting
+                  ? "Creating Account..."
+                  : "Create Account"}
+              </Button>
+              <FieldDescription className="px-6 text-center font-bold">
+                Already have an account?{" "}
+                <Button variant="link" className="px-0 pl-1" asChild>
+                  <Link href="/login">Sign in</Link>
+                </Button>
+              </FieldDescription>
+            </Field>
+          </div>
+        </CardFooter>
+      </form>
+    </Card>
   );
 }
