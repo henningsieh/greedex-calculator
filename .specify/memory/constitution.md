@@ -46,13 +46,21 @@ Rationale: Erasmus+ serves diverse users across Europe; accessibility and
 language coverage are essential for fairness and adoption.
 
 ### IV. Test-First & Reproducibility (NON-NEGOTIABLE)
-All new features MUST include tests before implementation: unit tests for core
-logic, contract tests for APIs, and integration/e2e tests for critical flows.
-The CO₂ calculation engine MUST have deterministic tests that assert expected
-numerical outputs for known inputs and dataset versions.
+All new features MUST include test specifications and contracts. The actual test
+implementation is done manually by the project maintainer. AI agents MUST NOT
+generate test implementation code (no Vitest, Playwright, or test runner code).
+The CO₂ calculation engine MUST have deterministic test contracts that specify
+expected numerical outputs for known inputs and dataset versions.
 
 Rationale: Calculation correctness and reproducibility are central to the
-project's mission and credibility.
+project's mission and credibility. Tests are implemented manually to ensure
+proper integration with the existing test infrastructure.
+
+**AI Agent Constraints**:
+- NEVER run the application (`bun run dev`, `bun run build`, `bun run start`)
+- NEVER execute test commands (`bun test`, `npm test`, `vitest`, `playwright test`)
+- The user maintains a running development server in the background
+- Focus on code generation, not execution or testing
 
 ### V. Simplicity & Maintainability
 Favor clear, well-documented solutions over premature optimisation. Modules
@@ -112,8 +120,10 @@ and role-based permissions for these entities.
 	MUST be reviewed by a core maintainer.
 - **CI/Tests**: PRs MUST run lint/format (biome), unit tests, and relevant
 	integration tests. Critical calculation regressions MUST be prevented by
-	automated tests tied to dataset versions.
-- **Build / Release**: Local dev uses `bun run dev`. Production build follows
+	automated tests tied to dataset versions. Test implementation is handled
+	manually by project maintainers.
+- **Build / Release**: Local dev uses `bun run dev` (maintained by user).
+	**AI agents MUST NOT run the application**. Production build follows
 	`bun run build` -> `bun run start` and relies on compiled `out/server.js` as
 	the authoritative artifact.
 - **Documentation**: Specs, plans, and PR descriptions MUST reference the
