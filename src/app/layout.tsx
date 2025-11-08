@@ -66,7 +66,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NuqsAdapter>{children}</NuqsAdapter>
+          <NuqsAdapter>
+            <div className="mx-auto max-w-7xl px-8">{children}</div>
+          </NuqsAdapter>
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
