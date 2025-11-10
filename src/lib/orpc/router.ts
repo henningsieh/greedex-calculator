@@ -1,4 +1,8 @@
-import { createProject, getHealth, getProfile, helloWorld } from "./procedures";
+import {
+  createProject,
+  listProjects,
+} from "@/components/features/projects/procedures";
+import { getHealth, getProfile, helloWorld } from "./procedures";
 
 /**
  * Main oRPC router
@@ -17,6 +21,7 @@ export const router = {
   // Project namespace
   project: {
     create: createProject,
+    list: listProjects,
   },
 };
 

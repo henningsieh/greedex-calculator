@@ -15,10 +15,9 @@ export default async function CreateProjectPage() {
       logo: org.logo ?? null, // Convert undefined to null
     }));
 
-  console.log(organizations);
   return (
     <div className="mx-auto max-w-3xl p-6">
-      <h1 className="mb-4 font-semibold text-2xl">Create Project</h1>
+      <h1 className="mb-4 font-semibold text-2xl">Create a new Project</h1>
       <CreateProjectForm userOrganizations={organizations || []} />
     </div>
   );

@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { decimal, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { organization, user } from "./auth-schema";
 
@@ -58,8 +59,7 @@ export const projectActivity = pgTable("project_activity", {
     .notNull(),
 });
 
-// Optional: If you need to track multiple team members per project
-export const projectMember = pgTable("project_member", {
+export const projectParticipant = pgTable("project_participant", {
   id: text("id").primaryKey(),
   projectId: text("project_id")
     .notNull()
@@ -67,6 +67,45 @@ export const projectMember = pgTable("project_member", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  role: text("role").default("member").notNull(), // 'responsible', 'member', 'participant'
+  role: text("role").default("participant").notNull(), // z.B. 'participant', 'leader'
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// project - relations
+export const projectRelations = relations(project, ({ one, many }) => ({
+  responsibleUser: one(user, {
+    fields: [project.responsibleUserId],
+    references: [user.id],
+  }),
+  organization: one(organization, {
+    fields: [project.organizationId],
+    references: [organization.id],
+  }),
+  activities: many(projectActivity),
+  participants: many(projectParticipant),
+}));
+
+// projectActivity - relations
+export const projectActivityRelations = relations(
+  projectActivity,
+  ({ one }) => ({
+    project: one(project, {
+      fields: [projectActivity.projectId],
+      references: [project.id],
+    }),
+  }),
+);
+
+export const projectParticipantRelations = relations(
+  projectParticipant,
+  ({ one }) => ({
+    project: one(project, {
+      fields: [projectParticipant.projectId],
+      references: [project.id],
+    }),
+    user: one(user, {
+      fields: [projectParticipant.userId],
+      references: [user.id],
+    }),
+  }),
+);

@@ -1,21 +1,6 @@
-import { randomUUID } from "node:crypto";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { db } from "@/lib/drizzle/db";
-import { project } from "@/lib/drizzle/schema";
 import { base } from "./context";
 import { authorized } from "./middleware";
-
-// Generate insert schema from Drizzle table
-const insertProjectSchema = createInsertSchema(project, {
-  startDate: z.coerce.date(),
-  endDate: z.coerce.date(),
-}).omit({
-  id: true,
-  responsibleUserId: true,
-  createdAt: true,
-  updatedAt: true,
-});
 
 /**
  * Public hello world procedure
@@ -64,27 +49,3 @@ export const getProfile = authorized.handler(async ({ context }) => {
     },
   };
 });
-
-/**
- * Create a new project
- * Requires authentication and uses Drizzle-generated schema
- */
-export const createProject = authorized
-  .input(insertProjectSchema)
-  .handler(async ({ input, context }) => {
-    const newProject = await db
-      .insert(project)
-      .values({
-        id: randomUUID(),
-        ...input,
-        location: input.location ?? null,
-        welcomeMessage: input.welcomeMessage ?? null,
-        responsibleUserId: context.user.id,
-      })
-      .returning();
-
-    return {
-      success: true,
-      project: newProject[0],
-    };
-  });

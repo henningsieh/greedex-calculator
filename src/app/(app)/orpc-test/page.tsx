@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { orpc } from "@/lib/orpc/client";
+import { orpc } from "@/lib/orpc/orpc";
 
 export default function ORPCTestPage() {
   const [name, setName] = useState("World");

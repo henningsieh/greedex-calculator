@@ -1,10 +1,10 @@
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import type { RouterClient } from "@orpc/server";
+import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import type { Router } from "./router";
 
 declare global {
-  // eslint-disable-next-line no-var
   var $client: RouterClient<Router> | undefined;
 }
 
@@ -33,3 +33,10 @@ const link = new RPCLink({
  */
 export const orpc: RouterClient<Router> =
   globalThis.$client ?? createORPCClient(link);
+
+/**
+ * TanStack Query utilities for oRPC
+ * Provides type-safe query and mutation hooks
+ * Note: This should only be imported in client components
+ */
+export const orpcQuery = createTanstackQueryUtils(orpc);
