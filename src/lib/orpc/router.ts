@@ -1,4 +1,4 @@
-import { getHealth, getProfile, helloWorld } from "./procedures";
+import { createProject, getHealth, getProfile, helloWorld } from "./procedures";
 
 /**
  * Main oRPC router
@@ -12,6 +12,11 @@ export const router = {
   // User namespace for authenticated procedures
   user: {
     getProfile,
+  },
+
+  // Project namespace
+  project: {
+    create: createProject,
   },
 };
 

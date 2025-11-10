@@ -15,6 +15,13 @@
       "when": 1762530032169,
       "tag": "0001_typical_toad",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1762762171144,
+      "tag": "0002_panoramic_dakota_north",
+      "breakpoints": true
     }
   ]
 }

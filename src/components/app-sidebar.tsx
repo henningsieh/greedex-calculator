@@ -3,7 +3,6 @@
 import {
   BarChart3,
   FileText,
-  Home,
   LayoutDashboard,
   Menu,
   Settings,
@@ -26,7 +25,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { title: "Home", icon: Home, url: "/" },
+  // { title: "Home", icon: Home, url: "/" },
   { title: "Dashboard", icon: LayoutDashboard, url: "/dashboard" },
   { title: "Analytics", icon: BarChart3, url: "/analytics" },
   { title: "Team", icon: Users, url: "/team" },
