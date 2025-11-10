@@ -57,7 +57,7 @@ export function LoginForm({
           if (c.error.code === "EMAIL_NOT_VERIFIED") {
             toast.error("Please verify your email address to continue");
             router.push(
-              `/verify-email?email=${encodeURIComponent(data.email)}`
+              `/verify-email?email=${encodeURIComponent(data.email)}`,
             );
             return;
           }
@@ -66,7 +66,7 @@ export function LoginForm({
         onSuccess: () => {
           router.push("/");
         },
-      }
+      },
     );
   };
 

@@ -70,7 +70,7 @@ export function SignupForm({
           // Redirect to verify email page after successful signup
           router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
         },
-      }
+      },
     );
   };
 

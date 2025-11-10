@@ -3,6 +3,8 @@ import { Comfortaa, JetBrains_Mono } from "next/font/google";
 
 import "./globals.css";
 import Script from "next/script";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const comfortaa = Comfortaa({
   weight: ["300", "400", "500", "600", "700"],
@@ -54,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
         <Script
           src="https://tweakcn.com/live-preview.min.js"
@@ -64,7 +66,14 @@ export default function RootLayout({
       <body
         className={`${comfortaa.className} ${jetbrainsMono.variable} antialiased`}
       >
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">{children}</div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </ThemeProvider>
       </body>
     </html>
   );

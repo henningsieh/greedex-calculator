@@ -1,9 +1,7 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Navbar } from "@/components/navbar";
-import { ThemeProvider } from "@/components/theme-provider";
 import {
   SidebarInset,
   SidebarProvider,
@@ -45,32 +43,26 @@ export default async function AppLayout({
 
   // Authenticated and has orgs -> allow rendering of the protected app
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <NuqsAdapter>
-        <Navbar />
-        <SidebarProvider
-          defaultOpen={defaultOpen}
-          className="min-h-[calc(svh-4rem)]"
-        >
-          {/* <div className="mx-auto flex w-full"> */}
-          <AppSidebar />
-          <SidebarInset>
-            <main className="flex-1 flex-col">
-              <div className="border-b p-2 pl-0">
-                <SidebarTrigger />
-              </div>
-              <div className="p-2 md:p-4 lg:p-6 xl:p-8">{children}</div>
-            </main>
-          </SidebarInset>
-          {/* </div> */}
-        </SidebarProvider>
-      </NuqsAdapter>
+    <div className="mx-auto max-w-7xl">
+      <Navbar />
+      <SidebarProvider
+        defaultOpen={defaultOpen}
+        className="min-h-[calc(svh-4rem)]"
+      >
+        {/* <div className="mx-auto flex w-full"> */}
+        <AppSidebar />
+        <SidebarInset>
+          <main className="flex-1 flex-col">
+            <div className="border-b p-2 pl-0">
+              <SidebarTrigger />
+            </div>
+            <div className="p-2 md:p-4 lg:p-6 xl:p-8">{children}</div>
+          </main>
+        </SidebarInset>
+        {/* </div> */}
+      </SidebarProvider>
+
       <Toaster richColors position="top-right" />
-    </ThemeProvider>
+    </div>
   );
 }

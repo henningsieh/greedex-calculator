@@ -1,10 +1,10 @@
 "use client";
 
 import { useQueryState } from "nuqs";
+import { DashboardStats } from "@/app/(app)/dashboard/_components/dashboard-stats";
 import { ProjectsGrid } from "@/app/(app)/dashboard/_components/projects-grid";
+import { TeamTable } from "@/app/(app)/dashboard/_components/team-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DashboardStats } from "./dashboard-stats";
-import { TeamTable } from "./team-table";
 
 interface Member {
   id: string;

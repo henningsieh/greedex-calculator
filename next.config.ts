@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
         hostname: "lh3.googleusercontent.com",
         pathname: "/a/**",
       },
+      {
+        protocol: "https",
+        hostname: "ik.imagekit.io",
+        pathname: "/lrigu76hy/**",
+      },
+      {
+        protocol: "https",
+        hostname: "tailus.io",
+        pathname: "/blocks/**",
+      },
     ],
   },
 };
