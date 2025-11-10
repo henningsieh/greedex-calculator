@@ -1,8 +1,8 @@
 "use client";
 
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { motion } from "motion/react";
+import { useTheme } from "next-themes";
 import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -25,24 +25,21 @@ const themes = [
 ];
 
 export type ThemeSwitcherProps = {
-  value?: "light" | "dark" | "system";
-  onChange?: (theme: "light" | "dark" | "system") => void;
-  defaultValue?: "light" | "dark" | "system";
+  // value?: "light" | "dark" | "system";
+  // onChange?: (theme: "light" | "dark" | "system") => void;
+  // defaultValue?: "light" | "dark" | "system";
   className?: string;
 };
 
 export const ThemeSwitcher = ({
-  value,
-  onChange,
-  defaultValue = "system",
+  // value,
+  // onChange,
+  // defaultValue = "system",
   className,
 }: ThemeSwitcherProps) => {
-  const [theme, setTheme] = useControllableState({
-    defaultProp: defaultValue,
-    prop: value,
-    onChange,
-  });
   const [mounted, setMounted] = useState(false);
+
+  const { theme, setTheme } = useTheme();
 
   const handleThemeClick = useCallback(
     (themeKey: "light" | "dark" | "system") => {
