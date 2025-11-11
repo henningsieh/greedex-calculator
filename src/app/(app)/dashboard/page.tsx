@@ -1,9 +1,15 @@
 import { headers } from "next/headers";
 import CreateOrganizationModal from "@/components/features/organizations/create-organization-modal";
 import { auth } from "@/lib/better-auth";
+import { orpcQuery } from "@/lib/orpc/orpc";
+import { getQueryClient, HydrateClient } from "@/lib/query/hydration";
 import { DashboardTabs } from "./_components/dashboard-tabs";
 
 export default async function DashboardPage() {
+  // Prefetch the projects data on the server
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
+
   // Get active organization members using Better Auth API
   const session = await auth.api.getSession({ headers: await headers() });
   const organizations = await auth.api.listOrganizations({
@@ -25,19 +31,21 @@ export default async function DashboardPage() {
   const members = membersResult.members || [];
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-bold text-3xl">{activeOrganization?.name}</h1>
-          <p className="text-muted-foreground">
-            Welcome to your organization dashboard
-          </p>
+    <HydrateClient client={queryClient}>
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="font-bold text-3xl">{activeOrganization?.name}</h1>
+            <p className="text-muted-foreground">
+              Welcome to your organization's dashboard
+            </p>
+          </div>
+
+          <CreateOrganizationModal label="Create New Organization" />
         </div>
 
-        <CreateOrganizationModal />
+        <DashboardTabs members={members} />
       </div>
-
-      <DashboardTabs members={members} />
-    </div>
+    </HydrateClient>
   );
 }

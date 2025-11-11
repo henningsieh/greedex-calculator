@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
         hostname: "tailus.io",
         pathname: "/blocks/**",
       },
+      {
+        protocol: "https",
+        hostname: "greendex.world",
+        pathname: "/wp-content/**",
+      },
     ],
   },
 };

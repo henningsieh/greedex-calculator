@@ -5,13 +5,13 @@ export function DashboardStats() {
     <div className="grid gap-4 md:grid-cols-3">
       <Card className="p-6">
         <div className="font-medium text-muted-foreground text-sm">
-          Total Members
+          Total Projects
         </div>
         <div className="font-bold text-2xl">Coming Soon</div>
       </Card>
       <Card className="p-6">
         <div className="font-medium text-muted-foreground text-sm">
-          Active Projects
+          Total Participants
         </div>
         <div className="font-bold text-2xl">Coming Soon</div>
       </Card>

@@ -1,11 +1,13 @@
 "use client";
 
 import {
-  BarChart3,
-  FileText,
-  LayoutDashboard,
+  BarChart3Icon,
+  FileTextIcon,
+  LayoutDashboardIcon,
+  MapPinnedIcon,
   Settings,
-  Users,
+  SettingsIcon,
+  UsersIcon,
 } from "lucide-react";
 import type { Route } from "next";
 import Link from "next/link";
@@ -24,13 +26,17 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const menuItems = [
+const projectsMenuItems = [
   // { title: "Home", icon: Home, url: "/" },
-  { title: "Dashboard", icon: LayoutDashboard, url: "/dashboard" },
-  { title: "Analytics", icon: BarChart3, url: "/analytics" },
-  { title: "Team", icon: Users, url: "/team" },
-  { title: "Documents", icon: FileText, url: "/documents" },
-  { title: "Settings", icon: Settings, url: "/settings" },
+  { title: "Analytics", icon: BarChart3Icon, url: "/analytics" },
+  { title: "Documents", icon: FileTextIcon, url: "/documents" },
+];
+const organizationMenuItems = [
+  // { title: "Home", icon: Home, url: "/" },
+  { title: "Dashboard", icon: LayoutDashboardIcon, url: "/dashboard" },
+  { title: "Projects", icon: MapPinnedIcon, url: "/projects" },
+  { title: "Team", icon: UsersIcon, url: "/team" },
+  { title: "Settings", icon: SettingsIcon, url: "/settings" },
 ];
 
 export function AppSidebar() {
@@ -47,10 +53,30 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>Projects</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
+              {projectsMenuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <Link
+                      href={item.url as Route}
+                      data-active={pathname === item.url}
+                    >
+                      <item.icon className="size-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Organisation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {organizationMenuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link

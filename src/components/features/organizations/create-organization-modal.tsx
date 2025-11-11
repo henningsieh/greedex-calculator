@@ -11,13 +11,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export default function CreateOrganizationModal() {
+interface CreateOrganizationModalProps {
+  label: string;
+  triggerNode?: React.ReactNode;
+}
+
+export default function CreateOrganizationModal({
+  label,
+  triggerNode,
+}: CreateOrganizationModalProps) {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Create New Organization</Button>
+        {triggerNode || <Button variant="default">{label}</Button>}
       </DialogTrigger>
 
       <DialogContent>

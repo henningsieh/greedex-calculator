@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { FolderOpen, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,15 +22,9 @@ import { orpcQuery } from "@/lib/orpc/orpc";
 import { formatDate } from "@/lib/utils";
 
 export function ProjectsGrid() {
-  const {
-    data: projects,
-    isLoading,
-    error,
-  } = useQuery(orpcQuery.project.list.queryOptions());
-
-  if (isLoading) {
-    return <div>Loading projects...</div>;
-  }
+  const { data: projects, error } = useSuspenseQuery(
+    orpcQuery.project.list.queryOptions(),
+  );
 
   if (error) {
     return <div>Error loading projects: {error.message}</div>;

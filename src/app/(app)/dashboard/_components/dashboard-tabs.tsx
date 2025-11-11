@@ -1,9 +1,10 @@
 "use client";
 
 import { useQueryState } from "nuqs";
+import { Suspense } from "react";
 import { DashboardStats } from "@/app/(app)/dashboard/_components/dashboard-stats";
-import { ProjectsGrid } from "@/app/(app)/dashboard/_components/projects-grid";
 import { TeamTable } from "@/app/(app)/dashboard/_components/team-table";
+import { ProjectsGrid } from "@/components/features/projects/projects-grid";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Member {
@@ -28,7 +29,9 @@ export function DashboardTabs({ members }: DashboardTabsProps) {
   const [activeTab, setActiveTab] = useQueryState("tab", {
     defaultValue: "dashboard",
     parse: (value) =>
-      ["dashboard", "team", "projects"].includes(value) ? value : "dashboard",
+      ["dashboard", "participants", "projects"].includes(value)
+        ? value
+        : "dashboard",
   });
 
   return (
@@ -39,7 +42,7 @@ export function DashboardTabs({ members }: DashboardTabsProps) {
     >
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-        <TabsTrigger value="team">Team</TabsTrigger>
+        <TabsTrigger value="participants">Participants</TabsTrigger>
         <TabsTrigger value="projects">Projects</TabsTrigger>
       </TabsList>
 
@@ -47,12 +50,14 @@ export function DashboardTabs({ members }: DashboardTabsProps) {
         <DashboardStats />
       </TabsContent>
 
-      <TabsContent value="team" className="mt-6">
+      <TabsContent value="participants" className="mt-6">
         <TeamTable members={members} />
       </TabsContent>
 
       <TabsContent value="projects" className="mt-6">
-        <ProjectsGrid />
+        <Suspense fallback={<div>Loading projects...</div>}>
+          <ProjectsGrid />
+        </Suspense>
       </TabsContent>
     </Tabs>
   );

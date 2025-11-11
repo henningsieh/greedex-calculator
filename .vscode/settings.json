@@ -25,5 +25,11 @@
     ".specify/scripts/bash/": true,
     ".specify/scripts/powershell/": true
   },
-  "tailwindCSS.lint.suggestCanonicalClasses": "ignore"
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "**/node_modules/@radix-ui/**"
+  ],
+  "search.exclude": {
+    "**/node_modules/@radix-ui": true
+  }
 }

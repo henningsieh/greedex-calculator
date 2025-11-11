@@ -5,7 +5,7 @@ import { Alert } from "@/components/ui/alert";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { formatDate } from "@/lib/utils";
 
-function ListProjects() {
+function ProjectsList() {
   const { data: projects, error } = useSuspenseQuery(
     orpcQuery.project.list.queryOptions(),
   );
@@ -40,4 +40,4 @@ function ListProjects() {
   );
 }
 
-export default ListProjects;
+export default ProjectsList;

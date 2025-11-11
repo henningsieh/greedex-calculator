@@ -1,13 +1,20 @@
 "use client";
 
-import { Check, ChevronsUpDown, GalleryVerticalEnd } from "lucide-react";
+import {
+  Check,
+  ChevronsUpDown,
+  GalleryVerticalEnd,
+  PlusIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import * as React from "react";
+import CreateOrganizationModal from "@/components/features/organizations/create-organization-modal";
 import { useLoading } from "@/components/providers/loading-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -107,6 +114,23 @@ export function OrganizationSwitcher() {
                 )}
               </DropdownMenuItem>
             ))}
+            <DropdownMenuSeparator />
+            <CreateOrganizationModal
+              label="Add Team"
+              triggerNode={
+                <DropdownMenuItem
+                  className="gap-2 p-2"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                    <PlusIcon className="size-4" />
+                  </div>
+                  <div className="font-medium text-muted-foreground">
+                    Add team
+                  </div>
+                </DropdownMenuItem>
+              }
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
