@@ -1,9 +1,10 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import {
-  Check,
-  ChevronsUpDown,
-  GalleryVerticalEnd,
+  Building2Icon,
+  CheckIcon,
+  ChevronsUpDownIcon,
   PlusIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -25,9 +26,11 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/better-auth/auth-client";
+import { orpcQuery } from "@/lib/orpc/orpc";
 
 export function OrganizationSwitcher() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { setIsLoading } = useLoading();
   const {
     data: session,
@@ -78,21 +81,21 @@ export function OrganizationSwitcher() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="border border-input data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <GalleryVerticalEnd className="size-4" />
+                <Building2Icon className="size-4" />
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
                 <span className="">{activeOrganization.name}</span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              <ChevronsUpDownIcon className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width)"
             align="start"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? undefined : "right"}
             sideOffset={4}
           >
             {organizations.map((org) => (
@@ -104,21 +107,24 @@ export function OrganizationSwitcher() {
                   await authClient.organization.setActive({
                     organizationId: org.id,
                   });
+                  queryClient.invalidateQueries({
+                    queryKey: orpcQuery.project.list.queryKey(),
+                  });
                   setIsLoading(false);
-                  router.refresh();
                 }}
               >
                 {org.name}
                 {org.id === activeOrganization.id && (
-                  <Check className="ml-auto" />
+                  <CheckIcon className="ml-auto" />
                 )}
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
             <CreateOrganizationModal
-              label="Add Team"
+              label="Add Organization"
               triggerNode={
                 <DropdownMenuItem
+                  variant="default"
                   className="gap-2 p-2"
                   onSelect={(e) => e.preventDefault()}
                 >
@@ -126,7 +132,7 @@ export function OrganizationSwitcher() {
                     <PlusIcon className="size-4" />
                   </div>
                   <div className="font-medium text-muted-foreground">
-                    Add team
+                    Add Organization
                   </div>
                 </DropdownMenuItem>
               }

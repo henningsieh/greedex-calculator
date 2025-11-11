@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
-import CreateOrganizationModal from "@/components/features/organizations/create-organization-modal";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient, HydrateClient } from "@/lib/query/hydration";
@@ -41,7 +42,9 @@ export default async function DashboardPage() {
             </p>
           </div>
 
-          <CreateOrganizationModal label="Create New Organization" />
+          <Button asChild variant="link">
+            <Link href="/create-project">Create New Project</Link>
+          </Button>
         </div>
 
         <DashboardTabs members={members} />

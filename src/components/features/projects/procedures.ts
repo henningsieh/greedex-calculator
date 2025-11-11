@@ -1,7 +1,7 @@
 // src/components/features/projects/procedures.ts:
 
 import { randomUUID } from "node:crypto";
-import { eq, inArray, or } from "drizzle-orm";
+import { and, eq, inArray, or } from "drizzle-orm";
 import { z } from "zod";
 import {
   ProjectFormSchema,
@@ -22,7 +22,7 @@ export const createProject = authorized
     summary: "Create a new project",
     tags: ["project"],
   })
-  .input(ProjectFormSchema) // ← Changed from ProjectInsertSchema
+  .input(ProjectFormSchema)
   .output(
     z.object({
       success: z.boolean(),
@@ -69,7 +69,13 @@ export const listProjects = authorized
       .from(project)
       .where(
         or(
-          eq(project.responsibleUserId, context.user.id),
+          and(
+            eq(project.responsibleUserId, context.user.id),
+            eq(
+              project.organizationId,
+              context.session.activeOrganizationId as string,
+            ),
+          ),
           participantProjectIds.length > 0
             ? inArray(project.id, participantProjectIds)
             : undefined,
