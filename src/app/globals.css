@@ -211,7 +211,7 @@ body {
 
 /* Hide the spacer div that compensates for fixed positioning */
 .group.peer[data-variant="floating"] > div:first-child {
-  display: none !important;
+  display: none;
 }
 
 @layer base {

@@ -1,9 +1,11 @@
+import "./globals.css"; // Global CSS import
+import "@/lib/orpc/client.server"; // Initialize server-side oRPC client for pre-rendering
+
 import type { Metadata } from "next";
 import { Comfortaa, JetBrains_Mono } from "next/font/google";
-
-import "./globals.css";
 import Script from "next/script";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import Providers from "@/components/providers";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const comfortaa = Comfortaa({
@@ -72,7 +74,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NuqsAdapter>{children}</NuqsAdapter>
+          <NuqsAdapter>
+            <Providers>{children}</Providers>
+          </NuqsAdapter>
         </ThemeProvider>
       </body>
     </html>

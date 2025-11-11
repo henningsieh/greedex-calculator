@@ -38,7 +38,7 @@ export const HeroHeader = () => {
           className={cn(
             "mx-auto mt-2 max-w-7xl px-6 transition-all duration-300 lg:px-12",
             isScrolled &&
-              "max-w-5xl rounded-2xl border bg-background/50 backdrop-blur-lg lg:px-5"
+              "max-w-5xl rounded-2xl border bg-background/50 backdrop-blur-lg lg:px-5",
           )}
         >
           <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
@@ -96,7 +96,7 @@ export const HeroHeader = () => {
                 <div
                   className={cn(
                     "relative h-8 overflow-hidden transition-all duration-500 ease-in-out",
-                    isScrolled ? "lg:w-0" : "lg:w-fit"
+                    isScrolled ? "lg:w-0" : "lg:w-fit",
                   )}
                   aria-hidden={isScrolled}
                 >
@@ -108,7 +108,7 @@ export const HeroHeader = () => {
                       "transition-opacity duration-200 ease-in-out",
                       // Use non-prefixed opacity so the inner element fades smoothly
                       // while the outer container (lg:w-24 / lg:w-0) shrinks — same pattern as `Logo`.
-                      isScrolled ? "opacity-0" : "opacity-100"
+                      isScrolled ? "opacity-0" : "opacity-100",
                     )}
                   >
                     <Link href="/login">
@@ -121,7 +121,7 @@ export const HeroHeader = () => {
                   asChild
                   size="sm"
                   className={cn(
-                    "transform transition-transform duration-300 ease-in-out"
+                    "transform transition-transform duration-300 ease-in-out",
                   )}
                 >
                   <Link href="/signup">

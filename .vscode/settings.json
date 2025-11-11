@@ -1,10 +1,18 @@
 {
   "editor.codeActionsOnSave": {
     "source.organizeImports.biome": "explicit",
-    "source.fixAll.biome": "explicit"
+    "source.fixAll.biome": "always"
   },
   "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "typescript.format.enable": false,
+  "javascript.format.enable": false,
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "chat.promptFilesRecommendations": {
     "speckit.constitution": true,

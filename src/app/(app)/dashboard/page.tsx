@@ -14,7 +14,7 @@ export default async function DashboardPage() {
     session?.session?.activeOrganizationId || organizations[0]?.id || "";
 
   const activeOrganization = organizations.find(
-    (org) => org.id === activeOrganizationId
+    (org) => org.id === activeOrganizationId,
   );
 
   const membersResult = await auth.api.listMembers({

@@ -13,8 +13,8 @@ export function WorkshopContent({
   const [type, setType] = useQueryState(
     "type",
     parseAsStringLiteral(["moment", "deal", "day"] as const).withDefault(
-      initialType
-    )
+      initialType,
+    ),
   );
 
   return (

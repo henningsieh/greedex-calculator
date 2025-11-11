@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1762428279353,
-      "tag": "0000_melodic_black_queen",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1762530032169,
-      "tag": "0001_typical_toad",
+      "when": 1762793926255,
+      "tag": "0000_minor_xavin",
       "breakpoints": true
     }
   ]
