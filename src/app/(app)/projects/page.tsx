@@ -1,16 +1,22 @@
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import ListProjects from "@/components/features/projects/list-projects";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient, HydrateClient } from "@/lib/query/hydration";
 
-export default async function ProjectsPage() {
+export default function ProjectsPage() {
   const queryClient = getQueryClient();
 
   // Prefetch the projects data on the server
-  await queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
+  void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
 
   return (
-    <HydrateClient client={queryClient}>
-      <ListProjects />
-    </HydrateClient>
+    <Suspense fallback={<div>Loading...</div>}>
+      <ErrorBoundary fallback={<div>Something went wrong.</div>}>
+        <HydrateClient client={queryClient}>
+          <ListProjects />
+        </HydrateClient>
+      </ErrorBoundary>
+    </Suspense>
   );
 }

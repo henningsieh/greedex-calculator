@@ -1,5 +1,7 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Navbar } from "@/components/navbar";
 import {
@@ -9,6 +11,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { auth } from "@/lib/better-auth";
+import { orpcQuery } from "@/lib/orpc/orpc";
+import { getQueryClient } from "@/lib/query/hydration";
 
 export default async function AppLayout({
   children,
@@ -38,6 +42,10 @@ export default async function AppLayout({
     redirect("/org/create");
   }
 
+  // Prefetch the projects data on the server
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
+
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
@@ -49,8 +57,11 @@ export default async function AppLayout({
         defaultOpen={defaultOpen}
         className="min-h-[calc(svh-4rem)]"
       >
-        {/* <div className="mx-auto flex w-full"> */}
-        <AppSidebar />
+        <ErrorBoundary fallback={<div>Failed to load sidebar.</div>}>
+          <Suspense fallback="loading sidebar...">
+            <AppSidebar />
+          </Suspense>
+        </ErrorBoundary>
         <SidebarInset>
           <main className="flex-1 flex-col">
             <div className="border-b p-2 pl-0">
