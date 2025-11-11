@@ -1,6 +1,6 @@
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
-import { router } from "@/lib/orpc";
+import { router } from "@/lib/orpc/router";
 
 /**
  * oRPC handler for Next.js route handlers
