@@ -54,46 +54,6 @@ export default function HeroSection() {
       </div>
       <section>
         <div className="relative pt-20 md:pt-32">
-          <AnimatedGroup
-            variants={{
-              container: {
-                visible: {
-                  transition: {
-                    delayChildren: 1,
-                  },
-                },
-              },
-              item: {
-                hidden: {
-                  opacity: 0,
-                  y: 20,
-                },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    type: "spring",
-                    bounce: 0.3,
-                    duration: 2,
-                  },
-                },
-              },
-            }}
-            className="mask-b-from-35% mask-b-to-90% -z-20 absolute inset-0 top-56 lg:top-32"
-          >
-            {/* Ensure the Image `fill` has a positioned parent with non-zero height */}
-            <div className="relative w-full overflow-hidden md:h-[55vh] lg:h-[80vh]">
-              <Image
-                src="/night-background.jpg"
-                alt="background"
-                fill
-                className="object-cover dark:block"
-                priority
-                sizes="100vw"
-              />
-            </div>
-          </AnimatedGroup>
-
           <div
             aria-hidden
             className="-z-10 absolute inset-0 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,var(--color-background)_75%)]"
