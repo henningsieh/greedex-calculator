@@ -10,6 +10,7 @@ This folder contains minimal instruction sets for AI agents working in this repo
 
 ## Available Detailed Docs
 - `docs/instructions/better-auth/`: Better Auth options and organizations setup.
+- `docs/instructions/i18n/`: Internationalization setup with next-intl.
 - `docs/instructions/orpc/`: oRPC procedures, routers, adapters, and integrations.
-- `docs/instructions/shadcn/`: Shadcn UI components and field documentation.
 - `docs/instructions/react-email/`: React Email setup and components.
+- `docs/instructions/shadcn/`: Shadcn UI components and field documentation.
