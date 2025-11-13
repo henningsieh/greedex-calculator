@@ -4,7 +4,7 @@ This folder contains minimal instruction sets for AI agents working in this repo
 
 ## Purpose
 - Minimal instruction set for agents; detailed docs in `docs/instructions/`.
-- Canonical entries: `better-auth.instructions.md`.
+- Canonical entries: `better-auth.documentation.instructions.md`.
 - Fetching docs: Copy from `docs/instructions/<topic>/...` as needed.
 - Maintenance: Prefer `docs/instructions/` for new content unless always-needed by agents.
 
