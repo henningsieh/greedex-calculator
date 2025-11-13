@@ -1,16 +1,40 @@
 # .github/instructions
 
-This folder contains minimal instruction sets for AI agents working in this repository. Detailed documentation is located in `docs/instructions/` to avoid cluttering agent context.
+Minimal instruction sets for AI agents working in this repository. Detailed, longer-form documentation lives under `docs/instructions/` — use that content when agents need deeper context.
 
-## Purpose
-- Minimal instruction set for agents; detailed docs in `docs/instructions/`.
-- Canonical entries: `better-auth.documentation.instructions.md`.
-- Fetching docs: Copy from `docs/instructions/<topic>/...` as needed.
-- Maintenance: Prefer `docs/instructions/` for new content unless always-needed by agents.
+Purpose
+- Keep short, actionable guidance in this folder for quick agent use.
+- Use `docs/instructions/` as the authoritative, detailed source of truth.
 
-## Available Detailed Docs
-- `docs/instructions/better-auth/`: Better Auth options and organizations setup.
-- `docs/instructions/i18n/`: Internationalization setup with next-intl.
-- `docs/instructions/orpc/`: oRPC procedures, routers, adapters, and integrations.
-- `docs/instructions/react-email/`: React Email setup and components.
-- `docs/instructions/shadcn/`: Shadcn UI components and field documentation.
+How to use
+- Copy or extract snippets from `docs/instructions/<topic>/` into this folder when a concise agent-focused subset is required.
+- Avoid duplicating large docs here; keep only essential, always-needed guidance in `.github/instructions/`.
+
+Available detailed docs (exact files)
+- `docs/instructions/better-auth/`
+	- `better-auth.options.md`
+	- `better-auth.organizations.md`
+- `docs/instructions/i18n/`
+	- `next-intl.internationalization.md`
+- `docs/instructions/orpc/`
+	- `orpc.better-auth.md`
+	- `orpc.init.installation.md`
+	- `orpc.Optimize-Server-Side-Rendering.SSR.md`
+	- `orpc.procedure.md`
+	- `orpc.router.md`
+	- `orpc.tanstack-query.md`
+	- `orpcNextjs.adapter.md`
+- `docs/instructions/react-email/`
+	- `setup-React_Email.md`
+	- `use-HTML_Components.md`
+	- `use-Nodemailer.md`
+	- `use-Tailwind.md`
+- `docs/instructions/shadcn/`
+	- `shadcn-ui.new-field.documentation.md`
+	- `shadcn.empty.component.md`
+
+Notes
+- If you update `docs/instructions/*`, consider whether a short summary should be copied to `.github/instructions/` for fast agent access.
+- When creating agent-facing instructions, reference the exact file paths above so agents can find the canonical docs quickly.
+
+If you'd like, I can produce a minimal `.github/instructions/copilot-instructions.md` derived from these files — tell me which topics to include.

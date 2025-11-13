@@ -1,3 +1,7 @@
+---
+applyTo: '**'
+---
+
 # Shadcn UI Instructions
 
 This file provides an overview of available Shadcn UI documentation. For detailed instructions, refer to the files in `docs/instructions/shadcn/`.

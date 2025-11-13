@@ -1,3 +1,7 @@
+---
+applyTo: '**'
+---
+
 # oRPC Instructions
 
 This file provides an overview of available oRPC documentation. For detailed instructions, refer to the files in `docs/instructions/orpc/`.
