@@ -64,6 +64,11 @@ export default async function HeroSection() {
 
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center sm:mx-auto lg:mt-0 lg:mr-auto">
+              {/* Keyed by the current `locale` so the animated group is
+                  unmounted/remounted on language change. This forces
+                  client-side animated children (e.g. `TextEffect`) to
+                  re-initialize their animations when we switch locale
+                  using cookie-based switching + `router.refresh()`. */}
               <AnimatedGroup
                 key={`hero-content-${locale}`}
                 variants={transitionVariants}
