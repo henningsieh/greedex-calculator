@@ -1,10 +1,10 @@
 "use client";
 
 import { CheckCircle2, ExternalLink } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import {
   type CalculatorType,
-  calculatorWorkshops,
+  WORKSHOP_LINKS,
 } from "@/components/landingpage/workshops/workshops.config";
 import {
   Accordion,
@@ -22,20 +22,91 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Link } from "@/lib/i18n/navigation";
+
+// Helper to get link configuration for a step
+function getStepLinks(stepKey: string): Array<{
+  linkKey: string;
+  href: string;
+  isExternal: boolean;
+}> {
+  const linkMap: Record<
+    string,
+    Array<{
+      linkKey: string;
+      href: string;
+      isExternal: boolean;
+    }>
+  > = {
+    create: [{ linkKey: "openApp", href: "/org/dashboard", isExternal: false }],
+    map: [
+      {
+        linkKey: "erasmusCalculator",
+        href: WORKSHOP_LINKS.erasmusCalculator,
+        isExternal: true,
+      },
+      {
+        linkKey: "googleMaps",
+        href: WORKSHOP_LINKS.googleMaps,
+        isExternal: true,
+      },
+    ],
+    plant: [
+      { linkKey: "eForest", href: WORKSHOP_LINKS.eForest, isExternal: true },
+    ],
+    read: [
+      {
+        linkKey: "challengesDescription",
+        href: WORKSHOP_LINKS.challengesDescription,
+        isExternal: true,
+      },
+    ],
+    present: [
+      {
+        linkKey: "challengesPresentation",
+        href: WORKSHOP_LINKS.challengesPresentation,
+        isExternal: true,
+      },
+    ],
+    introduce: [
+      {
+        linkKey: "greendexWebsite",
+        href: WORKSHOP_LINKS.greendexWebsite,
+        isExternal: true,
+      },
+    ],
+  };
+
+  return linkMap[stepKey] || [];
+}
 
 export function WorkshopDetails({ type }: { type: CalculatorType }) {
-  const workshop = calculatorWorkshops[type];
+  const t = useTranslations("LandingPage.workshops");
+
+  // Get workshop metadata from translations
+  const title = t(`types.${type}.title`);
+  const duration = t(`types.${type}.duration`);
+  const description = t(`types.${type}.description`);
+
+  // Get sections for this workshop type
+  const sectionsData = t.raw(`details.${type}.sections`) as Record<
+    string,
+    {
+      title: string;
+      steps: Record<string, { title: string; content: string }>;
+    }
+  >;
 
   return (
     <>
       {/* Header */}
       <div className="space-y-4 text-center">
         <Badge variant="secondary" className="text-sm">
-          {workshop.duration}
+          {duration}
         </Badge>
-        <h2 className="font-semibold text-3xl lg:text-4xl">{workshop.title}</h2>
+        <h2 className="font-semibold text-3xl lg:text-4xl">{title}</h2>
         <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-          {workshop.description}
+          {description}
         </p>
       </div>
 
@@ -43,61 +114,69 @@ export function WorkshopDetails({ type }: { type: CalculatorType }) {
 
       {/* Workshop Sections */}
       <div className="space-y-8">
-        {workshop.sections.map((section) => (
-          <Card key={section.title}>
+        {Object.entries(sectionsData).map(([sectionKey, section]) => (
+          <Card key={sectionKey}>
             <CardHeader>
               <CardTitle className="text-2xl">{section.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
-                {section.steps.map((step, stepIdx) => (
-                  <AccordionItem
-                    key={step.title}
-                    value={`step-${section.title}-${stepIdx}`}
-                  >
-                    <AccordionTrigger className="text-left">
-                      <div className="flex items-start gap-3">
-                        <CheckCircle2 className="mt-1 size-5 shrink-0 text-primary" />
-                        <span className="font-medium">
-                          {stepIdx + 1}. {step.title}
-                        </span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-2 pl-8">
-                      <div className="space-y-4">
-                        <div className="whitespace-pre-line text-muted-foreground">
-                          {step.content}
-                        </div>
-                        {step.links && step.links.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            {step.links.map((link) => (
-                              <Button
-                                key={link.text}
-                                asChild
-                                variant="outline"
-                                size="sm"
-                              >
-                                {link.isExternal ? (
-                                  <a
-                                    href={link.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2"
-                                  >
-                                    {link.text}
-                                    <ExternalLink className="size-3" />
-                                  </a>
-                                ) : (
-                                  <Link href={link.href}>{link.text}</Link>
-                                )}
-                              </Button>
-                            ))}
+                {Object.entries(section.steps).map(
+                  ([stepKey, step], stepIdx) => {
+                    const links = getStepLinks(stepKey);
+
+                    return (
+                      <AccordionItem
+                        key={stepKey}
+                        value={`step-${sectionKey}-${stepKey}`}
+                      >
+                        <AccordionTrigger className="text-left">
+                          <div className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-1 size-5 shrink-0 text-primary" />
+                            <span className="font-medium">
+                              {stepIdx + 1}. {step.title}
+                            </span>
                           </div>
-                        )}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-2 pl-8">
+                          <div className="space-y-4">
+                            <div className="whitespace-pre-line text-muted-foreground">
+                              {step.content}
+                            </div>
+                            {links.length > 0 && (
+                              <div className="flex flex-wrap gap-2">
+                                {links.map((link) => (
+                                  <Button
+                                    key={link.linkKey}
+                                    asChild
+                                    variant="outline"
+                                    size="sm"
+                                  >
+                                    {link.isExternal ? (
+                                      <a
+                                        href={link.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2"
+                                      >
+                                        {t(`links.${link.linkKey}`)}
+                                        <ExternalLink className="size-3" />
+                                      </a>
+                                    ) : (
+                                      <Link href={link.href}>
+                                        {t(`links.${link.linkKey}`)}
+                                      </Link>
+                                    )}
+                                  </Button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  },
+                )}
               </Accordion>
             </CardContent>
           </Card>
@@ -115,7 +194,7 @@ export function WorkshopDetails({ type }: { type: CalculatorType }) {
         <CardContent>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
-              <Link href="/org/dashboard">Open Greendex App</Link>
+              <Link href="/org/dashboard">{t("links.openApp")}</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <Link href="/#workshops">View All Workshops</Link>

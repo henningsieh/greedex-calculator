@@ -1,22 +1,23 @@
-import { ChevronLeft } from "lucide-react";
-import type { Route } from "next";
-import Link from "next/link";
+// back-to-home.tsx
+import { ChevronLeftIcon } from "lucide-react";
+import { Link } from "@/lib/i18n/navigation";
 import { Button } from "@/components/ui/button";
 
 type Props = {
   label?: string;
-  href?: Route;
+  href?: string;
 };
 
 export default function BackToHome({
   label = "Back to Home",
-  href = "/",
+  href,
 }: Props) {
+  const defaultHref = "/";
   return (
     <div className="flex justify-start gap-2">
       <Button variant="link" asChild>
-        <Link href={href} aria-label={label}>
-          <ChevronLeft />
+        <Link href={href ?? defaultHref}>
+          <ChevronLeftIcon />
           {label}
         </Link>
       </Button>

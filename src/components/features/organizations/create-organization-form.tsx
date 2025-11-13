@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/i18n/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -60,7 +60,6 @@ export default function CreateOrganizationForm({
             await authClient.organization.setActive({
               organizationId: ctx.data.id,
             });
-
             onSuccess?.();
             router.push("/org/dashboard");
             router.refresh();

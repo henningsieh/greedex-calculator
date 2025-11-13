@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { UserSession } from "@/components/features/authentication/user-session";
 import Logo from "@/components/logo";
 import { ThemeSwitcher } from "@/components/theme-switcher";

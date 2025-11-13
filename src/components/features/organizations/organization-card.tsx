@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import type { ProjectType } from "@/components/features/projects/types";
 import {
   Card,

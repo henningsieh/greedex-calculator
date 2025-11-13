@@ -1,9 +1,8 @@
 {
   "LandingPage": {
-    "title": "Willkommen bei Greendex",
-    "description": "Deine App-Beschreibung",
     "launchButton": "Erasmus+ CO2-Rechner starten",
     "launchButtonAria": "Erasmus+ CO2-Rechner öffnen — Login erforderlich",
+
     "hero": {
       "missionTitle": "Unsere Mission",
       "missionText": "Das Erasmus+ Programm ermöglicht uns fantastische Lernabenteuer mit inspirierenden Menschen aus verschiedenen Ländern. Jedoch trägt jede unserer persönlichen Begegnungen zu einem erheblichen CO2-Fußabdruck bei – durch unsere Reise- und Lebensgewohnheiten. Ziel dieses Projekts ist es, unseren CO2-Fußabdruck in den Projekten, die wir durchführen, auszugleichen, indem wir mehr Bewusstsein schaffen und aktiv unsere Gewohnheiten ändern. Aus diesem Grund haben wir einen CO2-Rechner entwickelt, der speziell auf Erasmus+ Projekte wie Jugendbegegnungen, Trainingskurse, Meetings etc. zugeschnitten ist. Dieser Rechner zeigt die finale CO2-Menge, die jeder Teilnehmende verursacht, und rechnet diese in die durchschnittliche Anzahl von Bäumen um, die unser CO2 in ihrer Lebenszeit absorbieren werden. Unsere Berechnungen basieren auf wissenschaftlicher Forschung verschiedener Fachleute. Wir haben keine eigenen Berechnungen angestellt.",
@@ -12,6 +11,7 @@
       "scrollDown": "Nach unten scrollen",
       "meetCustomers": "Lerne unsere Partner kennen"
     },
+
     "workshops": {
       "headingPrefix": "Hallo, liebe*r",
       "headingEmphasis": "Erdenwanderer*in",
@@ -25,7 +25,280 @@
       "bottomP2Prefix": "Wenn du mehr über Nachhaltigkeit lernen möchtest, besuche die Bereiche",
       "bottomP2Middle": "und",
       "library": "Ressourcen-Bibliothek",
-      "tipsAndTricks": "Tipps & Tricks"
+      "tipsAndTricks": "Tipps & Tricks",
+
+      "types": {
+        "moment": {
+          "title": "Greendex Moment",
+          "duration": "30 min",
+          "description": "Dieser Workshop bietet Berechnungen des CO2-Fußabdrucks eurer Mobilität und zeigt, wie viele Bäume gepflanzt werden müssen, um das CO2 auszugleichen."
+        },
+        "deal": {
+          "title": "Greendex Deal",
+          "duration": "60 min",
+          "description": "Dieser Workshop bietet Berechnungen des CO2-Fußabdrucks eurer Mobilität und zeigt, wie viele Bäume gepflanzt werden müssen, um das CO2 auszugleichen, sowie einige nachhaltige und inspirierende Herausforderungen für die Teilnehmenden, die sie während eurer Mobilität ausprobieren können."
+        },
+        "day": {
+          "title": "Greendex Day",
+          "duration": "180 min",
+          "description": "Diese Session bietet zusätzlich zum bereits erwähnten Rechner und den Herausforderungen ein Quiz über den CO2-Fußabdruck, Reflexion darüber, wie viel Plastik wir zu dieser Mobilität mitgebracht haben, und Unterstützung, um sozialen Druck auszuüben."
+        }
+      },
+
+      "details": {
+        "moment": {
+          "sections": {
+            "calculator": {
+              "title": "Rechner-Schritte",
+              "steps": {
+                "create": {
+                  "title": "Erstelle das Projekt in der Greendex App",
+                  "content": "Beginne mit der Erstellung deines Projekts in unserer Anwendung, um deinen CO2-Fußabdruck zu verfolgen."
+                },
+                "map": {
+                  "title": "Zeichne deine Reise von zu Hause bis hierher auf",
+                  "content": "Lade die Teilnehmenden ein, nationale Teams zu bilden. Bitte sie, über ihre Reiseerfahrung nachzudenken. Du kannst ihnen helfen, ihre Reise zu kartieren, indem du Poster aufhängst, um ihre Reisen zu zeichnen. Es ist wichtig, dass sie sich die Transportmittel der Reihe nach vorstellen und herausfinden, wie viele Kilometer sie mit jedem Transportmittel zurückgelegt haben."
+                },
+                "share": {
+                  "title": "Teile den Projekt-Link mit den Teilnehmenden",
+                  "content": "Biete ihnen den QR-Code an oder teile den bereitgestellten Link über die im Projekt genutzten sozialen Medien."
+                },
+                "fill": {
+                  "title": "Lade die Teilnehmenden ein, die Fragen des Rechners auszufüllen",
+                  "content": "Jeder Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
+                },
+                "reflect": {
+                  "title": "Stelle sicher, dass alle Teilnehmenden das Formular abgeschickt haben, und gib Raum für Reflexion",
+                  "content": "Gib den Teilnehmenden Raum, über ihre individuellen Ergebnisse zu reflektieren!"
+                },
+                "debate": {
+                  "title": "Zeige die Projektergebnisse und diskutiere darüber",
+                  "content": "Du kannst ihnen folgende Fragen stellen:\n\n• Gibt es etwas Überraschendes für dich in den Ergebnissen?\n• Wie fühlen dich die Ergebnisse?\n• Hast du Vorschläge, wie das freigesetzte CO2 bei zukünftigen Projekten reduziert werden kann?"
+                },
+                "plant": {
+                  "title": "Pflanze Bäume, um den CO2-Fußabdruck deines Projekts auszugleichen",
+                  "content": "Du kannst folgende Optionen anbieten:\n\n• Spende, um Bäume in einem der Erasmus+ Wälder zu pflanzen\n• Suche nach Möglichkeiten, die Bäume selbst zu pflanzen! Vielleicht kannst du sogar deinen eigenen Erasmus+ Wald starten und Teil der Greendex-Bewegung werden."
+                },
+                "share_social": {
+                  "title": "Teile deine Reise in sozialen Medien mit #greendex",
+                  "content": "Verbreite die Nachricht über deine nachhaltige Reise und inspiriere andere!"
+                }
+              }
+            }
+          }
+        },
+        "deal": {
+          "sections": {
+            "calculator": {
+              "title": "2.1. Rechner",
+              "steps": {
+                "create": {
+                  "title": "Erstelle das Projekt in der Greendex App",
+                  "content": "Beginne mit der Erstellung deines Projekts in unserer Anwendung, um deinen CO2-Fußabdruck zu verfolgen."
+                },
+                "map": {
+                  "title": "Zeichne deine Reise von zu Hause bis hierher auf",
+                  "content": "Lade die Teilnehmenden ein, nationale Teams zu bilden. Bitte sie, über ihre Reiseerfahrung nachzudenken. Du kannst ihnen helfen, ihre Reise zu kartieren, indem du Poster aufhängst, um ihre Reisen zu zeichnen. Es ist wichtig, dass sie sich die Transportmittel der Reihe nach vorstellen und herausfinden, wie viele Kilometer sie mit jedem Transportmittel zurückgelegt haben."
+                },
+                "share": {
+                  "title": "Teile den Projekt-Link mit den Teilnehmenden",
+                  "content": "Biete ihnen den QR-Code an oder teile den bereitgestellten Link über die im Projekt genutzten sozialen Medien."
+                },
+                "fill": {
+                  "title": "Lade die Teilnehmenden ein, die Fragen des Rechners auszufüllen",
+                  "content": "Jeder Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
+                },
+                "reflect": {
+                  "title": "Stelle sicher, dass alle Teilnehmenden das Formular abgeschickt haben, und gib Raum für Reflexion",
+                  "content": "Gib den Teilnehmenden Raum, über ihre individuellen Ergebnisse zu reflektieren!"
+                },
+                "debate": {
+                  "title": "Zeige die Projektergebnisse und diskutiere darüber",
+                  "content": "Du kannst ihnen folgende Fragen stellen:\n\n• Gibt es etwas Überraschendes für dich in den Ergebnissen?\n• Wie fühlen dich die Ergebnisse?\n• Hast du Vorschläge, wie das freigesetzte CO2 bei zukünftigen Projekten reduziert werden kann?"
+                }
+              }
+            },
+            "challenges": {
+              "title": "2.2. Herausforderungen",
+              "steps": {
+                "read": {
+                  "title": "Lies mehr über die Herausforderungen",
+                  "content": "Mache dich als Teil der Vorbereitung für diesen Workshop mit den verfügbaren Herausforderungen vertraut."
+                },
+                "present": {
+                  "title": "Präsentiere Herausforderungen, um das freigesetzte CO2 während des Projekts zu reduzieren",
+                  "content": "Lade die Teilnehmenden ein, mindestens eine Herausforderung zu wählen, die sie während des Projekts ausprobieren möchten. Bilde kleinere Unterstützungsgruppen, um sich gegenseitig während des Projekts zu motivieren."
+                },
+                "plant": {
+                  "title": "Pflanze Bäume, um den CO2-Fußabdruck deines Projekts auszugleichen",
+                  "content": "Du kannst folgende Optionen anbieten:\n\n• Spende, um Bäume in einem der Erasmus+ Wälder zu pflanzen\n• Suche nach Möglichkeiten, die Bäume selbst zu pflanzen! Vielleicht kannst du sogar deinen eigenen Erasmus+ Wald starten und Teil der Greendex-Bewegung werden."
+                },
+                "share": {
+                  "title": "Teile deine Reise in sozialen Medien mit #greendex",
+                  "content": "Verbreite die Nachricht über deine nachhaltige Reise und inspiriere andere!"
+                }
+              }
+            },
+            "evaluation": {
+              "title": "2.3. Evaluation",
+              "steps": {
+                "evaluate": {
+                  "title": "Nutze die abschließende Evaluation, um deinen Fortschritt zu überprüfen",
+                  "content": "Widme einige Fragen in der abschließenden Evaluation des Projekts, um das Ausmaß des geschaffenen Bewusstseins über Nachhaltigkeit und CO2-Fußabdruck zu überprüfen. Du kannst ihnen folgende Fragen stellen:\n\n• Wie erfolgreich warst du bei den Herausforderungen?\n• Wärst du bereit, einige Herausforderungen in dein Leben zu integrieren?\n• Was kannst du sonst noch tun, um deinen CO2-Fußabdruck zu reduzieren?"
+                }
+              }
+            }
+          }
+        },
+        "day": {
+          "sections": {
+            "plastic": {
+              "title": "3.1. Wie viel Plastik besitzen wir?",
+              "steps": {
+                "form_groups": {
+                  "title": "Bildet nationale Gruppen",
+                  "content": "Bitte die Teilnehmenden, nationale Gruppen zu bilden und sich im Raum zu positionieren."
+                },
+                "bring_items": {
+                  "title": "Lade die Teilnehmenden ein, alle Plastik- und nicht recycelbaren Gegenstände mitzubringen",
+                  "content": "Bitte sie, ihr Gepäck durchzugehen und alles in den Raum zu bringen, was aus Plastik ist oder nicht recycelt werden kann. Sie sollten sehr gründlich sein. Wenn sie ihre persönlichen Gegenstände nicht in den Raum bringen möchten, sollten sie diese zählen. Sie sollten jede Kreditkarte, Schuhe, Zahnbürste, Kabel, Shampooflaschen usw. zählen."
+                },
+                "calculate": {
+                  "title": "Lasst uns einige Zahlen berechnen",
+                  "content": "Lade jede nationale Gruppe ein, die Anzahl aller Plastikgegenstände und/oder die nicht recycelt werden können, zu summieren. Lade sie ein, die Gegenstände pro Person im Team zu berechnen. Der Moderator sollte die Gegenstände für die gesamte Mobilität und einen Durchschnitt pro Person der Mobilität summieren. Zeige die Ergebnisse auf einem Poster oder einer Tafel an."
+                },
+                "debate": {
+                  "title": "Diskussion",
+                  "content": "Schau dir die Zahlen an und lade die Teilnehmenden ein, ihre Gedanken und Emotionen auszudrücken. Du kannst ihnen auch folgende Fragen stellen:\n\n• Wie viele Gegenstände planst du hier zu lassen?\n• Gibt es hier Gegenstände, die du durch etwas anderes ersetzen könntest? Wenn ja, welche Gegenstände kannst du durch was ersetzen?\n• Gibt es hier Gegenstände, die du momentan nicht ersetzen kannst, weil du darauf wartest, dass sich die Technologie verbessert?\n• Gibt es Gegenstände, bei denen der Hersteller etwas tun kann?"
+                },
+                "introduce": {
+                  "title": "Vorstellung der Greendex-Website",
+                  "content": "Stelle unsere Website den Teilnehmenden vor, da sie mehrere Tipps zur Verbesserung der täglichen Routine und zusätzliche Ressourcen zum Studieren enthält."
+                }
+              }
+            },
+            "social_pressure": {
+              "title": "3.2. Sozialer Druck",
+              "steps": {
+                "create_groups": {
+                  "title": "Bilde kleinere interkulturelle Gruppen",
+                  "content": "Bilde kleinere interkulturelle Gruppen oder bleibe in den gleichen, wenn du diese Aktivität als Fortsetzung der vorherigen Aktivität nutzt!"
+                },
+                "think_products": {
+                  "title": "Denke an einige Produkte, die du liebst",
+                  "content": "Vielleicht gibt es einige spezielle Kekse, die du gerne isst, oder Schuhe, die du gerne trägst. Denke an einige Produkte, die du gerne verwendest, die aber in zu viel Verpackung eingewickelt sind. Vielleicht verwendest du ein Produkt, das nicht aus Plastik sein muss? Jede Gruppe sollte sich für ein solches Produkt entscheiden."
+                },
+                "find_solutions": {
+                  "title": "Finde wenn möglich Lösungen",
+                  "content": "Wenn möglich, finde eine Lösung für dein Produkt, die dich zufriedenstellen würde."
+                },
+                "write_message": {
+                  "title": "Schreibe eine Nachricht an die Hersteller",
+                  "content": "Schreibe eine höfliche Nachricht oder einen Brief an die Hersteller des Produkts, über das ihr gesprochen habt. Stelle sicher, dass du die Nachricht in der Form schreibst: sage etwas Positives, sage etwas Negatives, schlage Verbesserungen vor."
+                },
+                "use_hashtag": {
+                  "title": "Verwende #greendex",
+                  "content": "Wenn du dich entscheidest, diese Nachricht in sozialen Medien zu veröffentlichen, bitten wir dich, #greendex zu verwenden, um diese Bewegung besser sichtbar zu machen."
+                }
+              }
+            },
+            "quiz": {
+              "title": "3.3. Was ist ein CO2-Fußabdruck?",
+              "steps": {
+                "form_groups": {
+                  "title": "Bildet kleinere interkulturelle Gruppen",
+                  "content": "Lass sie einen bequemen Platz im Raum finden und mindestens ein Smartphone vorbereiten. Es ist wichtig, Zugang zum Internet bereitzustellen."
+                },
+                "name_group": {
+                  "title": "Bitte die Teilnehmenden, ihre Gruppe zu benennen",
+                  "content": "Dies hat einen Teambuilding-Zweck und wird dir helfen, die Antworten besser zu identifizieren."
+                },
+                "introduce_quiz": {
+                  "title": "Einführung in das Quiz",
+                  "content": "Erkläre den Teilnehmenden, dass wir sie durch ein kurzes Quiz führen werden und sie Smartphones verwenden dürfen."
+                },
+                "start_quiz": {
+                  "title": "Starte das Quiz",
+                  "content": "Du kannst die Fragen vorlesen, auf Papier posten oder eine Art Online-Tool für die Teilnehmenden verwenden. Dies ist kein Wettbewerb, nur eine Recherche.\n\nBevor das Quiz beginnt, stelle zwei sehr grundlegende Fragen:\n\n• Weißt du, was ein CO2-Fußabdruck ist?\nAntwort: Ein CO2-Fußabdruck ist die Gesamtmenge an Treibhausgasen, die durch unsere Handlungen erzeugt werden.\n\n• Warum sprechen wir über Kohlendioxid – CO2?\nAntwort: Zu viel Kohlendioxid (und andere Treibhausgase wie Methan) in der Atmosphäre erwärmt den Planeten und verursacht den Klimawandel.\n\nHier sind die Fragen:\n• Wie viel CO2 wird von einem Fleischesser freigesetzt?\n• Wie viel CO2 wird von einem Vegetarier freigesetzt?\n• Wie viel CO2 wird beim Fliegen von 1000 km freigesetzt?\n• Wie viel CO2 wird beim Reisen von 1000 km mit dem Zug freigesetzt?\n• Wie viel CO2 wird beim Reisen von 1000 km mit dem Auto freigesetzt?\n• Wie viel CO2 wird von einem Nadelbaum absorbiert?\n• Wie viel CO2 wird von einem Laubbaum absorbiert?\n• Wie viel O2 benötigt eine Person pro Jahr (in kg)?\n• Wie viel O2 produziert ein durchschnittlicher Baum pro Jahr (in kg)?\n• Wie viele Menschen gibt es derzeit auf der Welt?"
+                },
+                "debate": {
+                  "title": "Diskussion",
+                  "content": "Ermutige die Teilnehmenden, Gedanken und Emotionen über die Ergebnisse zu teilen. Du kannst ihnen folgende Fragen stellen:\n\n• Was war das Interessanteste an eurer Recherche?\n• Gab es etwas, das Emotionen hervorgerufen hat? Wenn ja, welche Emotionen und warum?\n• Konntet ihr das Verhältnis zwischen absorbiertem CO2 und freigesetztem O2 erkennen?\n• Wie dicht sind die Bäume in eurem Land gepflanzt?"
+                }
+              }
+            },
+            "calculator": {
+              "title": "3.4. Rechner",
+              "steps": {
+                "create": {
+                  "title": "Erstelle das Projekt in der Greendex App",
+                  "content": "Beginne mit der Erstellung deines Projekts in unserer Anwendung, um deinen CO2-Fußabdruck zu verfolgen."
+                },
+                "map": {
+                  "title": "Zeichne deine Reise von zu Hause bis hierher auf",
+                  "content": "Lade die Teilnehmenden ein, nationale Teams zu bilden. Bitte sie, über ihre Reiseerfahrung nachzudenken. Du kannst ihnen helfen, ihre Reise zu kartieren, indem du Poster aufhängst, um ihre Reisen zu zeichnen. Es ist wichtig, dass sie sich die Transportmittel der Reihe nach vorstellen und herausfinden, wie viele Kilometer sie mit jedem Transportmittel zurückgelegt haben."
+                },
+                "share": {
+                  "title": "Teile den Projekt-Link mit den Teilnehmenden",
+                  "content": "Biete ihnen den QR-Code an oder teile den bereitgestellten Link über die im Projekt genutzten sozialen Medien."
+                },
+                "fill": {
+                  "title": "Lade die Teilnehmenden ein, die Fragen des Rechners auszufüllen",
+                  "content": "Jeder Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
+                },
+                "reflect": {
+                  "title": "Stelle sicher, dass alle Teilnehmenden das Formular abgeschickt haben, und gib Raum für Reflexion",
+                  "content": "Gib den Teilnehmenden Raum, über ihre individuellen Ergebnisse zu reflektieren!"
+                },
+                "debate": {
+                  "title": "Zeige die Projektergebnisse und diskutiere darüber",
+                  "content": "Du kannst ihnen folgende Fragen stellen:\n\n• Gibt es etwas Überraschendes für dich in den Ergebnissen?\n• Wie fühlen dich die Ergebnisse?\n• Hast du Vorschläge, wie das freigesetzte CO2 bei zukünftigen Projekten reduziert werden kann?"
+                }
+              }
+            },
+            "challenges": {
+              "title": "3.5. Herausforderungen",
+              "steps": {
+                "read": {
+                  "title": "Lies mehr über die Herausforderungen",
+                  "content": "Mache dich als Teil der Vorbereitung für diesen Workshop mit den verfügbaren Herausforderungen vertraut."
+                },
+                "present": {
+                  "title": "Präsentiere Herausforderungen, um das freigesetzte CO2 während des Projekts zu reduzieren",
+                  "content": "Lade die Teilnehmenden ein, mindestens eine Herausforderung zu wählen, die sie während des Projekts ausprobieren möchten. Bilde kleinere Unterstützungsgruppen, um sich gegenseitig während des Projekts zu motivieren."
+                },
+                "plant": {
+                  "title": "Pflanze Bäume, um den CO2-Fußabdruck deines Projekts auszugleichen",
+                  "content": "Du kannst folgende Optionen anbieten:\n\n• Spende, um Bäume in einem der Erasmus+ Wälder zu pflanzen\n• Suche nach Möglichkeiten, die Bäume selbst zu pflanzen! Vielleicht kannst du sogar deinen eigenen Erasmus+ Wald starten und Teil der Greendex-Bewegung werden."
+                },
+                "share": {
+                  "title": "Teile deine Reise in sozialen Medien mit #greendex",
+                  "content": "Verbreite die Nachricht über deine nachhaltige Reise und inspiriere andere!"
+                }
+              }
+            },
+            "final": {
+              "title": "3.6. Abschließende Evaluation",
+              "steps": {
+                "evaluate": {
+                  "title": "Widme Zeit für die abschließende Evaluation",
+                  "content": "Wir laden dich ein, am letzten Tag deiner Mobilität etwas Zeit in deiner abschließenden Evaluation zu widmen, um einige grüne Fragen zu stellen. Du kannst ihnen folgende Fragen stellen:\n\n• Wie bewusst warst du über deine umwelt(un)freundlichen Gewohnheiten?\n• Hast du etwas erkannt, das du tun könntest, um deine Gewohnheiten zu ändern?\n• Hast du an den vorgeschlagenen Herausforderungen teilgenommen?\n• Wie erfolgreich warst du bei deinen Herausforderungen?\n• Gibt es eine Herausforderung, von der du denkst, dass du sie für den Rest deines Lebens machen könntest?\n• Wärst du bereit, einige Herausforderungen in dein Leben zu integrieren?\n• Was kannst du sonst noch tun, um deinen CO2-Fußabdruck zu reduzieren?\n\nWas du in den sozialen Medien mit #greendex posten kannst:\n• Anzahl der zu pflanzenden Bäume\n• An welchen Herausforderungen hast du dich entschieden teilzunehmen?\n• Brief zum sozialen Druck."
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "links": {
+        "openApp": "Greendex App öffnen",
+        "erasmusCalculator": "E+ Distanzrechner",
+        "googleMaps": "Google Maps",
+        "eForest": "E-Forest",
+        "challengesDescription": "Herausforderungsbeschreibung (PDF)",
+        "challengesPresentation": "Herausforderungspräsentation (PDF)",
+        "greendexWebsite": "www.greendex.world"
+      }
     }
   }
 }

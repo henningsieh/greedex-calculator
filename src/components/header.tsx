@@ -1,7 +1,8 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
+import type { Route } from "next";
+import { Link } from "@/lib/i18n/navigation";
 import * as React from "react";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -16,11 +17,11 @@ import { cn } from "@/lib/utils/index";
 
 const menuItems = [
   // { name: "Home", href: "/" },
-  { name: "Workshops", href: "/#workshops" },
-  { name: "E+ Forest", href: "/e+forest" },
-  { name: "Tips & Tricks", href: "/tips-and-tricks" },
-  { name: "Library", href: "/library" },
-  { name: "About", href: "/about" },
+  { name: "Workshops", href: "/#workshops" as Route },
+  { name: "E+ Forest", href: "/e+forest" as Route },
+  { name: "Tips & Tricks", href: "/tips-and-tricks" as Route },
+  { name: "Library", href: "/library" as Route },
+  { name: "About", href: "/about" as Route },
 ] as const;
 
 export const HeroHeader = () => {

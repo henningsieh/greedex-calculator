@@ -1,10 +1,12 @@
 import { headers as nextHeaders } from "next/headers";
-import { redirect } from "next/navigation";
-import { TeamTable } from "@/app/(app)/org/dashboard/_components/team-table";
+import { getLocale } from "next-intl/server";
+import { TeamTable } from "@/app/[locale]/(app)/org/dashboard/_components/team-table";
 import { auth } from "@/lib/better-auth";
+import { redirect } from "@/lib/i18n/navigation";
 
 export default async () => {
   const headers = await nextHeaders();
+  const locale = await getLocale();
 
   const sessionResult = await auth.api.getSession({
     query: {
@@ -12,13 +14,13 @@ export default async () => {
     },
     headers: headers,
   });
-  if (!sessionResult) redirect("/login");
+  if (!sessionResult) return redirect({ href: "/login", locale });
 
   const activeOrganizationId = sessionResult.session.activeOrganizationId;
 
   if (!activeOrganizationId) {
     console.error("No active organization ID found in session");
-    redirect("/");
+    return redirect({ href: "/org/create", locale });
   }
 
   const membersResult = await auth.api.listMembers({

@@ -1,6 +1,7 @@
 import { cookies, headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 import { Suspense } from "react";
+import { redirect } from "@/lib/i18n/navigation";
 import { ErrorBoundary } from "react-error-boundary";
 import {
   ActiveProjectBreadcrumb,
@@ -17,13 +18,14 @@ import {
 import { Toaster } from "@/components/ui/sonner";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient, HydrateClient } from "@/lib/query/hydration";
+import { getQueryClient, HydrateClient } from "@/lib/react-query/hydration";
 
 export default async function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   // Ensure the user is authenticated
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -32,7 +34,7 @@ export default async function AppLayout({
   if (!session?.user) {
     // Not authenticated -> send to login (auth group).
     // The (auth) directory is a route group, its login page is at '/login'.
-    return redirect("/login");
+    redirect({ href: "/login", locale });
   }
 
   // If authenticated, ensure they have an organization
@@ -44,7 +46,7 @@ export default async function AppLayout({
 
   if (!hasOrgs) {
     // Authenticated but no orgs -> create one
-    redirect("/org/create");
+    redirect({ href: "/org/create", locale });
   }
 
   // Prefetch data on the server

@@ -1,12 +1,14 @@
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 import { auth } from "@/lib/better-auth";
+import { redirect } from "@/lib/i18n/navigation";
 
 export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -21,10 +23,10 @@ export default async function AuthLayout({
 
     if (!hasOrgs) {
       // Signed in but no organization -> create one
-      redirect("/org/create");
+      redirect({ href: "/org/create", locale });
     } else {
       // Signed in and has orgs -> app dashboard
-      redirect("/org/dashboard");
+      redirect({ href: "/org/dashboard", locale });
     }
   }
 

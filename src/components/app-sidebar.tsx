@@ -9,8 +9,7 @@ import {
   UsersIcon,
 } from "lucide-react";
 import type { Route } from "next";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/lib/i18n/navigation";
 import { OrganizationSwitcher } from "@/components/features/organizations/organisation-switcher";
 import { ProjectSwitcher } from "@/components/features/projects/project-switcher";
 import {

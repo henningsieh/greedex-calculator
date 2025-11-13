@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/better-auth/auth-client";
@@ -34,7 +34,7 @@ export function DashboardHeader() {
           </p>
         </div>
         <Button asChild variant="link">
-          <Link href="/create-project">Create New Project</Link>
+          <Link href="/adsf">Create New Project</Link>
         </Button>
       </div>
     );

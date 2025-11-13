@@ -1,7 +1,7 @@
 "use client";
 
 import { Mail } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

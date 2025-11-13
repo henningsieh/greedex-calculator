@@ -1,7 +1,7 @@
 import { ArrowRight, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/lib/i18n/navigation";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { TextEffect } from "@/components/ui/text-effect";
 
@@ -34,7 +34,6 @@ const BrushStroke = () => (
 
 export default async function HeroSection() {
   const t = await getTranslations("LandingPage");
-  const locale = await getLocale();
   return (
     <main className="relative overflow-hidden">
       {/* subtle background image behind everything (low opacity, non-interactive) */}
@@ -64,17 +63,9 @@ export default async function HeroSection() {
 
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center sm:mx-auto lg:mt-0 lg:mr-auto">
-              {/* Keyed by the current `locale` so the animated group is
-                  unmounted/remounted on language change. This forces
-                  client-side animated children (e.g. `TextEffect`) to
-                  re-initialize their animations when we switch locale
-                  using cookie-based switching + `router.refresh()`. */}
-              <AnimatedGroup
-                key={`hero-content-${locale}`}
-                variants={transitionVariants}
-              >
+              <AnimatedGroup variants={transitionVariants}>
                 <Link
-                  href="/org/dashboard"
+                  href="/org/create"
                   title={t("launchButtonAria")}
                   aria-label={t("launchButtonAria")}
                   className="group mx-auto flex w-fit items-center gap-4 rounded-full border bg-accent p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 hover:bg-primary/50 dark:border-t-white/5 dark:shadow-zinc-950 dark:hover:border-t-border"
@@ -238,7 +229,9 @@ export default async function HeroSection() {
         <div className="group relative m-auto max-w-5xl px-6">
           <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
             <Link
-              href="/"
+              href="/org/create"
+              title={t("hero.meetCustomers")}
+              aria-label={t("hero.meetCustomers")}
               className="block text-sm duration-150 hover:opacity-75"
             >
               <span> {t("hero.meetCustomers")}</span>

@@ -2,8 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LogInIcon } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/lib/i18n/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -64,7 +63,7 @@ export function LoginForm({
           toast.error(c.error.message || "Failed to sign in");
         },
         onSuccess: () => {
-          router.push("/");
+          router.push("/org/dashboard");
         },
       },
     );

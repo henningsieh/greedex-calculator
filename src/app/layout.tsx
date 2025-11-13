@@ -2,25 +2,6 @@ import "./globals.css"; // Global CSS import
 import "@/lib/orpc/client.server"; // Initialize server-side oRPC client for pre-rendering
 
 import type { Metadata } from "next";
-import { Comfortaa, JetBrains_Mono } from "next/font/google";
-import { NextIntlClientProvider } from "next-intl";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { LocaleSwitcher } from "@/components/locale-switcher";
-import Providers from "@/components/providers";
-import { ThemeProvider } from "@/components/theme-provider";
-
-const comfortaa = Comfortaa({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
 
 export const metadata: Metadata = {
   title: "Greendex - Carbon Footprint Calculator for Erasmus+ Projects",
@@ -62,34 +43,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth">
-      <head>
-        <script
-          async
-          crossOrigin="anonymous"
-          src="https://tweakcn.com/live-preview.min.js"
-        />
-      </head>
-      <body
-        className={`${comfortaa.className} ${jetbrainsMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NuqsAdapter>
-            <Providers>
-              <NextIntlClientProvider>
-                <LocaleSwitcher />
-                {children}
-              </NextIntlClientProvider>
-            </Providers>
-          </NuqsAdapter>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+  // The actual HTML structure is in [locale]/layout.tsx
+  // This root layout just passes through to support the routing structure
+  return children;
 }

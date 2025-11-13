@@ -1,8 +1,10 @@
 import { ClockIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { calculatorWorkshops } from "@/components/landingpage/workshops/workshops.config";
+import {
+  type CalculatorType,
+  WORKSHOPS,
+} from "@/components/landingpage/workshops/workshops.config";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import {
   Card,
@@ -11,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Link } from "@/lib/i18n/navigation";
 
 export default async function WorkshopsHeroSection() {
   const t = await getTranslations("LandingPage");
@@ -33,7 +36,7 @@ export default async function WorkshopsHeroSection() {
           <p className="mx-auto max-w-4xl">{t("workshops.intro1")}</p>
           <p className="mx-auto max-w-4xl">
             {intro2Parts[0]}{" "}
-            <span className="bg-primary text-primary-foreground text-xl capitalize">
+            <span className="bg-gradient-to-r from-primary to-secondary px-2 py-1 text-primary-foreground text-xl capitalize">
               {t("workshops.keyword")}
             </span>{" "}
             {intro2Parts[1] ?? ""}
@@ -60,40 +63,47 @@ export default async function WorkshopsHeroSection() {
           }}
           className="mx-auto mt-8 grid max-w-6xl gap-6 px-4 md:mt-12 md:grid-cols-3"
         >
-          {Object.values(calculatorWorkshops).map((w) => (
-            <Link
-              key={w.id}
-              href={`/workshops?type=${w.id}`}
-              className="group block h-full"
-            >
-              <Card className="group-hover:-translate-y-1 flex h-full flex-col overflow-hidden transition-transform duration-300 will-change-transform group-hover:shadow-lg">
-                <CardHeader className="p-0">
-                  <div className="relative h-44 w-full">
-                    <Image
-                      src={w.image}
-                      alt={w.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <CardTitle className="space-y-3 p-6 text-center">
-                    <h3 className="font-bold text-2xl">{w.title}</h3>
-                    <p className="flex items-center justify-center gap-2 rounded-md bg-secondary/80 py-2 text-secondary-foreground">
-                      <ClockIcon className="inline size-5" />
-                      {w.duration}
-                    </p>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1">{w.description}</CardContent>
-                <CardFooter className="justify-end">
-                  <span className="font-medium text-primary text-sm underline underline-offset-4">
-                    {t("workshops.card.learnMore")}
-                  </span>
-                </CardFooter>
-              </Card>
-            </Link>
-          ))}
+          {(Object.keys(WORKSHOPS) as CalculatorType[]).map((workshopId) => {
+            const workshop = WORKSHOPS[workshopId];
+            const title = t(`workshops.types.${workshopId}.title`);
+            const duration = t(`workshops.types.${workshopId}.duration`);
+            const description = t(`workshops.types.${workshopId}.description`);
+
+            return (
+              <Link
+                key={workshop.id}
+                href={`/workshops?type=${workshop.id}`}
+                className="group block h-full"
+              >
+                <Card className="group-hover:-translate-y-1 flex h-full flex-col overflow-hidden transition-transform duration-300 will-change-transform group-hover:shadow-lg">
+                  <CardHeader className="p-0">
+                    <div className="relative h-44 w-full">
+                      <Image
+                        src={workshop.image}
+                        alt={title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <CardTitle className="space-y-3 p-6 text-center">
+                      <h3 className="font-bold text-2xl">{title}</h3>
+                      <p className="flex items-center justify-center gap-2 rounded-md bg-secondary/80 py-2 text-secondary-foreground">
+                        <ClockIcon className="inline size-5" />
+                        {duration}
+                      </p>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1">{description}</CardContent>
+                  <CardFooter className="justify-end">
+                    <span className="font-medium text-primary text-sm underline underline-offset-4">
+                      {t("workshops.card.learnMore")}
+                    </span>
+                  </CardFooter>
+                </Card>
+              </Link>
+            );
+          })}
         </AnimatedGroup>
 
         <div className="mx-auto mt-16 max-w-5xl space-y-8 text-center">
@@ -101,7 +111,7 @@ export default async function WorkshopsHeroSection() {
 
           <p>
             {t("workshops.bottomP2Prefix")}{" "}
-            <Link className="text-primary underline" href="/#">
+            <Link className="text-primary underline" href="/library">
               {t("workshops.library")}
             </Link>{" "}
             {t("workshops.bottomP2Middle") ?? "and"}{" "}

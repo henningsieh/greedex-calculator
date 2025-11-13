@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import { useRouter, usePathname } from "@/lib/i18n/routing";
 import { useTransition } from "react";
 
 const LOCALES = [
@@ -12,16 +12,14 @@ const LOCALES = [
 export function LocaleSwitcher() {
   const locale = useLocale();
   const router = useRouter();
+  const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
 
   function handleLocaleChange(newLocale: string) {
     startTransition(() => {
-      // Set cookie to persist user's locale preference
-      document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
-
-      // Refresh Server Components to pick up new locale
-      // This is smoother than window.location.reload() - keeps client state
-      router.refresh();
+      // The router from next-intl automatically handles locale switching
+      // It will navigate to the same page with the new locale prefix
+      router.replace(pathname, { locale: newLocale });
     });
   }
 
