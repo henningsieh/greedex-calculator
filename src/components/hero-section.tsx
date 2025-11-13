@@ -1,6 +1,7 @@
 import { ArrowRight, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { TextEffect } from "@/components/ui/text-effect";
 
@@ -31,7 +32,9 @@ const BrushStroke = () => (
   />
 );
 
-export default function HeroSection() {
+export default async function HeroSection() {
+  const t = await getTranslations("LandingPage");
+  const locale = await getLocale();
   return (
     <main className="relative overflow-hidden">
       {/* subtle background image behind everything (low opacity, non-interactive) */}
@@ -61,15 +64,23 @@ export default function HeroSection() {
 
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center sm:mx-auto lg:mt-0 lg:mr-auto">
-              <AnimatedGroup variants={transitionVariants}>
+              {/* Keyed by the current `locale` so the animated group is
+                  unmounted/remounted on language change. This forces
+                  client-side animated children (e.g. `TextEffect`) to
+                  re-initialize their animations when we switch locale
+                  using cookie-based switching + `router.refresh()`. */}
+              <AnimatedGroup
+                key={`hero-content-${locale}`}
+                variants={transitionVariants}
+              >
                 <Link
                   href="/org/dashboard"
-                  title="Open Erasmus+ Carbon Calculator — login required"
-                  aria-label="Open Erasmus+ Carbon Calculator — login required"
+                  title={t("launchButtonAria")}
+                  aria-label={t("launchButtonAria")}
                   className="group mx-auto flex w-fit items-center gap-4 rounded-full border bg-accent p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 hover:bg-primary/50 dark:border-t-white/5 dark:shadow-zinc-950 dark:hover:border-t-border"
                 >
                   <span className="flex h-8 items-center font-bold text-foreground text-lg">
-                    Launch Erasmus+ Carbon Calculator
+                    {t("launchButton")}
                   </span>
                   <span className="block h-4 w-0.5 border-l bg-white dark:border-background dark:bg-zinc-700"></span>
 
@@ -91,7 +102,7 @@ export default function HeroSection() {
                   as="h1"
                   className="mx-auto mt-8 text-balance font-bold font-sans text-4xl tracking-tight max-md:font-semibold md:text-5xl lg:mt-14 xl:text-6xl"
                 >
-                  Our mission
+                  {t("hero.missionTitle")}
                 </TextEffect>
 
                 <BrushStroke />
@@ -104,21 +115,7 @@ export default function HeroSection() {
                   as="h2"
                   className="mx-auto mt-6 max-w-6xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
                 >
-                  Erasmus+ programme enables us to have amazing learning
-                  adventures with inspirational people from different countries.
-                  However, each of our personal gatherings contributes to a deep
-                  carbon footprint due to our travelling and living habits. The
-                  purpose of this project was to offset our carbon footprint on
-                  the projects we make by bringing more awareness and more
-                  action to change our habits. For this reason, we have created
-                  a carbon footprint calculator that is specialized for Erasmus
-                  + projects such as youth exchanges, training courses, meetings
-                  etc. This calculator offers the final number of the CO2
-                  produced by each participant and transforms this number to the
-                  number of the average trees that will absorb our CO2 in their
-                  lifetime. Our calculations are based on scientific research
-                  done by different professionals. We did not make our own
-                  calculations.
+                  {t("hero.missionText")}
                 </TextEffect>
 
                 <TextEffect
@@ -129,7 +126,7 @@ export default function HeroSection() {
                   as="h2"
                   className="mx-auto mt-8 text-balance font-extrabold text-3xl tracking-tight max-md:font-semibold md:text-4xl lg:mt-14 xl:text-5xl"
                 >
-                  Our vision
+                  {t("hero.visionTitle")}
                 </TextEffect>
 
                 <BrushStroke />
@@ -142,20 +139,13 @@ export default function HeroSection() {
                   as="h2"
                   className="mx-auto mt-6 max-w-6xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
                 >
-                  We want to create a movement, where each Erasmus + project
-                  calculates their carbon footprint and plants trees to offset
-                  it. We see several Erasmus + forests rising in Europe which
-                  contribute to the cleaner air in Europe. We see young people
-                  continuing to learn together in a more sustainable
-                  environment, while travelling green, and enjoying the beauty
-                  of nature. \n This website has so much knowledge gathered for
-                  you, so take some time and search a bit around.
+                  {t("hero.visionText")}
                 </TextEffect>
               </AnimatedGroup>
 
               <Link
                 href="#workshops"
-                aria-label="Scroll down"
+                aria-label={t("hero.scrollDown")}
                 className="mx-auto"
               >
                 <AnimatedGroup
@@ -251,7 +241,7 @@ export default function HeroSection() {
               href="/"
               className="block text-sm duration-150 hover:opacity-75"
             >
-              <span> Meet Our Customers</span>
+              <span> {t("hero.meetCustomers")}</span>
 
               <ChevronRight className="ml-1 inline-block size-3" />
             </Link>
