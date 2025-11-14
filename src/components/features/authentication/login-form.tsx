@@ -22,8 +22,10 @@ import {
   FieldGroup,
   FieldSeparator,
 } from "@/components/ui/field";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { env } from "@/env";
 import { authClient } from "@/lib/better-auth/auth-client";
+import { magicLinkSchema } from "@/lib/better-auth/schemas";
 import { Link, useRouter } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +38,7 @@ export function LoginForm({
   className,
   redirect,
   ...props
-}: React.ComponentProps<"form"> & { redirect?: string | string[] }) {
+}: React.ComponentProps<"div"> & { redirect?: string | string[] }) {
   const router = useRouter();
 
   // append the callbackUrl to the env
@@ -51,6 +53,13 @@ export function LoginForm({
     defaultValues: {
       email: "",
       password: "",
+    },
+  });
+
+  const magicLinkForm = useForm<z.infer<typeof magicLinkSchema>>({
+    resolver: zodResolver(magicLinkSchema),
+    defaultValues: {
+      email: "",
     },
   });
 
@@ -80,13 +89,26 @@ export function LoginForm({
     );
   };
 
+  const onMagicLinkSubmit = async (data: z.infer<typeof magicLinkSchema>) => {
+    await authClient.signIn.magicLink(
+      {
+        email: data.email,
+        callbackURL: "/org/dashboard",
+      },
+      {
+        onSuccess: () => {
+          toast.success("Magic link sent! Check your email.");
+        },
+        onError: (c) => {
+          toast.error(c.error.message || "Failed to send magic link");
+        },
+      },
+    );
+  };
+
   return (
     <Card>
-      <form
-        className={cn("flex flex-col gap-6", className)}
-        {...props}
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <div className={cn("flex flex-col gap-6", className)} {...props}>
         <CardHeader className="flex flex-col items-center gap-4 text-center">
           <div className="flex size-16 items-center justify-center rounded-full bg-primary/10">
             <LogInIcon className="size-8 text-primary" />
@@ -100,64 +122,109 @@ export function LoginForm({
         </CardHeader>
 
         <CardContent>
-          <FieldGroup className="gap-6">
-            <FormField
-              name="email"
-              control={form.control}
-              label="Email"
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              inputProps={{ disabled: form.formState.isSubmitting }}
-            />
-            <FormField
-              name="password"
-              control={form.control}
-              label="Password"
-              id="password"
-              type="password"
-              rightLabel={
-                <button
-                  type="button"
-                  className="ml-auto text-sm underline-offset-4 hover:underline"
-                  onClick={() => {
-                    // TODO: Implement forgot password functionality
-                  }}
-                >
-                  Forgot your password?
-                </button>
-              }
-              inputProps={{ disabled: form.formState.isSubmitting }}
-            />
+          <Tabs defaultValue="password" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="password">Password</TabsTrigger>
+              <TabsTrigger value="magic-link">Magic Link</TabsTrigger>
+            </TabsList>
+            <TabsContent value="password">
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FieldGroup className="gap-6">
+                  <FormField
+                    name="email"
+                    control={form.control}
+                    label="Email"
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    inputProps={{ disabled: form.formState.isSubmitting }}
+                  />
+                  <FormField
+                    name="password"
+                    control={form.control}
+                    label="Password"
+                    id="password"
+                    type="password"
+                    rightLabel={
+                      <button
+                        type="button"
+                        className="ml-auto text-sm underline-offset-4 hover:underline"
+                        onClick={() => {
+                          // TODO: Implement forgot password functionality
+                        }}
+                      >
+                        Forgot your password?
+                      </button>
+                    }
+                    inputProps={{ disabled: form.formState.isSubmitting }}
+                  />
 
-            <FieldSeparator className="my-4 font-bold">
-              Or continue with
-            </FieldSeparator>
+                  <Button
+                    type="submit"
+                    variant="default"
+                    disabled={form.formState.isSubmitting}
+                  >
+                    {form.formState.isSubmitting ? "Signing in..." : "Login"}
+                  </Button>
+                </FieldGroup>
+              </form>
+            </TabsContent>
+            <TabsContent value="magic-link">
+              <form onSubmit={magicLinkForm.handleSubmit(onMagicLinkSubmit)}>
+                <FieldGroup className="gap-6">
+                  <FormField
+                    name="email"
+                    control={magicLinkForm.control}
+                    label="Email"
+                    id="magic-email"
+                    type="email"
+                    placeholder="m@example.com"
+                    inputProps={{
+                      disabled: magicLinkForm.formState.isSubmitting,
+                    }}
+                  />
 
-            <SocialButtons disabled={form.formState.isSubmitting} />
-          </FieldGroup>
+                  <Button
+                    type="submit"
+                    variant="default"
+                    disabled={magicLinkForm.formState.isSubmitting}
+                  >
+                    {magicLinkForm.formState.isSubmitting
+                      ? "Sending..."
+                      : "Send magic link"}
+                  </Button>
+                </FieldGroup>
+              </form>
+            </TabsContent>
+          </Tabs>
         </CardContent>
 
         <CardFooter>
           <div className="w-full">
             <Field>
-              <Button
+              {/* <Button
                 type="submit"
                 variant="default"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? "Signing in..." : "Login"}
-              </Button>
+              </Button> */}
               <FieldDescription className="text-center">
                 Don&apos;t have an account?{" "}
                 <Button variant="link" className="px-0 pl-1" asChild>
                   <Link href="/signup">Sign up</Link>
                 </Button>
               </FieldDescription>
+
+              <FieldSeparator className="my-4 font-bold">
+                Or continue with
+              </FieldSeparator>
+
+              <SocialButtons disabled={form.formState.isSubmitting} />
             </Field>
           </div>
         </CardFooter>
-      </form>
+      </div>
     </Card>
   );
 }

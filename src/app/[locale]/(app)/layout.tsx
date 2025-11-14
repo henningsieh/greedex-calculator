@@ -31,8 +31,6 @@ export default async function AppLayout({
     headers: await headers(),
   });
 
-  console.log("locale:", locale);
-
   if (!session?.user) {
     // Not authenticated -> send to login (auth group).
     // The (auth) directory is a route group, its login page is at '/login'.
