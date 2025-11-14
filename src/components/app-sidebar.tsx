@@ -9,6 +9,7 @@ import {
   UsersIcon,
 } from "lucide-react";
 import type { Route } from "next";
+import { useTranslations } from "next-intl";
 import { OrganizationSwitcher } from "@/components/features/organizations/organisation-switcher";
 import { ProjectSwitcher } from "@/components/features/projects/project-switcher";
 import {
@@ -41,6 +42,7 @@ const organizationMenuItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const t = useTranslations("app.sidebar");
 
   return (
     <Sidebar
@@ -53,12 +55,15 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Projects</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("projects")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {projectsMenuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className="hover:bg-secondary hover:text-secondary-foreground active:bg-secondary active:text-secondary-foreground"
+                  >
                     <Link
                       href={item.url as Route}
                       data-active={pathname === item.url}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Activity, Calendar, Users } from "lucide-react";
+import { Activity, MapPinnedIcon, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { orpcQuery } from "@/lib/orpc/orpc";
@@ -29,7 +29,7 @@ function ProjectDetails({ id }: ProjectDetailsProps) {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
+              <MapPinnedIcon className="h-5 w-5" />
               Project Details
             </CardTitle>
           </CardHeader>

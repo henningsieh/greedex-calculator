@@ -7,8 +7,8 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { OrganizationType } from "@/components/features/organizations/types";
 import {
-  type ProjectFormInput,
   ProjectFormSchema,
+  type ProjectFormSchemaType,
 } from "@/components/features/projects/types";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -127,7 +127,7 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ProjectFormInput>({
+  } = useForm<ProjectFormSchemaType>({
     resolver: zodResolver(ProjectFormSchema),
     defaultValues: {
       name: "",
@@ -140,7 +140,7 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
     },
   });
 
-  async function onSubmit(values: ProjectFormInput) {
+  async function onSubmit(values: ProjectFormSchemaType) {
     console.debug("Submitting project:", values);
     try {
       const result = await orpc.project.create(values);

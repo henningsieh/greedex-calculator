@@ -11,7 +11,7 @@ export type InsertProjectType = InferInsertModel<typeof projectTable>;
 export const ProjectSelectSchema = createSelectSchema(projectTable);
 
 // Full insert schema (includes all DB fields) with refinements
-export const ProjectInsertSchema = createInsertSchema(projectTable, {
+const ProjectInsertSchema = createInsertSchema(projectTable, {
   name: (schema) => schema.min(1, "Project name is required"),
   country: (schema) => schema.min(1, "Country is required"),
   organizationId: (schema) => schema.min(1, "Organization is required"),
@@ -27,4 +27,4 @@ export const ProjectFormSchema = ProjectInsertSchema.omit({
   updatedAt: true,
 });
 
-export type ProjectFormInput = z.infer<typeof ProjectFormSchema>;
+export type ProjectFormSchemaType = z.infer<typeof ProjectFormSchema>;

@@ -31,10 +31,12 @@ export default async function AppLayout({
     headers: await headers(),
   });
 
+  console.log("locale:", locale);
+
   if (!session?.user) {
     // Not authenticated -> send to login (auth group).
     // The (auth) directory is a route group, its login page is at '/login'.
-    redirect({ href: "/login", locale });
+    redirect({ href: `/login?nextPageUrl=/${locale}/org/dashboard`, locale });
   }
 
   // If authenticated, ensure they have an organization
@@ -49,17 +51,8 @@ export default async function AppLayout({
     redirect({ href: "/org/create", locale });
   }
 
-  // Prefetch data on the server
+  // Prefetch projects data on the server
   const queryClient = getQueryClient();
-
-  // Prefetch session data - this is critical for hydration!
-  // Better Auth's useSession hook will use this prefetched data on the client
-  await queryClient.prefetchQuery({
-    queryKey: ["auth", "session"],
-    queryFn: async () => session,
-  });
-
-  // Prefetch projects
   void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
 
   const cookieStore = await cookies();

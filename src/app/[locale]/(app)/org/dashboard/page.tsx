@@ -29,7 +29,12 @@ export default async function DashboardPage() {
     session?.session?.activeOrganizationId || organizations[0]?.id || "";
 
   const membersResult = await auth.api.listMembers({
-    query: { organizationId: activeOrganizationId },
+    query: {
+      organizationId: activeOrganizationId,
+      filterField: "role",
+      filterOperator: "eq",
+      filterValue: "member",
+    },
     headers: await headers(),
   });
 

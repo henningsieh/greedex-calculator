@@ -92,7 +92,7 @@ export function OrganizationSwitcher() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width)"
-            align="start"
+            align="end"
             side={isMobile ? undefined : "right"}
             sideOffset={4}
           >

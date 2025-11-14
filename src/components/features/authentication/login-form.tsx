@@ -22,6 +22,7 @@ import {
   FieldGroup,
   FieldSeparator,
 } from "@/components/ui/field";
+import { env } from "@/env";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { Link, useRouter } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -33,9 +34,17 @@ const formSchema = z.object({
 
 export function LoginForm({
   className,
+  redirect,
   ...props
-}: React.ComponentProps<"form">) {
+}: React.ComponentProps<"form"> & { redirect?: string | string[] }) {
   const router = useRouter();
+
+  // append the callbackUrl to the env
+  const callbackURL =
+    env.NEXT_PUBLIC_BASE_URL +
+    (typeof redirect === "string" ? redirect : "/org/dashboard");
+
+  console.log("Callback URL:", callbackURL);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,6 +59,8 @@ export function LoginForm({
       {
         email: data.email,
         password: data.password,
+        callbackURL:
+          typeof callbackURL === "string" ? callbackURL : "/org/dashboard",
       },
       {
         onError: (c) => {

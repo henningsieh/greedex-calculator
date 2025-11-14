@@ -26,12 +26,33 @@ export default async () => {
     return redirect({ href: "/login", locale });
   }
 
-  const membersResult = await auth.api.listMembers({
-    query: {
-      organizationId: activeOrganizationId,
-    },
-    headers: headers,
-  });
+  const [ownersResult, adminsResult] = await Promise.all([
+    auth.api.listMembers({
+      query: {
+        organizationId: activeOrganizationId,
+        filterField: "role",
+        filterOperator: "eq",
+        filterValue: "owner",
+      },
+      headers: headers,
+    }),
+    auth.api.listMembers({
+      query: {
+        organizationId: activeOrganizationId,
+        filterField: "role",
+        filterOperator: "eq",
+        filterValue: "admin",
+      },
+      headers: headers,
+    }),
+  ]);
+
+  const membersResult = {
+    members: [
+      ...(ownersResult?.members || []),
+      ...(adminsResult?.members || []),
+    ],
+  };
 
   return (
     <>

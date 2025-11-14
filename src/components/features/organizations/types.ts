@@ -6,9 +6,10 @@ export type InsertOrganizationType = InferInsertModel<typeof organization>;
 
 export const organizationRoles = {
   Owner: "owner",
-  Admin: "admin",
-  Member: "member",
+  Employee: "admin",
+  Participant: "member",
 } as const;
+
 export type OrganizationRole =
   (typeof organizationRoles)[keyof typeof organizationRoles];
 
