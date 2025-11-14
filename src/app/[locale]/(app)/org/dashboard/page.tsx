@@ -1,20 +1,25 @@
 import { headers } from "next/headers";
-import { Suspense } from "react";
+import { DashboardHeaderWrapper } from "@/app/[locale]/(app)/org/dashboard/_components/dashboard-header";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/react-query/hydration";
-import {
-  DashboardHeader,
-  DashboardHeaderSkeleton,
-} from "./_components/dashboard-header";
 import { DashboardTabs } from "./_components/dashboard-tabs";
 
 export default async function DashboardPage() {
-  // Prefetch the projects data on the server
   const queryClient = getQueryClient();
+
+  // Prefetch all data using oRPC procedures
   void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
 
-  // Get active organization members using Better Auth API
+  // Prefetch session using oRPC (wraps Better Auth)
+  // TEMPORARY: Comment out to test Suspense skeleton with client-side delay
+  // void queryClient.prefetchQuery(orpcQuery.auth.getSession.queryOptions());
+
+  // Prefetch organizations using oRPC (wraps Better Auth)
+  // TEMPORARY: Comment out to test Suspense skeleton with client-side delay
+  // void queryClient.prefetchQuery(orpcQuery.auth.listOrganizations.queryOptions());
+
+  // Get session and organizations for server-side data (for members)
   const session = await auth.api.getSession({ headers: await headers() });
   const organizations = await auth.api.listOrganizations({
     headers: await headers(),
@@ -32,9 +37,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <Suspense fallback={<DashboardHeaderSkeleton />}>
-        <DashboardHeader />
-      </Suspense>
+      <DashboardHeaderWrapper />
 
       <DashboardTabs members={members} />
     </div>

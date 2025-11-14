@@ -1,21 +1,26 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { authClient } from "@/lib/better-auth/auth-client";
 import { Link } from "@/lib/i18n/navigation";
+import { orpcQuery } from "@/lib/orpc/orpc";
 
 export function DashboardHeader() {
-  const { data: session } = authClient.useSession();
-
-  const { data: organizations } = useQuery({
-    queryKey: ["better-auth", "organizations"],
+  // Use oRPC queries with proper type safety
+  // TEMPORARY: Add 5s delay to test Suspense skeleton
+  const { data: session } = useSuspenseQuery({
+    ...orpcQuery.auth.getSession.queryOptions(),
     queryFn: async () => {
-      const orgs = await authClient.organization.list();
-      return orgs.data || [];
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      return orpcQuery.auth.getSession.call();
     },
   });
+
+  const { data: organizations } = useSuspenseQuery(
+    orpcQuery.auth.listOrganizations.queryOptions(),
+  );
 
   const activeOrganizationId =
     session?.session?.activeOrganizationId || organizations?.[0]?.id || "";
@@ -53,6 +58,14 @@ export function DashboardHeader() {
         <Link href="/create-project">Create New Project</Link>
       </Button>
     </div>
+  );
+}
+
+export function DashboardHeaderWrapper() {
+  return (
+    <Suspense fallback={<DashboardHeaderSkeleton />}>
+      <DashboardHeader />
+    </Suspense>
   );
 }
 

@@ -31,19 +31,18 @@ import { cn } from "@/lib/utils";
 export function OrganizationSwitcher() {
   const queryClient = useQueryClient();
   const { setIsLoading } = useAppLoading();
+
+  // Use oRPC queries for consistency
   const {
     data: session,
     isPending: sessionIsPending,
-
     error: sessionError,
-    // refetch: refetchSession,
   } = authClient.useSession();
 
   const {
     data: organizations,
     isPending: organizationsIsPending,
     error: organizationsError,
-    // refetch: refetchOrganizations,
   } = authClient.useListOrganizations();
 
   const activeOrg =
@@ -106,17 +105,25 @@ export function OrganizationSwitcher() {
                   await authClient.organization.setActive({
                     organizationId: org.id,
                   });
-                  // Invalidate queries to refresh data after organization switch
-                  // await queryClient.invalidateQueries({
-                  //   queryKey: ["better-auth", "session"],
-                  // });
-                  // queryClient.invalidateQueries({
-                  //   queryKey: ["better-auth", "organizations"],
-                  // });
+
+                  // Invalidate oRPC queries to refresh data after organization switch
+                  await queryClient.invalidateQueries({
+                    queryKey: orpcQuery.auth.getSession.queryKey(),
+                  });
+                  await queryClient.invalidateQueries({
+                    queryKey: orpcQuery.auth.listOrganizations.queryKey(),
+                  });
                   await queryClient.invalidateQueries({
                     queryKey: orpcQuery.project.list.queryKey(),
                   });
 
+                  // Prefetch fresh data for the new organization
+                  await queryClient.prefetchQuery(
+                    orpcQuery.auth.getSession.queryOptions(),
+                  );
+                  await queryClient.prefetchQuery(
+                    orpcQuery.auth.listOrganizations.queryOptions(),
+                  );
                   await queryClient.prefetchQuery(
                     orpcQuery.project.list.queryOptions(),
                   );

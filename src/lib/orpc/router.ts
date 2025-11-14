@@ -1,3 +1,4 @@
+import { listOrganizations } from "@/components/features/organizations/procedures";
 import {
   createProject,
   deleteProject,
@@ -6,7 +7,12 @@ import {
   setActiveProject,
   updateProject,
 } from "@/components/features/projects/procedures";
-import { getHealth, getProfile, helloWorld } from "@/lib/orpc/procedures";
+import {
+  getHealth,
+  getProfile,
+  getSession,
+  helloWorld,
+} from "@/lib/orpc/procedures";
 
 /**
  * Main oRPC router
@@ -20,6 +26,12 @@ export const router = {
   // User namespace for authenticated procedures
   user: {
     getProfile,
+  },
+
+  // Auth namespace for Better Auth procedures
+  auth: {
+    getSession,
+    listOrganizations,
   },
 
   // Project namespace

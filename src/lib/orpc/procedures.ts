@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { auth } from "@/lib/better-auth";
 import { base } from "@/lib/orpc/context";
 import { authorized } from "@/lib/orpc/middleware";
 
@@ -48,4 +49,15 @@ export const getProfile = authorized.handler(async ({ context }) => {
       expiresAt: context.session.expiresAt,
     },
   };
+});
+
+/**
+ * Get current session using Better Auth
+ * Uses Better Auth's implicit session endpoint
+ */
+export const getSession = base.handler(async ({ context }) => {
+  const session = await auth.api.getSession({
+    headers: context.headers,
+  });
+  return session;
 });
