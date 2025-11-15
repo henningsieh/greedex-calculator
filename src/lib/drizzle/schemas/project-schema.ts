@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { organization, user } from "@/lib/drizzle/schemas/auth-schema";
+import { organization, user, member } from "@/lib/drizzle/schemas/auth-schema";
 import { ActivityType, activityTypeValues } from "@/components/participate/types";
 
 
@@ -47,14 +47,18 @@ export const projectTable = pgTable("project", {
  * Project Activity table
  * 
  * Tracks travel activities associated with projects for carbon footprint calculation
+ * Each activity is associated with a specific project participant and implicitly with the project
  */
 export const projectActivity = pgTable("project_activity", {
   id: text("id").primaryKey(),
   projectId: text("project_id")
     .notNull()
     .references(() => projectTable.id, { onDelete: "cascade" }),
+  participantId: text("participant_id")
+    .notNull()
+    .references(() => projectParticipant.id, { onDelete: "cascade" }),
 
-  // Activity type: 'boat', 'bus', 'train', 'car'
+  // type ActivityType = "boat" | "bus" | "train" | "car"
   activityType: text("activity_type", { enum: activityTypeValues })
     .$type<ActivityType>()
     .notNull(),
@@ -65,6 +69,30 @@ export const projectActivity = pgTable("project_activity", {
   // Optional fields for additional activity details
   description: text("description"),
   activityDate: timestamp("activity_date"),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+/**
+ * Project Participant table
+ * 
+ * Links project participants (members of the organization) to projects
+ */
+export const projectParticipant = pgTable("project_participant", {
+  id: text("id").primaryKey(),
+  projectId: text("project_id")
+    .notNull()
+    .references(() => projectTable.id, { onDelete: "cascade" }),
+  memberId: text("member_id")
+    .notNull()
+    .references(() => member.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
@@ -88,6 +116,7 @@ export const projectRelations = relations(projectTable, ({ one, many }) => ({
     references: [organization.id],
   }),
   activities: many(projectActivity),
+  participants: many(projectParticipant),
 }));
 
 // projectActivity - relations
@@ -98,5 +127,29 @@ export const projectActivityRelations = relations(
       fields: [projectActivity.projectId],
       references: [projectTable.id],
     }),
+    participant: one(projectParticipant, {
+      fields: [projectActivity.participantId],
+      references: [projectParticipant.id],
+    }),
+  }),
+);
+
+// projectParticipant - relations
+export const projectParticipantRelations = relations(
+  projectParticipant,
+  ({ one, many }) => ({
+    project: one(projectTable, {
+      fields: [projectParticipant.projectId],
+      references: [projectTable.id],
+    }),
+    member: one(member, {
+      fields: [projectParticipant.memberId],
+      references: [member.id],
+    }),
+    user: one(user, {
+      fields: [projectParticipant.userId],
+      references: [user.id],
+    }),
+    activities: many(projectActivity),
   }),
 );
