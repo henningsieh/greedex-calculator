@@ -35,10 +35,10 @@ export function ActiveProjectBreadcrumb() {
           {activeProject ? (
             <BreadcrumbLink
               href={`/projects/${activeProject.id}`}
-              className="flex items-center gap-2 text-secondary transition-colors hover:text-sidebar-accent-foreground"
+              className="flex items-center gap-2 transition-colors duration-300 hover:text-secondary-foreground"
             >
-              <MapPinnedIcon className="size-4" />
-              <span className="font-medium">{activeProject.name}</span>
+              <MapPinnedIcon className="size-5" />
+              <span className="font-bold text-lg">{activeProject.name}</span>
             </BreadcrumbLink>
           ) : (
             <span className="flex items-center gap-2 text-rose-500/80">

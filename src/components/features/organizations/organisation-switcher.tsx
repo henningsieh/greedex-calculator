@@ -84,8 +84,8 @@ export function OrganizationSwitcher() {
               size="lg"
               className="border border-sidebar-accent/80 hover:bg-sidebar-accent/40 data-[state=open]:bg-sidebar-accent/30 data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <Building2Icon className="size-4" />
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary">
+                <Building2Icon className="size-4 text-primary-foreground" />
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
                 <span className="">{activeOrganization.name}</span>
