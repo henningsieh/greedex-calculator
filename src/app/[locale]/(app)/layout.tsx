@@ -3,10 +3,6 @@ import { getLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import {
-  DashboardHeader,
-  DashboardHeaderSkeleton,
-} from "@/app/[locale]/(app)/org/dashboard/_components/dashboard-header";
-import {
   ActiveProjectBreadcrumb,
   BreadcrumbSkeleton,
 } from "@/components/active-project-breadcrumb";
@@ -40,6 +36,7 @@ export default async function AppLayout({
     // Not authenticated -> send to login (auth group).
     // The (auth) directory is a route group, its login page is at '/login'.
     redirect({ href: `/login?nextPageUrl=/${locale}/org/dashboard`, locale });
+    redirect({ href: `/login?nextPageUrl=/${locale}/org/dashboard`, locale });
   }
 
   // If authenticated, ensure they have an organization
@@ -51,9 +48,13 @@ export default async function AppLayout({
 
   if (!hasOrgs) {
     // Authenticated but no orgs -> send to org setup flow (different route group)
+    // Authenticated but no orgs -> send to org setup flow (different route group)
     redirect({ href: "/org/create", locale });
   }
 
+  // Prefetch data for all suspended client components
+  // This enables server-side Suspense without hydration errors
+  // Components using these queries: ActiveProjectBreadcrumb, DashboardHeader, ProjectSwitcher, OrganizationSwitcher
   // Prefetch data for all suspended client components
   // This enables server-side Suspense without hydration errors
   // Components using these queries: ActiveProjectBreadcrumb, DashboardHeader, ProjectSwitcher, OrganizationSwitcher
@@ -61,8 +62,8 @@ export default async function AppLayout({
   void queryClient.prefetchQuery(
     orpcQuery.betterauth.getSession.queryOptions(),
   );
-  void queryClient.prefetchQuery(orpcQuery.organization.list.queryOptions());
-  void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
+  // void queryClient.prefetchQuery(orpcQuery.organization.list.queryOptions());
+  // void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
 
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
@@ -79,6 +80,7 @@ export default async function AppLayout({
           >
             <ErrorBoundary fallback={<div>Failed to load sidebar.</div>}>
               <Suspense fallback={<AppSidebarSkeleton />}>
+              <Suspense fallback={<AppSidebarSkeleton />}>
                 <AppSidebar />
               </Suspense>
             </ErrorBoundary>
@@ -91,14 +93,18 @@ export default async function AppLayout({
                       "hover:bg-secondary hover:text-secondary-foreground dark:hover:bg-secondary/50",
                     )}
                   />
+                <div className="flex h-16 items-center gap-4 border-b py-2 pl-2 md:pl-4 lg:pl-6">
+                  <SidebarTrigger
+                    className={cn(
+                      "size-11 border border-secondary/50 ring-secondary transition-colors duration-200",
+                      "hover:bg-secondary hover:text-secondary-foreground dark:hover:bg-secondary/50",
+                    )}
+                  />
                   <Suspense fallback={<BreadcrumbSkeleton />}>
                     <ActiveProjectBreadcrumb />
                   </Suspense>
                 </div>
                 <div className="space-y-8 p-2 md:p-4 lg:p-6 xl:p-8">
-                  <Suspense fallback={<DashboardHeaderSkeleton />}>
-                    <DashboardHeader />
-                  </Suspense>
                   {children}
                 </div>
               </main>

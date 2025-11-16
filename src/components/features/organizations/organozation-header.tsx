@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "@/lib/i18n/navigation";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
-export function DashboardHeader() {
+export function OrganizationHeader() {
   const t = useTranslations("organization");
 
   // Using oRPC queries for stable SSR hydration
@@ -35,9 +35,17 @@ export function DashboardHeader() {
         </h1>
         <p className="text-muted-foreground text-sm">
           {t("dashboard.welcome-to-your-organizations-dashboard")}
+    <div className="flex items-center justify-between rounded-md border border-accent/70 bg-accent/10">
+      <div className="space-y-2 p-4">
+        <h1 className="font-bold text-2xl text-accent">
+          {activeOrganization?.name}
+        </h1>
+        <p className="text-muted-foreground text-sm">
+          {t("dashboard.welcome-to-your-organizations-dashboard")}
         </p>
       </div>
       <Button asChild variant="link">
+        <Link href="/create-project">{t("button.create")}</Link>
         <Link href="/create-project">{t("button.create")}</Link>
       </Button>
     </div>

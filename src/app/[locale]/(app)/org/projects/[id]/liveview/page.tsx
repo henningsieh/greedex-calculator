@@ -1,3 +1,65 @@
+/**
+ * @file Live view dashboard (mock/click-dummy)
+ *
+ * @description
+ * This page is a click-dummy "live view" dashboard implemented with fully mocked data and
+ * fake type definitions for demo and requirements-spec purposes. It intentionally:
+ * - Runs on the client ("use client") and uses generated mock Participants/activities.
+ * - Uses a local mock data generator instead of real backend data fetching.
+ * - Contains placeholder/fake type information and CO2 factors used only for demonstration.
+ *
+ * IMPORTANT: This is NOT production code. It is a demonstration scaffold showing layout,
+ * interaction patterns, and the intended UX for a live project-responsible view where
+ * participant activities stream into the UI.
+ *
+ * Use case
+ * - Primary audience: the project's responsible person (admin/owner) who watches incoming
+ *   projectActivities in near real-time to monitor participation, stats and leaderboard.
+ * - Behavior: show live updates to participants, recalculate project stats, show a
+ *   leaderboard and transport breakdown as new activities arrive.
+ *
+ * Socket / WebSocket / Socket.IO
+ * - The Socket.IO-based real-time push is planned for this page. A proof-of-concept Socket.IO
+ *   implementation exists at: /socket-test/page.tsx — use that as the reference for:
+ *   - Establishing a socket connection from the browser
+ *   - Subscribing to project-specific channels/rooms
+ *   - Receiving server-pushed activity events
+ * - Integration notes (to replace the mock interval):
+ *   - Replace the mock generator/interval with a Socket.IO client connection.
+ *   - Authenticate the socket (token/cookie) before subscribing to project channels.
+ *   - Listen for events such as "activity:created" or "project:update" and apply
+ *     immutable updates to React state (avoid mutating arrays in-place).
+ *   - Recalculate stats after each event using the calculateStats function (or a more
+ *     optimised reducer) and debounce/coalesce events if necessary.
+ *   - Ensure proper cleanup: disconnect socket and remove listeners on unmount.
+ *
+ * Migration TODOs (Mock -> Real)
+ * - Replace generateMockData() with a server fetch for initial snapshot (REST or RPC).
+ * - Replace interval-based mutation with socket event handlers.
+ * - Replace fake types/CO2 constants with canonical shared types from the backend schema.
+ * - Introduce optimistic UI updates if users submit activities from the same client.
+ * - Add error handling, reconnection/backoff strategy and telemetry for socket events.
+ *
+ * Security & Privacy
+ * - Validate and normalise all incoming socket messages on the client; do not trust
+ *   unverified data. Prefer the server to validate and sanitise before emitting.
+ * - Ensure authentication/authorization so only authorised viewers can subscribe to
+ *   a project's live feed.
+ * - Avoid sending or persisting unnecessary PII; mask or omit sensitive fields.
+ *
+ * Remarks
+ * - This file intentionally signals to AI agents and developers that it is a mocked
+ *   click-dummy demonstrating the UI and interaction requirements. Do not treat the
+ *   current mock implementations (fake types, CO2 factors, random mock generator)
+ *   as production-quality logic.
+ *
+ * @see /socket-test/page.tsx - Proof-of-concept Socket.IO server push implementation
+ *
+ * @todo
+ * - Implement authenticated Socket.IO client wiring here using the PoC as a guide.
+ * - Replace mocks with real types and initial server snapshot fetching.
+ * - Harden against malformed events and implement reconnection/backoff.
+ */
 "use client";
 
 /**
@@ -6,7 +68,7 @@
  * Real-time updates would be handled via WebSockets.
  */
 
-import { Leaf } from "lucide-react";
+import { MapPinnedIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Leaderboard } from "@/components/participate/leaderboard";
 import { LiveIndicator } from "@/components/participate/live-indicator";
@@ -187,25 +249,21 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Background pattern */}
-      <div className="fixed inset-0 bg-[url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/grafik-Zt8RDl7oQQbD9SRuAoStd6JSC6XjU2.png')] bg-center bg-cover opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-b from-background/95 via-background/90 to-background/95" />
-
-      {/* Content */}
       <div className="relative">
         {/* Header */}
         <div className="sticky top-0 z-10 border-primary/20 border-b bg-background/80 backdrop-blur-md">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-emerald-500">
-                  <Leaf className="h-7 w-7 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-600 to-emerald-800">
+                  <MapPinnedIcon className="h-7 w-7" />
                 </div>
                 <div>
                   <h1 className="font-bold text-3xl text-foreground">
-                    Greendex Dashboard
+                    Mock Project Name
                   </h1>
                   <p className="text-muted-foreground text-sm">
-                    Erasmus+ Carbon Footprint Tracker
+                    Project's welcome message or tagline goes here
                   </p>
                 </div>
               </div>
@@ -241,6 +299,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      ;
     </div>
   );
 }
