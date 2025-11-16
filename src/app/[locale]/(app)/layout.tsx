@@ -80,19 +80,11 @@ export default async function AppLayout({
           >
             <ErrorBoundary fallback={<div>Failed to load sidebar.</div>}>
               <Suspense fallback={<AppSidebarSkeleton />}>
-              <Suspense fallback={<AppSidebarSkeleton />}>
                 <AppSidebar />
               </Suspense>
             </ErrorBoundary>
             <SidebarInset>
               <main className="flex-1 flex-col">
-                <div className="flex h-16 items-center gap-4 border-b py-2 pl-2 md:pl-4 lg:pl-6">
-                  <SidebarTrigger
-                    className={cn(
-                      "size-11 border border-secondary/50 ring-secondary transition-colors duration-200",
-                      "hover:bg-secondary hover:text-secondary-foreground dark:hover:bg-secondary/50",
-                    )}
-                  />
                 <div className="flex h-16 items-center gap-4 border-b py-2 pl-2 md:pl-4 lg:pl-6">
                   <SidebarTrigger
                     className={cn(
