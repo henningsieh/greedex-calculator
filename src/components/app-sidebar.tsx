@@ -2,6 +2,7 @@
 
 import {
   BarChart3Icon,
+  CogIcon,
   FileTextIcon,
   LayoutDashboardIcon,
   MapPinnedIcon,
@@ -28,8 +29,12 @@ import { Link, usePathname } from "@/lib/i18n/navigation";
 
 const projectsMenuItems = [
   // { title: "Home", icon: Home, url: "/" },
-  { title: "Dashboard", icon: LayoutDashboardIcon, url: "/project" },
-  { title: "Analytics", icon: BarChart3Icon, url: "/analytics" },
+  { title: "Control", icon: CogIcon, url: "/org/activeproject" },
+  {
+    title: "Live view",
+    icon: BarChart3Icon,
+    url: "/org/activeproject/liveview",
+  },
   { title: "Documents", icon: FileTextIcon, url: "/documents" },
 ];
 const organizationMenuItems = [
@@ -62,7 +67,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className="hover:bg-secondary hover:text-secondary-foreground active:bg-secondary active:text-secondary-foreground"
+                    className="hover:bg-secondary hover:text-secondary-foreground active:bg-secondary active:text-secondary-foreground data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground data-[state=open]:hover:bg-secondary data-[state=open]:hover:text-secondary-foreground"
                   >
                     <Link
                       href={item.url as Route}
