@@ -26,5 +26,5 @@ export default async function PublicParticipateLayout({
 
   const { id: projectId } = await params;
 
-  return { children };
+  return <>{children}</>;
 }
