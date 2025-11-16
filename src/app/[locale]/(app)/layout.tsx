@@ -36,6 +36,7 @@ export default async function AppLayout({
     // Not authenticated -> send to login (auth group).
     // The (auth) directory is a route group, its login page is at '/login'.
     redirect({ href: `/login?nextPageUrl=/${locale}/org/dashboard`, locale });
+    redirect({ href: `/login?nextPageUrl=/${locale}/org/dashboard`, locale });
   }
 
   // If authenticated, ensure they have an organization
@@ -47,9 +48,13 @@ export default async function AppLayout({
 
   if (!hasOrgs) {
     // Authenticated but no orgs -> send to org setup flow (different route group)
+    // Authenticated but no orgs -> send to org setup flow (different route group)
     redirect({ href: "/org/create", locale });
   }
 
+  // Prefetch data for all suspended client components
+  // This enables server-side Suspense without hydration errors
+  // Components using these queries: ActiveProjectBreadcrumb, DashboardHeader, ProjectSwitcher, OrganizationSwitcher
   // Prefetch data for all suspended client components
   // This enables server-side Suspense without hydration errors
   // Components using these queries: ActiveProjectBreadcrumb, DashboardHeader, ProjectSwitcher, OrganizationSwitcher
@@ -75,11 +80,19 @@ export default async function AppLayout({
           >
             <ErrorBoundary fallback={<div>Failed to load sidebar.</div>}>
               <Suspense fallback={<AppSidebarSkeleton />}>
+              <Suspense fallback={<AppSidebarSkeleton />}>
                 <AppSidebar />
               </Suspense>
             </ErrorBoundary>
             <SidebarInset>
               <main className="flex-1 flex-col">
+                <div className="flex h-16 items-center gap-4 border-b py-2 pl-2 md:pl-4 lg:pl-6">
+                  <SidebarTrigger
+                    className={cn(
+                      "size-11 border border-secondary/50 ring-secondary transition-colors duration-200",
+                      "hover:bg-secondary hover:text-secondary-foreground dark:hover:bg-secondary/50",
+                    )}
+                  />
                 <div className="flex h-16 items-center gap-4 border-b py-2 pl-2 md:pl-4 lg:pl-6">
                   <SidebarTrigger
                     className={cn(
