@@ -1,12 +1,17 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, CheckCircle2, Leaf } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Leaf,
+  TreePine,
+} from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ImpactModal } from "./impact-modal";
 import {
   type AccommodationCategory,
   type CarType,
@@ -74,18 +79,6 @@ const GENDER_OPTIONS: Gender[] = [
   "Other / Prefer not to say",
 ];
 
-// Steps that trigger impact modal when answered
-const EMISSION_IMPACT_STEPS = [
-  "flightKm",
-  "boatKm",
-  "trainKm",
-  "busKm",
-  "carKm",
-  "carPassengers",
-  "electricity",
-  "food",
-];
-
 export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Partial<ParticipantAnswers>>({
@@ -98,16 +91,7 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
     carPassengers: 1,
     age: 0,
   });
-
-  // Impact modal state
-  const [showImpactModal, setShowImpactModal] = useState(false);
-  const [impactData, setImpactData] = useState<{
-    previousCO2: number;
-    newCO2: number;
-    impact: number;
-    stepKey: string;
-    stepValue: string | number;
-  } | null>(null);
+  const [showEmissions, setShowEmissions] = useState(false);
 
   // Total steps: 1 welcome + 14 questions
   // Steps 11-12 are conditional based on carKm
@@ -121,32 +105,17 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
     setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
-  // Get current step key based on step number
-  const getStepKey = (step: number): string | null => {
-    const keys = [
-      null, // 0: welcome
-      "days",
-      "accommodationCategory",
-      "roomOccupancy",
-      "electricity",
-      "food",
-      "flightKm",
-      "boatKm",
-      "trainKm",
-      "busKm",
-      "carKm",
-      "carType",
-      "carPassengers",
-      "age",
-      "gender",
-    ];
-    return keys[step] || null;
-  };
+  const handleNext = () => {
+    // Show emissions after transport questions (step 10) and at end
+    if (currentStep === 10 || currentStep === 14) {
+      setShowEmissions(true);
+      setTimeout(() => setShowEmissions(false), 3000);
+    }
 
-  const proceedToNextStep = () => {
-    // Skip car questions if no car travel
+    // Skip car type and passengers questions if carKm is 0
     if (currentStep === 10 && (!answers.carKm || answers.carKm === 0)) {
-      setCurrentStep(13); // Skip to age
+      // Skip to step 13 (age)
+      setCurrentStep(13);
       return;
     }
 
@@ -155,56 +124,6 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
     } else {
       handleSubmit();
     }
-  };
-
-  const shouldShowImpact = (stepKey: string | null): boolean => {
-    if (!stepKey) return false;
-
-    // Skip impact for zero-value transport questions
-    if (["flightKm", "boatKm", "trainKm", "busKm"].includes(stepKey)) {
-      const value = answers[stepKey as keyof ParticipantAnswers];
-      if (Number(value) === 0) return false;
-    }
-
-    // Skip carPassengers impact if no car travel
-    if (
-      stepKey === "carPassengers" &&
-      (!answers.carKm || answers.carKm === 0)
-    ) {
-      return false;
-    }
-
-    return EMISSION_IMPACT_STEPS.includes(stepKey);
-  };
-
-  const handleNext = () => {
-    const stepKey = getStepKey(currentStep);
-
-    if (stepKey && shouldShowImpact(stepKey)) {
-      // Calculate previous and new CO2
-      const previousCO2 = calculateEmissions(answers).totalCO2;
-      const currentValue = answers[stepKey as keyof ParticipantAnswers];
-
-      // Show impact modal
-      const newCO2 = calculateEmissions(answers).totalCO2;
-      const impact = newCO2 - previousCO2;
-
-      setImpactData({
-        previousCO2,
-        newCO2,
-        impact,
-        stepKey,
-        stepValue: currentValue as string | number,
-      });
-      setShowImpactModal(true);
-    } else {
-      proceedToNextStep();
-    }
-  };
-
-  const handleImpactModalClose = () => {
-    setShowImpactModal(false);
-    proceedToNextStep();
   };
 
   const handleBack = () => {
@@ -222,26 +141,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
 
   const handleSubmit = () => {
     const emissions = calculateEmissions(answers);
-
-    // Complete data structure as requested
-    const completeData = {
-      answers, // Discrete answers object
-      emissions, // Calculated results
-      summary: {
-        totalCO2: emissions.totalCO2,
-        treesNeeded: emissions.treesNeeded,
-        breakdown: {
-          transport: emissions.transportCO2,
-          accommodation: emissions.accommodationCO2,
-          food: emissions.foodCO2,
-        },
-      },
-    };
-
     console.log("=== Participant Questionnaire Complete ===");
-    console.log("Discrete Answers:", answers);
+    console.log("Participant Answers:", answers);
     console.log("Emissions Calculation:", emissions);
-    console.log("Complete Data:", completeData);
     console.log("==========================================");
   };
 
@@ -320,21 +222,35 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
         Step {currentStepDisplay + 1} of {totalSteps}
       </div>
 
-      {/* Impact Modal */}
-      {showImpactModal && impactData && (
-        <ImpactModal
-          isOpen={showImpactModal}
-          previousCO2={impactData.previousCO2}
-          newCO2={impactData.newCO2}
-          impact={impactData.impact}
-          stepKey={impactData.stepKey}
-          stepValue={impactData.stepValue}
-          days={answers.days}
-          accommodationCategory={answers.accommodationCategory}
-          roomOccupancy={answers.roomOccupancy}
-          carKm={answers.carKm}
-          onClose={handleImpactModalClose}
-        />
+      {/* Emissions Display (shows briefly after transport and at end) */}
+      {showEmissions && emissions.totalCO2 > 0 && (
+        <Card className="border-teal-500/30 bg-gradient-to-br from-teal-500/20 to-emerald-500/20 p-6">
+          <div className="space-y-4 text-center">
+            <div>
+              <p className="mb-2 text-muted-foreground text-sm">
+                Current Carbon Footprint
+              </p>
+              <div className="flex items-center justify-center gap-2">
+                <Leaf className="h-8 w-8 text-emerald-400" />
+                <span className="font-bold text-4xl text-teal-400">
+                  {emissions.totalCO2.toFixed(1)}
+                </span>
+                <span className="text-muted-foreground text-xl">kg CO₂</span>
+              </div>
+            </div>
+            <div className="border-teal-500/30 border-t pt-4">
+              <div className="flex items-center justify-center gap-2">
+                <TreePine className="h-6 w-6 text-green-400" />
+                <span className="font-bold text-2xl text-green-400">
+                  {emissions.treesNeeded}
+                </span>
+                <span className="text-muted-foreground">
+                  {emissions.treesNeeded === 1 ? "tree" : "trees"} needed
+                </span>
+              </div>
+            </div>
+          </div>
+        </Card>
       )}
 
       {/* Question Card */}
