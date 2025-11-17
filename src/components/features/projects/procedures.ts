@@ -2,7 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { ORPCError } from "@orpc/server";
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq, type SQL, sql } from "drizzle-orm";
 import { z } from "zod";
 import {
   ProjectFormSchema,
@@ -79,13 +79,41 @@ export const listProjects = authorized
     summary: "List all projects in the active organization",
     tags: ["project"],
   })
-  .input(z.void())
+  .input(
+    z
+      .object({
+        sort_by: z
+          .enum(["name", "startDate", "createdAt", "updatedAt"])
+          .optional()
+          .default("createdAt"),
+      })
+      .optional(),
+  )
   .output(z.array(ProjectSelectSchema))
-  .handler(async ({ context }) => {
+  .handler(async ({ input, context }) => {
     if (!context.session.activeOrganizationId) {
       throw new ORPCError("BAD_REQUEST", {
         message: "No active organization. Please select an organization first.",
       });
+    }
+
+    // Determine sort order
+    let orderByClause: SQL<unknown>;
+    switch (input?.sort_by) {
+      case "name":
+        orderByClause = asc(sql`lower(${projectTable.name})`);
+        break;
+      case "startDate":
+        orderByClause = asc(projectTable.startDate);
+        break;
+      case "createdAt":
+        orderByClause = asc(projectTable.createdAt);
+        break;
+      case "updatedAt":
+        orderByClause = asc(projectTable.updatedAt);
+        break;
+      default:
+        orderByClause = asc(projectTable.createdAt);
     }
 
     // Get all projects that belong to the user's active organization
@@ -95,7 +123,8 @@ export const listProjects = authorized
       .from(projectTable)
       .where(
         eq(projectTable.organizationId, context.session.activeOrganizationId),
-      );
+      )
+      .orderBy(orderByClause);
 
     return projects;
   });

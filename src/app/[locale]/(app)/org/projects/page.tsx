@@ -7,7 +7,9 @@ import { getQueryClient } from "@/lib/react-query/hydration";
 export default async function ProjectsPage() {
   // Prefetch the projects data on the server
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
+  void queryClient.prefetchQuery(
+    orpcQuery.project.list.queryOptions({ input: { sort_by: "createdAt" } }),
+  );
 
   return (
     <div className="space-y-8">
@@ -17,7 +19,7 @@ export default async function ProjectsPage() {
           List of projects of your organization.
         </p>
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Suspense Loading...</div>}>
         <ErrorBoundary fallback={<div>Something went wrong.</div>}>
           <ProjectsGrid />
         </ErrorBoundary>
