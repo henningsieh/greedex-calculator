@@ -1,5 +1,7 @@
 import { headers } from "next/headers";
+import { Suspense } from "react";
 import ActiveProjectHeaderClient from "@/components/features/projects/ActiveProjectHeaderClient";
+import ControlActiveProjectPageSkeleton from "@/components/features/projects/ControlActiveProjectPageSkeleton";
 import ParticipantsList from "@/components/features/projects/ParticipantsList";
 import ParticipationControlsClient from "@/components/features/projects/ParticipationControlsClient";
 import { Button } from "@/components/ui/button";
@@ -12,7 +14,8 @@ import {
 } from "@/components/ui/empty";
 import { auth } from "@/lib/better-auth";
 import { Link } from "@/lib/i18n/navigation";
-import { orpc } from "@/lib/orpc/orpc";
+import { orpc, orpcQuery } from "@/lib/orpc/orpc";
+import { getQueryClient } from "@/lib/react-query/hydration";
 
 export default async function ControlActiveProjectPage() {
   // Fetch session
@@ -20,7 +23,21 @@ export default async function ControlActiveProjectPage() {
     headers: await headers(),
   });
 
+  // Fetch projects and determine active project
+  const projects = await orpc.project.list();
   const activeProjectId = session?.session.activeProjectId;
+  const activeProject = projects.find(
+    (project) => project.id === activeProjectId,
+  );
+
+  // Prefetch data
+  const queryClient = getQueryClient();
+
+  void queryClient.prefetchQuery(
+    orpcQuery.betterauth.getSession.queryOptions(),
+  );
+  void queryClient.prefetchQuery(orpcQuery.organization.list.queryOptions());
+  void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
 
   // Get origin for consistent URL rendering
   const host = (await headers()).get("host") || "localhost:3000";
@@ -48,13 +65,6 @@ export default async function ControlActiveProjectPage() {
     );
   }
 
-  // Fetch projects
-  const projects = await orpc.project.list();
-
-  const activeProject = projects.find(
-    (project) => project.id === activeProjectId,
-  );
-
   if (!activeProject) {
     return (
       <div className="container mx-auto max-w-6xl px-4 py-8">
@@ -75,21 +85,28 @@ export default async function ControlActiveProjectPage() {
     );
   }
 
+  void queryClient.prefetchQuery(
+    orpcQuery.project.getParticipants.queryOptions({
+      input: { projectId: session.session.activeProjectId },
+    }),
+  );
   // Fetch participants
   const participants = await orpc.project.getParticipants({
     projectId: activeProjectId,
   });
 
   return (
-    <div className="container mx-auto max-w-6xl px-4 py-8">
-      <ActiveProjectHeaderClient activeProject={activeProject} />
+    <Suspense fallback={<ControlActiveProjectPageSkeleton />}>
+      <div className="container mx-auto max-w-6xl px-4 py-8">
+        <ActiveProjectHeaderClient activeProject={activeProject} />
 
-      <ParticipationControlsClient
-        activeProjectId={activeProjectId}
-        origin={origin}
-      />
+        <ParticipationControlsClient
+          activeProjectId={activeProjectId}
+          origin={origin}
+        />
 
-      <ParticipantsList participants={participants} />
-    </div>
+        <ParticipantsList participants={participants} />
+      </div>
+    </Suspense>
   );
 }
