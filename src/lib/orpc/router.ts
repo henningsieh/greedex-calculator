@@ -3,6 +3,7 @@ import {
   createProject,
   deleteProject,
   getProjectById,
+  getProjectParticipants,
   listProjects,
   setActiveProject,
   updateProject,
@@ -46,6 +47,7 @@ export const router = {
     update: updateProject,
     delete: deleteProject,
     setActive: setActiveProject,
+    getParticipants: getProjectParticipants,
   },
 };
 

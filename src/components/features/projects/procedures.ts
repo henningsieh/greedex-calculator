@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { ORPCError } from "@orpc/server";
 import { and, asc, eq, type SQL, sql } from "drizzle-orm";
 import { z } from "zod";
+import { ProjectParticipantWithUserSchema } from "@/components/features/projects/participant-types";
 import {
   DEFAULT_PROJECT_SORT,
   ProjectFormSchema,
@@ -12,7 +13,12 @@ import {
 } from "@/components/features/projects/types";
 import { auth } from "@/lib/better-auth";
 import { db } from "@/lib/drizzle/db";
-import { projectTable, session as sessionTable } from "@/lib/drizzle/schema";
+import {
+  projectParticipant,
+  projectTable,
+  session as sessionTable,
+  user,
+} from "@/lib/drizzle/schema";
 import { authorized, requireProjectPermissions } from "@/lib/orpc/middleware";
 
 /**
@@ -354,4 +360,70 @@ export const setActiveProject = authorized
       .where(eq(sessionTable.id, context.session.id));
 
     return { success: true };
+  });
+
+/**
+ * Get project participants with details
+ *
+ * Requires:
+ * - Authentication
+ * - "read" permission on project resource
+ * - Project must belong to user's active organization
+ */
+export const getProjectParticipants = authorized
+  .use(requireProjectPermissions(["read"]))
+  .route({
+    method: "GET",
+    path: "/projects/:id/participants",
+    summary: "Get project participants with user details",
+    tags: ["project"],
+  })
+  .input(z.object({ projectId: z.string().describe("Project ID") }))
+  .output(z.array(ProjectParticipantWithUserSchema))
+  .handler(async ({ input, context }) => {
+    if (!context.session.activeOrganizationId) {
+      throw new ORPCError("BAD_REQUEST", {
+        message: "No active organization. Please select an organization first.",
+      });
+    }
+
+    // Verify project belongs to user's organization
+    const [project] = await db
+      .select()
+      .from(projectTable)
+      .where(
+        and(
+          eq(projectTable.id, input.projectId),
+          eq(projectTable.organizationId, context.session.activeOrganizationId),
+        ),
+      )
+      .limit(1);
+
+    if (!project) {
+      throw new ORPCError("FORBIDDEN", {
+        message: "You don't have access to this project",
+      });
+    }
+
+    // Get all participants for this project with user details
+    const participants = await db
+      .select({
+        id: projectParticipant.id,
+        projectId: projectParticipant.projectId,
+        memberId: projectParticipant.memberId,
+        userId: projectParticipant.userId,
+        createdAt: projectParticipant.createdAt,
+        updatedAt: projectParticipant.updatedAt,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        },
+      })
+      .from(projectParticipant)
+      .innerJoin(user, eq(projectParticipant.userId, user.id))
+      .where(eq(projectParticipant.projectId, input.projectId));
+
+    return participants;
   });
