@@ -459,7 +459,7 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
         )}
 
         {/* Step 2: Days */}
-        {currentStep === 3 && (
+        {currentStep === 2 && (
           <div className="space-y-4">
             <Label className="font-bold text-foreground text-xl">
               How many days are you participating on your project?
