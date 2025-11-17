@@ -369,8 +369,8 @@ export const getProjectParticipants = authorized
       .limit(1);
 
     if (!project) {
-      throw new ORPCError("NOT_FOUND", {
-        message: "Project not found or you don't have access to it",
+      throw new ORPCError("FORBIDDEN", {
+        message: "You don't have access to this project",
       });
     }
 

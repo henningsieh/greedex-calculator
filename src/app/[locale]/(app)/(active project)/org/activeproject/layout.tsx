@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/react-query/hydration";
+import { headers } from "next/headers";
 
 export default async function AppLayout({
   children,
@@ -11,12 +12,6 @@ export default async function AppLayout({
 }>) {
   // Prefetch common data
   const queryClient = getQueryClient();
-
-  // Get session to determine active project
-  const session = await auth.api.getSession({
-    headers: await import("next/headers").then((m) => m.headers()),
-  });
-
   void queryClient.prefetchQuery(
     orpcQuery.betterauth.getSession.queryOptions(),
   );
@@ -24,6 +19,11 @@ export default async function AppLayout({
   void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
 
   // Prefetch participants for active project if available
+
+  // Get session to determine active project
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   if (session?.session?.activeProjectId) {
     void queryClient.prefetchQuery(
       orpcQuery.project.getParticipants.queryOptions({
