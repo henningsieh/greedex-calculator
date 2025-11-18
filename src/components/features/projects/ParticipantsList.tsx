@@ -1,5 +1,8 @@
+"use client";
+
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Users2Icon, UsersIcon } from "lucide-react";
-import { getFormatter } from "next-intl/server";
+import { useFormatter } from "next-intl";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import {
@@ -9,16 +12,22 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import type { ProjectParticipantWithUser } from "./participant-types";
+import { orpcQuery } from "@/lib/orpc/orpc";
 
 interface ParticipantsListProps {
-  participants: ProjectParticipantWithUser[];
+  activeProjectId: string;
 }
 
-export default async function ParticipantsList({
-  participants,
+export default function ParticipantsList({
+  activeProjectId,
 }: ParticipantsListProps) {
-  const format = await getFormatter();
+  const format = useFormatter();
+
+  const { data: participants } = useSuspenseQuery(
+    orpcQuery.project.getParticipants.queryOptions({
+      input: { projectId: activeProjectId },
+    }),
+  );
 
   return (
     <div className="rounded-md border border-secondary/70 bg-secondary/10 p-4">
@@ -75,6 +84,34 @@ export default async function ParticipantsList({
           ))}
         </Card>
       )}
+    </div>
+  );
+}
+
+export function ParticipantsListSkeleton() {
+  return (
+    <div className="rounded-md border border-secondary/70 bg-secondary/10 p-4">
+      <div className="mb-4 flex items-center gap-2">
+        <UsersIcon className="h-5 w-5 text-secondary" />
+        <h2 className="font-semibold text-lg">Participants</h2>
+      </div>
+
+      <div className="space-y-2">
+        {[...Array(3)].map((_, index) => (
+          <div
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            key={index}
+            className="flex animate-pulse items-center gap-4 rounded-lg border p-4"
+          >
+            <div className="h-10 w-10 rounded-full bg-secondary/50" />
+            <div className="flex-1 space-y-2">
+              <div className="h-4 w-1/3 rounded bg-secondary/50" />
+              <div className="h-3 w-1/2 rounded bg-secondary/50" />
+            </div>
+            <div className="h-3 w-24 rounded bg-secondary/50" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
