@@ -2,11 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LogInIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import SocialButtons from "@/components/features/authentication/social-buttons";
 import FormField from "@/components/form-field";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -40,6 +42,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div"> & { redirect?: string | string[] }) {
   const router = useRouter();
+  const [lastLoginMethod, setLastLoginMethod] = useState<string | null>(null);
 
   // append the callbackUrl to the env
   const callbackURL =
@@ -47,6 +50,12 @@ export function LoginForm({
     (typeof redirect === "string" ? redirect : "/org/dashboard");
 
   console.log("Callback URL:", callbackURL);
+
+  // Get last login method on component mount
+  useEffect(() => {
+    const method = authClient.getLastUsedLoginMethod();
+    setLastLoginMethod(method);
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -122,6 +131,20 @@ export function LoginForm({
         </CardHeader>
 
         <CardContent>
+          {lastLoginMethod && (
+            <Alert className="mb-6">
+              <AlertDescription>
+                Last time you signed in with:{" "}
+                <span className="font-semibold capitalize">
+                  {lastLoginMethod === "credential"
+                    ? "Email & Password"
+                    : lastLoginMethod === "magic-link"
+                      ? "Magic Link"
+                      : lastLoginMethod}
+                </span>
+              </AlertDescription>
+            </Alert>
+          )}
           <Tabs defaultValue="password" className="w-full space-y-8">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="password">Password</TabsTrigger>
@@ -146,15 +169,12 @@ export function LoginForm({
                     id="password"
                     type="password"
                     rightLabel={
-                      <button
-                        type="button"
+                      <Link
+                        href="/forgot-password"
                         className="ml-auto text-sm underline-offset-4 hover:underline"
-                        onClick={() => {
-                          // TODO: Implement forgot password functionality
-                        }}
                       >
                         Forgot your password?
-                      </button>
+                      </Link>
                     }
                     inputProps={{ disabled: form.formState.isSubmitting }}
                   />
