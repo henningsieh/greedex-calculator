@@ -336,6 +336,13 @@
   "app": {
     "sidebar": {
       "projects": "Projekte"
+    },
+    "views": {
+      "grid": "Kachelansicht",
+      "table": "Tabellenansicht"
+    },
+    "table": {
+      "columns": "Spaltenauswahl"
     }
   },
   "project": {
@@ -381,8 +388,8 @@
       "name": "Name",
       "country": "Land",
       "start-date": "Startdatum",
-      "created": "Erstellt",
-      "updated": "Aktualisiert",
+      "created": "Erstellt am",
+      "updated": "Aktualisiert am",
       "actions": "Aktionen",
       "open-menu": "Menü öffnen",
       "view-details": "Details anzeigen",
@@ -390,6 +397,8 @@
       "delete-project": "Projekt löschen",
       "filter-projects": "Projekte filtern..."
     },
+    "sort-label": "Sortieren nach:",
+    "sort-projects": "Projekte sortieren",
     "delete": {
       "confirm-title": "Sind Sie sicher?",
       "confirm-description": "Dies wird das Projekt \"{name}\" dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden.",

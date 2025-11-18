@@ -103,7 +103,9 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Field data-invalid={!!errors.startDate}>
-              <FieldLabel htmlFor="startDate">{t("form.start-date")}</FieldLabel>
+              <FieldLabel htmlFor="startDate">
+                {t("form.start-date")}
+              </FieldLabel>
               <Controller
                 control={control}
                 name="startDate"
@@ -154,7 +156,9 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
           </Field>
 
           <Field data-invalid={!!errors.organizationId}>
-            <FieldLabel htmlFor="organizationId">{t("form.organization")}</FieldLabel>
+            <FieldLabel htmlFor="organizationId">
+              {t("form.organization")}
+            </FieldLabel>
             <Controller
               control={control}
               name="organizationId"

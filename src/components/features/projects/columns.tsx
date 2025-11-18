@@ -70,65 +70,65 @@ export function getProjectColumns(
           isNumeric
         />
       ),
-    cell: ({ row }) => {
-      const date = row.getValue(SORT_OPTIONS.startDate) as Date;
-      return <DateCell date={date} />;
+      cell: ({ row }) => {
+        const date = row.getValue(SORT_OPTIONS.startDate) as Date;
+        return <DateCell date={date} />;
+      },
+      sortingFn: (rowA, rowB, columnId) => {
+        const dateA = new Date(rowA.getValue(columnId));
+        const dateB = new Date(rowB.getValue(columnId));
+        return dateA.getTime() - dateB.getTime();
+      },
     },
-    sortingFn: (rowA, rowB, columnId) => {
-      const dateA = new Date(rowA.getValue(columnId));
-      const dateB = new Date(rowB.getValue(columnId));
-      return dateA.getTime() - dateB.getTime();
+    {
+      accessorKey: SORT_OPTIONS.createdAt,
+      header: ({ column, table }) => (
+        <SortableHeader
+          column={column}
+          table={table}
+          title={t("table.created")}
+          isNumeric
+        />
+      ),
+      cell: ({ row }) => {
+        const date = row.getValue(SORT_OPTIONS.createdAt) as Date;
+        return <DateCell date={date} />;
+      },
+      sortingFn: (rowA, rowB, columnId) => {
+        const dateA = new Date(rowA.getValue(columnId));
+        const dateB = new Date(rowB.getValue(columnId));
+        return dateA.getTime() - dateB.getTime();
+      },
     },
-  },
-  {
-    accessorKey: SORT_OPTIONS.createdAt,
-    header: ({ column, table }) => (
-      <SortableHeader
-        column={column}
-        table={table}
-        title={t("table.created")}
-        isNumeric
-      />
-    ),
-    cell: ({ row }) => {
-      const date = row.getValue(SORT_OPTIONS.createdAt) as Date;
-      return <DateCell date={date} />;
+    {
+      accessorKey: SORT_OPTIONS.updatedAt,
+      header: ({ column, table }) => (
+        <SortableHeader
+          column={column}
+          table={table}
+          title={t("table.updated")}
+          isNumeric
+        />
+      ),
+      cell: ({ row }) => {
+        const date = row.getValue(SORT_OPTIONS.updatedAt) as Date;
+        return <DateCell date={date} />;
+      },
+      sortingFn: (rowA, rowB, columnId) => {
+        const dateA = new Date(rowA.getValue(columnId));
+        const dateB = new Date(rowB.getValue(columnId));
+        return dateA.getTime() - dateB.getTime();
+      },
     },
-    sortingFn: (rowA, rowB, columnId) => {
-      const dateA = new Date(rowA.getValue(columnId));
-      const dateB = new Date(rowB.getValue(columnId));
-      return dateA.getTime() - dateB.getTime();
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const project = row.original;
+        return <ProjectActionsCell project={project} />;
+      },
     },
-  },
-  {
-    accessorKey: SORT_OPTIONS.updatedAt,
-    header: ({ column, table }) => (
-      <SortableHeader
-        column={column}
-        table={table}
-        title={t("table.updated")}
-        isNumeric
-      />
-    ),
-    cell: ({ row }) => {
-      const date = row.getValue(SORT_OPTIONS.updatedAt) as Date;
-      return <DateCell date={date} />;
-    },
-    sortingFn: (rowA, rowB, columnId) => {
-      const dateA = new Date(rowA.getValue(columnId));
-      const dateB = new Date(rowB.getValue(columnId));
-      return dateA.getTime() - dateB.getTime();
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const project = row.original;
-      return <ProjectActionsCell project={project} />;
-    },
-  },
-];
+  ];
 }
 
 function ProjectActionsCell({ project }: { project: ProjectType }) {

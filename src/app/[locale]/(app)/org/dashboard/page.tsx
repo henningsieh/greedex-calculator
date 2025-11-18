@@ -42,7 +42,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <h2 className="font-bold text-4xl">{t("title")}</h2>
+        <h2 className="font-bold font-sans text-4xl">{t("title")}</h2>
         <p className="text-muted-foreground">{t("description")}</p>
       </div>
       <DashboardTabs members={members} />

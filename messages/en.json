@@ -336,6 +336,13 @@
   "app": {
     "sidebar": {
       "projects": "Projects"
+    },
+    "views": {
+      "grid": "Grid",
+      "table": "Table"
+    },
+    "table": {
+      "columns": "Column Selection"
     }
   },
   "project": {
@@ -381,8 +388,8 @@
       "name": "Name",
       "country": "Country",
       "start-date": "Start Date",
-      "created": "Created",
-      "updated": "Updated",
+      "created": "Created at",
+      "updated": "Updated^at",
       "actions": "Actions",
       "open-menu": "Open menu",
       "view-details": "View Details",
@@ -390,6 +397,8 @@
       "delete-project": "Delete Project",
       "filter-projects": "Filter projects..."
     },
+    "sort-label": "Sort by:",
+    "sort-projects": "Sort Projects",
     "delete": {
       "confirm-title": "Are you sure?",
       "confirm-description": "This will permanently delete the project \"{name}\". This action cannot be undone.",

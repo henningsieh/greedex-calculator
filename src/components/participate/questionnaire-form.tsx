@@ -481,7 +481,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
               <div className="space-y-2">
                 <Label htmlFor="firstName" className="text-foreground">
                   {t("participant-info.first-name")}{" "}
-                  <span className="text-red-500">{t("participant-info.required")}</span>
+                  <span className="text-red-500">
+                    {t("participant-info.required")}
+                  </span>
                 </Label>
                 <Input
                   id="firstName"
@@ -495,7 +497,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
               <div className="space-y-2">
                 <Label htmlFor="country" className="text-foreground">
                   {t("participant-info.country")}{" "}
-                  <span className="text-red-500">{t("participant-info.required")}</span>
+                  <span className="text-red-500">
+                    {t("participant-info.required")}
+                  </span>
                 </Label>
                 <Input
                   id="country"
@@ -509,7 +513,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-foreground">
                   {t("participant-info.email")}{" "}
-                  <span className="text-red-500">{t("participant-info.required")}</span>
+                  <span className="text-red-500">
+                    {t("participant-info.required")}
+                  </span>
                 </Label>
                 <Input
                   id="email"
@@ -884,26 +890,34 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
             </h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{t("results.transport")}</span>
+                <span className="text-muted-foreground">
+                  {t("results.transport")}
+                </span>
                 <span className="font-semibold text-foreground">
                   {emissions.transportCO2.toFixed(1)} kg CO₂
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{t("results.accommodation")}</span>
+                <span className="text-muted-foreground">
+                  {t("results.accommodation")}
+                </span>
                 <span className="font-semibold text-foreground">
                   {emissions.accommodationCO2.toFixed(1)} kg CO₂
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{t("results.food")}</span>
+                <span className="text-muted-foreground">
+                  {t("results.food")}
+                </span>
                 <span className="font-semibold text-foreground">
                   {emissions.foodCO2.toFixed(1)} kg CO₂
                 </span>
               </div>
               <div className="border-teal-500/30 border-t pt-3">
                 <div className="flex justify-between text-lg">
-                  <span className="font-bold text-foreground">{t("results.total")}</span>
+                  <span className="font-bold text-foreground">
+                    {t("results.total")}
+                  </span>
                   <span className="font-bold text-teal-400">
                     {emissions.totalCO2.toFixed(1)} kg CO₂
                   </span>
