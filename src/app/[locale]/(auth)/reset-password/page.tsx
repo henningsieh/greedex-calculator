@@ -1,7 +1,8 @@
-import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 import BackToHome from "@/components/back-to-home";
 import { ResetPasswordForm } from "@/components/features/authentication/reset-password-form";
 import RightSideImage from "@/components/features/authentication/right-side-image";
+import { redirect } from "@/lib/i18n/navigation";
 
 interface ResetPasswordPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -11,11 +12,12 @@ export default async function ResetPasswordPage({
   searchParams,
 }: ResetPasswordPageProps) {
   const params = await searchParams;
+  const locale = await getLocale();
   const token = params.token;
 
   // If no token is provided, redirect to forgot password page
   if (!token || typeof token !== "string") {
-    redirect("/forgot-password");
+    return redirect({ href: "/login", locale });
   }
 
   return (

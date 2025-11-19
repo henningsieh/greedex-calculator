@@ -2,14 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LogInIcon } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { LastUsedBadge } from "@/components/features/authentication/last-used-badge";
 import SocialButtons from "@/components/features/authentication/social-buttons";
 import FormField from "@/components/form-field";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -46,7 +46,9 @@ export function LoginForm({
 }: React.ComponentProps<"div"> & { nextPageUrl?: string | string[] }) {
   const router = useRouter();
   const [lastLoginMethod, setLastLoginMethod] = useState<string | null>(null);
+  console.log("Last login method:", lastLoginMethod);
   const locale = useLocale();
+  const t = useTranslations("authentication.login");
 
   // append the callbackUrl to the env
   const normalizedRedirect =
@@ -98,9 +100,6 @@ export function LoginForm({
           }
           toast.error(c.error.message || "Failed to sign in");
         },
-        onSuccess: () => {
-          router.push(finalRedirect);
-        },
       },
     );
   };
@@ -138,50 +137,48 @@ export function LoginForm({
         </CardHeader>
 
         <CardContent>
-          {lastLoginMethod && (
-            <Alert className="mb-6">
-              <AlertDescription>
-                Last time you signed in with:{" "}
-                <span className="font-semibold capitalize">
-                  {lastLoginMethod === "credential"
-                    ? "Email & Password"
-                    : lastLoginMethod === "magic-link"
-                      ? "Magic Link"
-                      : lastLoginMethod}
-                </span>
-              </AlertDescription>
-            </Alert>
-          )}
+          {/* Badges are positioned absolute within the relative containers in the top right */}
           <Tabs defaultValue="password" className="w-full space-y-8">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="password">Password</TabsTrigger>
-              <TabsTrigger value="magic-link">Magic Link</TabsTrigger>
+              <TabsTrigger className="relative" value="password">
+                Password
+                {(lastLoginMethod === "email" ||
+                  lastLoginMethod === "credential") && (
+                  <LastUsedBadge className="-left-8" />
+                )}
+              </TabsTrigger>
+              <TabsTrigger className="relative" value="magic-link">
+                Magic Link
+                {lastLoginMethod === "magic-link" && <LastUsedBadge />}
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="password">
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FieldGroup className="gap-4">
+                <FieldGroup className="">
                   <FormField
                     name="email"
                     control={form.control}
-                    label="Email"
                     id="email"
                     type="email"
+                    label="Email"
                     placeholder="m@example.com"
                     inputProps={{ disabled: form.formState.isSubmitting }}
                   />
                   <FormField
                     name="password"
                     control={form.control}
-                    label="Password"
                     id="password"
                     type="password"
+                    label="Password"
                     rightLabel={
-                      <Link
-                        href="/forgot-password"
-                        className="ml-auto text-sm underline-offset-4 hover:underline"
-                      >
-                        Forgot your password?
-                      </Link>
+                      <Button variant="link" className="px-0" asChild>
+                        <Link
+                          href="/forgot-password"
+                          className="ml-auto text-sm underline-offset-4 hover:underline"
+                        >
+                          Forgot your password?
+                        </Link>
+                      </Button>
                     }
                     inputProps={{ disabled: form.formState.isSubmitting }}
                   />
@@ -231,13 +228,6 @@ export function LoginForm({
         <CardFooter>
           <div className="w-full">
             <Field>
-              {/* <Button
-                type="submit"
-                variant="default"
-                disabled={form.formState.isSubmitting}
-              >
-                {form.formState.isSubmitting ? "Signing in..." : "Login"}
-              </Button> */}
               <FieldDescription className="text-center">
                 Don&apos;t have an account?{" "}
                 <Button variant="link" className="px-0 pl-1" asChild>
@@ -252,6 +242,7 @@ export function LoginForm({
               <SocialButtons
                 disabled={form.formState.isSubmitting}
                 callbackUrl={callbackURL}
+                lastLoginMethod={lastLoginMethod}
               />
             </Field>
           </div>

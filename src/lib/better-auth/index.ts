@@ -89,7 +89,16 @@ export const auth = betterAuth({
         });
       },
     }),
-    lastLoginMethod(),
+    lastLoginMethod({
+      customResolveMethod: (ctx) => {
+        // Track magic link authentication
+        if (ctx.path === "/magic-link/verify") {
+          return "magic-link";
+        }
+        // Return null to use default logic
+        return null;
+      },
+    }),
     nextCookies(),
   ],
 

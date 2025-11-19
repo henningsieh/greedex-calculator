@@ -547,5 +547,10 @@
         }
       }
     }
+  },
+  "authentication": {
+    "login": {
+      "last-used": "Last Used"
+    }
   }
 }
