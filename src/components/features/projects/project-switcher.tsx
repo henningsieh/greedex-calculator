@@ -6,7 +6,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { CheckIcon, ChevronsUpDownIcon, MapPinnedIcon } from "lucide-react";
-import { CreateProjectButton } from "@/components/features/projects/CreateProjectButton";
+import { CreateProjectButton } from "@/components/features/projects/create-project-button";
 import { useAppLoading } from "@/components/providers/loading-provider";
 import {
   DropdownMenu,

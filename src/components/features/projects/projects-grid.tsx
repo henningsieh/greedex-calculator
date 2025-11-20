@@ -4,7 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { FolderOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-import { CreateProjectButton } from "@/components/features/projects/CreateProjectButton";
+import { CreateProjectButton } from "@/components/features/projects/create-project-button";
 import { ProjectsControls } from "@/components/features/projects/ProjectsControls";
 import ProjectCard from "@/components/features/projects/project-card";
 import { ProjectsTable } from "@/components/features/projects/projects-table";

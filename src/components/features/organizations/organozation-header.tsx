@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Building2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { CreateProjectButton } from "@/components/features/projects/CreateProjectButton";
+import { CreateProjectButton } from "@/components/features/projects/create-project-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from "@/lib/i18n/navigation";
 import { orpcQuery } from "@/lib/orpc/orpc";
@@ -44,7 +44,11 @@ export function OrganizationHeader() {
         </div>
         <div>
           {pathname !== "/org/create-project" && (
-            <CreateProjectButton variant="secondary" showIcon={true} />
+            <CreateProjectButton
+              className="hidden sm:inline-flex"
+              variant="secondary"
+              showIcon={true}
+            />
           )}
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import type { VariantProps } from "class-variance-authority";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/lib/i18n/navigation";
@@ -22,7 +22,7 @@ export function CreateProjectButton({
   return (
     <Button asChild variant={variant} className={className}>
       <Link href="/org/create-project">
-        {showIcon && <Plus className="mr-2 size-4" />}
+        {showIcon && <PlusIcon />}
         {t("button.create-project")}
       </Link>
     </Button>
