@@ -7,7 +7,7 @@
 Greendex v2 provides a modern, user-friendly portal where project organizers can:
 - **Create and manage organizations** for their Erasmus+ projects
 - **Invite participants** and track team members across mobility events
-- **Calculate CO2 emissions** from participant journeys (transport modes, accommodation, energy)
+- **Calculate CO₂ emissions** from participant journeys (transport modes, accommodation, energy)
 - **Visualize sustainability impact** with individual and group-level analytics
 - **Organize sustainability challenges** to reduce carbon footprint during projects
 - **Plant trees** to offset calculated emissions and join the Greendex movement
@@ -75,6 +75,8 @@ SMTP_USER=your-email@example.com
 SMTP_PASSWORD=your-password
 
 # OAuth (optional)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 GITHUB_CLIENT_ID=your-github-client-id
 GITHUB_CLIENT_SECRET=your-github-client-secret
 DISCORD_CLIENT_ID=your-discord-client-id
@@ -249,7 +251,7 @@ For detailed development guidance, see `.github/copilot-instructions.md`.
 
 ## Roadmap
 
-- **Phase 2**: Carbon Calculator Integration — mobility & accommodation CO2 calculation
+- **Phase 2**: Carbon Calculator Integration — mobility & accommodation CO₂ calculation
 - **Phase 3**: Sustainability Challenges & Leaderboards
 - **Phase 4**: Tree Planting Integration & E-Forest
 - **Phase 5**: Social Impact & Analytics Dashboard

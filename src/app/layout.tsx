@@ -6,13 +6,13 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Greendex - Carbon Footprint Calculator for Erasmus+ Projects",
   description:
-    "Specialized carbon footprint calculator for Erasmus+ youth exchanges, training courses, and meetings. Calculate CO2 emissions and discover how many trees are needed to offset your project's environmental impact.",
+    "Specialized carbon footprint calculator for Erasmus+ youth exchanges, training courses, and meetings. Calculate CO₂ emissions and discover how many trees are needed to offset your project's environmental impact.",
   keywords: [
     "carbon footprint",
     "Erasmus+",
     "youth exchange",
     "sustainability",
-    "CO2 calculator",
+    "CO₂ calculator",
     "environmental impact",
     "tree planting",
   ],
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Greendex - Carbon Footprint Calculator for Erasmus+ Projects",
     description:
-      "Calculate and offset the carbon footprint of your Erasmus+ projects with our specialized CO2 calculator.",
+      "Calculate and offset the carbon footprint of your Erasmus+ projects with our specialized CO₂ calculator.",
     url: "https://greendex.world/",
     siteName: "Greendex",
     type: "website",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Greendex - Carbon Footprint Calculator for Erasmus+ Projects",
     description:
-      "Calculate and offset the carbon footprint of your Erasmus+ projects with our specialized CO2 calculator.",
+      "Calculate and offset the carbon footprint of your Erasmus+ projects with our specialized CO₂ calculator.",
     images: ["/greendex_logo.png"],
   },
   icons: {

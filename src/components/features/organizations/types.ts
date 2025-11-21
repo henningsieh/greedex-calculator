@@ -27,9 +27,9 @@ export const OrganizationFormSchema = OrganizationInsertSchema.omit({
 export type OrganizationFormSchemaType = z.infer<typeof OrganizationFormSchema>;
 
 export const organizationRoles = {
-  Owner: "owner",
-  Employee: "admin",
-  Participant: "member",
+  Owner: "owner", // correlates to the Owner of the organization, has full access, invites Employees / Admins
+  Employee: "admin", // correlates to "Team Members" of the organization
+  Participant: "member", // correlates to Participants of the projects, still organized under the organization
 } as const;
 
 export type OrganizationRole =

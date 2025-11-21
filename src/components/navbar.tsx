@@ -1,6 +1,7 @@
 "use client";
 
 import { UserSession } from "@/components/features/authentication/user-session";
+import { LocaleSwitcher } from "@/components/locale-switcher";
 import Logo from "@/components/logo";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Link } from "@/lib/i18n/navigation";
@@ -13,7 +14,8 @@ export function Navbar() {
           <Link href="/" className="flex gap-2">
             <Logo />
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4">
+            <LocaleSwitcher />
             <ThemeSwitcher />
             <UserSession />
           </div>

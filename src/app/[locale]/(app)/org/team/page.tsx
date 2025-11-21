@@ -1,29 +1,19 @@
 import { headers as nextHeaders } from "next/headers";
-import { getLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { TeamTable } from "@/app/[locale]/(app)/org/dashboard/_components/team-table";
 import { auth } from "@/lib/better-auth";
-import { redirect } from "@/lib/i18n/navigation";
 
 export default async () => {
   const headers = await nextHeaders();
-  const locale = await getLocale();
 
-  const sessionResult = await auth.api.getSession({
-    query: {
-      disableCookieCache: true,
-    },
+  // Get session and organizations for server-side data (for members)
+  const session = await auth.api.getSession({ headers: headers });
+  const organizations = await auth.api.listOrganizations({
     headers: headers,
   });
-  if (!sessionResult) return redirect({ href: "/login", locale });
 
-  const activeOrganizationId = sessionResult.session.activeOrganizationId;
-
-  if (!activeOrganizationId) {
-    await auth.api.signOut({
-      headers: headers,
-    });
-    return redirect({ href: "/login", locale });
-  }
+  const activeOrganizationId =
+    session?.session?.activeOrganizationId || organizations[0]?.id || "";
 
   const [ownersResult, adminsResult] = await Promise.all([
     auth.api.listMembers({
@@ -53,11 +43,13 @@ export default async () => {
     ],
   };
 
+  const t = await getTranslations("organization.team");
+
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <h2 className="font-bold text-4xl">Team Members</h2>
-        <p className="text-muted-foreground">List of team members goes here.</p>
+        <h2 className="font-bold text-4xl">{t("title")}</h2>
+        <p className="text-muted-foreground">{t("description")}</p>
       </div>
       <TeamTable members={membersResult.members} />
     </div>

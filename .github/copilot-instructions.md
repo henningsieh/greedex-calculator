@@ -1,13 +1,72 @@
 
-# Agent Constitution
+# 🚨 CRITICAL: Agent Constitution 🚨
 
-These rules are for automated AI agents (including Copilot-style agents) that interact with this repository during a session. They are intentionally strict to avoid interfering with a developer's existing local workflows or creating confusing terminal state.
+## ⚠️ ABSOLUTE REQUIREMENTS - VIOLATION PROHIBITED ⚠️
 
-- **Never run the dev server.** The developer always runs the dev server (`bun run dev`) locally and expects it to remain under their control; automated agents must not start or stop the dev server process.
-- **Also do not run the build or start commands.** Building and starting the production server (`bun run build` and `bun run start`) are also reserved for the developer to run manually.
-- **Reuse a single terminal session.** Do not open several separate shell terminal windows one after another. If a terminal was opened by the agent earlier in the session, reuse that same terminal shell for subsequent commands rather than creating new terminals.
+**These rules are MANDATORY for ALL automated AI agents (including Copilot-style 
+agents) that interact with this repository. They are intentionally STRICT to 
+prevent interference with the developer's local workflows and terminal state.**
 
-These constraints help keep the developer's environment stable and predictable while allowing the agent to make code edits, run non-destructive checks, and suggest commands for the user to run locally when needed.
+### 🚫 FORBIDDEN COMMANDS - NEVER EXECUTE 🚫
+
+**DEVELOPMENT SERVER:**
+- ❌ **NEVER** run `bun run dev`
+- ❌ **NEVER** run `npm run dev`
+- ❌ **NEVER** run `yarn dev`
+- ❌ **NEVER** start any development server process
+
+**BUILD & PRODUCTION COMMANDS:**
+- ❌ **NEVER** run `bun run build`
+- ❌ **NEVER** run `bun run start`
+- ❌ **NEVER** run `npm run build`
+- ❌ **NEVER** run `npm run start`
+- ❌ **NEVER** execute any build or production deployment commands
+
+**TERMINAL SESSION MANAGEMENT:**
+- ❌ **NEVER** open multiple terminal windows
+- ❌ **NEVER** create new terminal sessions unnecessarily
+- ✅ **ALWAYS** reuse existing terminal sessions when available
+
+### 📋 ALLOWED COMMANDS (Limited)
+
+Only these non-destructive commands are permitted:
+- ✅ `bun run lint` - Code linting
+- ✅ `bun run format` - Code formatting
+- ✅ `bun run test` - Testing (if configured)
+- ✅ Basic file operations and checks
+
+### 🎯 PURPOSE
+
+These restrictions exist because:
+- **The developer maintains exclusive control** over their local development environment
+- **Dev server processes** must remain under developer management
+- **Build and deployment** are manual developer decisions
+- **Terminal state** must remain predictable and stable
+
+### ⚡ WORKFLOW INTEGRATION
+
+Agents may:
+- ✅ Make code edits and file changes
+- ✅ Run static analysis (lint, format)
+- ✅ Suggest commands for the developer to run manually
+- ✅ Perform non-destructive checks
+
+Agents must:
+- ❌ Never interfere with running processes
+- ❌ Never change the developer's environment state unexpectedly
+- ❌ Never assume control of development workflow
+
+### 🚨 CONSEQUENCES OF VIOLATION
+
+**Breaking these rules will:**
+- Disrupt the developer's active development session
+- Create unpredictable terminal state
+- Potentially break ongoing work
+- Violate the trust relationship with the developer
+
+**Remember: The developer is always in control. Agents are assistants, not controllers.**
+
+---
 
 # Copilot instructions for this repository
 

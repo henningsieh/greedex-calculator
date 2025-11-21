@@ -91,7 +91,7 @@ export default async function HeroSection() {
                   preset="fade-in-blur"
                   speedSegment={0.3}
                   as="h1"
-                  className="mx-auto mt-8 text-balance font-bold font-sans text-4xl tracking-tight max-md:font-semibold md:text-5xl lg:mt-14 xl:text-6xl"
+                  className="mx-auto mt-8 text-balance font-semibold text-5xl tracking-tight max-md:font-semibold md:text-6xl lg:mt-14 xl:text-7xl"
                 >
                   {t("hero.missionTitle")}
                 </TextEffect>
@@ -103,7 +103,7 @@ export default async function HeroSection() {
                   preset="fade-in-blur"
                   speedSegment={0.5}
                   delay={0.2}
-                  as="h2"
+                  as="p"
                   className="mx-auto mt-6 max-w-6xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
                 >
                   {t("hero.missionText")}
@@ -115,7 +115,7 @@ export default async function HeroSection() {
                   speedSegment={0.3}
                   delay={0.5}
                   as="h2"
-                  className="mx-auto mt-8 text-balance font-extrabold text-3xl tracking-tight max-md:font-semibold md:text-4xl lg:mt-14 xl:text-5xl"
+                  className="mx-auto mt-8 text-balance font-semibold text-4xl tracking-tight max-md:font-semibold md:text-5xl lg:mt-14 xl:text-6xl"
                 >
                   {t("hero.visionTitle")}
                 </TextEffect>
@@ -127,7 +127,7 @@ export default async function HeroSection() {
                   preset="fade-in-blur"
                   speedSegment={0.5}
                   delay={0.7}
-                  as="h2"
+                  as="p"
                   className="mx-auto mt-6 max-w-6xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
                 >
                   {t("hero.visionText")}
