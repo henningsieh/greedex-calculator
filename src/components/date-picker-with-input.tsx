@@ -1,7 +1,7 @@
 "use client";
 
 import { CalendarIcon } from "lucide-react";
-import { useFormatter, useLocale } from "next-intl";
+import { useFormatter } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -27,7 +27,6 @@ function DatePickerWithInput({
 }: DatePickerWithInputProps) {
   const [open, setOpen] = useState(false);
   const [month, setMonth] = useState<Date | undefined>(value);
-  const locale = useLocale();
   const format = useFormatter();
 
   return (
