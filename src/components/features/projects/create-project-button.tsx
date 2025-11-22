@@ -17,13 +17,13 @@ export function CreateProjectButton({
   showIcon = true,
   className,
 }: CreateProjectButtonProps) {
-  const t = useTranslations("project");
+  const t = useTranslations("organization.projects");
 
   return (
     <Button asChild variant={variant} className={className}>
       <Link href="/org/create-project">
         {showIcon && <PlusIcon />}
-        {t("button.create-project")}
+        {t("form.new.submit.label")}
       </Link>
     </Button>
   );

@@ -5,7 +5,7 @@ import CreateProjectForm from "@/components/features/projects/create-project-for
 import { auth } from "@/lib/better-auth";
 
 export default async function CreateProjectPage() {
-  const t = await getTranslations("project.create");
+  const t = await getTranslations("organization.projects.form.new");
 
   const organizationsData = await auth.api.listOrganizations({
     headers: await headers(),

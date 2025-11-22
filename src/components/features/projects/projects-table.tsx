@@ -8,7 +8,7 @@ import type { ProjectType } from "@/components/features/projects/types";
 import { DEFAULT_PROJECT_SORT } from "@/components/features/projects/types";
 
 export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
-  const t = useTranslations("project");
+  const t = useTranslations("organization.projects");
 
   // Create columns with translations
   const columns = useMemo(() => getProjectColumns(t), [t]);

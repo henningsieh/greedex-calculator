@@ -132,7 +132,7 @@ export function getProjectColumns(
 }
 
 function ProjectActionsCell({ project }: { project: ProjectType }) {
-  const t = useTranslations("project");
+  const t = useTranslations("organization.projects");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const queryClient = useQueryClient();
   const { confirm, ConfirmDialogComponent } = useConfirmDialog();
@@ -148,27 +148,27 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
       mutationFn: () => orpc.project.delete({ id: project.id }),
       onSuccess: (result) => {
         if (result.success) {
-          toast.success(t("delete.toast-success"));
+          toast.success(t("form.delete.toast-success"));
           queryClient.invalidateQueries({
             queryKey: orpcQuery.project.list.queryKey(),
           });
         } else {
-          toast.error(t("delete.toast-error"));
+          toast.error(t("form.delete.toast-error"));
         }
       },
       onError: (err: unknown) => {
         console.error(err);
         const message = err instanceof Error ? err.message : String(err);
-        toast.error(message || t("delete.toast-error-generic"));
+        toast.error(message || t("form.delete.toast-error-generic"));
       },
     });
 
   const handleDelete = async () => {
     const confirmed = await confirm({
-      title: t("delete.confirm-title"),
-      description: t("delete.confirm-description", { name: project.name }),
-      confirmText: t("delete.confirm-button"),
-      cancelText: t("delete.cancel-button"),
+      title: t("form.delete.confirm-title"),
+      description: t("form.delete.confirm-description", { name: project.name }),
+      confirmText: t("form.delete.confirm-button"),
+      cancelText: t("form.delete.cancel-button"),
       isDestructive: true,
     });
 
@@ -224,7 +224,7 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
         <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{t("edit.title")}</DialogTitle>
+              <DialogTitle>{t("form.edit.title")}</DialogTitle>
             </DialogHeader>
             <EditProjectForm
               project={project}

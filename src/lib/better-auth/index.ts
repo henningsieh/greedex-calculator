@@ -1,5 +1,5 @@
-import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { betterAuth } from "better-auth/minimal";
 import { nextCookies } from "better-auth/next-js";
 import {
   lastLoginMethod,
@@ -25,6 +25,11 @@ import { sendEmail } from "@/lib/email/nodemailer";
 
 export const auth = betterAuth({
   appName: "Next WebSocket Server",
+
+  experimental: {
+    joins: true,
+  },
+
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
@@ -67,6 +72,7 @@ export const auth = betterAuth({
     additionalFields: {
       activeProjectId: {
         type: "string",
+        required: false,
       },
     },
   },
@@ -108,6 +114,7 @@ export const auth = betterAuth({
         before: async (userSession) => {
           const membership = await db.query.member.findFirst({
             where: eq(member.userId, userSession.userId),
+            // always get the most recent organization membership
             orderBy: desc(member.createdAt),
             columns: { organizationId: true },
           });
@@ -118,6 +125,38 @@ export const auth = betterAuth({
               activeOrganizationId: membership?.organizationId,
             },
           };
+        },
+      },
+
+      update: {
+        before: async (session) => {
+          // console.log("=== SESSION UPDATE HOOK CALLED ===");
+          // console.log(
+          //   "Incoming session object:",
+          //   JSON.stringify(session, null, 2),
+          // );
+          // console.log("Session keys:", Object.keys(session));
+          // console.log(
+          //   "Has activeOrganizationId?",
+          //   "activeOrganizationId" in session,
+          // );
+          // console.log(
+          //   "activeOrganizationId value:",
+          //   session.activeOrganizationId,
+          // );
+          // console.log("activeProjectId value:", session.activeProjectId);
+
+          const result = {
+            data: {
+              ...session,
+              activeProjectId: null,
+            },
+          };
+
+          // console.log("Returning:", JSON.stringify(result, null, 2));
+          // console.log("=== END HOOK ===");
+
+          return result;
         },
       },
     },

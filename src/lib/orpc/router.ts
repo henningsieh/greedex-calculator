@@ -1,4 +1,7 @@
-import { listOrganizations } from "@/components/features/organizations/procedures";
+import {
+  listOrganizationMembers,
+  listOrganizations,
+} from "@/components/features/organizations/procedures";
 import {
   createProject,
   deleteProject,
@@ -9,6 +12,7 @@ import {
   updateProject,
 } from "@/components/features/projects/procedures";
 import {
+  getFullOrganization,
   getHealth,
   getProfile,
   getSession,
@@ -36,7 +40,13 @@ export const router = {
 
   // Organization namespace
   organization: {
+    getActiveOrganizationDetails: getFullOrganization,
     list: listOrganizations,
+  },
+
+  // Member namespace
+  member: {
+    list: listOrganizationMembers,
   },
 
   // Project namespace

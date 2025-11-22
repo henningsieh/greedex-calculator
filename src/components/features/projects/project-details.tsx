@@ -76,7 +76,7 @@ function ProjectDetails({ id }: ProjectDetailsProps) {
               <Label className="font-medium text-gray-600 text-sm">
                 {t("welcome-message")}
               </Label>
-              <p className="rounded-md bg-gray-50 p-4 text-lg italic">
+              <p className="rounded-md bg-muted p-4 text-lg italic">
                 {data.welcomeMessage}
               </p>
             </div>

@@ -35,11 +35,11 @@ function DatePickerWithInput({
       <Input
         id={id}
         type="text"
-        value={value && format.dateTime(value, { 
+        value={value ? format.dateTime(value, { 
           year: "numeric",
           month: "2-digit",
           day: "2-digit"
-         })}
+         }) : ""}
         placeholder={placeholder}
         readOnly
         className="cursor-pointer bg-background pr-10"

@@ -36,7 +36,7 @@ interface CreateProjectFormProps {
 }
 
 function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
-  const t = useTranslations("project.create");
+  const t = useTranslations("organization.projects.form.new");
   const {
     register,
     control,
@@ -94,16 +94,14 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FieldGroup>
           <Field data-invalid={!!errors.name}>
-            <FieldLabel htmlFor="name">{t("form.name")}</FieldLabel>
+            <FieldLabel htmlFor="name">{t("name")}</FieldLabel>
             <Input id="name" {...register("name")} />
             <FieldError errors={[errors.name]} />
           </Field>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Field data-invalid={!!errors.startDate}>
-              <FieldLabel htmlFor="startDate">
-                {t("form.start-date")}
-              </FieldLabel>
+              <FieldLabel htmlFor="startDate">{t("start-date")}</FieldLabel>
               <Controller
                 control={control}
                 name="startDate"
@@ -119,7 +117,7 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
             </Field>
 
             <Field data-invalid={!!errors.endDate}>
-              <FieldLabel htmlFor="endDate">{t("form.end-date")}</FieldLabel>
+              <FieldLabel htmlFor="endDate">{t("end-date")}</FieldLabel>
               <Controller
                 control={control}
                 name="endDate"
@@ -136,26 +134,26 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
           </div>
 
           <Field data-invalid={!!errors.country}>
-            <FieldLabel htmlFor="country">{t("form.country")}</FieldLabel>
+            <FieldLabel htmlFor="country">{t("country")}</FieldLabel>
             <Input id="country" {...register("country")} />
             <FieldError errors={[errors.country]} />
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="location">{t("form.location")}</FieldLabel>
+            <FieldLabel htmlFor="location">{t("location")}</FieldLabel>
             <Input id="location" {...register("location")} />
           </Field>
 
           <Field>
             <FieldLabel htmlFor="welcomeMessage">
-              {t("form.welcome-message")}
+              {t("welcome-message")}
             </FieldLabel>
             <Textarea id="welcomeMessage" {...register("welcomeMessage")} />
           </Field>
 
           <Field data-invalid={!!errors.organizationId}>
             <FieldLabel htmlFor="organizationId">
-              {t("form.organization")}
+              {t("organization")}
             </FieldLabel>
             <Controller
               control={control}
@@ -163,7 +161,7 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger id="organizationId">
-                    <SelectValue placeholder={t("form.select-organization")} />
+                    <SelectValue placeholder={t("select-organization")} />
                   </SelectTrigger>
                   <SelectContent>
                     {userOrganizations.map((org) => (
@@ -179,7 +177,7 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
           </Field>
 
           <Button type="submit" disabled={isPending} className="w-fit">
-            {isPending ? t("form.creating") : t("form.create-project")}
+            {isPending ? t("creating") : t("create-project")}
           </Button>
         </FieldGroup>
       </form>

@@ -13,21 +13,10 @@ export function OrganizationHeader() {
 
   const pathname = usePathname();
 
-  // Using oRPC queries for stable SSR hydration
+  // Using oRPC query for active organization details
   // Prefetched in page.tsx, so no loading state on mount
-  const { data: session } = useSuspenseQuery(
-    orpcQuery.betterauth.getSession.queryOptions(),
-  );
-
-  const { data: organizations } = useSuspenseQuery(
-    orpcQuery.organization.list.queryOptions(),
-  );
-
-  const activeOrganizationId =
-    session?.session?.activeOrganizationId || organizations?.[0]?.id || "";
-
-  const activeOrganization = organizations?.find(
-    (org) => org.id === activeOrganizationId,
+  const { data: activeOrganization } = useSuspenseQuery(
+    orpcQuery.organization.getActiveOrganizationDetails.queryOptions(),
   );
 
   return (
