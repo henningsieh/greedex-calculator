@@ -5,6 +5,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig: NextConfig = {
   typedRoutes: true,
   reactCompiler: true,
+  cacheComponents: true, // Enable Partial Prerendering (PPR)
   devIndicators: {
     position: "bottom-right",
   },

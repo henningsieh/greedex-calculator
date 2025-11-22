@@ -1,5 +1,6 @@
 import { cookies, headers } from "next/headers";
 import { getLocale } from "next-intl/server";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import {
@@ -26,6 +27,9 @@ export default async function AppLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Explicitly defer to request time for PPR since this layout requires authentication
+  // This ensures the layout and all runtime data access is properly handled
+  await connection();
   const locale = await getLocale();
   const requestHeaders = await headers();
   const rememberedPath =
