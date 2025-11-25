@@ -375,6 +375,39 @@
           "create-project": "Create Project",
           "title": "Create a new Project"
         }
+      },
+      "activeProject": {
+        "emptyState": {
+          "title": "No active project",
+          "description": "Select a project to view participants."
+        },
+        "header": {
+          "edit": "Edit",
+          "delete": "Delete",
+          "deleteDialog": {
+            "title": "Are you sure?",
+            "description": "This will permanently delete the project \"{name}\". This action cannot be undone.",
+            "confirm": "Delete",
+            "cancel": "Cancel"
+          },
+          "toast": {
+            "deleteSuccess": "Project deleted successfully",
+            "deleteFailure": "Failed to delete project",
+            "deleteFailureGeneric": "An error occurred while deleting the project"
+          }
+        },
+        "participation": {
+          "title": "Participation Link",
+          "description": "Share this link with participants to allow them to join the project and submit their travel activities.",
+          "qrButton": "QR Code",
+          "openLink": "Open Link",
+          "copySuccess": "Participation link copied to clipboard!",
+          "qrError": "Failed to generate QR code",
+          "modalTitle": "Participation QR Code",
+          "modalDescription": "Scan this QR code to access the participation page",
+          "linkLabel": "Participation URL",
+          "copyClipboard": "Copy participation URL to clipboard"
+        }
       }
     },
     "team": {

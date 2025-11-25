@@ -375,6 +375,39 @@
           "create-project": "Projekt erstellen",
           "title": "Neues Projekt erstellen"
         }
+      },
+      "activeProject": {
+        "emptyState": {
+          "title": "Kein aktives Projekt",
+          "description": "Wähle ein Projekt aus, um Teilnehmende anzeigen zu können."
+        },
+        "header": {
+          "edit": "Bearbeiten",
+          "delete": "Löschen",
+          "deleteDialog": {
+            "title": "Bist du sicher?",
+            "description": "Dies wird das Projekt \"{name}\" dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
+            "confirm": "Löschen",
+            "cancel": "Abbrechen"
+          },
+          "toast": {
+            "deleteSuccess": "Projekt erfolgreich gelöscht",
+            "deleteFailure": "Fehler beim Löschen des Projekts",
+            "deleteFailureGeneric": "Fehler beim Löschen des Projekts"
+          }
+        },
+        "participation": {
+          "title": "Teilnahmelink",
+          "description": "Teile diesen Link mit Teilnehmenden, damit sie dem Projekt beitreten und ihre Aktivitäten melden können.",
+          "qrButton": "QR-Code",
+          "openLink": "Link öffnen",
+          "copySuccess": "Teilnahmelink wurde in die Zwischenablage kopiert!",
+          "qrError": "QR-Code konnte nicht generiert werden",
+          "modalTitle": "Teilnahme-QR-Code",
+          "modalDescription": "Scanne diesen QR-Code, um auf die Teilnahme-Seite zu gelangen",
+          "linkLabel": "Teilnahme-URL",
+          "copyClipboard": "Teilnahme-URL in die Zwischenablage kopieren"
+        }
       }
     },
     "team": {

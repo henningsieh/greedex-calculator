@@ -142,7 +142,7 @@ export const LandingHeader = () => {
             </div>
 
             <div className="inset-0 m-auto hidden size-fit lg:block">
-              <ul className="flex gap-4 text-lg xl:gap-6 xl:text-xl">
+              <ul className="flex gap-4 text-lg">
                 {menuItems.map((item) => (
                   <li key={item.name}>
                     <Link

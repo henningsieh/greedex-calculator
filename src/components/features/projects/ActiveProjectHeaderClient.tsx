@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CalendarIcon, Edit2Icon, MapPinIcon, Trash2Icon } from "lucide-react";
-import { useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 import EditProjectForm from "@/components/features/projects/edit-project-form";
@@ -25,6 +25,7 @@ interface ActiveProjectHeaderClientProps {
 export default function ActiveProjectHeaderClient({
   activeProject,
 }: ActiveProjectHeaderClientProps) {
+  const t = useTranslations("organization.projects.activeProject");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const format = useFormatter();
   const queryClient = useQueryClient();
@@ -43,27 +44,29 @@ export default function ActiveProjectHeaderClient({
       mutationFn: () => orpc.project.delete({ id: activeProject.id }),
       onSuccess: (result) => {
         if (result.success) {
-          toast.success("Project deleted successfully");
+          toast.success(t("header.toast.deleteSuccess"));
           queryClient.invalidateQueries({
             queryKey: orpcQuery.project.list.queryKey(),
           });
         } else {
-          toast.error("Failed to delete project");
+          toast.error(t("header.toast.deleteFailure"));
         }
       },
       onError: (err: unknown) => {
         console.error(err);
         const message = err instanceof Error ? err.message : String(err);
-        toast.error(message || "An error occurred while deleting the project");
+        toast.error(message || t("header.toast.deleteFailureGeneric"));
       },
     });
 
   const handleDelete = async () => {
     const confirmed = await confirm({
-      title: "Are you sure?",
-      description: `This will permanently delete the project "${activeProject.name}". This action cannot be undone.`,
-      confirmText: "Delete",
-      cancelText: "Cancel",
+      title: t("header.deleteDialog.title"),
+      description: t("header.deleteDialog.description", {
+        name: activeProject.name,
+      }),
+      confirmText: t("header.deleteDialog.confirm"),
+      cancelText: t("header.deleteDialog.cancel"),
       isDestructive: true,
     });
 
@@ -116,7 +119,7 @@ export default function ActiveProjectHeaderClient({
                 onClick={() => setIsEditModalOpen(true)}
               >
                 <Edit2Icon className="h-4 w-4" />
-                Edit
+                {t("header.edit")}
               </Button>
             )}
             {canDelete && (
@@ -126,7 +129,7 @@ export default function ActiveProjectHeaderClient({
                 disabled={isDeleting || permissionsPending}
               >
                 <Trash2Icon className="h-4 w-4" />
-                Delete
+                {t("header.delete")}
               </Button>
             )}
           </div>
@@ -144,7 +147,7 @@ export default function ActiveProjectHeaderClient({
         <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit Project</DialogTitle>
+              <DialogTitle>{t("header.edit")}</DialogTitle>
             </DialogHeader>
             <EditProjectForm
               project={activeProject}

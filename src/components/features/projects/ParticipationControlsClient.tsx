@@ -1,6 +1,7 @@
 "use client";
 
 import { ExternalLinkIcon, Link2Icon, QrCodeIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -22,6 +23,7 @@ interface ParticipationControlsClientProps {
 export default function ParticipationControlsClient({
   activeProjectId,
 }: ParticipationControlsClientProps) {
+  const t = useTranslations("organization.projects.activeProject");
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
 
@@ -42,10 +44,10 @@ export default function ParticipationControlsClient({
         })
         .catch((err) => {
           console.error("Error generating QR code:", err);
-          toast.error("Failed to generate QR code");
+          toast.error(t("participation.qrError"));
         });
     }
-  }, [isQrModalOpen, participationUrl]);
+  }, [isQrModalOpen, participationUrl, t]);
 
   if (!activeProjectId) {
     return null; // or some empty state
@@ -53,7 +55,7 @@ export default function ParticipationControlsClient({
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(participationUrl);
-    toast.success("Participation link copied to clipboard!");
+    toast.success(t("participation.copySuccess"));
   };
 
   return (
@@ -63,7 +65,7 @@ export default function ParticipationControlsClient({
           <div className="mb-4 flex items-center gap-2">
             <Link2Icon className="h-5 w-5 text-secondary" />
             <h2 className="font-semibold text-lg dark:text-secondary-foreground">
-              Participation Link
+              {t("participation.title")}
             </h2>
           </div>
           <Button
@@ -72,13 +74,14 @@ export default function ParticipationControlsClient({
             onClick={() => setIsQrModalOpen(true)}
           >
             <QrCodeIcon className="h-4 w-4" />
-            <span className="hidden sm:inline">QR Code</span>
+            <span className="hidden sm:inline">
+              {t("participation.qrButton")}
+            </span>
           </Button>
         </div>
 
         <p className="text-muted-foreground text-sm">
-          Share this link with participants to allow them to join the project
-          and submit their travel activities.
+          {t("participation.description")}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
@@ -89,28 +92,28 @@ export default function ParticipationControlsClient({
                 value={participationUrl}
                 readOnly
                 className="w-full truncate rounded-md border bg-secondary/40 px-4 py-2 pr-12 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                title="Participation URL"
+                title={t("participation.linkLabel")}
               />
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={copyToClipboard}
                 className="-translate-y-1/2 absolute top-1/2 right-1 h-8 w-8 p-0 hover:bg-accent"
-                title="Copy to clipboard"
-                aria-label="Copy participation URL to clipboard"
+                title={t("participation.copyClipboard")}
+                aria-label={t("participation.copyClipboard")}
               >
                 <svg
                   className="h-4 w-4"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={`0 0 24 24`}
                   aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    d={`M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z`}
                   />
                 </svg>
               </Button>
@@ -122,16 +125,18 @@ export default function ParticipationControlsClient({
             variant="outline"
             className="sm:w-36"
             asChild
-            rel="noopener noreferrer"
+            rel={`noopener noreferrer`}
           >
             <a
               className="flex cursor-pointer hover:bg-secondary/50 hover:text-secondary-foreground"
               href={participationUrl}
               target="_blank"
-              rel="noopener noreferrer"
+              rel={`noopener noreferrer`}
             >
               <ExternalLinkIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Open Link</span>
+              <span className="hidden sm:inline">
+                {t("participation.openLink")}
+              </span>
             </a>
           </Button>
         </div>
@@ -141,11 +146,11 @@ export default function ParticipationControlsClient({
       <Dialog open={isQrModalOpen} onOpenChange={setIsQrModalOpen}>
         <DialogContent className="border-secondary/70" showCloseButton={false}>
           <DialogHeader>
-            <DialogTitle className="text-secondary-foreground">
-              Participation QR Code
+            <DialogTitle className="font-bold text-2xl text-secondary-foreground sm:text-3xl">
+              {t("participation.modalTitle")}
             </DialogTitle>
-            <DialogDescription>
-              Scan this QR code to access the participation page
+            <DialogDescription className="text-base text-secondary-foreground/60 sm:text-lg">
+              {t("participation.modalDescription")}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center gap-4 py-4">
@@ -153,7 +158,7 @@ export default function ParticipationControlsClient({
               // biome-ignore lint/performance/noImgElement: QR code is a base64 data URL, not an external image
               <img
                 src={qrCodeDataUrl}
-                alt="QR Code for participation link"
+                alt={t("participation.modalTitle")}
                 className="rounded-lg border border-secondary/70"
               />
             ) : (
