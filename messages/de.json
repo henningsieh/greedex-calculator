@@ -385,7 +385,7 @@
         "email": "E-Mail",
         "role": "Rolle",
         "joined": "Beigetreten",
-        "table": {
+        "control": {
           "filter": "Teammitglieder filtern",
           "clear": "Löschen Sie alle Filter"
         }

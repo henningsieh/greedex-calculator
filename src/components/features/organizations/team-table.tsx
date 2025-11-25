@@ -176,7 +176,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
     <div>
       <div className="flex items-center gap-2 py-4">
         <Input
-          placeholder={t("table.filter")}
+          placeholder={t("control.filter")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"
@@ -191,7 +191,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
               setPageIndex(0);
             }}
           >
-            {t("table.clear")}
+            {t("control.clear")}
           </Button>
         </div>
       </div>
