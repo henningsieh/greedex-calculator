@@ -1,7 +1,7 @@
 "use client";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Users2Icon } from "lucide-react";
+import { MapPinnedIcon } from "lucide-react";
 import { Suspense } from "react";
 import ActiveProjectHeaderClient from "@/components/features/projects/ActiveProjectHeaderClient";
 import ParticipantsList, {
@@ -38,8 +38,11 @@ export default function ControlActiveProjectPage() {
       <div className="rounded-md border border-secondary/70 bg-secondary/10 p-4">
         <Empty>
           <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <Users2Icon className="h-12 w-12" />
+            <EmptyMedia
+              variant="default"
+              // className="bg-secondary/70 text-secondary-foreground"
+            >
+              <MapPinnedIcon className="size-16 text-secondary-foreground" />
             </EmptyMedia>
             <EmptyTitle>No active project</EmptyTitle>
             <EmptyDescription>
