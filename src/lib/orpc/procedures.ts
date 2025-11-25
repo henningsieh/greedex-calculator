@@ -1,5 +1,7 @@
+import { ORPCError } from "@orpc/server";
 import { z } from "zod";
 import { auth } from "@/lib/better-auth";
+import { SessionSchema } from "@/lib/better-auth/types";
 import { base } from "@/lib/orpc/context";
 import { authorized } from "@/lib/orpc/middleware";
 
@@ -53,14 +55,23 @@ export const getProfile = authorized.handler(async ({ context }) => {
 
 /**
  * Get current session using Better Auth
- * Uses Better Auth's implicit session endpoint
+ * Returns null if user is not authenticated
  */
-export const getSession = base.handler(async ({ context }) => {
-  const session = await auth.api.getSession({
-    headers: context.headers,
+export const getSession = base
+  .output(SessionSchema)
+  .handler(async ({ context }) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: context.headers,
+      });
+      return session;
+    } catch (error) {
+      throw new ORPCError("INTERNAL_SERVER_ERROR", {
+        message: "Failed to fetch session",
+        cause: error,
+      });
+    }
   });
-  return session;
-});
 
 /**
  * Get full organization details using Better Auth
