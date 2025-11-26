@@ -1,4 +1,4 @@
-import { headers as nextHeaders } from "next/headers";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
@@ -8,21 +8,23 @@ import { auth } from "@/lib/better-auth";
 export default async function AcceptInvitationPage({
   params,
 }: {
-  params: { invitationId: string };
+  // params: { invitationId: string };
+  params: Promise<{ invitationId: string }>;
 }) {
   const t = await getTranslations("organization.invitation");
-  const headers = await nextHeaders();
-  const { invitationId } = params;
+  const { invitationId } = await params;
 
   const invitation = await auth.api.getInvitation({
     query: { id: invitationId },
-    headers,
+    headers: await headers(),
   });
-  const session = await auth.api.getSession({ headers });
+
   if (!invitation?.id) {
     notFound();
     return null;
   }
+
+  const session = await auth.api.getSession({ headers: await headers() });
 
   return (
     <div className="space-y-4">
