@@ -10,8 +10,10 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   const search = request.nextUrl.search;
   const segments = pathname.split("/");
   const isOrgRoute = segments.length > 2 && segments[2] === "org";
+  const isAcceptInvitationRoute =
+    segments.length > 2 && segments[2] === "accept-invitation";
 
-  if (isOrgRoute) {
+  if (isOrgRoute || isAcceptInvitationRoute) {
     request.headers.set("x-org-requested-path", `${pathname}${search}`);
   }
 
