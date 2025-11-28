@@ -16,6 +16,8 @@ import { ActivityType, activityTypeValues } from "@/components/participate/types
  * 
  * Members with "member" role can READ projects
  * Members with "admin" or "owner" role can CREATE, READ, UPDATE, DELETE projects
+ *   - Owners can delete any projects in the organization
+ *   - Admins can only delete projects they created (where they are the responsible team member)
  */
 export const projectTable = pgTable("project", {
   id: text("id").primaryKey(),

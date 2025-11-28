@@ -2,7 +2,7 @@ import { MapPinnedIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { ProjectsGrid } from "@/components/features/projects/projects-grid";
+import { ProjectsTab } from "@/components/features/projects/projects-tab";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/react-query/hydration";
 
@@ -26,7 +26,7 @@ export default async function ProjectsPage() {
       </div>
       <Suspense fallback={<div>{t("suspense-loading")}</div>}>
         <ErrorBoundary fallback={<div>{t("error-message")}</div>}>
-          <ProjectsGrid />
+          <ProjectsTab />
         </ErrorBoundary>
       </Suspense>
     </div>

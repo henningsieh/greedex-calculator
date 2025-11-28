@@ -329,6 +329,7 @@
         "view-details": "View Details",
         "edit-project": "Edit Project",
         "delete-project": "Delete Project",
+        "batch-delete": "Delete Selected ({count})",
         "filter-projects": "Filter projects..."
       },
       "views": {
@@ -353,6 +354,15 @@
           "toast-success": "Project deleted successfully",
           "toast-error": "Failed to delete project",
           "toast-error-generic": "An error occurred while deleting the project"
+        },
+        "batch-delete": {
+          "confirm-title": "Delete Selected Projects?",
+          "confirm-description": "This will permanently delete {count} selected projects: {names}. This action cannot be undone.",
+          "confirm-button": "Delete Projects",
+          "cancel-button": "Cancel",
+          "toast-success": "{count} projects deleted successfully",
+          "toast-error": "Failed to delete projects",
+          "toast-error-generic": "An error occurred while deleting the projects"
         },
         "new": {
           "toast": {

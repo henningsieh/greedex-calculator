@@ -329,6 +329,7 @@
         "view-details": "Details anzeigen",
         "edit-project": "Projekt bearbeiten",
         "delete-project": "Projekt löschen",
+        "batch-delete": "Ausgewählte löschen ({count})",
         "filter-projects": "Projekte filtern..."
       },
       "views": {
@@ -353,6 +354,15 @@
           "toast-success": "Projekt erfolgreich gelöscht",
           "toast-error": "Fehler beim Löschen des Projekts",
           "toast-error-generic": "Fehler beim Löschen des Projekts"
+        },
+        "batch-delete": {
+          "confirm-title": "Ausgewählte Projekte löschen?",
+          "confirm-description": "Dies wird {count} ausgewählte Projekte dauerhaft löschen: {names}. Diese Aktion kann nicht rückgängig gemacht werden.",
+          "confirm-button": "Projekte löschen",
+          "cancel-button": "Abbrechen",
+          "toast-success": "{count} Projekte erfolgreich gelöscht",
+          "toast-error": "Fehler beim Löschen der Projekte",
+          "toast-error-generic": "Fehler beim Löschen der Projekte"
         },
         "new": {
           "toast": {

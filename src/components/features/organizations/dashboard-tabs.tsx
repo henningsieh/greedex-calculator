@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import { DashboardStats } from "@/components/features/organizations/dashboard-stats";
 import { TeamTable } from "@/components/features/organizations/team-table";
 import { memberRoles } from "@/components/features/organizations/types";
-import { ProjectsGrid } from "@/components/features/projects/projects-grid";
+import { ProjectsTab } from "@/components/features/projects/projects-tab";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface DashboardTabsProps {
@@ -41,7 +41,7 @@ export function DashboardTabs({ organizationId }: DashboardTabsProps) {
 
       <TabsContent value="projects">
         <Suspense fallback={<div>{t("tabs.loading-projects")}</div>}>
-          <ProjectsGrid />
+          <ProjectsTab />
         </Suspense>
       </TabsContent>
 

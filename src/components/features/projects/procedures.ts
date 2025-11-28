@@ -2,7 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { ORPCError } from "@orpc/server";
-import { and, asc, eq, type SQL, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, type SQL, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { memberRoles } from "@/components/features/organizations/types";
@@ -262,7 +262,7 @@ export const updateProject = authorized
  *
  * Requires:
  * - Authentication
- * - "delete" permission on project resource (admin/owner only)
+ * - "delete" permission on project resource (owner only)
  * - Project must belong to user's active organization
  */
 export const deleteProject = authorized
@@ -282,7 +282,7 @@ export const deleteProject = authorized
       });
     }
 
-    // Verify project belongs to user's organization before deleting
+    // Verify project exists and belongs to organization
     const [existingProject] = await db
       .select()
       .from(projectTable)
@@ -296,18 +296,11 @@ export const deleteProject = authorized
 
     if (!existingProject) {
       throw new ORPCError("NOT_FOUND", {
-        message: "This Project was not found",
+        message: "Project not found or you don't have access to it",
       });
     }
 
-    if (
-      existingProject.organizationId !== context.session.activeOrganizationId
-    ) {
-      throw new ORPCError("FORBIDDEN", {
-        message: "You don't have permission to update this project",
-      });
-    }
-
+    // Delete the project
     await db.delete(projectTable).where(eq(projectTable.id, input.id));
 
     return { success: true };
@@ -445,4 +438,63 @@ export const getProjectParticipants = authorized
       .where(eq(projectParticipant.projectId, input.projectId));
 
     return participants;
+  });
+
+/**
+ * Batch delete projects
+ *
+ * Requires:
+ * - Authentication
+ * - "delete" permission on project resource (owner only)
+ * - All projects must belong to user's active organization
+ */
+export const batchDeleteProjects = authorized
+  .use(requireProjectPermissions(["delete"]))
+  .route({
+    method: "DELETE",
+    path: "/projects/batch",
+    summary: "Batch delete multiple projects",
+    tags: ["project"],
+  })
+  .input(z.object({ projectIds: z.array(z.string()).min(1) }))
+  .output(z.object({ success: z.boolean(), deletedCount: z.number() }))
+  .handler(async ({ input, context }) => {
+    if (!context.session.activeOrganizationId) {
+      throw new ORPCError("BAD_REQUEST", {
+        message: "No active organization. Please select an organization first.",
+      });
+    }
+
+    // Verify all projects belong to user's organization
+    const projectsToDelete = await db
+      .select({ id: projectTable.id })
+      .from(projectTable)
+      .where(
+        and(
+          inArray(projectTable.id, input.projectIds),
+          eq(projectTable.organizationId, context.session.activeOrganizationId),
+        ),
+      );
+
+    if (projectsToDelete.length !== input.projectIds.length) {
+      throw new ORPCError("FORBIDDEN", {
+        message:
+          "Some projects don't exist or you don't have permission to delete them",
+      });
+    }
+
+    // Delete the projects
+    const result = await db
+      .delete(projectTable)
+      .where(
+        and(
+          inArray(projectTable.id, input.projectIds),
+          eq(projectTable.organizationId, context.session.activeOrganizationId),
+        ),
+      );
+
+    return {
+      success: true,
+      deletedCount: result.rowCount || 0,
+    };
   });

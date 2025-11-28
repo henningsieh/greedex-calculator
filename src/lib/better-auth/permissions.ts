@@ -48,7 +48,7 @@ export const owner = ac.newRole({
  * Admin Role
  * - Can manage projects and most organization resources
  * - Can create, read, update, and share projects
- * - CANNOT delete projects
+ * - CANNOT delete projects (only owners can delete)
  * - Inherits all default admin permissions
  */
 export const admin = ac.newRole({

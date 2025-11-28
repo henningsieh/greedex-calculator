@@ -1,6 +1,10 @@
 "use client";
 
-import { ChevronDown, Grid2X2, TableProperties } from "lucide-react";
+import {
+  ChevronDownIcon,
+  Grid2X2Icon,
+  TablePropertiesIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   SORT_OPTIONS,
@@ -23,7 +27,7 @@ interface ProjectsControlsProps {
   onSortChange?: (sort: SortOption) => void;
 }
 
-export function ProjectsControls({
+export function ProjectsViewSelect({
   view,
   setView,
   sortBy,
@@ -46,7 +50,7 @@ export function ProjectsControls({
           size="sm"
           onClick={() => setView("table")}
         >
-          <TableProperties className="mr-2 size-4" />
+          <TablePropertiesIcon className="mr-2 size-4" />
           {t("views.table")}
         </Button>
         <Button
@@ -54,7 +58,7 @@ export function ProjectsControls({
           size="sm"
           onClick={() => setView("grid")}
         >
-          <Grid2X2 className="mr-2 size-4" />
+          <Grid2X2Icon className="mr-2 size-4" />
           {t("views.grid")}
         </Button>
       </div>
@@ -65,7 +69,7 @@ export function ProjectsControls({
             <Button variant="outline" size="sm">
               {t("sort-label")}{" "}
               {sortOptions.find((option) => option.value === sortBy)?.label}
-              <ChevronDown className="ml-2 h-4 w-4" />
+              <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

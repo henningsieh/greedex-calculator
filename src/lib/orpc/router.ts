@@ -3,6 +3,7 @@ import {
   searchMembers,
 } from "@/components/features/organizations/procedures";
 import {
+  batchDeleteProjects,
   createProject,
   deleteProject,
   getProjectById,
@@ -56,6 +57,7 @@ export const router = {
     getById: getProjectById,
     update: updateProject,
     delete: deleteProject,
+    batchDelete: batchDeleteProjects,
     setActive: setActiveProject,
     getParticipants: getProjectParticipants,
   },

@@ -7,7 +7,7 @@ import { base } from "@/lib/orpc/context";
  * Middleware that validates authentication using Better Auth
  * Adds session and user to the context for protected procedures
  */
-export const authMiddleware = base.middleware(async ({ context, next }) => {
+const authMiddleware = base.middleware(async ({ context, next }) => {
   const sessionData = await auth.api.getSession({
     headers: context.headers,
   });
