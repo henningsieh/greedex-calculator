@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { normalizeRedirectPath } from "@/components/features/authentication/auth-flow-layout";
 import { LastUsedBadge } from "@/components/features/authentication/last-used-badge";
 import SocialButtons from "@/components/features/authentication/social-buttons";
 import FormField from "@/components/form-field";
@@ -47,14 +48,7 @@ export function LoginForm({
   const t = useTranslations("authentication");
 
   // append the callbackUrl to the env
-  const normalizedRedirect =
-    typeof nextPageUrl === "string"
-      ? nextPageUrl
-      : Array.isArray(nextPageUrl)
-        ? nextPageUrl[0]
-        : undefined;
-  const fallbackPath = DASHBOARD_PATH;
-  const finalRedirect = normalizedRedirect ?? fallbackPath;
+  const finalRedirect = normalizeRedirectPath(nextPageUrl, DASHBOARD_PATH);
   const callbackURL = env.NEXT_PUBLIC_BASE_URL + finalRedirect;
 
   // Get last login method on component mount
@@ -242,9 +236,21 @@ export function LoginForm({
             <Field>
               <FieldDescription className="px-6 text-center font-bold">
                 {t("login.footer.noAccount")}
-                <Button variant="link" className="px-0 pl-1" asChild>
-                  <Link href={SIGNUP_PATH}>{t("login.footer.signUp")}</Link>
-                </Button>
+                {(() => {
+                  let signupHref = `${SIGNUP_PATH}`;
+                  if (nextPageUrl) {
+                    const normalized = normalizeRedirectPath(
+                      nextPageUrl,
+                      DASHBOARD_PATH,
+                    );
+                    signupHref += `?nextPageUrl=${encodeURIComponent(normalized)}`;
+                  }
+                  return (
+                    <Button variant="link" className="px-0 pl-1" asChild>
+                      <Link href={signupHref}>{t("login.footer.signUp")}</Link>
+                    </Button>
+                  );
+                })()}
               </FieldDescription>
 
               <FieldSeparator className="my-4 font-bold">

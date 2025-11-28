@@ -13,6 +13,12 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   const isAcceptInvitationRoute =
     segments.length > 2 && segments[2] === "accept-invitation";
 
+  console.debug(
+    `Proxy middleware: isOrgRoute=${isOrgRoute}, isAcceptInvitationRoute=${isAcceptInvitationRoute}, pathname=${pathname}, search=${search}`,
+  );
+
+  // For org-related and accept-invitation routes, store the originally requested path in a custom header
+
   if (isOrgRoute || isAcceptInvitationRoute) {
     request.headers.set("x-org-requested-path", `${pathname}${search}`);
   }

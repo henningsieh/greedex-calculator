@@ -13,6 +13,19 @@ type AuthFlowLayoutProps = {
   backHref?: string;
 };
 
+export function normalizeRedirectPath(
+  nextPageUrl: string | string[] | undefined,
+  fallbackPath: string,
+): string {
+  const normalizedRedirect =
+    typeof nextPageUrl === "string"
+      ? nextPageUrl
+      : Array.isArray(nextPageUrl)
+        ? nextPageUrl[0]
+        : undefined;
+  return normalizedRedirect ?? fallbackPath;
+}
+
 export default async function AuthFlowLayout({
   children,
   backHref,
