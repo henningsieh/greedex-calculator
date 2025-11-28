@@ -82,7 +82,11 @@ export function OrganizationSwitcher() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="border border-sidebar-accent/80 hover:bg-sidebar-accent/40 data-[state=open]:bg-sidebar-accent/30 data-[state=open]:text-sidebar-accent-foreground"
+              className={cn(
+                "border border-sidebar-accent/60 ring-sidebar-accent",
+                "hover:bg-sidebar-primary/40 hover:text-sidebar-primary-foreground",
+                "data-[state=open]:bg-sidebar-primary/30 data-[state=open]:text-sidebar-primary-foreground/60",
+              )}
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary">
                 <Building2Icon className="size-4 text-primary-foreground" />
@@ -95,7 +99,7 @@ export function OrganizationSwitcher() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className={cn(
-              // "border border-secondary/50 bg-background/80 backdrop-blur-md",
+              "border border-sidebar-accent/50 bg-background/80 backdrop-blur-md",
               state === "expanded" && "w-(--radix-dropdown-menu-trigger-width)",
               state === "collapsed" && "w-72",
             )}

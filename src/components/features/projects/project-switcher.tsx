@@ -80,7 +80,12 @@ export function ProjectSwitcher() {
           <DropdownMenuTrigger asChild className="border border-secondary">
             <SidebarMenuButton
               size="lg"
-              className="border border-secondary/50 ring-secondary hover:bg-secondary/40 data-[state=open]:bg-secondary/30 data-[state=open]:text-sidebar-accent-foreground"
+              variant="default"
+              className={cn(
+                "border border-secondary/60 ring-secondary",
+                "hover:bg-secondary/20 hover:text-sidebar-foreground",
+                "data-[state=open]:bg-secondary/10 data-[state=open]:text-sidebar-foreground/60",
+              )}
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-secondary/70 text-secondary-foreground">
                 <MapPinnedIcon className="size-6" />

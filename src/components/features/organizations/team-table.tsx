@@ -11,13 +11,13 @@ import {
   type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
+import { FilterXIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import * as React from "react";
 import type {
   MemberRole,
   MemberWithUser,
 } from "@/components/features/organizations/types";
-import { memberRoles } from "@/components/features/organizations/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { orpcQuery } from "@/lib/orpc/orpc";
+import InviteMemberDialog from "./invite-member-dialog";
 
 interface TeamTableProps {
   organizationId: string;
@@ -39,6 +40,7 @@ interface TeamTableProps {
 }
 
 export function TeamTable({ organizationId, roles }: TeamTableProps) {
+  const tRoles = useTranslations("organization.roles");
   const t = useTranslations("organization.team.table");
   const [pageIndex, setPageIndex] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(10);
@@ -74,10 +76,6 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
 
   const members = membersResult?.members ?? [];
   const total = membersResult?.total ?? 0;
-
-  const roleKeyByValue: Record<string, string> = Object.fromEntries(
-    Object.entries(memberRoles).map(([key, value]) => [value, key]),
-  );
 
   const columns = React.useMemo<
     ColumnDef<MemberWithUser, string | Date | undefined>[]
@@ -118,8 +116,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
               String(info.getValue()) === "owner" ? "default" : "secondary"
             }
           >
-            {roleKeyByValue[String(info.getValue())] ??
-              String(info.getValue() ?? "")}
+            {tRoles(String(info.getValue()))}
           </Badge>
         ),
       },
@@ -140,7 +137,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
         },
       },
     ],
-    [t, roleKeyByValue],
+    [t, tRoles],
   );
 
   const table = useReactTable({
@@ -168,31 +165,36 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
     },
   });
 
-  // Update query when table pagination or sorting changes: update pageIndex and pageSize
-  // explicit reference to table to avoid unused variable lint errors
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _table = table;
   return (
     <div>
-      <div className="flex items-center gap-2 py-4">
-        <Input
-          placeholder={t("control.filter")}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="max-w-sm"
-        />
-        <div className="ml-auto">
+      <div className="flex flex-col gap-6 py-4 sm:flex-row sm:items-center">
+        <div className="flex w-full items-center gap-2">
+          <Input
+            placeholder={t("control.filter")}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={() => {
               setSearch("");
               setDebouncedSearch("");
               setPageIndex(0);
             }}
           >
-            {t("control.clear")}
+            <FilterXIcon />
+            {/* {t("control.clear")} */}
           </Button>
+        </div>
+        <div className="ml-auto">
+          <InviteMemberDialog
+            organizationId={organizationId}
+            allowedRoles={roles}
+            onSuccess={() => {
+              setPageIndex(0);
+            }}
+          />
         </div>
       </div>
       <div className="rounded-md border">
@@ -207,7 +209,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
                         type="button"
                         onClick={() => header.column.toggleSorting()}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
+                          if (e.key === `Enter` || e.key === " ") {
                             header.column.toggleSorting();
                           }
                         }}
@@ -246,7 +248,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
             ) : (
               <TableRow>
                 <TableCell colSpan={4} className="h-24 text-center">
-                  No results.
+                  {t("noResults")}
                 </TableCell>
               </TableRow>
             )}
@@ -255,8 +257,10 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-muted-foreground text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {t("rowsSelected", {
+            selected: table.getFilteredSelectedRowModel().rows.length,
+            total: table.getFilteredRowModel().rows.length,
+          })}
         </div>
         <div className="space-x-2">
           <Button
@@ -265,7 +269,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {t("previous")}
           </Button>
           <Button
             variant="outline"
@@ -273,7 +277,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {t("next")}
           </Button>
         </div>
       </div>
