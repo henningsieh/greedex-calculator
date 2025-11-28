@@ -1,9 +1,11 @@
+import { env } from "@/env";
 import "./globals.css"; // Global CSS import
 import "@/lib/orpc/client.server"; // Initialize server-side oRPC client for pre-rendering
 
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL || "https://greendex.world"),
   title: "Greendex - Carbon Footprint Calculator for Erasmus+ Projects",
   description:
     "Specialized carbon footprint calculator for Erasmus+ youth exchanges, training courses, and meetings. Calculate CO₂ emissions and discover how many trees are needed to offset your project's environmental impact.",
