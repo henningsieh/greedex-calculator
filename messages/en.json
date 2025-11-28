@@ -431,12 +431,34 @@
         "control": {
           "filter": "Filter Team members",
           "clear": "Clear all filters"
-        }
+        },
+        "noResults": "No results.",
+        "rowsSelected": "{selected} of {total} row(s) selected.",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "invite": {
+        "button": "New Invite",
+        "title": "Invite a new Member to your Team",
+        "description": "Invite a new team member to your organization.",
+        "emailLabel": "User Email",
+        "emailDescription": "Email address of the person you want to invite",
+        "nameLabel": "Full Name (optional)",
+        "roleLabel": "Role",
+        "rolePlaceholder": "Select role",
+        "cancelButton": "Cancel",
+        "sendingButton": "Sending...",
+        "sendButton": "Send Invite",
+        "successToast": "Team member invited successfully."
       }
     },
     "settings": {
       "title": "Settings",
       "description": "This is the settings page. Settings content will go here."
+    },
+    "roles": {
+      "owner": "Owner",
+      "admin": "Employee"
     }
   },
   "app": {

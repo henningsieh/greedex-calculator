@@ -2,6 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { UserPlusIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -21,10 +23,10 @@ import {
 import {
   Form,
   FormControl,
+  FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  FormField as UIFormField,
 } from "@/components/ui/form";
 import {
   Select,
@@ -58,10 +60,12 @@ interface Props {
 
 export default function InviteMemberDialog({
   organizationId,
-  allowedRoles,
+  allowedRoles = Object.values(memberRoles),
   onSuccess,
 }: Props) {
   const queryClient = useQueryClient();
+  const tRoles = useTranslations("organization.roles");
+  const tInvite = useTranslations("organization.team.invite");
   const [open, setOpen] = useState(false);
 
   const form = useForm<InviteFormSchema>({
@@ -69,7 +73,7 @@ export default function InviteMemberDialog({
     defaultValues: {
       email: "",
       name: "",
-      role: allowedRoles?.[0] ?? memberRoles.Employee,
+      role: memberRoles.Employee,
     },
   });
 
@@ -86,7 +90,7 @@ export default function InviteMemberDialog({
             toast.error(ctx.error.message || "Failed to send invitation");
           },
           onSuccess: () => {
-            toast.success("Invitation sent!");
+            toast.success(tInvite("successToast"));
             setOpen(false);
             form.reset();
             void queryClient.invalidateQueries(
@@ -112,14 +116,15 @@ export default function InviteMemberDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">New Invite</Button>
+        <Button variant="outline" className="ml-auto">
+          <UserPlusIcon className="size-5" />
+          {tInvite("button")}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Invite Member</DialogTitle>
-          <DialogDescription>
-            Send an invitation to join your organization.
-          </DialogDescription>
+          <DialogTitle className="text-2xl">{tInvite("title")}</DialogTitle>
+          <DialogDescription>{tInvite("description")}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -128,48 +133,44 @@ export default function InviteMemberDialog({
               <InputField
                 name="email"
                 control={form.control}
-                label="User Email"
+                label={tInvite("emailLabel")}
                 id="invite-email"
                 type="email"
                 placeholder="name@domain.com"
-                description="Email address of the person you want to invite"
+                description={tInvite("emailDescription")}
                 inputProps={{ disabled: form.formState.isSubmitting }}
               />
 
               <InputField
                 name="name"
                 control={form.control}
-                label="Full Name (optional)"
+                label={tInvite("nameLabel")}
                 id="invite-name"
                 type="text"
                 placeholder="Jane Doe"
                 inputProps={{ disabled: form.formState.isSubmitting }}
               />
 
-              <UIFormField<InviteFormSchema, "role">
+              <FormField<InviteFormSchema, "role">
                 control={form.control}
                 name="role"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Role</FormLabel>
+                    <FormLabel>{tInvite("roleLabel")}</FormLabel>
                     <FormControl>
                       <Select
-                        defaultValue={field.value}
+                        value={field.value}
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger id="invite-role" size="default">
-                          <SelectValue placeholder="Select role" />
+                          <SelectValue
+                            placeholder={tInvite("rolePlaceholder")}
+                          />
                         </SelectTrigger>
                         <SelectContent>
-                          {(
-                            allowedRoles ?? [
-                              memberRoles.Owner,
-                              memberRoles.Employee,
-                              memberRoles.Participant,
-                            ]
-                          ).map((role) => (
+                          {allowedRoles.map((role) => (
                             <SelectItem key={role} value={role}>
-                              {role}
+                              {tRoles(role)}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -182,10 +183,12 @@ export default function InviteMemberDialog({
 
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="ghost">Cancel</Button>
+                  <Button variant="outline">{tInvite("cancelButton")}</Button>
                 </DialogClose>
                 <Button type="submit" disabled={form.formState.isSubmitting}>
-                  {form.formState.isSubmitting ? "Sending..." : "Send Invite"}
+                  {form.formState.isSubmitting
+                    ? tInvite("sendingButton")
+                    : tInvite("sendButton")}
                 </Button>
               </DialogFooter>
             </div>

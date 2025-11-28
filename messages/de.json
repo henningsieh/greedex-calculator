@@ -431,12 +431,34 @@
         "control": {
           "filter": "Teammitglieder filtern",
           "clear": "Löschen Sie alle Filter"
-        }
+        },
+        "noResults": "Keine Ergebnisse.",
+        "rowsSelected": "{selected} von {total} Zeile(n) ausgewählt.",
+        "previous": "Zurück",
+        "next": "Weiter"
+      },
+      "invite": {
+        "button": "Neue Einladung",
+        "title": "Neues Teammitglied einladen",
+        "description": "Lade ein neues Teammitglied zu deiner Organisation ein.",
+        "emailLabel": "E-Mail-Adresse",
+        "emailDescription": "E-Mail-Adresse der Person, die du einladen möchtest",
+        "nameLabel": "Vollständiger Name (optional)",
+        "roleLabel": "Rolle",
+        "rolePlaceholder": "Rolle auswählen",
+        "cancelButton": "Abbrechen",
+        "sendingButton": "Wird gesendet...",
+        "sendButton": "Einladung senden",
+        "successToast": "Teammitglied erfolgreich eingeladen."
       }
     },
     "settings": {
       "title": "Einstellungen",
       "description": "Dies ist die Einstellungsseite. Einstellungsinhalte werden hier angezeigt."
+    },
+    "roles": {
+      "owner": "Eigentümer",
+      "admin": "Mitarbeiter"
     }
   },
   "app": {

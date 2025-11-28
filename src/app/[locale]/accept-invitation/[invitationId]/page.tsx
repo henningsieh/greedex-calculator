@@ -1,30 +1,46 @@
 import { headers } from "next/headers";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import AcceptInvitationButton from "@/components/features/organizations/accept-invitation-button";
 import { auth } from "@/lib/better-auth";
+import { redirect } from "@/lib/i18n/navigation";
+import { handleUnauthenticatedRedirect } from "@/lib/utils/auth-utils";
 
 export default async function AcceptInvitationPage({
   params,
 }: {
-  // params: { invitationId: string };
   params: Promise<{ invitationId: string }>;
 }) {
   const t = await getTranslations("organization.invitation");
+  const locale = await getLocale();
   const { invitationId } = await params;
+  const requestHeaders = await headers();
 
+  // Check session first to determine if user is authenticated
+  const session = await auth.api.getSession({ headers: requestHeaders });
+
+  // If user is not authenticated, redirect to login with the invitation URL as callback
+  if (!session?.user) {
+    const rememberedPath =
+      requestHeaders.get("x-org-requested-path") ??
+      `/accept-invitation/${invitationId}`;
+    const href = handleUnauthenticatedRedirect(
+      rememberedPath,
+      `/accept-invitation/${invitationId}`,
+    );
+    redirect({ href, locale });
+  }
+
+  // User is authenticated, now we can safely fetch the invitation
   const invitation = await auth.api.getInvitation({
     query: { id: invitationId },
-    headers: await headers(),
+    headers: requestHeaders,
   });
 
   if (!invitation?.id) {
     notFound();
     return null;
   }
-
-  const session = await auth.api.getSession({ headers: await headers() });
 
   return (
     <div className="space-y-4">
@@ -35,9 +51,6 @@ export default async function AcceptInvitationPage({
 
       <div className="rounded-md border p-6">
         <div className="mb-4">
-          {/* <div className="font-semibold text-lg">
-            {invitation.organization?.name}
-          </div> */}
           <div className="text-muted-foreground text-sm">{invitation.role}</div>
           <div className="mt-2 text-muted-foreground text-sm">
             {invitation.inviterEmail}
@@ -45,21 +58,7 @@ export default async function AcceptInvitationPage({
         </div>
 
         <div className="space-y-2">
-          {session?.user ? (
-            <AcceptInvitationButton invitationId={invitation.id} />
-          ) : (
-            <div>
-              <p className="mb-2 text-muted-foreground text-sm">
-                You need to sign in to accept the invitation.
-              </p>
-              <Link
-                href={`/login?next=/accept-invitation/${invitationId}`}
-                className="text-primary underline"
-              >
-                Sign in to accept invitation
-              </Link>
-            </div>
-          )}
+          <AcceptInvitationButton invitationId={invitation.id} />
         </div>
       </div>
     </div>

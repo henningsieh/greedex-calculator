@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { normalizeRedirectPath } from "@/components/features/authentication/auth-flow-layout";
 import SocialButtons from "@/components/features/authentication/social-buttons";
 import FormField from "@/components/form-field";
 import { Button } from "@/components/ui/button";
@@ -24,17 +25,19 @@ import {
   FieldGroup,
   FieldSeparator,
 } from "@/components/ui/field";
+import { env } from "@/env";
 import { authClient } from "@/lib/better-auth/auth-client";
-import { LOGIN_PATH } from "@/lib/config/app";
+import { DASHBOARD_PATH, LOGIN_PATH } from "@/lib/config/app";
 import { Link, useRouter } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 export function SignupForm({
   className,
+  nextPageUrl,
   ...props
-}: React.ComponentProps<"form">) {
-  const router = useRouter();
+}: React.ComponentProps<"form"> & { nextPageUrl?: string | string[] }) {
   const t = useTranslations("authentication");
+  const router = useRouter();
 
   const formSchema = useMemo(
     () =>
@@ -64,18 +67,26 @@ export function SignupForm({
     },
   });
 
+  const finalRedirect =
+    env.NEXT_PUBLIC_BASE_URL +
+    normalizeRedirectPath(nextPageUrl, DASHBOARD_PATH);
+
+  console.debug("SignupForm onSubmit finalRedirect:", finalRedirect);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     await authClient.signUp.email(
       {
         email: data.email,
         password: data.password,
         name: data.name,
+        callbackURL: finalRedirect,
       },
       {
         onError: (c) => {
           toast.error(c.error.message || t("signup.messages.failedCreate"));
         },
         onSuccess: () => {
+          toast.success("Please check your email to verify your account.");
           // Redirect to verify email page after successful signup
           router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
         },
