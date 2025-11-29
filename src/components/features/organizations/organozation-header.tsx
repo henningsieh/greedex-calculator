@@ -28,13 +28,13 @@ export function OrganizationHeader() {
   );
 
   return (
-    <Card className="border-primary/30 bg-primary/5 shadow-lg dark:border-primary/40 dark:bg-primary/10">
+    <Card className="border-primary/30 bg-primary/10 shadow-lg dark:border-primary/40 dark:bg-primary/10">
       <CardHeader className="gap-4">
-        <CardTitle className="text-accent text-sm">
+        <CardTitle className="text-primary/60 text-sm">
           {t("welcome-to-your-organizations-dashboard")}
         </CardTitle>
         <CardDescription className="flex items-center gap-3 font-bold text-3xl text-primary dark:text-primary-foreground">
-          <span className="rounded-full bg-primary/20 p-2 text-primary-foreground">
+          <span className="rounded-full bg-primary/40 p-2 text-primary-foreground">
             <Building2Icon className="size-5" />
           </span>
           <span>{activeOrganization?.name}</span>
@@ -55,12 +55,19 @@ export function OrganizationHeader() {
 
 export function DashboardHeaderSkeleton() {
   return (
-    <div className="flex items-center justify-between">
-      <div className="space-y-2">
-        <Skeleton className="h-9 w-64" />
-        <Skeleton className="h-5 w-96" />
-      </div>
-      <Skeleton className="h-10 w-32" />
-    </div>
+    <Card className="border-primary/30 bg-primary/10 shadow-lg dark:border-primary/40 dark:bg-primary/10">
+      <CardHeader className="gap-6">
+        <CardTitle className="text-primary/60 text-sm">
+          <Skeleton className="h-4 w-64" />
+        </CardTitle>
+        <CardDescription className="flex items-center gap-3 font-bold text-3xl text-primary dark:text-primary-foreground">
+          <Skeleton className="size-9 rounded-full" />
+          <Skeleton className="h-8 w-48" />
+        </CardDescription>
+        <CardAction>
+          <Skeleton className="h-10 w-42 bg-secondary" />
+        </CardAction>
+      </CardHeader>
+    </Card>
   );
 }

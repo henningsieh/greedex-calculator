@@ -3,8 +3,10 @@
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import ProjectDetails from "@/components/features/projects/project-details";
-import { orpcQuery } from "@/lib/orpc/orpc";
+import {
+  ProjectDetails,
+  ProjectDetailsSkeleton,
+} from "@/components/features/projects/project-details";
 import { getQueryClient } from "@/lib/react-query/hydration";
 
 export default async function ProjectsDetailsPage({
@@ -19,17 +21,17 @@ export default async function ProjectsDetailsPage({
 
   // Prefetch the project details data on the server
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(
-    orpcQuery.project.getById.queryOptions({
-      input: {
-        id,
-      },
-    }),
-  );
+  // void queryClient.prefetchQuery(
+  //   orpcQuery.project.getById.queryOptions({
+  //     input: {
+  //       id,
+  //     },
+  //   }),
+  // );
 
   return (
     <ErrorBoundary fallback={t("error")}>
-      <Suspense fallback={t("loading")}>
+      <Suspense fallback={<ProjectDetailsSkeleton />}>
         {/* <HydrateClient client={queryClient}> */}
         <ProjectDetails id={id} />
         {/* </HydrateClient> */}

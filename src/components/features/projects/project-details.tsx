@@ -5,13 +5,14 @@ import { Activity, MapPinnedIcon, Users } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
 interface ProjectDetailsProps {
   id: string;
 }
 
-function ProjectDetails({ id }: ProjectDetailsProps) {
+export function ProjectDetails({ id }: ProjectDetailsProps) {
   const t = useTranslations("project.details");
   const { data } = useSuspenseQuery(
     orpcQuery.project.getById.queryOptions({
@@ -66,6 +67,15 @@ function ProjectDetails({ id }: ProjectDetailsProps) {
             </div>
           </div>
 
+          {data.country && (
+            <div className="space-y-2">
+              <Label className="font-medium text-gray-600 text-sm">
+                {t("country")}
+              </Label>
+              <p className="text-lg">{data.country}</p>
+            </div>
+          )}
+
           {data.location && (
             <div className="space-y-2">
               <Label className="font-medium text-gray-600 text-sm">
@@ -118,4 +128,79 @@ function ProjectDetails({ id }: ProjectDetailsProps) {
   );
 }
 
-export default ProjectDetails;
+export function ProjectDetailsSkeleton() {
+  const t = useTranslations("project.details");
+
+  return (
+    <div className="space-y-6">
+      {/* Project Header Skeleton */}
+      <div className="rounded-lg bg-gradient-to-tl from-primary/60 to-accent p-8 shadow-lg">
+        <Skeleton className="mb-2 flex h-9 w-3/4 items-center justify-start font-bold font-serif text-2xl">
+          {t("loading")}
+        </Skeleton>
+        <Skeleton className="h-6 w-1/2" />
+      </div>
+
+      {/* Project Details Card Skeleton */}
+      <Card className="shadow-lg">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Skeleton className="h-5 w-5" />
+            <Skeleton className="h-6 w-32" />
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-6 w-24" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-6 w-24" />
+            </div>
+          </div>
+
+          {/* Optional location skeleton */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-6 w-32" />
+          </div>
+
+          {/* Optional welcome message skeleton */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Placeholder cards skeleton */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Skeleton className="h-5 w-5" />
+              <Skeleton className="h-6 w-24" />
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-4 w-full" />
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Skeleton className="h-5 w-5" />
+              <Skeleton className="h-6 w-24" />
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-4 w-full" />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

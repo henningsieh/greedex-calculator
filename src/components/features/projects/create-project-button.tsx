@@ -1,7 +1,7 @@
 "use client";
 
 import type { VariantProps } from "class-variance-authority";
-import { PlusIcon } from "lucide-react";
+import { MapPinPlusIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { CREATE_PROJECT_PATH } from "@/lib/config/app";
@@ -23,7 +23,7 @@ export function CreateProjectButton({
   return (
     <Button asChild variant={variant} className={className}>
       <Link href={CREATE_PROJECT_PATH}>
-        {showIcon && <PlusIcon />}
+        {showIcon && <MapPinPlusIcon />}
         {t("form.new.submit.label")}
       </Link>
     </Button>

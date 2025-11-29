@@ -493,6 +493,7 @@
       "start-date": "Startdatum",
       "end-date": "Enddatum",
       "location": "Ort",
+      "country": "Land",
       "welcome-message": "Willkommensnachricht",
       "participants": "Teilnehmende",
       "participants-description": "Teilnehmende werden hier angezeigt.",

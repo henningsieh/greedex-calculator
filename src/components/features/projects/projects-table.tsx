@@ -134,7 +134,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
   return (
     <>
       <div className="w-full">
-        <div className="flex items-center py-4">
+        <div className="flex items-center gap-2 py-4">
           <Input
             placeholder={t("table.filter-projects")}
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
