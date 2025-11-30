@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, ArrowRight, Check, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -91,7 +91,7 @@ function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
   });
 
   // Load existing activities into the form when they're fetched
-  useState(() => {
+  React.useEffect(() => {
     if (existingActivities && existingActivities.length > 0) {
       const formattedActivities = existingActivities.map((activity) => ({
         id: activity.id,
@@ -106,7 +106,7 @@ function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       }));
       setValue("activities", formattedActivities);
     }
-  });
+  }, [existingActivities, setValue]);
 
   const { fields, append, remove, update } = useFieldArray({
     control,

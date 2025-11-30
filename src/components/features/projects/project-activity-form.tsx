@@ -13,13 +13,7 @@ import {
   type ProjectActivityType,
 } from "@/components/features/projects/types";
 import { Button } from "@/components/ui/button";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -185,7 +179,6 @@ export function ProjectActivityForm({
             placeholder={t("form.description-placeholder")}
             {...register("description")}
           />
-          <FieldDescription>{t("form.description")}</FieldDescription>
         </Field>
 
         <Field>
