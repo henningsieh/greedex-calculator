@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { organization, user, member } from "@/lib/drizzle/schemas/auth-schema";
-import { activityTypeValues, type ActivityType } from "@/components/features/projects/types";
+import { activityTypeValues, type ActivityType } from "@/lib/activity-types";
 
 
 // ============================================================================

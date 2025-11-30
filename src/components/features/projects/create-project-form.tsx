@@ -13,8 +13,8 @@ import type { Organization } from "@/components/features/organizations/types";
 import {
   ActivityFormItemSchema,
   activityTypeValues,
-  ProjectFormSchema,
-} from "@/components/features/projects/types";
+} from "@/components/features/projects/activities/types";
+import { ProjectFormSchema } from "@/components/features/projects/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {

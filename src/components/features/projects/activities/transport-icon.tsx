@@ -1,5 +1,5 @@
-import { Bus, Car, Ship, Train } from "lucide-react";
-import type { ActivityType } from "@/components/features/projects/types";
+import { BusIcon, CarIcon, ShipIcon, TrainIcon } from "lucide-react";
+import type { ActivityType } from "@/components/features/projects/activities/types";
 
 interface TransportIconProps {
   type: ActivityType;
@@ -16,13 +16,13 @@ export function TransportIcon({
 
   switch (type) {
     case "car":
-      return <Car className={className} />;
+      return <CarIcon className={className} />;
     case "bus":
-      return <Bus className={className} />;
+      return <BusIcon className={className} />;
     case "train":
-      return <Train className={className} />;
+      return <TrainIcon className={className} />;
     case "boat":
-      return <Ship className={className} />;
+      return <ShipIcon className={className} />;
     default:
       return exhaustiveCheck(type);
   }

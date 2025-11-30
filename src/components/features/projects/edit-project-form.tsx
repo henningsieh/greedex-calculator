@@ -12,6 +12,8 @@ import { DatePickerWithInput } from "@/components/date-picker-with-input";
 import {
   activityTypeValues,
   EditActivityFormItemSchema,
+} from "@/components/features/projects/activities/types";
+import {
   type ProjectType,
   ProjectUpdateFormSchema,
 } from "@/components/features/projects/types";

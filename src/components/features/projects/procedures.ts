@@ -6,11 +6,13 @@ import { and, asc, eq, inArray, type SQL, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { memberRoles } from "@/components/features/organizations/types";
+import {
+  ProjectActivityFormSchema,
+  ProjectActivityWithRelationsSchema,
+} from "@/components/features/projects/activities/types";
 import { ProjectParticipantWithUserSchema } from "@/components/features/projects/participant-types";
 import {
   DEFAULT_PROJECT_SORT,
-  ProjectActivityFormSchema,
-  ProjectActivityWithRelationsSchema,
   ProjectFormSchema,
   ProjectWithRelationsSchema,
   SORT_OPTIONS,

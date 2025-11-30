@@ -11,7 +11,7 @@ import {
   ProjectActivityFormSchema,
   type ProjectActivityFormSchemaType,
   type ProjectActivityType,
-} from "@/components/features/projects/types";
+} from "@/components/features/projects/activities/types";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
