@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { DatePickerWithInput } from "@/components/date-picker-with-input";
 import {
-  type ActivityType,
   activityTypeValues,
   EditActivityFormItemSchema,
   type ProjectType,
@@ -87,7 +86,7 @@ function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       const formattedActivities = existingActivities.map((activity) => ({
         id: activity.id,
         activityType: activity.activityType,
-        distanceKm: String(activity.distanceKm),
+        distanceKm: activity.distanceKm,
         description: activity.description,
         activityDate: activity.activityDate
           ? new Date(activity.activityDate)
@@ -133,15 +132,11 @@ function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       projectId: string;
       activity: z.infer<typeof EditActivityFormItemSchema>;
     }) => {
-      const validActivity = EditActivityFormItemSchema.parse(params.activity) as {
-        id: string;
-        activityType: ActivityType;
-        distanceKm: string;
-        description: string | null;
-        activityDate: Date | null;
-        isNew?: boolean;
-        isDeleted?: boolean;
-      };
+      const validActivity = EditActivityFormItemSchema.parse(params.activity);
+
+      if (!validActivity.activityType || !validActivity.distanceKm) {
+        throw new Error("Activity type and distance are required");
+      }
 
       return orpc.projectActivity.create({
         projectId: params.projectId,
@@ -158,15 +153,12 @@ function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       activityId: string;
       activity: z.infer<typeof EditActivityFormItemSchema>;
     }) => {
-      const validActivity = EditActivityFormItemSchema.parse(params.activity) as {
-        id: string;
-        activityType: ActivityType;
-        distanceKm: string;
-        description: string | null;
-        activityDate: Date | null;
-        isNew?: boolean;
-        isDeleted?: boolean;
-      };
+      const validActivity = EditActivityFormItemSchema.parse(params.activity);
+
+      if (!validActivity.activityType || !validActivity.distanceKm) {
+        throw new Error("Activity type and distance are required");
+      }
+
       return orpc.projectActivity.update({
         id: params.activityId,
         data: {
