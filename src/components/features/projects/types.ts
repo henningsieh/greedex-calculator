@@ -85,3 +85,7 @@ export type SortOption = (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS];
 
 // Default sort option
 export const DEFAULT_PROJECT_SORT: SortOption = SORT_OPTIONS.createdAt;
+
+// Define activity types as a const array (single source of truth)
+export const activityTypeValues = ["boat", "bus", "train", "car"] as const;
+export type ActivityType = (typeof activityTypeValues)[number];

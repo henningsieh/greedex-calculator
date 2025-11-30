@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { organization, user, member } from "@/lib/drizzle/schemas/auth-schema";
-import { ActivityType, activityTypeValues } from "@/components/participate/types";
+import type { ActivityType } from "@/components/features/projects/types";
 
 
 // ============================================================================
@@ -61,7 +61,7 @@ export const projectActivity = pgTable("project_activity", {
     .references(() => projectParticipant.id, { onDelete: "cascade" }),
 
   // type ActivityType = "boat" | "bus" | "train" | "car"
-  activityType: text("activity_type", { enum: activityTypeValues })
+  activityType: text("activity_type", { enum: ["boat", "bus", "train", "car"] as const })
     .$type<ActivityType>()
     .notNull(),
 
