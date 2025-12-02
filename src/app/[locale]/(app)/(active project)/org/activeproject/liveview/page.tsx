@@ -70,7 +70,7 @@
 
 import { MapPinnedIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { activityTypeValues } from "@/components/features/projects/types";
+import { activityTypeValues } from "@/components/features/projects/activities/types";
 import { Leaderboard } from "@/components/participate/leaderboard";
 import { LiveIndicator } from "@/components/participate/live-indicator";
 import { StatsOverview } from "@/components/participate/stats-overview";
@@ -224,6 +224,11 @@ export default function Dashboard() {
           distanceKm,
           co2Kg,
         });
+
+        // Cap activities at 50 per participant to prevent memory leak in mock data
+        if (participant.activities.length > 50) {
+          participant.activities = participant.activities.slice(-50);
+        }
 
         participant.totalCO2 = participant.activities.reduce(
           (sum, a) => sum + a.co2Kg,

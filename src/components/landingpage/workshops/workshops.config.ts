@@ -22,17 +22,8 @@ export const WORKSHOP_LINKS = {
 } as const;
 
 // Workshop metadata (images and structure)
-export const WORKSHOPS: Record<CalculatorType, WorkshopMetadata> = {
-  moment: {
-    id: "moment",
-    image: "/workshops/workshop-moment.jpg",
-  },
-  deal: {
-    id: "deal",
-    image: "/workshops/workshop-deal.jpg",
-  },
-  day: {
-    id: "day",
-    image: "/workshops/workshop-day.jpg",
-  },
-};
+export const WORKSHOPS = [
+  { id: "moment", image: "/workshops/workshop-moment.jpg" },
+  { id: "deal", image: "/workshops/workshop-deal.jpg" },
+  { id: "day", image: "/workshops/workshop-day.jpg" },
+] as const;

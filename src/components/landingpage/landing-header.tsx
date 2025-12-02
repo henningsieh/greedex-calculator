@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { MenuIcon, XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import * as React from "react";
 import { LocaleSwitcher } from "@/components/locale-switcher";
@@ -84,19 +84,20 @@ export const LandingHeader = () => {
 
               {/* Mobile burger menu */}
               <div className="flex items-center gap-4 lg:hidden">
-                <LocaleSwitcher className="h-10 rounded-md" />
+                <LocaleSwitcher className="rounded-md has-[>svg]:px-2" />
                 <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
                   <DropdownMenuTrigger asChild>
                     <Button
+                      size="lg"
                       aria-label={t("navigation.openMenu")}
-                      className="-m-2.5 -mr-4 relative z-20 block cursor-pointer p-1.5 lg:hidden"
+                      className="relative z-20 block h-10 cursor-pointer p-1.5 lg:hidden"
                     >
-                      <Menu
+                      <MenuIcon
                         className={`m-auto size-6 duration-500 ${
                           menuOpen ? "rotate-180 scale-0 opacity-0" : ""
                         }`}
                       />
-                      <X
+                      <XIcon
                         className={`-rotate-180 absolute inset-0 m-auto size-6 duration-500 ${
                           menuOpen
                             ? "rotate-0 scale-100 opacity-100"

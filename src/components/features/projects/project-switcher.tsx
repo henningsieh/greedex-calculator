@@ -48,7 +48,7 @@ export function ProjectSwitcher() {
   );
 
   const { data: projects } = useSuspenseQuery(
-    orpcQuery.project.list.queryOptions(),
+    orpcQuery.projects.list.queryOptions(),
   );
 
   const activeProject = projects?.find(
@@ -57,7 +57,7 @@ export function ProjectSwitcher() {
 
   const setActiveProject = useMutation({
     mutationFn: (projectId: string | undefined) =>
-      orpc.project.setActive({
+      orpc.projects.setActive({
         projectId,
       }),
     onSuccess: async () => {
@@ -68,7 +68,7 @@ export function ProjectSwitcher() {
 
       // Invalidate project list
       queryClient.invalidateQueries({
-        queryKey: orpcQuery.project.list.queryKey(),
+        queryKey: orpcQuery.projects.list.queryKey(),
       });
     },
   });
@@ -93,7 +93,7 @@ export function ProjectSwitcher() {
                 <MapPinnedIcon className="size-6" />
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
-                <span className="">
+                <span className="text-nowrap">
                   {activeProject ? activeProject.name : "No active project"}
                 </span>
               </div>

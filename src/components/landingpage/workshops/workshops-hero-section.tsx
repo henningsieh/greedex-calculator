@@ -2,10 +2,7 @@ import { ClockIcon } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { AnimatedGroup } from "@/components/animated-group";
-import {
-  type CalculatorType,
-  WORKSHOPS,
-} from "@/components/landingpage/workshops/workshops.config";
+import { WORKSHOPS } from "@/components/landingpage/workshops/workshops.config";
 import {
   Card,
   CardContent,
@@ -76,8 +73,8 @@ export default async function WorkshopsHeroSection() {
           }}
           className="mx-auto mt-8 grid max-w-6xl gap-6 px-4 md:mt-12 md:grid-cols-3"
         >
-          {(Object.keys(WORKSHOPS) as CalculatorType[]).map((workshopId) => {
-            const workshop = WORKSHOPS[workshopId];
+          {WORKSHOPS.map((workshop) => {
+            const workshopId = workshop.id;
             const title = t(`workshops.types.${workshopId}.title`);
             const duration = t(`workshops.types.${workshopId}.duration`);
             const description = t(`workshops.types.${workshopId}.description`);
