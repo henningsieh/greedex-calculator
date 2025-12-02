@@ -1,6 +1,7 @@
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { AnimatedGradientCTA } from "@/components/animated-cta";
 import { AnimatedGroup } from "@/components/animated-group";
 import { TextEffect } from "@/components/ui/text-effect";
 import { DASHBOARD_PATH } from "@/lib/config/app";
@@ -49,7 +50,7 @@ export default async function HeroSection() {
       </div>
       <div
         aria-hidden
-        className="absolute inset-0 isolate hidden opacity-65 contain-strict lg:block"
+        className="pointer-events-none absolute inset-0 isolate hidden opacity-65 contain-strict lg:block"
       >
         <div className="-translate-y-87.5 -rotate-45 absolute top-0 left-0 h-320 w-140 rounded-full bg-[radial-gradient(68.54%_68.72%_at_55.02%_31.46%,hsla(0,0%,85%,.08)_0,hsla(0,0%,55%,.02)_50%,hsla(0,0%,45%,0)_80%)]" />
         <div className="-rotate-45 absolute top-0 left-0 h-320 w-60 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.06)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)] [translate:5%_-50%]" />
@@ -69,23 +70,11 @@ export default async function HeroSection() {
                   href={DASHBOARD_PATH}
                   title={t("launchButtonAria")}
                   aria-label={t("launchButtonAria")}
-                  className="group mx-auto flex w-fit items-center gap-4 rounded-full border bg-accent p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 hover:bg-primary dark:border-t-white/5 dark:shadow-zinc-950 dark:hover:border-t-border"
+                  className="inline-block"
                 >
-                  <span className="flex h-8 items-center font-bold text-accent-foreground text-lg">
+                  <AnimatedGradientCTA leftEmoji={"🌳"}>
                     {t("launchButton")}
-                  </span>
-                  <span className="block h-4 w-0.5 border-l bg-white dark:border-background dark:bg-zinc-700"></span>
-
-                  <div className="size-6 overflow-hidden rounded-full bg-background duration-500 group-hover:bg-muted">
-                    <div className="-translate-x-1/2 flex w-12 duration-500 ease-in-out group-hover:translate-x-0">
-                      <span className="flex size-6">
-                        <ArrowRight className="m-auto size-3" />
-                      </span>
-                      <span className="flex size-6">
-                        <ArrowRight className="m-auto size-3" />
-                      </span>
-                    </div>
-                  </div>
+                  </AnimatedGradientCTA>
                 </Link>
 
                 <TextEffect
@@ -135,65 +124,26 @@ export default async function HeroSection() {
                 </TextEffect>
               </AnimatedGroup>
 
-              <Link
+              <a
                 href="#herobanner"
                 aria-label={t("hero.scrollDown")}
-                className="mx-auto"
+                className="group mx-auto block"
               >
-                <AnimatedGroup
-                  variants={{
-                    container: {
-                      visible: {
-                        transition: {
-                          staggerChildren: 0.15,
-                        },
-                      },
-                    },
-                    item: {
-                      hidden: {
-                        opacity: 0,
-                        y: 0,
-                      },
-                      visible: {
-                        opacity: 1,
-                        y: 8,
-                        transition: {
-                          y: {
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                            duration: 1.1,
-                            ease: "easeInOut",
-                          },
-                          opacity: {
-                            duration: 0.9,
-                          },
-                        },
-                      },
-                    },
-                  }}
-                  className="mt-12 flex items-center justify-center gap-2"
-                >
-                  {/* three subtle dots indicating downward scroll */}
+                <div className="mt-12 flex items-center justify-center">
                   <div
-                    key={0}
-                    className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-foreground/20"
+                    className="animate-bounce animate-gradient-shift rounded-full p-3 shadow-emerald-500/50 shadow-lg ring-2 ring-emerald-400/30 ring-offset-2 ring-offset-background transition-all group-hover:scale-110 group-hover:shadow-cyan-500/70 group-hover:shadow-xl group-hover:ring-cyan-400/50"
+                    style={
+                      {
+                        background:
+                          "linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #10b981 100%)",
+                        backgroundSize: "200% 200%",
+                      } as React.CSSProperties
+                    }
                   >
-                    <span className="block h-1.5 w-1.5 rounded-full bg-foreground/60" />
+                    <ChevronDown className="size-7 stroke-[3] text-white drop-shadow-lg transition-transform group-hover:translate-y-0.5" />
                   </div>
-                  <div
-                    key={1}
-                    className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-foreground/10"
-                  >
-                    <span className="block h-1.5 w-1.5 rounded-full bg-foreground/50" />
-                  </div>
-                  <div
-                    key={2}
-                    className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-foreground/5"
-                  >
-                    <span className="block h-1.5 w-1.5 rounded-full bg-foreground/40" />
-                  </div>
-                </AnimatedGroup>
-              </Link>
+                </div>
+              </a>
             </div>
           </div>
 
@@ -212,7 +162,7 @@ export default async function HeroSection() {
           >
             <div
               id="herobanner"
-              className="mask-b-from-55% relative mt-8 overflow-hidden px-2 sm:mt-12 sm:mr-0 md:mt-20"
+              className="mask-b-from-55% relative mt-8 scroll-mt-20 overflow-hidden px-2 sm:mr-0"
             >
               <div className="relative inset-shadow-2xs mx-auto aspect-video max-w-6xl overflow-hidden rounded-2xl border bg-background p-4 shadow-lg shadow-zinc-950/15 ring-1 ring-background dark:inset-shadow-white/20">
                 <Image
@@ -220,12 +170,14 @@ export default async function HeroSection() {
                   src="/Greendex-hero-banner.png"
                   alt="app screen"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
                 />
                 <Image
                   className="relative aspect-15/8 rounded-2xl bg-background object-cover dark:hidden"
                   src="/Greendex-hero-banner.png"
                   alt="app screen"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
                 />
               </div>
             </div>
