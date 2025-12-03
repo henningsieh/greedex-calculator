@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import * as z from "zod";
+import { z } from "zod";
 import { normalizeRedirectPath } from "@/components/features/authentication/auth-flow-layout";
 import SocialButtons from "@/components/features/authentication/social-buttons";
 import FormField from "@/components/form-field";

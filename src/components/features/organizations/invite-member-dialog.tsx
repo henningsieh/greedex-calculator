@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type z from "zod";
+import type { z } from "zod";
 import { InviteFormSchema } from "@/components/features/organizations/validation-schemas";
 import InputField from "@/components/form-field";
 import { Button } from "@/components/ui/button";
