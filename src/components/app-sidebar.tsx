@@ -52,7 +52,7 @@ export function AppSidebar() {
       icon: BarChart3Icon,
       url: LIVE_VIEW_PATH,
     },
-  ];
+  ] as const;
 
   const organizationMenuItems = [
     {
@@ -75,7 +75,7 @@ export function AppSidebar() {
       icon: SettingsIcon,
       url: SETTINGS_PATH,
     },
-  ];
+  ] as const;
 
   return (
     <Sidebar className="h-[calc(svh-4rem)]" variant="sidebar" collapsible="icon">
