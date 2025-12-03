@@ -34,14 +34,17 @@ import { orpcQuery } from "@/lib/orpc/orpc";
 import { cn } from "@/lib/utils";
 
 /**
- * Route configuration with icons for organization-level routes.
- * Icons are defined inline to avoid export/translation coupling issues.
+ * Direct mapping from route translation keys to icons.
+ * This avoids complex nested lookups.
  */
-const organizationRouteIcons: Record<string, LucideIcon> = {
-  [DASHBOARD_PATH]: LayoutDashboardIcon,
-  [PROJECTS_PATH]: MapPinnedIcon,
-  [TEAM_PATH]: UsersIcon,
-  [SETTINGS_PATH]: SettingsIcon,
+const orgRouteKeyToIcon: Record<
+  "dashboard" | "projects" | "team" | "settings",
+  LucideIcon
+> = {
+  dashboard: LayoutDashboardIcon,
+  projects: MapPinnedIcon,
+  team: UsersIcon,
+  settings: SettingsIcon,
 };
 
 /**
@@ -106,18 +109,9 @@ export function AppBreadcrumb() {
     (project) => project.id === session?.session?.activeProjectId,
   );
 
-  // Determine which organization route we're on
+  // Determine which organization route we're on and get its icon
   const orgRouteKey = getOrganizationRouteKey(pathname);
-  const orgRouteIcon = orgRouteKey
-    ? organizationRouteIcons[
-        {
-          dashboard: DASHBOARD_PATH,
-          projects: PROJECTS_PATH,
-          team: TEAM_PATH,
-          settings: SETTINGS_PATH,
-        }[orgRouteKey]
-      ]
-    : null;
+  const OrgRouteIcon = orgRouteKey ? orgRouteKeyToIcon[orgRouteKey] : null;
 
   // Determine if we're on liveview page
   const isLiveView = pathname === LIVE_VIEW_PATH;
@@ -223,14 +217,11 @@ export function AppBreadcrumb() {
         ) : (
           // Organization level: show current route
           <BreadcrumbItem>
-            {orgRouteKey && orgRouteIcon ? (
+            {orgRouteKey && OrgRouteIcon ? (
               <BreadcrumbPage
                 className={cn("flex items-center gap-2", pageColorClasses)}
               >
-                {(() => {
-                  const Icon = orgRouteIcon;
-                  return <Icon className="size-4" />;
-                })()}
+                <OrgRouteIcon className="size-4" />
                 <span className="font-semibold">
                   {t(`organization.${orgRouteKey}`)}
                 </span>
