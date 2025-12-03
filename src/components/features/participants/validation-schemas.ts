@@ -1,5 +1,4 @@
 import { createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
 import {
   projectParticipantsTable,
   user as userTable,
@@ -9,13 +8,9 @@ import {
 export const ProjectParticipantWithUserSchema = createSelectSchema(
   projectParticipantsTable,
 ).extend({
-  user: createSelectSchema(userTable)
-    .omit({
-      emailVerified: true,
-      createdAt: true,
-      updatedAt: true,
-    })
-    .extend({
-      image: z.string().optional(),
-    }),
+  user: createSelectSchema(userTable).omit({
+    emailVerified: true,
+    createdAt: true,
+    updatedAt: true,
+  }),
 });
