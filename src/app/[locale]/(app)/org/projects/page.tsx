@@ -9,9 +9,9 @@ import { getQueryClient } from "@/lib/react-query/hydration";
 export default async function ProjectsPage() {
   const t = await getTranslations("organization.projects");
 
-  // Prefetch the projects data on the server
+  // Prefetch the projects data on the server - await to ensure hydration consistency
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(
+  await queryClient.prefetchQuery(
     orpcQuery.projects.list.queryOptions({
       input: {
         sort_by: "createdAt",

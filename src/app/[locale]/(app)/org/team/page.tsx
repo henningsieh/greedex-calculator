@@ -25,9 +25,9 @@ export default async () => {
   const activeOrganizationId =
     session?.session?.activeOrganizationId || organizations[0]?.id || "";
 
-  // Prefetch team members data
+  // Prefetch team members data - await to ensure hydration consistency
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(
+  await queryClient.prefetchQuery(
     orpcQuery.members.search.queryOptions({
       input: {
         organizationId: activeOrganizationId,

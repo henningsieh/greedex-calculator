@@ -50,12 +50,12 @@ export default async function AppLayout({
   }
   const queryClient = getQueryClient();
 
-  // Prefetch data needed by AppBreadcrumb
-  void queryClient.prefetchQuery(orpcQuery.projects.list.queryOptions());
-  void queryClient.prefetchQuery(
-    orpcQuery.organizations.getActive.queryOptions(),
-  );
-  void queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions());
+  // Prefetch data needed by components - await to ensure hydration consistency
+  await Promise.all([
+    queryClient.prefetchQuery(orpcQuery.projects.list.queryOptions()),
+    queryClient.prefetchQuery(orpcQuery.organizations.getActive.queryOptions()),
+    queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions()),
+  ]);
 
   const sidebarisOpen = (await cookies()).get("sidebar_state")?.value === "true";
 

@@ -1,14 +1,15 @@
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/react-query/hydration";
 
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const queryClient = getQueryClient();
 
-  void queryClient.prefetchQuery(
+  // Prefetch active organization - await to ensure hydration consistency
+  await queryClient.prefetchQuery(
     orpcQuery.organizations.getActive.queryOptions(),
   );
 
