@@ -336,7 +336,7 @@
         "table": "Table",
         "grid": "Grid"
       },
-      "sort-label": "Sort by:",
+      "sort-label": "Sort",
       "sort-projects": "Sort Projects",
       "no-projects-yet": {
         "title": "No projects yet",

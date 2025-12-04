@@ -1,4 +1,8 @@
-import { createServer } from "node:http";
+import {
+  createServer,
+  type IncomingMessage,
+  type ServerResponse,
+} from "node:http";
 import { parse } from "node:url";
 import next from "next";
 import { Server } from "socket.io";
@@ -14,16 +18,48 @@ const app = next({
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  const httpServer = createServer((req, res) => {
-    if (!req.url) return;
-    const parsedUrl = parse(req.url, true);
-    handle(req, res, parsedUrl);
-  });
+  const httpServer = createServer(
+    (request: IncomingMessage, response: ServerResponse<IncomingMessage>) => {
+      if (!request.url) return;
+
+      // Reflecting origin allows cross-origin requests from any host/port
+      // while still enabling cookies via Access-Control-Allow-Credentials
+      const origin = request.headers.origin;
+      if (origin) {
+        response.setHeader("Access-Control-Allow-Origin", origin);
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+      } else {
+        // fallback to wildcard if origin header not provided
+        response.setHeader("Access-Control-Allow-Origin", "*");
+      }
+      response.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET,POST,PUT,DELETE,OPTIONS",
+      );
+      response.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, X-Requested-With, X-CSRF-Token",
+      );
+
+      // Handle preflight requests early
+      if (request.method?.toUpperCase() === "OPTIONS") {
+        response.writeHead(204);
+        response.end();
+        return;
+      }
+
+      const parsedUrl = parse(request.url, true);
+      handle(request, response, parsedUrl);
+    },
+  );
 
   // Initialize Socket.IO with optimized settings
   const io = new Server(httpServer, {
+    // Accept any origin but reflect it back to allow credentials
+    // socket.io accepts `origin: true` to echo the origin in the CORS response
     cors: {
-      origin: "*",
+      origin: true,
+      credentials: true,
       methods: ["GET", "POST"],
     },
     // Use built-in heartbeat instead of custom intervals
@@ -58,7 +94,6 @@ app.prepare().then(() => {
   });
 
   httpServer
-
     .once("error", (err) => {
       console.error(err);
       process.exit(1);

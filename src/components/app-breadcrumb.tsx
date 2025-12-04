@@ -136,6 +136,12 @@ export function AppBreadcrumb() {
     isPending: permissionsPending,
   } = useProjectPermissions();
 
+  console.debug("project permissions", {
+    canUpdate,
+    canDelete,
+    permissionsPending,
+  });
+
   const { confirm, ConfirmDialogComponent } = useConfirmDialog();
   const queryClient = useQueryClient();
   const { mutateAsync: deleteProjectMutation, isPending: isDeleting } =
