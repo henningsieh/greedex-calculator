@@ -351,9 +351,12 @@ const { data: projects } = useSuspenseQuery(...); // Stable
 const queryClient = getQueryClient();
 
 // Prefetch ALL data used in suspended client components
-void queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions());
-void queryClient.prefetchQuery(orpcQuery.organization.list.queryOptions());
-void queryClient.prefetchQuery(orpcQuery.project.list.queryOptions());
+// IMPORTANT: Use await to ensure data is in cache BEFORE dehydration
+await Promise.all([
+  queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions()),
+  queryClient.prefetchQuery(orpcQuery.organization.list.queryOptions()),
+  queryClient.prefetchQuery(orpcQuery.project.list.queryOptions()),
+]);
 
 return (
   <HydrateClient client={queryClient}>
@@ -398,8 +401,29 @@ Is component server-rendered?
 3. **Real-time hooks break SSR** because they read fresh data on mount
 4. **Never mix stable and unstable** data sources in the same component
 5. **Always prefetch** before using useSuspenseQuery in SSR
-6. **staleTime protects hydration** by keeping cached data fresh
-7. **Choose the right pattern** based on SSR needs and real-time requirements
+6. **Always await prefetches** - using `void` (fire-and-forget) can cause race conditions
+7. **staleTime protects hydration** by keeping cached data fresh
+8. **Choose the right pattern** based on SSR needs and real-time requirements
+
+### ❌ DON'T: Use Fire-and-Forget Prefetches
+
+```typescript
+// BAD: Data might not be in cache before dehydration
+void queryClient.prefetchQuery(queryOptions);
+```
+
+### ✅ DO: Await Prefetches
+
+```typescript
+// GOOD: Guarantees data is in cache before dehydration
+await queryClient.prefetchQuery(queryOptions);
+
+// Or for multiple prefetches in parallel:
+await Promise.all([
+  queryClient.prefetchQuery(queryOptions1),
+  queryClient.prefetchQuery(queryOptions2),
+]);
+```
 
 ## Testing Checklist
 
