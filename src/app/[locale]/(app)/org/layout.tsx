@@ -1,8 +1,3 @@
-import { Suspense } from "react";
-import {
-  DashboardHeaderSkeleton,
-  OrganizationHeader,
-} from "@/components/features/organizations/organozation-header";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/react-query/hydration";
 
@@ -19,9 +14,7 @@ export default function Layout({
 
   return (
     <>
-      <Suspense fallback={<DashboardHeaderSkeleton />}>
-        <OrganizationHeader />
-      </Suspense>
+      {/* Organization header card removed — breadcrumb provides context now */}
       {children}
     </>
   );

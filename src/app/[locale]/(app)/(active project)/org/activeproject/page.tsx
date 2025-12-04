@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { Suspense } from "react";
-import { ActiveProjectHeaderSkeleton } from "@/components/features/active-project/active-project-header";
+import { AppBreadcrumbSkeleton } from "@/components/app-breadcrumb";
 import ActiveProjectPage from "@/components/features/active-project/active-project-page";
 import { ParticipationControlsClientSkeleton } from "@/components/features/participants/participants-link-controls";
 import ParticipantsList, {
@@ -43,7 +43,7 @@ export default async function ControlActiveProjectPage() {
       <Suspense
         fallback={
           <>
-            <ActiveProjectHeaderSkeleton />
+            <AppBreadcrumbSkeleton />
             <ParticipationControlsClientSkeleton />
           </>
         }
