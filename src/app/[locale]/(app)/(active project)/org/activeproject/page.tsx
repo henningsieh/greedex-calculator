@@ -18,25 +18,27 @@ export default async function ControlActiveProjectPage() {
     headers: await headers(),
   });
 
-  // Prefetch all necessary data
-  void queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions());
-  void queryClient.prefetchQuery(orpcQuery.projects.list.queryOptions());
-  void queryClient.prefetchQuery(orpcQuery.organizations.list.queryOptions());
-  void queryClient.prefetchQuery(
-    orpcQuery.organizations.getActive.queryOptions(),
-  );
-
-  // Prefetch participants data if we have an active project
+  // Get active project ID for conditional prefetch
   const activeProjectId = session?.session?.activeProjectId;
-  if (activeProjectId) {
-    void queryClient.prefetchQuery(
-      orpcQuery.projects.getParticipants.queryOptions({
-        input: {
-          projectId: activeProjectId,
-        },
-      }),
-    );
-  }
+
+  // Prefetch all necessary data. These must be awaited to ensure data is in cache
+  // before dehydrate() is called, otherwise client may receive incomplete data.
+  await Promise.all([
+    queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions()),
+    queryClient.prefetchQuery(orpcQuery.projects.list.queryOptions()),
+    queryClient.prefetchQuery(orpcQuery.organizations.list.queryOptions()),
+    queryClient.prefetchQuery(orpcQuery.organizations.getActive.queryOptions()),
+    // Prefetch participants data if we have an active project
+    activeProjectId
+      ? queryClient.prefetchQuery(
+          orpcQuery.projects.getParticipants.queryOptions({
+            input: {
+              projectId: activeProjectId,
+            },
+          }),
+        )
+      : Promise.resolve(),
+  ]);
 
   return (
     <>
