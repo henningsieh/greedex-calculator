@@ -193,10 +193,10 @@ Client: `src/lib/better-auth/auth-client.ts`
 
 ## WebSocket & Real-Time (Socket.IO)
 
-A POC for **Socket.IO** integration is included in `src/server.ts`:
-- Custom Node.js HTTP server handles both Next.js and Socket.IO
-- Dev mode runs via `bun run dev` (uses `tsx` watch)
-- Production requires `bun run build` then `bun run start`
+A POC for **Socket.IO** is implemented in `src/socket-server.ts` (decoupled from the Next.js server):
+- Run both servers in dev with `bun run dev` (starts Next.js on 3000 and Socket.IO on 4000)
+- Use `bun run dev:inspect` to run an inspect/dev instance on `3001` and a socket server on `4001` (helps avoid port collisions while debugging)
+- Production requires `bun run build` then `bun run start` (both `out/server.js` and `out/socket-server.js` will be launched)
 
 To add real-time features (e.g., live team updates), attach Socket.IO event handlers in `src/server.ts` and import the client in your React components.
 

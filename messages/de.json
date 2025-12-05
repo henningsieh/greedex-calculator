@@ -493,7 +493,8 @@
         "projects": "Projekte",
         "team": "Team",
         "settings": "Einstellungen"
-      }
+      },
+      "collapse": "Seitenleiste einklappen"
     }
   },
   "project": {

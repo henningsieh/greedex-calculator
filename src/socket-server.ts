@@ -1,8 +1,10 @@
+import "dotenv/config";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
+import { env } from "@/env";
 
-const port = parseInt(process.env.SOCKET_PORT || "4000", 10);
-const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
+const socketPort = env.SOCKET_PORT;
+const corsOrigin = env.CORS_ORIGIN;
 
 const httpServer = createServer();
 
@@ -37,7 +39,21 @@ io.on("connection", (socket) => {
     console.log(`Client disconnected: ${socket.id}, reason: ${reason}`);
   });
 });
+if (env.NODE_ENV === "development") {
+  const intervalId = setInterval(() => {
+    const mem = process.memoryUsage();
+    console.log(
+      `[${new Date().toISOString()}] RSS: ${Math.round(mem.rss / 1024 / 1024)}MB, Heap: ${Math.round(mem.heapUsed / 1024 / 1024)}MB`,
+    );
+  }, 30_000);
 
-httpServer.listen(port, () => {
-  console.log(`Socket.IO server listening on port ${port}`);
+  const stopLogging = () => clearInterval(intervalId);
+  process.on("exit", stopLogging);
+  process.on("SIGINT", stopLogging);
+  process.on("SIGTERM", stopLogging);
+  process.on("beforeExit", stopLogging);
+}
+
+httpServer.listen(socketPort, () => {
+  console.log(`Socket.IO server listening on port ${socketPort}`);
 });

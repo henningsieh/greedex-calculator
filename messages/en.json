@@ -493,7 +493,8 @@
         "projects": "Projects",
         "team": "Team Members",
         "settings": "Settings"
-      }
+      },
+      "collapse": "Collapse Sidebar"
     }
   },
   "project": {
