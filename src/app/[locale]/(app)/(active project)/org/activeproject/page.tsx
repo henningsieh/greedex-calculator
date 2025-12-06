@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import { AppBreadcrumbSkeleton } from "@/components/app-breadcrumb";
 import ActiveProjectPage from "@/components/features/active-project/active-project-page";
 import { ParticipationControlsClientSkeleton } from "@/components/features/participants/participants-link-controls";
-import ParticipantsList, {
+import {
+  ParticipantsList,
   ParticipantsListSkeleton,
 } from "@/components/features/participants/participants-list";
 import { auth } from "@/lib/better-auth";

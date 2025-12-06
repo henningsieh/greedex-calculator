@@ -36,7 +36,7 @@ interface EditProjectFormProps {
   onSuccess?: () => void;
 }
 
-function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
+export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
   const tActivities = useTranslations("project.activities");
   const t = useTranslations("organization.projects.form");
   const [currentStep, setCurrentStep] = useState(1);
@@ -535,5 +535,3 @@ function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
     </div>
   );
 }
-
-export default EditProjectForm;

@@ -20,7 +20,7 @@ import {
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { CreateProjectButton } from "@/components/features/projects/create-project-button";
-import EditProjectForm from "@/components/features/projects/edit-project-form";
+import { EditProjectForm } from "@/components/features/projects/edit-project-form";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -131,10 +131,17 @@ export function AppBreadcrumb() {
 
   // Permission helpers for project level actions
   const {
+    canCreate,
     canUpdate,
     canDelete,
     isPending: permissionsPending,
   } = useProjectPermissions();
+
+  console.debug("project permissions", {
+    canUpdate,
+    canDelete,
+    permissionsPending,
+  });
 
   const { confirm, ConfirmDialogComponent } = useConfirmDialog();
   const queryClient = useQueryClient();
@@ -345,6 +352,7 @@ export function AppBreadcrumb() {
           ) : null
         ) : (
           // Organization-level actions
+          canCreate &&
           pathname !== CREATE_PROJECT_PATH && (
             <CreateProjectButton
               className="hidden sm:inline-flex"

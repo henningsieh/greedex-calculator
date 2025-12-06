@@ -37,15 +37,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { getProjectDetailPath } from "@/lib/config/app";
 import { useRouter } from "@/lib/i18n/navigation";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
+import { getProjectDetailPath } from "@/lib/utils";
 
 interface CreateProjectFormProps {
   userOrganizations: Omit<Organization, "metadata">[];
 }
 
-function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
+export function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
   const tActivities = useTranslations("project.activities");
   const t = useTranslations("organization.projects.form.new");
   const [currentStep, setCurrentStep] = useState(1);
@@ -456,5 +456,3 @@ function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
     </form>
   );
 }
-
-export default CreateProjectForm;
