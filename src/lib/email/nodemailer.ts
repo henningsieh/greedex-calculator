@@ -31,7 +31,18 @@ export interface SendEmailOptions {
 }
 
 /**
- * Send an email using Nodemailer
+ * Send an email via the configured SMTP transporter.
+ *
+ * The function logs the send attempt (with recipient addresses masked for privacy),
+ * sends the message using the configured SMTP sender, logs the resulting messageId on success,
+ * and re-throws any error encountered.
+ *
+ * @param options - Email send options including recipients and content
+ * @param options.to - Recipient address or list of addresses
+ * @param options.subject - Message subject line
+ * @param options.html - HTML body of the message
+ * @param options.text - Optional plain-text body of the message
+ * @throws Propagates any error thrown by the transport when sending fails
  */
 export async function sendEmail(options: SendEmailOptions): Promise<void> {
   try {

@@ -32,6 +32,20 @@ interface ProjectActivityFormProps {
   onCancel?: () => void;
 }
 
+/**
+ * Render a form to create a new project activity or edit an existing one.
+ *
+ * The form validates input with the ProjectActivityFormSchema, calls the appropriate
+ * create or update RPC on submit, displays success/error toasts, and invalidates
+ * the project activities list query. When a mutation succeeds it will call the
+ * optional `onSuccess` callback; `onCancel` is invoked when the cancel button is pressed.
+ *
+ * @param projectId - ID of the project the activity belongs to
+ * @param activity - Optional existing activity to prefill the form for editing
+ * @param onSuccess - Optional callback invoked after a successful create or update
+ * @param onCancel - Optional callback invoked when the cancel action is triggered
+ * @returns The component's rendered form element
+ */
 export function ProjectActivityForm({
   projectId,
   activity,
@@ -168,7 +182,7 @@ export function ProjectActivityForm({
                   id="distanceKm"
                   type="number"
                   step="0.01"
-                  min="0"
+                  min="1"
                   placeholder={t("form.distance-placeholder")}
                   value={field.value ?? ""}
                   onChange={(e) =>

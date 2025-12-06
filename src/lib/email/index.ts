@@ -16,7 +16,10 @@ interface SendPasswordResetEmailParams {
 }
 
 /**
- * Send a password reset email to the user
+ * Send a password reset email to the specified user.
+ *
+ * @param user - The recipient user (must include `email`; `name` is optional and used in the template)
+ * @param url - The password reset URL to include in the email
  */
 export async function sendPasswordResetEmail({
   user,
@@ -54,7 +57,10 @@ interface SendEmailVerificationEmailParams {
 }
 
 /**
- * Send an email verification email to the user
+ * Sends an email verification message to the specified user.
+ *
+ * @param user - The recipient user (must include `email`; `name` is optional and used in the template).
+ * @param url - The verification link to include in the email
  */
 export async function sendEmailVerificationEmail({
   user,
@@ -93,6 +99,23 @@ interface SendOrganizationInvitationParams {
   inviterName?: string;
 }
 
+/**
+ * Sends an email inviting a recipient to join an organization.
+ *
+ * @param email - Recipient email address
+ * @param inviteLink - URL the recipient can use to accept the invitation
+ * @param organizationName - Name of the organization the recipient is invited to
+ * @param inviterName - Optional name of the person who sent the invitation
+ * @throws Propagates any error encountered while rendering or sending the email
+ */
+/**
+ * Sends an invitation email asking the recipient to join the specified organization.
+ *
+ * @param email - Recipient's email address
+ * @param inviteLink - URL the recipient can follow to accept the invitation
+ * @param organizationName - Name of the organization the recipient is invited to join
+ * @param inviterName - Optional name of the person who sent the invitation (displayed in the email)
+ */
 export async function sendOrganizationInvitation({
   email,
   inviteLink,

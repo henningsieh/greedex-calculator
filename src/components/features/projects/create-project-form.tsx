@@ -45,6 +45,19 @@ interface CreateProjectFormProps {
   userOrganizations: Omit<Organization, "metadata">[];
 }
 
+/**
+ * Render a two-step form to create a project and optional activities.
+ *
+ * The first step collects project details (name, dates, country, location,
+ * welcome message, and organization). The second step allows adding zero or
+ * more activities (type, distance, description, date). Submitting the form
+ * creates the project and any provided activities, shows success or error
+ * toasts, navigates to the created project's detail page on success, and
+ * invalidates the projects list cache.
+ *
+ * @param userOrganizations - Organizations available for the project's organization selector
+ * @returns The CreateProjectForm React element
+ */
 export function CreateProjectForm({ userOrganizations }: CreateProjectFormProps) {
   const tActivities = useTranslations("project.activities");
   const t = useTranslations("organization.projects.form.new");
@@ -382,7 +395,7 @@ export function CreateProjectForm({ userOrganizations }: CreateProjectFormProps)
                                 id={`activities.${index}.distance`}
                                 type="number"
                                 step="0.01"
-                                min="0"
+                                min="1"
                                 placeholder={tActivities(
                                   "form.distance-placeholder",
                                 )}
