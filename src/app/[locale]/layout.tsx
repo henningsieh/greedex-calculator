@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import Providers from "@/components/providers";
+import { QueryProvider } from "@/components/providers/query-provider";
 import { isSupportedLocale } from "@/lib/i18n/locales";
 import { routing } from "@/lib/i18n/routing";
 
@@ -71,9 +72,11 @@ export default async function LocaleLayout({ children, params }: Props) {
         className={`${comfortaa.className} ${jetbrainsMono.variable} antialiased`}
       >
         <Providers>
-          <NextIntlClientProvider messages={messages}>
-            {children}
-          </NextIntlClientProvider>
+          <QueryProvider>
+            <NextIntlClientProvider messages={messages}>
+              {children}
+            </NextIntlClientProvider>
+          </QueryProvider>
         </Providers>
       </body>
     </html>
