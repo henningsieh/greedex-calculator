@@ -168,7 +168,7 @@ export function ProjectActivityForm({
                   id="distanceKm"
                   type="number"
                   step="0.01"
-                  min="0"
+                  min="1"
                   placeholder={t("form.distance-placeholder")}
                   value={field.value ?? ""}
                   onChange={(e) =>

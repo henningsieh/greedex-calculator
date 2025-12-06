@@ -382,7 +382,7 @@ export function CreateProjectForm({ userOrganizations }: CreateProjectFormProps)
                                 id={`activities.${index}.distance`}
                                 type="number"
                                 step="0.01"
-                                min="0"
+                                min="1"
                                 placeholder={tActivities(
                                   "form.distance-placeholder",
                                 )}

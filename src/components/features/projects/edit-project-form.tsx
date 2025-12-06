@@ -127,7 +127,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       const validActivity = EditActivityFormItemSchema.parse(params.activity);
 
       if (!validActivity.activityType) {
-        throw new Error("Activity type and distance are required");
+        throw new Error("Activity type is required");
       }
 
       return orpc.projectActivities.create({
@@ -148,7 +148,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       const validActivity = EditActivityFormItemSchema.parse(params.activity);
 
       if (!validActivity.activityType) {
-        throw new Error("Activity type and distance are required");
+        throw new Error("Activity type is required");
       }
 
       return orpc.projectActivities.update({
@@ -461,7 +461,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
                                   id={`activities.${index}.distance`}
                                   type="number"
                                   step="0.01"
-                                  min="0"
+                                  min="1"
                                   placeholder={tActivities(
                                     "form.distance-placeholder",
                                   )}
