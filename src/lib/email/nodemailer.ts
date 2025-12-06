@@ -30,7 +30,9 @@ export interface SendEmailOptions {
 }
 
 /**
- * Send an email using Nodemailer
+ * Send an email using the configured SMTP transporter.
+ *
+ * @param options - Email parameters: `to` recipient(s), `subject`, `html` body, and optional `text` alternative.
  */
 export async function sendEmail(options: SendEmailOptions): Promise<void> {
   try {
@@ -56,4 +58,3 @@ export async function sendEmail(options: SendEmailOptions): Promise<void> {
     throw error;
   }
 }
-
