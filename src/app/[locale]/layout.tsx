@@ -64,14 +64,23 @@ export default async function LocaleLayout({ children, params }: Props) {
   // Using await ensures data is in cache BEFORE dehydration, preventing hydration mismatches.
   // Components that need this data: AppBreadcrumb, AppSidebar (ProjectSwitcher, OrganizationSwitcher), Navbar (UserSession)
   const queryClient = getQueryClient();
-  const prefetches = [
-    queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions()),
-    queryClient.prefetchQuery(orpcQuery.projects.list.queryOptions()),
-    queryClient.prefetchQuery(orpcQuery.organizations.list.queryOptions()),
-    queryClient.prefetchQuery(orpcQuery.organizations.getActive.queryOptions()),
-  ];
 
-  await Promise.all(prefetches);
+  // First, fetch the session to check authentication status
+  const session = await queryClient.fetchQuery(
+    orpcQuery.betterauth.getSession.queryOptions(),
+  );
+
+  // Only prefetch protected data if user is authenticated
+  if (session?.user) {
+    const prefetches = [
+      queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions()),
+      queryClient.prefetchQuery(orpcQuery.projects.list.queryOptions()),
+      queryClient.prefetchQuery(orpcQuery.organizations.list.queryOptions()),
+      queryClient.prefetchQuery(orpcQuery.organizations.getActive.queryOptions()),
+    ];
+
+    await Promise.all(prefetches);
+  }
 
   return (
     <html
