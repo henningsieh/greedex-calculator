@@ -41,7 +41,7 @@ export function ProjectSwitcher() {
 
   const t = useTranslations("organization.projects.activeProject");
 
-  const { setIsLoading } = useAppLoading();
+  const { setIsLoading } = useAppLoading("Switching project...");
   const queryClient = useQueryClient();
 
   // Use oRPC queries for stable SSR hydration

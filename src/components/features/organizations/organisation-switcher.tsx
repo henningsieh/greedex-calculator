@@ -28,7 +28,7 @@ import { orpcQuery } from "@/lib/orpc/orpc";
 import { cn } from "@/lib/utils";
 
 export function OrganizationSwitcher() {
-  const { setIsLoading } = useAppLoading();
+  const { setIsLoading } = useAppLoading("Switching organization...");
   const queryClient = useQueryClient();
 
   // Use oRPC queries for consistency
