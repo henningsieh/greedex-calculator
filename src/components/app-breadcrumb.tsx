@@ -126,7 +126,7 @@ export function AppBreadcrumb() {
   );
 
   const activeProject = projects?.find(
-    (project) => project.id === session?.session?.activeProjectId,
+    (project) => project.id === session?.session.activeProjectId,
   );
 
   // Permission helpers for project level actions
