@@ -79,7 +79,17 @@ import type { Participant, ProjectStats } from "@/components/participate/types";
 import { CO2_FACTORS } from "@/config/CO2Calculator";
 
 /**
- * Demo mock data generator
+ * Create an array of mock Participant records for the demo/live-view UI.
+ *
+ * Each returned Participant includes populated fields: `id`, `projectId`, `memberId`, `userId`,
+ * `createdAt`, `updatedAt`, `name`, `country`, `totalCO2`, and `activities`. Each activity contains
+ * `id`, `type`, `distanceKm`, and `co2Kg`.
+ *
+ * Values are randomly generated for demonstration purposes and are not suitable for production.
+ *
+ * @returns An array of `Participant` objects populated with randomized demo data, where `totalCO2`
+ * is the sum of each participant's activity `co2Kg` values and each activity's `co2Kg` is derived
+ * from its `distanceKm` and the configured CO2 factors.
  */
 function generateMockData(): Participant[] {
   const names = [

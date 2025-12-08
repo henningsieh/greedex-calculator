@@ -191,17 +191,17 @@ export function calculateProjectActivitiesCO2(
 }
 
 /**
- * Compute CO₂ emissions for transport, accommodation, and food from participant answers and estimate trees required to offset the emissions.
+ * Compute CO₂ emissions from participant responses and estimate the number of trees required to offset the total.
  *
- * @param answers - Partial participant responses. Fields used: flightKm, boatKm, trainKm, busKm, carKm, carType, carPassengers, days, accommodationCategory, roomOccupancy, electricity, and food.
- * @param projectActivities - Optional project-level activities (from database) that add to the baseline CO₂
- * @returns An EmissionCalculation containing:
+ * @param answers - Partial participant responses; fields used: `flightKm`, `boatKm`, `trainKm`, `busKm`, `carKm`, `carType`, `carPassengers`, `days`, `accommodationCategory`, `roomOccupancy`, `electricity`, and `food`
+ * @param projectActivities - Optional project-level activities that contribute baseline CO₂ emissions
+ * @returns An EmissionCalculation object containing:
  * - `transportCO2` — total transport emissions in kilograms CO₂ (includes round trip and per-passenger car sharing),
- * - `accommodationCO2` — total accommodation emissions in kilograms CO₂ (adjusted by occupancy and electricity type),
- * - `foodCO2` — total food emissions in kilograms CO₂,
+ * - `accommodationCO2` — accommodation emissions in kilograms CO₂ (adjusted by occupancy and electricity type),
+ * - `foodCO2` — food emissions in kilograms CO₂,
  * - `projectActivitiesCO2` — CO₂ from project-level activities in kilograms,
  * - `totalCO2` — sum of all emissions in kilograms CO₂,
- * - `treesNeeded` — number of trees required to offset the `totalCO2` (computed as `Math.ceil(totalCO2 / 22)`).
+ * - `treesNeeded` — number of trees required to offset `totalCO2` (computed as `Math.ceil(totalCO2 / 22)`)
  */
 export function calculateEmissions(
   answers: Partial<ParticipantAnswers>,

@@ -134,6 +134,11 @@ export function CreateProjectForm({
     },
   });
 
+  /**
+   * Validate required project fields for step 1 and advance the form to step 2 when validation succeeds.
+   *
+   * Triggers validation for "name", "startDate", "endDate", and "country". If all validations pass, updates the form state to move to step 2.
+   */
   async function handleNextStep() {
     // Validate step 1 fields before proceeding
     const isStepValid = await trigger([

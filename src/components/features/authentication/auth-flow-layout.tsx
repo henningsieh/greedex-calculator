@@ -25,6 +25,16 @@ export function normalizeRedirectPath(
   return normalizedRedirect ?? fallbackPath;
 }
 
+/**
+ * Layout used for authentication pages that presents a left content panel (with an optional back link and badge) and a translated right-side hero image.
+ *
+ * Renders children inside the left panel; the right side displays translated headline, description, hero fields, and highlights.
+ *
+ * @param children - Content to render in the left panel of the layout
+ * @param backHref - Optional URL for the back link; when omitted the back control is rendered without a destination
+ * @param backLabel - Optional label for the back link; defaults to "Back to Home" when not provided
+ * @returns A React element containing the authentication layout
+ */
 export default async function AuthFlowLayout({
   children,
   backHref,

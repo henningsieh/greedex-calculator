@@ -35,12 +35,10 @@ interface ProjectActivityFormProps {
 }
 
 /**
- * Render a form to create a new project activity or edit an existing one.
+ * Render a form for creating a new project activity or editing an existing one.
  *
- * The form validates input with the CreateActivityInputSchema, calls the appropriate
- * create or update RPC on submit, displays success/error toasts, and invalidates
- * the project activities list query. When a mutation succeeds it will call the
- * optional `onSuccess` callback; `onCancel` is invoked when the cancel button is pressed.
+ * Prefills fields when an existing activity is provided, performs create or update
+ * operations on submit, invokes optional callbacks, and disables submission while a mutation is pending.
  *
  * @param projectId - ID of the project the activity belongs to
  * @param activity - Optional existing activity to prefill the form for editing
@@ -137,6 +135,11 @@ export function ProjectActivityForm({
 
   const isPending = createMutation.isPending || updateMutation.isPending;
 
+  /**
+   * Submit validated activity input to create a new project activity or update an existing one.
+   *
+   * @param values - Activity input validated against `CreateActivityInputSchema`
+   */
   async function onSubmit(values: z.infer<typeof CreateActivityInputSchema>) {
     if (isEditing) {
       await updateMutation.mutateAsync(values);

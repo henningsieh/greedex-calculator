@@ -3,6 +3,14 @@ import { getTranslations } from "next-intl/server";
 import { CreateProjectForm } from "@/components/features/projects/create-project-form";
 import { auth } from "@/lib/better-auth";
 
+/**
+ * Render the Create Project page with a localized title and the project creation form.
+ *
+ * The form receives `activeOrganizationId`, resolved from the session's `activeOrganizationId`,
+ * falling back to the first organization id or an empty string when none is available.
+ *
+ * @returns A React element containing the page header and `CreateProjectForm` with the resolved `activeOrganizationId`.
+ */
 export default async function CreateProjectPage() {
   const t = await getTranslations("organization.projects.form.new");
 

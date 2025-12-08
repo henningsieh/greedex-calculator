@@ -10,7 +10,12 @@ interface ParticipatePageProps {
   }>;
 }
 
-// Fetch project data with activities from the database
+/**
+ * Retrieves project data (including activities) for participation by id.
+ *
+ * @param projectId - The project identifier to fetch.
+ * @returns The project data including activities, or `null` if the fetch fails.
+ */
 async function getProjectData(projectId: string) {
   try {
     return await orpc.projects.getForParticipation({ id: projectId });
