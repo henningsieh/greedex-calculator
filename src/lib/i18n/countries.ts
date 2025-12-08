@@ -44,6 +44,12 @@ export const EU_COUNTRY_CODES = [
 
 export type EUCountryCode = (typeof EU_COUNTRY_CODES)[number];
 
+/**
+ * Type alias for country codes - using EU countries for type safety
+ * Based on i18n-iso-countries EU member states
+ */
+export type CountryCode = EUCountryCode;
+
 export interface CountryData {
   code: string;
   name: string;

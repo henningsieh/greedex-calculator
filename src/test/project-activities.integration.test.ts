@@ -9,6 +9,7 @@ import {
   projectsTable,
   user,
 } from "@/lib/drizzle/schema";
+import type { CountryCode } from "@/lib/i18n/countries";
 
 // Test data constants
 const TEST_USER = {
@@ -91,6 +92,7 @@ describe("Project Activities Integration Tests", () => {
         emailVerified: true,
         createdAt: new Date(),
         updatedAt: new Date(),
+        country: "DE" as CountryCode,
       });
 
       // Verify user was created
@@ -160,7 +162,7 @@ describe("Project Activities Integration Tests", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
         location: "Test Location",
-        country: "Germany",
+        country: "DE" as CountryCode,
         welcomeMessage: "Welcome to test project",
         responsibleUserId: userId,
         organizationId: orgId,
@@ -201,7 +203,7 @@ describe("Project Activities Integration Tests", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
         location: "Berlin",
-        country: "Germany",
+        country: "DE" as CountryCode,
         welcomeMessage: "Welcome to project with activities",
         responsibleUserId: userId,
         organizationId: orgId,
@@ -244,7 +246,6 @@ describe("Project Activities Integration Tests", () => {
       await db.insert(projectActivitiesTable).values({
         id: activity1.id,
         projectId: activity1.projectId,
-        userId: userId,
         activityType: activity1.activityType,
         distanceKm: activity1.distanceKm,
         description: activity1.description,
@@ -256,7 +257,6 @@ describe("Project Activities Integration Tests", () => {
       await db.insert(projectActivitiesTable).values({
         id: activity2.id,
         projectId: activity2.projectId,
-        userId: userId,
         activityType: activity2.activityType,
         distanceKm: activity2.distanceKm,
         description: activity2.description,
@@ -324,7 +324,6 @@ describe("Project Activities Integration Tests", () => {
       await db.insert(projectActivitiesTable).values({
         id: activityData.id,
         projectId: activityData.projectId,
-        userId: userId,
         activityType: activityData.activityType,
         distanceKm: activityData.distanceKm,
         description: activityData.description,
@@ -469,7 +468,6 @@ describe("Project Activities Integration Tests", () => {
         await db.insert(projectActivitiesTable).values({
           id: randomUUID(),
           projectId: fakeProjectId,
-          userId: userId,
           activityType: "car" as const,
           distanceKm: "100.00",
           createdAt: new Date(),
@@ -492,7 +490,8 @@ describe("Project Activities Integration Tests", () => {
         name: "Cascade Test",
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
-        country: "Germany",
+        location: "Test Location",
+        country: "DE" as CountryCode,
         responsibleUserId: userId,
         organizationId: orgId,
         createdAt: new Date(),
@@ -504,7 +503,6 @@ describe("Project Activities Integration Tests", () => {
       await db.insert(projectActivitiesTable).values({
         id: cascadeActivityId,
         projectId: cascadeProjectId,
-        userId: userId,
         activityType: "car" as const,
         distanceKm: "50.00",
         createdAt: new Date(),
@@ -540,7 +538,6 @@ describe("Project Activities Integration Tests", () => {
       await db.insert(projectActivitiesTable).values({
         id: testActivityId,
         projectId,
-        userId: userId,
         activityType: "car" as const,
         distanceKm: "25.00",
         createdAt: new Date(),
@@ -623,7 +620,6 @@ describe("Project Activities Integration Tests", () => {
           db.insert(projectActivitiesTable).values({
             id: randomUUID(),
             projectId,
-            userId: userId,
             activityType: "car" as const,
             distanceKm: `${(i + 1) * 10}.00`,
             createdAt: new Date(),

@@ -3,6 +3,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { organization, user, member } from "@/lib/drizzle/schemas/auth-schema";
 import { activityTypeValues, ActivityType } from "@/components/features/projects/types";
+import type { CountryCode } from "@/lib/i18n/countries";
 
 
 // ============================================================================
@@ -25,8 +26,8 @@ export const projectsTable = pgTable("project", {
   name: text("name").notNull(),
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
-  location: text("location"),
-  country: text("country").notNull(),
+  location: text("location").notNull(),
+  country: text("country").$type<CountryCode>().notNull(),
   welcomeMessage: text("welcome_message"),
 
   // Foreign key to user (responsible team member)
@@ -58,11 +59,6 @@ export const projectActivitiesTable = pgTable("project_activity", {
   projectId: text("project_id")
     .notNull()
     .references(() => projectsTable.id, { onDelete: "cascade" }),
-
-  // Foreign key to user (participant who created this activity)
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
 
   // type ActivityType = "boat" | "bus" | "train" | "car"
   activityType: text("activity_type", { enum: activityTypeValues })
@@ -132,10 +128,6 @@ export const projectActivityRelations = relations(
     project: one(projectsTable, {
       fields: [projectActivitiesTable.projectId],
       references: [projectsTable.id],
-    }),
-    user: one(user, {
-      fields: [projectActivitiesTable.userId],
-      references: [user.id],
     }),
   }),
 );

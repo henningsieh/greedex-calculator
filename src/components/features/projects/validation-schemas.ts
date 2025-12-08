@@ -14,40 +14,51 @@ import {
   projectsTable,
   user,
 } from "@/lib/drizzle/schema";
+import { EU_COUNTRY_CODES } from "@/lib/i18n/countries";
 import { validateDistanceStep } from "@/lib/utils/distance-utils";
 
 // Form schema (only user-provided fields)
-export const ProjectFormSchema = createInsertSchema(projectsTable).omit({
-  id: true,
-  responsibleUserId: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const ProjectFormSchema = createInsertSchema(projectsTable)
+  .omit({
+    id: true,
+    responsibleUserId: true,
+    createdAt: true,
+    updatedAt: true,
+  })
+  .extend({
+    country: z.enum(EU_COUNTRY_CODES),
+  });
 
 export const ProjectWithRelationsSchema = createSelectSchema(
   projectsTable,
 ).extend({
   responsibleUser: createSelectSchema(user),
   organization: createSelectSchema(organization),
+  country: z.enum(EU_COUNTRY_CODES),
 });
 
-export const ProjectUpdateFormSchema = createUpdateSchema(projectsTable).omit({
-  id: true,
-  responsibleUserId: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const ProjectUpdateFormSchema = createUpdateSchema(projectsTable)
+  .omit({
+    id: true,
+    responsibleUserId: true,
+    createdAt: true,
+    updatedAt: true,
+  })
+  .extend({
+    country: z.enum(EU_COUNTRY_CODES).optional(),
+  });
 
 // Activity-related schemas (moved here to break circular dependency)
 export const EditActivityFormItemSchema = createUpdateSchema(
   projectActivitiesTable,
 )
   .omit({
-    userId: true,
     createdAt: true,
     updatedAt: true,
   })
   .extend({
+    id: z.string(), // Required for existing activities to identify them
+    projectId: z.string(), // Required for activities
     distanceKm: z
       .number()
       .min(MIN_DISTANCE_KM, `Distance must be at least ${MIN_DISTANCE_KM} km`)
@@ -70,7 +81,6 @@ export const CreateActivityInputSchema = createInsertSchema(
 )
   .omit({
     id: true,
-    userId: true, // Server provides from authenticated user context
     createdAt: true,
     updatedAt: true,
   })
@@ -90,7 +100,6 @@ export const UpdateActivityInputSchema = createUpdateSchema(
 )
   .omit({
     id: true,
-    userId: true, // Cannot be changed after creation
     projectId: true, // Cannot change which project the activity belongs to
     createdAt: true,
     updatedAt: true,
@@ -123,7 +132,6 @@ export const ProjectActivityWithRelationsSchema = createSelectSchema(
   projectActivitiesTable,
 ).extend({
   project: createSelectSchema(projectsTable).optional(),
-  user: createSelectSchema(user).optional(),
 });
 
 // Schema for Project with Activities included
@@ -132,5 +140,7 @@ export const ProjectWithActivitiesSchema = createSelectSchema(
 ).extend({
   responsibleUser: createSelectSchema(user),
   organization: createSelectSchema(organization),
+  // Ensure `country` is properly typed as enum
+  country: z.enum(EU_COUNTRY_CODES),
   activities: z.array(ProjectActivityWithRelationsSchema),
 });

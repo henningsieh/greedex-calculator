@@ -156,6 +156,7 @@ describe("Distance Validation Schemas", () => {
     it("should accept valid distance values with activity ID", () => {
       const validData = {
         id: "test-id",
+        projectId: "test-project-id",
         activityType: "bus" as const,
         distanceKm: 5.5,
         description: "Test activity",
@@ -171,6 +172,7 @@ describe("Distance Validation Schemas", () => {
     it("should reject invalid distances in edit form", () => {
       const invalidData = {
         id: "test-id",
+        projectId: "test-project-id",
         activityType: "train" as const,
         distanceKm: 0.05,
         description: "Test activity",
@@ -186,6 +188,7 @@ describe("Distance Validation Schemas", () => {
     it("should enforce step validation in edit form", () => {
       const invalidData = {
         id: "test-id",
+        projectId: "test-project-id",
         activityType: "boat" as const,
         distanceKm: 1.25, // Not a multiple of 0.1
         description: "Test activity",

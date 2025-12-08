@@ -2,11 +2,12 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserPlus } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { CountrySelect } from "@/components/country-select";
 import { normalizeRedirectPath } from "@/components/features/authentication/auth-flow-layout";
 import { SocialButtons } from "@/components/features/authentication/social-buttons";
 import FormField from "@/components/form-field";
@@ -23,11 +24,14 @@ import {
   Field,
   FieldDescription,
   FieldGroup,
+  FieldLabel,
   FieldSeparator,
 } from "@/components/ui/field";
 import { DASHBOARD_PATH, LOGIN_PATH } from "@/config/AppRoutes";
 import { env } from "@/env";
 import { authClient } from "@/lib/better-auth/auth-client";
+import { EU_COUNTRY_CODES } from "@/lib/i18n/countries";
+import { getLocaleData } from "@/lib/i18n/locales";
 import { Link, useRouter } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +44,14 @@ export function SignupForm({
 }) {
   const t = useTranslations("authentication");
   const router = useRouter();
+  const locale = useLocale();
+
+  const localeData = getLocaleData().find((ld) => ld.code === locale);
+  const defaultCountry =
+    localeData &&
+    (EU_COUNTRY_CODES as readonly string[]).includes(localeData.countryCode)
+      ? localeData.countryCode
+      : undefined;
 
   const formSchema = useMemo(
     () =>
@@ -51,6 +63,7 @@ export function SignupForm({
           confirmPassword: z
             .string()
             .min(1, t("validation.passwordConfirmRequired")),
+          country: z.enum(EU_COUNTRY_CODES),
         })
         .refine((data) => data.password === data.confirmPassword, {
           message: t("validation.passwordsNoMatch"),
@@ -66,6 +79,7 @@ export function SignupForm({
       email: "",
       password: "",
       confirmPassword: "",
+      country: (defaultCountry || "DE") as (typeof EU_COUNTRY_CODES)[number],
     },
   });
 
@@ -80,6 +94,7 @@ export function SignupForm({
         email: data.email,
         password: data.password,
         name: data.name,
+        country: data.country,
         callbackURL: finalRedirect,
       },
       {
@@ -158,6 +173,27 @@ export function SignupForm({
               inputProps={{
                 disabled: form.formState.isSubmitting,
               }}
+            />
+
+            <Controller
+              name="country"
+              control={form.control}
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel>Country</FieldLabel>
+                  <CountrySelect
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    euOnly={true}
+                    disabled={form.formState.isSubmitting}
+                  />
+                  {form.formState.errors.country && (
+                    <FieldDescription className="text-destructive">
+                      {form.formState.errors.country.message}
+                    </FieldDescription>
+                  )}
+                </Field>
+              )}
             />
 
             <Button

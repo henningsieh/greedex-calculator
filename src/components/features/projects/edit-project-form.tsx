@@ -90,17 +90,19 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
   // Load existing activities into the form when they're fetched
   React.useEffect(() => {
     if (existingActivities && existingActivities.length > 0) {
-      const formattedActivities = existingActivities.map((activity) => ({
-        activityId: activity.id,
-        activityType: activity.activityType,
-        distanceKm: parseFloat(activity.distanceKm), // Convert from DB string to number
-        description: activity.description,
-        activityDate: activity.activityDate
-          ? new Date(activity.activityDate)
-          : null,
-        isNew: false,
-        isDeleted: false,
-      }));
+      const formattedActivities: z.infer<typeof EditActivityFormItemSchema>[] =
+        existingActivities.map((activity) => ({
+          id: activity.id,
+          projectId: activity.projectId,
+          activityType: activity.activityType,
+          distanceKm: parseFloat(activity.distanceKm),
+          description: activity.description,
+          activityDate: activity.activityDate
+            ? new Date(activity.activityDate)
+            : null,
+          isNew: false,
+          isDeleted: false,
+        }));
       setValue("activities", formattedActivities);
     }
   }, [existingActivities, setValue]);
@@ -271,7 +273,8 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
 
   const addActivity = () => {
     append({
-      id: undefined,
+      id: "",
+      projectId: project.id,
       activityType: "car",
       distanceKm: MIN_DISTANCE_KM,
       description: null,

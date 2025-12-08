@@ -23,6 +23,8 @@ import {
   sendPasswordResetEmail,
 } from "@/lib/email";
 import { sendEmail } from "@/lib/email/nodemailer";
+import type { EUCountryCode } from "@/lib/i18n/countries";
+import { EU_COUNTRY_CODES } from "@/lib/i18n/countries";
 
 export const auth = betterAuth({
   appName: "Next WebSocket Server",
@@ -81,6 +83,17 @@ export const auth = betterAuth({
       activeProjectId: {
         type: "string",
         required: false,
+      },
+    },
+  },
+  user: {
+    additionalFields: {
+      country: {
+        type: "string",
+        required: true,
+        validate: async (value: string) => {
+          return EU_COUNTRY_CODES.includes(value as EUCountryCode);
+        },
       },
     },
   },

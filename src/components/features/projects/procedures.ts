@@ -13,6 +13,7 @@ import {
   CreateActivityInputSchema,
   ProjectActivityWithRelationsSchema,
   ProjectFormSchema,
+  ProjectUpdateFormSchema,
   ProjectWithRelationsSchema,
   UpdateActivityInputSchema,
 } from "@/components/features/projects/validation-schemas";
@@ -230,7 +231,7 @@ export const updateProject = authorized
   .input(
     z.object({
       id: z.string().describe("Project ID"),
-      data: ProjectFormSchema.partial(),
+      data: ProjectUpdateFormSchema,
     }),
   )
   .output(
@@ -701,7 +702,6 @@ export const createProjectActivity = authorized
       .insert(projectActivitiesTable)
       .values({
         projectId: input.projectId,
-        userId: context.user.id,
         activityType: input.activityType,
         distanceKm: input.distanceKm.toString(),
         description: input.description,
