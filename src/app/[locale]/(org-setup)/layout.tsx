@@ -1,5 +1,5 @@
 import { getLocale } from "next-intl/server";
-import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/lib/config/AppRoutes";
+import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/config/AppRoutes";
 import { redirect } from "@/lib/i18n/navigation";
 import {
   checkAuthAndOrgs,

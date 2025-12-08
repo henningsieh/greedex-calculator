@@ -39,7 +39,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import {
   ACTIVE_PROJECT_PATH,
   CREATE_PROJECT_PATH,
@@ -48,7 +47,8 @@ import {
   PROJECTS_PATH,
   SETTINGS_PATH,
   TEAM_PATH,
-} from "@/lib/config/AppRoutes";
+} from "@/config/AppRoutes";
+import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import { Link, usePathname } from "@/lib/i18n/navigation";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
 import { cn } from "@/lib/utils";

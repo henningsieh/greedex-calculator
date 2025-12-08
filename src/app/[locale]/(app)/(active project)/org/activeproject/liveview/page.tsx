@@ -75,11 +75,8 @@ import { Leaderboard } from "@/components/participate/leaderboard";
 import { LiveIndicator } from "@/components/participate/live-indicator";
 import { StatsOverview } from "@/components/participate/stats-overview";
 import { TransportBreakdown } from "@/components/participate/transport-breakdown";
-import {
-  CO2_FACTORS,
-  type Participant,
-  type ProjectStats,
-} from "@/components/participate/types";
+import type { Participant, ProjectStats } from "@/components/participate/types";
+import { CO2_FACTORS } from "@/config/CO2Calculator";
 
 /**
  * Demo mock data generator
