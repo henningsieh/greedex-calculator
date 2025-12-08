@@ -3,7 +3,12 @@ import countries from "i18n-iso-countries";
 import deCountries from "i18n-iso-countries/langs/de.json";
 import enCountries from "i18n-iso-countries/langs/en.json";
 import type { ComponentType, SVGProps } from "react";
-import { SUPPORTED_LOCALES } from "../../config/Languages";
+import {
+  LOCALE_CODES,
+  type LocaleCode,
+  SUPPORTED_LOCALES,
+  type SupportedLocale,
+} from "../../config/Languages";
 
 countries.registerLocale(enCountries);
 countries.registerLocale(deCountries);
@@ -46,12 +51,11 @@ export const getLocaleData = (): LocaleData[] => {
   });
 };
 
-export const LOCALE_CODES: LocaleCode[] = SUPPORTED_LOCALES.map(
-  (locale) => locale.code,
-);
-
-export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
-export type LocaleCode = SupportedLocale["code"];
+export {
+  LOCALE_CODES,
+  type LocaleCode,
+  type SupportedLocale,
+} from "../../config/Languages";
 
 export const isSupportedLocale = (
   value: string | undefined,

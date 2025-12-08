@@ -1,8 +1,6 @@
 // Centralized i18n configuration
 // This file contains all internationalization-related settings
 
-import { LOCALE_CODES, type LocaleCode } from "@/lib/i18n/locales";
-
 export const SUPPORTED_LOCALES = [
   {
     code: "en",
@@ -15,5 +13,12 @@ export const SUPPORTED_LOCALES = [
     countryCode: "DE",
   },
 ] as const;
+
+export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+export type LocaleCode = SupportedLocale["code"];
+
+export const LOCALE_CODES: LocaleCode[] = SUPPORTED_LOCALES.map(
+  (locale) => locale.code,
+);
 
 export const DEFAULT_LOCALE: LocaleCode = LOCALE_CODES[0];
