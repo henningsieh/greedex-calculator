@@ -3,37 +3,17 @@ import countries from "i18n-iso-countries";
 import deCountries from "i18n-iso-countries/langs/de.json";
 import enCountries from "i18n-iso-countries/langs/en.json";
 import type { ComponentType, SVGProps } from "react";
+import {
+  LOCALE_CODES,
+  type LocaleCode,
+  SUPPORTED_LOCALES,
+  type SupportedLocale,
+} from "../../config/Languages";
 
 countries.registerLocale(enCountries);
 countries.registerLocale(deCountries);
 
-export const SUPPORTED_LOCALE_META = [
-  {
-    code: "en",
-    label: "English",
-    countryCode: "GB",
-  },
-  {
-    code: "de",
-    label: "Deutsch",
-    countryCode: "DE",
-  },
-] as const;
-
-type LocaleMeta = (typeof SUPPORTED_LOCALE_META)[number];
-export type LocaleCode = LocaleMeta["code"];
-
-export const LOCALE_CODES: LocaleCode[] = SUPPORTED_LOCALE_META.map(
-  (locale) => locale.code,
-);
-
-export const DEFAULT_LOCALE: LocaleCode = LOCALE_CODES[0];
-
-export const isSupportedLocale = (
-  value: string | undefined,
-): value is LocaleCode => !!value && LOCALE_CODES.includes(value as LocaleCode);
-
-export type LocaleData = LocaleMeta & {
+export type LocaleData = SupportedLocale & {
   nativeName: string;
   englishName: string;
   Flag?: ComponentType<SVGProps<SVGSVGElement>>;
@@ -45,22 +25,37 @@ const flagRegistry = Flags as Record<
 >;
 
 export const getLocaleData = (): LocaleData[] => {
-  return SUPPORTED_LOCALE_META.map((locale) => {
-    const nativeName =
-      countries.getName(locale.countryCode, locale.code, {
-        select: "official",
-      }) ?? locale.label;
+  return SUPPORTED_LOCALES.map((locale) => {
+    // Handle locales without a specific country code (e.g., International English)
+    const countryCode = "countryCode" in locale ? locale.countryCode : undefined;
 
-    let englishName =
-      countries.getName(locale.countryCode, "en", {
-        select: "official",
-      }) ?? locale.label;
+    let nativeName: string;
+    let englishName: string;
+    let Flag: ComponentType<SVGProps<SVGSVGElement>> | undefined;
 
-    if (englishName === `United Kingdom`) {
-      englishName = `International`;
+    if (countryCode) {
+      // Locale has a country code - use i18n-iso-countries for names
+      nativeName =
+        countries.getName(countryCode, locale.code, {
+          select: "official",
+        }) ?? locale.label;
+
+      englishName =
+        countries.getName(countryCode, "en", {
+          select: "official",
+        }) ?? locale.label;
+
+      Flag = flagRegistry[countryCode];
+    } else {
+      // Locale without country code (International) - use display region or label
+      nativeName =
+        (locale as { displayRegion?: string; label: string }).displayRegion ??
+        locale.label;
+      englishName =
+        (locale as { displayRegion?: string; label: string }).displayRegion ??
+        locale.label;
+      Flag = undefined; // No flag for international locales
     }
-
-    const Flag = flagRegistry[locale.countryCode];
 
     return {
       ...locale,
@@ -70,3 +65,13 @@ export const getLocaleData = (): LocaleData[] => {
     };
   });
 };
+
+export {
+  LOCALE_CODES,
+  type LocaleCode,
+  type SupportedLocale,
+} from "../../config/Languages";
+
+export const isSupportedLocale = (
+  value: string | undefined,
+): value is LocaleCode => !!value && LOCALE_CODES.includes(value as LocaleCode);

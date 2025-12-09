@@ -401,7 +401,8 @@
           "location-description": "Optional: Gib zusätzliche Ortsdetails an.",
           "welcome-message-description": "Optional: Füge eine Willkommensnachricht für Teilnehmende hinzu.",
           "organization-description": "Wähle die Organisation, die das Projekt besitzt.",
-          "back": "Zurück"
+          "back": "Zurück",
+          "country-placeholder": "Land, in dem das Projekt stattfindet"
         }
       },
       "activeProject": {
@@ -495,6 +496,11 @@
         "settings": "Einstellungen"
       },
       "collapse": "Seitenleiste einklappen"
+    },
+    "loading": {
+      "default": "Wird geladen...",
+      "switchingProject": "Projekt wird gewechselt...",
+      "switchingOrganization": "Organisation wird gewechselt..."
     }
   },
   "project": {
@@ -660,6 +666,11 @@
         "continue": "Weiter",
         "complete": "Abschließen"
       },
+      "project-activities": {
+        "title": "Projektaktivitäten",
+        "description": "Dieses Projekt beinhaltet organisierte Aktivitäten, die zu den Basis-Emissionen beitragen:",
+        "note": "Dies ist bereits in deinem Gesamt-Fußabdruck enthalten"
+      },
       "results": {
         "CO₂-footprint": "CO₂-Fußabdruck",
         "trees-needed": "Bäume (1 Jahr)",
@@ -667,6 +678,7 @@
         "transport": "Transport:",
         "accommodation": "Unterkunft:",
         "food": "Essen:",
+        "project-activities": "Projektaktivitäten:",
         "total": "Gesamt:",
         "console-note": "Daten wurden in die Konsole protokolliert (siehe Browser-Entwicklertools)",
         "co2-footprint": "CO₂-Fußabdruck"

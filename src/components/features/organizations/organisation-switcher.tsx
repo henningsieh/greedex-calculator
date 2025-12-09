@@ -7,6 +7,7 @@ import {
   ChevronsUpDownIcon,
   PlusIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { CreateOrganizationModal } from "@/components/features/organizations/create-organization-modal";
 import { useAppLoading } from "@/components/providers/loading-provider";
 import {
@@ -28,7 +29,11 @@ import { orpcQuery } from "@/lib/orpc/orpc";
 import { cn } from "@/lib/utils";
 
 export function OrganizationSwitcher() {
-  const { setIsLoading } = useAppLoading("Switching organization...");
+  const t = useTranslations("app.loading");
+  const { startLoading, stopLoading } = useAppLoading({
+    message: t("switchingOrganization"),
+    mode: "organization",
+  });
   const queryClient = useQueryClient();
 
   // Use oRPC queries for consistency
@@ -86,7 +91,7 @@ export function OrganizationSwitcher() {
               <DropdownMenuItem
                 key={org.id}
                 onSelect={async () => {
-                  setIsLoading(true);
+                  startLoading();
 
                   try {
                     // 1. Switch organization on the server (this should trigger your hook)
@@ -108,7 +113,7 @@ export function OrganizationSwitcher() {
                       ),
                     ]);
                   } finally {
-                    setIsLoading(false);
+                    stopLoading();
                   }
                 }}
               >

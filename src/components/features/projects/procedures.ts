@@ -10,10 +10,13 @@ import {
   PROJECT_SORT_FIELDS,
 } from "@/components/features/projects/types";
 import {
-  ProjectActivityFormSchema,
+  CreateActivityInputSchema,
   ProjectActivityWithRelationsSchema,
-  ProjectFormSchema,
+  ProjectCreateFormSchema,
+  ProjectUpdateFormSchema,
+  ProjectWithActivitiesSchema,
   ProjectWithRelationsSchema,
+  UpdateActivityInputSchema,
 } from "@/components/features/projects/validation-schemas";
 import { auth } from "@/lib/better-auth";
 import { db } from "@/lib/drizzle/db";
@@ -24,6 +27,7 @@ import {
   session as sessionTable,
   user,
 } from "@/lib/drizzle/schema";
+import { base } from "@/lib/orpc/context";
 import { authorized, requireProjectPermissions } from "@/lib/orpc/middleware";
 
 /**
@@ -42,7 +46,7 @@ export const createProject = authorized
     summary: "Create a new project",
     tags: ["project"],
   })
-  .input(ProjectFormSchema)
+  .input(ProjectCreateFormSchema)
   .output(
     z.object({
       success: z.boolean(),
@@ -228,7 +232,7 @@ export const updateProject = authorized
   .input(
     z.object({
       id: z.string().describe("Project ID"),
-      data: ProjectFormSchema.partial(),
+      data: ProjectUpdateFormSchema,
     }),
   )
   .output(
@@ -362,6 +366,12 @@ export const deleteProject = authorized
  * - Project must belong to user's active organization (if projectId is provided)
  */
 export const setActiveProject = authorized
+  .route({
+    method: "POST",
+    path: "/projects/active",
+    summary: "Set active project",
+    tags: ["project"],
+  })
   .input(
     z.object({
       projectId: z.string().optional(),
@@ -482,6 +492,7 @@ export const getProjectParticipants = authorized
         projectId: projectParticipantsTable.projectId,
         memberId: projectParticipantsTable.memberId,
         userId: projectParticipantsTable.userId,
+        country: projectParticipantsTable.country,
         createdAt: projectParticipantsTable.createdAt,
         updatedAt: projectParticipantsTable.updatedAt,
         user: {
@@ -662,7 +673,7 @@ export const createProjectActivity = authorized
     summary: "Create a new project activity",
     tags: ["project", "activity"],
   })
-  .input(ProjectActivityFormSchema)
+  .input(CreateActivityInputSchema)
   .output(
     z.object({
       success: z.boolean(),
@@ -725,7 +736,7 @@ export const updateProjectActivity = authorized
   .input(
     z.object({
       id: z.string().describe("Activity ID"),
-      data: ProjectActivityFormSchema.omit({ projectId: true }).partial(),
+      data: UpdateActivityInputSchema,
     }),
   )
   .output(
@@ -852,4 +863,49 @@ export const deleteProjectActivity = authorized
     return {
       success: true,
     };
+  });
+
+// ============================================================================
+// PUBLIC PROCEDURES (NO AUTH REQUIRED)
+// ============================================================================
+
+/**
+ * Get project for public participation (no auth required)
+ *
+ * This is a public endpoint used by the participation form.
+ * Returns project details with activities for calculating the baseline CO2.
+ */
+export const getProjectForParticipation = base
+  .route({
+    method: "GET",
+    path: "/projects/:id/participate",
+    summary: "Get project details for participation (public)",
+    tags: ["project", "public"],
+  })
+  .input(
+    z.object({
+      id: z.string().describe("Project ID"),
+    }),
+  )
+  .output(ProjectWithActivitiesSchema)
+  .handler(async ({ input }) => {
+    // Fetch project (no organization check needed for public participation)
+    const project = await db.query.projectsTable.findFirst({
+      where: eq(projectsTable.id, input.id),
+      with: {
+        responsibleUser: true,
+        organization: true,
+        activities: {
+          orderBy: [asc(projectActivitiesTable.createdAt)],
+        },
+      },
+    });
+
+    if (!project) {
+      throw new ORPCError("NOT_FOUND", {
+        message: "Project not found",
+      });
+    }
+
+    return project;
   });

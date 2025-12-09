@@ -27,13 +27,13 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { env } from "@/env";
-import { authClient } from "@/lib/better-auth/auth-client";
 import {
   DASHBOARD_PATH,
   FORGOT_PASSWORD_PATH,
   SIGNUP_PATH,
-} from "@/lib/config/app";
+} from "@/config/AppRoutes";
+import { env } from "@/env";
+import { authClient } from "@/lib/better-auth/auth-client";
 import { Link, useRouter } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 

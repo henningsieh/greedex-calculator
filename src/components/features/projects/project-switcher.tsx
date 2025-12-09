@@ -40,8 +40,12 @@ export function ProjectSwitcher() {
   } = useProjectPermissions();
 
   const t = useTranslations("organization.projects.activeProject");
+  const tLoading = useTranslations("app.loading");
 
-  const { setIsLoading } = useAppLoading("Switching project...");
+  const { startLoading, stopLoading } = useAppLoading({
+    message: tLoading("switchingProject"),
+    mode: "project",
+  });
   const queryClient = useQueryClient();
 
   // Use oRPC queries for stable SSR hydration
@@ -118,9 +122,9 @@ export function ProjectSwitcher() {
                 className="focus:bg-secondary/50 focus:text-accent-foreground"
                 key={project.id}
                 onSelect={async () => {
-                  setIsLoading(true);
+                  startLoading();
                   await setActiveProject.mutateAsync(project.id);
-                  setIsLoading(false);
+                  stopLoading();
                 }}
               >
                 {project.name}

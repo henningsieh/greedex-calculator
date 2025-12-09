@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef } from "react"
 
 import { cn } from "@/lib/utils/index"
 
-export interface AnimatedGradientTextProps
+interface AnimatedGradientTextProps
   extends ComponentPropsWithoutRef<"div"> {
   speed?: number
   colorFrom: string

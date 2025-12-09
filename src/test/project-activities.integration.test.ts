@@ -1,6 +1,10 @@
 import { randomUUID } from "node:crypto";
 import { eq, like, sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import type {
+  ProjectActivityType,
+  ProjectType,
+} from "@/components/features/projects/types";
 import { db } from "@/lib/drizzle/db";
 import {
   member,
@@ -9,6 +13,7 @@ import {
   projectsTable,
   user,
 } from "@/lib/drizzle/schema";
+import type { CountryCode } from "@/lib/i18n/countries";
 
 // Test data constants
 const TEST_USER = {
@@ -83,7 +88,7 @@ describe("Project Activities Integration Tests", () => {
 
   describe("Database Setup & Verification", () => {
     it("should create test user in database", async () => {
-      // Insert test user directly into database
+      // Insert test user directly into database (no country field anymore)
       await db.insert(user).values({
         id: TEST_USER.id,
         name: TEST_USER.name,
@@ -160,26 +165,16 @@ describe("Project Activities Integration Tests", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
         location: "Test Location",
-        country: "Germany",
+        country: "DE" as CountryCode,
         welcomeMessage: "Welcome to test project",
         responsibleUserId: userId,
         organizationId: orgId,
-      };
-
-      // Insert project directly
-      await db.insert(projectsTable).values({
-        id: projectData.id,
-        name: projectData.name,
-        startDate: projectData.startDate,
-        endDate: projectData.endDate,
-        location: projectData.location,
-        country: projectData.country,
-        welcomeMessage: projectData.welcomeMessage,
-        responsibleUserId: projectData.responsibleUserId,
-        organizationId: projectData.organizationId,
         createdAt: new Date(),
         updatedAt: new Date(),
-      });
+      } satisfies ProjectType;
+
+      // Insert project directly
+      await db.insert(projectsTable).values(projectData);
 
       // Verify project was created
       const result = await db
@@ -201,26 +196,16 @@ describe("Project Activities Integration Tests", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
         location: "Berlin",
-        country: "Germany",
+        country: "DE" as CountryCode,
         welcomeMessage: "Welcome to project with activities",
         responsibleUserId: userId,
         organizationId: orgId,
-      };
-
-      // Insert project
-      await db.insert(projectsTable).values({
-        id: projectData.id,
-        name: projectData.name,
-        startDate: projectData.startDate,
-        endDate: projectData.endDate,
-        location: projectData.location,
-        country: projectData.country,
-        welcomeMessage: projectData.welcomeMessage,
-        responsibleUserId: projectData.responsibleUserId,
-        organizationId: projectData.organizationId,
         createdAt: new Date(),
         updatedAt: new Date(),
-      });
+      } satisfies ProjectType;
+
+      // Insert project
+      await db.insert(projectsTable).values(projectData);
 
       // Insert activities
       const activity1 = {
@@ -230,7 +215,9 @@ describe("Project Activities Integration Tests", () => {
         distanceKm: "150.50",
         description: "Business trip to Munich",
         activityDate: new Date("2025-01-15"),
-      };
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } satisfies ProjectActivityType;
 
       const activity2 = {
         id: randomUUID(),
@@ -239,29 +226,13 @@ describe("Project Activities Integration Tests", () => {
         distanceKm: "250.00",
         description: "Conference in Hamburg",
         activityDate: new Date("2025-02-20"),
-      };
-
-      await db.insert(projectActivitiesTable).values({
-        id: activity1.id,
-        projectId: activity1.projectId,
-        activityType: activity1.activityType,
-        distanceKm: activity1.distanceKm,
-        description: activity1.description,
-        activityDate: activity1.activityDate,
         createdAt: new Date(),
         updatedAt: new Date(),
-      });
+      } satisfies ProjectActivityType;
 
-      await db.insert(projectActivitiesTable).values({
-        id: activity2.id,
-        projectId: activity2.projectId,
-        activityType: activity2.activityType,
-        distanceKm: activity2.distanceKm,
-        description: activity2.description,
-        activityDate: activity2.activityDate,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+      await db.insert(projectActivitiesTable).values(activity1);
+
+      await db.insert(projectActivitiesTable).values(activity2);
 
       // Verify activities were created
       const activities = await db
@@ -272,9 +243,9 @@ describe("Project Activities Integration Tests", () => {
 
       expect(activities).toHaveLength(2);
       expect(activities[0].activityType).toBe("car");
-      expect(activities[0].distanceKm).toBe("150.50");
+      expect(activities[0].distanceKm).toBe("150.5"); // Rounded to 1 decimal place
       expect(activities[1].activityType).toBe("train");
-      expect(activities[1].distanceKm).toBe("250.00");
+      expect(activities[1].distanceKm).toBe("250.0"); // Rounded to 1 decimal place
     });
   });
 
@@ -317,18 +288,11 @@ describe("Project Activities Integration Tests", () => {
         distanceKm: "75.25",
         description: "Team building event",
         activityDate: new Date("2025-03-10"),
-      };
-
-      await db.insert(projectActivitiesTable).values({
-        id: activityData.id,
-        projectId: activityData.projectId,
-        activityType: activityData.activityType,
-        distanceKm: activityData.distanceKm,
-        description: activityData.description,
-        activityDate: activityData.activityDate,
         createdAt: new Date(),
         updatedAt: new Date(),
-      });
+      } satisfies ProjectActivityType;
+
+      await db.insert(projectActivitiesTable).values(activityData);
 
       // Verify activity was created
       const result = await db
@@ -338,7 +302,7 @@ describe("Project Activities Integration Tests", () => {
 
       expect(result).toHaveLength(1);
       expect(result[0].activityType).toBe(activityData.activityType);
-      expect(result[0].distanceKm).toBe(activityData.distanceKm);
+      expect(result[0].distanceKm).toBe("75.3"); // 75.25 rounded to 1 decimal place
       expect(result[0].description).toBe(activityData.description);
 
       activityId = activityData.id;
@@ -381,7 +345,7 @@ describe("Project Activities Integration Tests", () => {
 
       expect(result).toHaveLength(1);
       expect(result[0].activityType).toBe(newType);
-      expect(result[0].distanceKm).toBe(newDistance);
+      expect(result[0].distanceKm).toBe("120.8"); // 120.75 rounded to 1 decimal place
       expect(result[0].description).toBe(newDescription);
     });
 
@@ -412,7 +376,9 @@ describe("Project Activities Integration Tests", () => {
         distanceKm: "100.00",
         createdAt: new Date(),
         updatedAt: new Date(),
-      };
+        description: null,
+        activityDate: null,
+      } satisfies ProjectActivityType;
 
       await db.insert(projectActivitiesTable).values(validActivity);
 
@@ -435,7 +401,9 @@ describe("Project Activities Integration Tests", () => {
         distanceKm: testDistance,
         createdAt: new Date(),
         updatedAt: new Date(),
-      };
+        description: null,
+        activityDate: null,
+      } satisfies ProjectActivityType;
 
       await db.insert(projectActivitiesTable).values(activity);
 
@@ -450,8 +418,8 @@ describe("Project Activities Integration Tests", () => {
         .limit(1);
 
       expect(result).toHaveLength(1);
-      // Should be rounded to 2 decimal places: 123.46
-      expect(result[0].distanceKm).toBe("123.46");
+      // Should be rounded to 1 decimal place: 123.5 (scale changed from 2 to 1)
+      expect(result[0].distanceKm).toBe("123.5");
     });
   });
 
@@ -460,15 +428,19 @@ describe("Project Activities Integration Tests", () => {
       // Try to create activity for non-existent project
       const fakeProjectId = randomUUID();
 
+      const invalidActivity = {
+        id: randomUUID(),
+        projectId: fakeProjectId,
+        activityType: "car" as const,
+        distanceKm: "100.00",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        description: null,
+        activityDate: null,
+      } satisfies ProjectActivityType;
+
       try {
-        await db.insert(projectActivitiesTable).values({
-          id: randomUUID(),
-          projectId: fakeProjectId,
-          activityType: "car" as const,
-          distanceKm: "100.00",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
+        await db.insert(projectActivitiesTable).values(invalidActivity);
         // If we get here, the constraint didn't work
         expect(true).toBe(false); // Should have failed
       } catch (error) {
@@ -480,29 +452,37 @@ describe("Project Activities Integration Tests", () => {
     it("should cascade delete activities when project is deleted", async () => {
       const cascadeProjectId = randomUUID();
 
-      // Create project
-      await db.insert(projectsTable).values({
+      const cascadeProject = {
         id: cascadeProjectId,
         name: "Cascade Test",
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
-        country: "Germany",
+        location: "Test Location",
+        country: "DE" as CountryCode,
+        welcomeMessage: null,
         responsibleUserId: userId,
         organizationId: orgId,
         createdAt: new Date(),
         updatedAt: new Date(),
-      });
+      } satisfies ProjectType;
+
+      // Create project
+      await db.insert(projectsTable).values(cascadeProject);
 
       // Create activity for project
       const cascadeActivityId = randomUUID();
-      await db.insert(projectActivitiesTable).values({
+      const cascadeActivity = {
         id: cascadeActivityId,
         projectId: cascadeProjectId,
         activityType: "car" as const,
         distanceKm: "50.00",
+        description: null,
+        activityDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
-      });
+      } satisfies ProjectActivityType;
+
+      await db.insert(projectActivitiesTable).values(cascadeActivity);
 
       // Verify activity exists
       let activities = await db
@@ -529,15 +509,19 @@ describe("Project Activities Integration Tests", () => {
     it("should maintain audit timestamps (createdAt stable, updatedAt changes on update)", async () => {
       const testActivityId = randomUUID();
 
-      // Insert activity
-      await db.insert(projectActivitiesTable).values({
+      const testActivity = {
         id: testActivityId,
         projectId,
         activityType: "car" as const,
         distanceKm: "25.00",
+        description: null,
+        activityDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
-      });
+      } satisfies ProjectActivityType;
+
+      // Insert activity
+      await db.insert(projectActivitiesTable).values(testActivity);
 
       // Get timestamps
       const result = await db
@@ -611,15 +595,19 @@ describe("Project Activities Integration Tests", () => {
       const operations = [];
 
       for (let i = 0; i < 5; i++) {
+        const concurrentActivity = {
+          id: randomUUID(),
+          projectId,
+          activityType: "car" as const,
+          distanceKm: `${(i + 1) * 10}.00`,
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } satisfies ProjectActivityType;
+
         operations.push(
-          db.insert(projectActivitiesTable).values({
-            id: randomUUID(),
-            projectId,
-            activityType: "car" as const,
-            distanceKm: `${(i + 1) * 10}.00`,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }),
+          db.insert(projectActivitiesTable).values(concurrentActivity),
         );
       }
 

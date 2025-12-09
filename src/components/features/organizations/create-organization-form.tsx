@@ -15,10 +15,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { DASHBOARD_PATH } from "@/config/AppRoutes";
 import { authClient } from "@/lib/better-auth/auth-client";
-import { DASHBOARD_PATH } from "@/lib/config/app";
 import { useRouter } from "@/lib/i18n/navigation";
-import { findAvailableSlug } from "@/lib/utils";
+import { findAvailableSlug } from "@/lib/utils/organization-utils";
 
 interface CreateOrganizationFormProps {
   onSuccess?: () => void;

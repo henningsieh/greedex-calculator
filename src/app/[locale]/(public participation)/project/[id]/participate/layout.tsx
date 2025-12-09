@@ -2,8 +2,11 @@
 /** biome-ignore-all lint/correctness/noUnusedVariables: ongoing work */
 
 import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
+import { ParticipateHeader } from "@/components/participate/participate-header";
 import { auth } from "@/lib/better-auth";
+import { getProjectData } from "@/lib/utils/project-utils";
 
 /**
  * Public Project Participation Layout
@@ -28,6 +31,16 @@ export default async function PublicParticipateLayout({
   });
 
   const { id: projectId } = await params;
+  const project = await getProjectData(projectId);
 
-  return <>{children}</>;
+  if (!project) {
+    notFound();
+  }
+
+  return (
+    <div className="mx-auto min-h-screen w-full max-w-4xl px-4 py-8">
+      <ParticipateHeader project={project} />
+      {children}
+    </div>
+  );
 }

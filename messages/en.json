@@ -401,7 +401,8 @@
           "location-description": "Optional: Provide additional location details.",
           "welcome-message-description": "Optional: Add a welcome message for participants.",
           "organization-description": "Choose the organization that owns this project.",
-          "back": "Back"
+          "back": "Back",
+          "country-placeholder": "Country where the project takes place"
         }
       },
       "activeProject": {
@@ -495,6 +496,11 @@
         "settings": "Settings"
       },
       "collapse": "Collapse Sidebar"
+    },
+    "loading": {
+      "default": "Loading...",
+      "switchingProject": "Switching project...",
+      "switchingOrganization": "Switching organization..."
     }
   },
   "project": {
@@ -660,6 +666,11 @@
         "continue": "Continue",
         "complete": "Complete"
       },
+      "project-activities": {
+        "title": "Project Activities",
+        "description": "This project includes organized activities that add to the baseline emissions:",
+        "note": "This is already included in your total footprint"
+      },
       "results": {
         "CO₂-footprint": "CO₂ Footprint",
         "trees-needed": "Trees (1 Year)",
@@ -667,6 +678,7 @@
         "transport": "Transport:",
         "accommodation": "Accommodation:",
         "food": "Food:",
+        "project-activities": "Project Activities:",
         "total": "Total:",
         "console-note": "Data has been logged to the console (check browser developer tools)",
         "co2-footprint": "CO₂ Footprint"

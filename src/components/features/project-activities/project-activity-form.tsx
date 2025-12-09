@@ -9,9 +9,14 @@ import type z from "zod";
 import { DatePickerWithInput } from "@/components/date-picker-with-input";
 import {
   activityTypeValues,
+  DISTANCE_KM_STEP,
+  MIN_DISTANCE_KM,
   type ProjectActivityType,
 } from "@/components/features/projects/types";
-import { ProjectActivityFormSchema } from "@/components/features/projects/validation-schemas";
+import {
+  CreateActivityInputSchema,
+  type UpdateActivityInputSchema,
+} from "@/components/features/projects/validation-schemas";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -33,12 +38,10 @@ interface ProjectActivityFormProps {
 }
 
 /**
- * Render a form to create a new project activity or edit an existing one.
+ * Render a form for creating a new project activity or editing an existing one.
  *
- * The form validates input with the ProjectActivityFormSchema, calls the appropriate
- * create or update RPC on submit, displays success/error toasts, and invalidates
- * the project activities list query. When a mutation succeeds it will call the
- * optional `onSuccess` callback; `onCancel` is invoked when the cancel button is pressed.
+ * Prefills fields when an existing activity is provided, performs create or update
+ * operations on submit, invokes optional callbacks, and disables submission while a mutation is pending.
  *
  * @param projectId - ID of the project the activity belongs to
  * @param activity - Optional existing activity to prefill the form for editing
@@ -62,20 +65,22 @@ export function ProjectActivityForm({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<z.infer<typeof ProjectActivityFormSchema>>({
-    resolver: zodResolver(ProjectActivityFormSchema),
+  } = useForm<z.infer<typeof CreateActivityInputSchema>>({
+    resolver: zodResolver(CreateActivityInputSchema),
     mode: "onChange",
     defaultValues: {
       projectId,
       activityType: activity?.activityType ?? undefined,
-      distanceKm: activity?.distanceKm ? parseFloat(activity.distanceKm) : 0,
+      distanceKm: activity?.distanceKm
+        ? parseFloat(activity.distanceKm)
+        : MIN_DISTANCE_KM,
       description: activity?.description ?? null,
       activityDate: activity?.activityDate ?? null,
     },
   });
 
   const createMutation = useMutation({
-    mutationFn: (values: z.infer<typeof ProjectActivityFormSchema>) =>
+    mutationFn: (values: z.infer<typeof CreateActivityInputSchema>) =>
       orpc.projectActivities.create(values),
     onSuccess: (result) => {
       if (result.success) {
@@ -98,18 +103,13 @@ export function ProjectActivityForm({
   });
 
   const updateMutation = useMutation({
-    mutationFn: (values: z.infer<typeof ProjectActivityFormSchema>) => {
+    mutationFn: (values: z.infer<typeof UpdateActivityInputSchema>) => {
       if (!activity?.id) {
         throw new Error("Activity ID is required for update");
       }
       return orpc.projectActivities.update({
         id: activity.id,
-        data: {
-          activityType: values.activityType,
-          distanceKm: values.distanceKm,
-          description: values.description,
-          activityDate: values.activityDate,
-        },
+        data: values,
       });
     },
     onSuccess: (result) => {
@@ -133,9 +133,15 @@ export function ProjectActivityForm({
 
   const isPending = createMutation.isPending || updateMutation.isPending;
 
-  async function onSubmit(values: z.infer<typeof ProjectActivityFormSchema>) {
+  /**
+   * Submit validated activity input to create a new project activity or update an existing one.
+   *
+   * @param values - Activity input validated against `CreateActivityInputSchema`
+   */
+  async function onSubmit(values: z.infer<typeof CreateActivityInputSchema>) {
     if (isEditing) {
-      await updateMutation.mutateAsync(values);
+      const { projectId: _, ...updateValues } = values;
+      await updateMutation.mutateAsync(updateValues);
     } else {
       await createMutation.mutateAsync(values);
     }
@@ -181,12 +187,12 @@ export function ProjectActivityForm({
                 <Input
                   id="distanceKm"
                   type="number"
-                  step="0.01"
-                  min="1"
+                  step={DISTANCE_KM_STEP}
+                  min={MIN_DISTANCE_KM}
                   placeholder={t("form.distance-placeholder")}
                   value={field.value ?? ""}
                   onChange={(e) =>
-                    field.onChange(parseFloat(e.target.value) || 0)
+                    field.onChange(parseFloat(e.target.value) || MIN_DISTANCE_KM)
                   }
                 />
               )}

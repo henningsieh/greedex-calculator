@@ -1,16 +1,17 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
   Factory,
-  Leaf,
   TreePine,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { AnimatedGroup } from "@/components/animated-group";
+import { CountrySelect } from "@/components/country-select";
 import { ImpactModal } from "@/components/participate/impact-modal";
 import {
   ACCOMMODATION_OPTIONS,
@@ -20,22 +21,14 @@ import {
   FOOD_OPTIONS,
   GENDER_OPTIONS,
   type ParticipantAnswers,
+  type Project,
   ROOM_OCCUPANCY_OPTIONS,
 } from "@/components/participate/questionnaire-types";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-interface Project {
-  id: string;
-  name: string;
-  location: string;
-  country: string;
-  startDate: Date;
-  endDate: Date;
-  welcomeMessage?: string | null;
-}
+import { Progress } from "@/components/ui/progress";
 
 interface QuestionnaireFormProps {
   project: Project;
@@ -54,37 +47,7 @@ const EMISSION_IMPACT_STEPS = [
 
 export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   const t = useTranslations("participation.questionnaire");
-  const transitionVariants = {
-    container: {
-      hidden: {
-        opacity: 0,
-      },
-      visible: {
-        opacity: 1,
-        transition: {
-          delayChildren: 0.5,
-          staggerChildren: 1, // 1 second delay between each child
-        },
-      },
-    },
-    item: {
-      hidden: {
-        opacity: 0,
-        filter: "blur(12px)",
-        y: 12,
-      },
-      visible: {
-        opacity: 1,
-        filter: "blur(0px)",
-        y: 0,
-        transition: {
-          type: "spring",
-          bounce: 0.3,
-          duration: 1.5,
-        },
-      },
-    },
-  } as const;
+
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Partial<ParticipantAnswers>>({
     firstName: "",
@@ -202,11 +165,14 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       } else {
         delete answersWithoutCurrent[stepKey as keyof ParticipantAnswers];
       }
-      const previousCO2 = calculateEmissions(answersWithoutCurrent).totalCO2;
+      const previousCO2 = calculateEmissions(
+        answersWithoutCurrent,
+        project.activities,
+      ).totalCO2;
 
       // Calculate new CO₂ WITH the current answer
       const currentValue = answers[stepKey as keyof ParticipantAnswers];
-      const newCO2 = calculateEmissions(answers).totalCO2;
+      const newCO2 = calculateEmissions(answers, project.activities).totalCO2;
       const impact = newCO2 - previousCO2;
 
       setImpactData({
@@ -223,7 +189,7 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   };
 
   const handleImpactModalClose = () => {
-    const fullEmissions = calculateEmissions(answers);
+    const fullEmissions = calculateEmissions(answers, project.activities);
     setConfirmedEmissions({
       totalCO2: fullEmissions.totalCO2,
       treesNeeded: fullEmissions.treesNeeded,
@@ -246,12 +212,12 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   };
 
   const handleSubmit = () => {
-    const emissions = calculateEmissions(answers);
+    const emissions = calculateEmissions(answers, project.activities);
 
     // Complete data structure as requested
     const completeData = {
       answers, // Discrete answers object
-      emissions, // Calculated results
+      emissions, // Calculated results (includes project activities in totals)
       summary: {
         totalCO2: emissions.totalCO2,
         treesNeeded: emissions.treesNeeded,
@@ -259,6 +225,7 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
           transport: emissions.transportCO2,
           accommodation: emissions.accommodationCO2,
           food: emissions.foodCO2,
+          projectActivities: emissions.projectActivitiesCO2,
         },
       },
     };
@@ -315,79 +282,56 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
     }
   };
 
-  const emissions = calculateEmissions(answers);
+  const emissions = calculateEmissions(answers, project.activities);
   const currentStepDisplay =
     currentStep === 14 && (!answers.carKm || answers.carKm === 0)
       ? 12 // Show as step 12 if we skipped car questions
       : currentStep;
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-500/20 to-emerald-500/20 px-6 py-2">
-          <Leaf className="h-5 w-5 text-teal-400" />
-          <span className="font-semibold text-sm text-teal-400">
-            {t("header.badge")}
-          </span>
-        </div>
-        <h1 className="mb-1 font-bold text-4xl text-foreground sm:text-4xl md:text-3xl lg:text-4xl">
-          {t("header.title")}
-        </h1>
-        <h1 className="mb-2 font-bold text-foreground text-xl sm:text-3xl md:text-2xl lg:text-3xl">
-          {t("header.subtitle")}
-        </h1>
-        <p className="text-lg text-muted-foreground">{project.name}</p>
-      </div>
+    <div className="space-y-6">
+      {/* Compact Stats Bar - shown from step 2 onwards */}
+      {currentStep >= 2 && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-2 gap-3 sm:gap-4"
+        >
+          <Card className="flex flex-col items-center justify-between border-red-500/20 bg-red-500/5 p-3 sm:flex-row sm:p-4">
+            <div className="mb-1 flex items-center gap-2 sm:mb-0">
+              <Factory className="h-4 w-4 text-red-400 sm:h-5 sm:w-5" />
+              <span className="font-medium text-muted-foreground text-xs sm:text-sm">
+                {t("results.co2-footprint")}
+              </span>
+            </div>
+            <span className="font-bold font-mono text-lg text-red-400 sm:text-xl">
+              {(confirmedEmissions?.totalCO2 ?? 0).toFixed(1)} kg
+            </span>
+          </Card>
+          <Card className="flex flex-col items-center justify-between border-green-500/20 bg-green-500/5 p-3 sm:flex-row sm:p-4">
+            <div className="mb-1 flex items-center gap-2 sm:mb-0">
+              <TreePine className="h-4 w-4 text-green-400 sm:h-5 sm:w-5" />
+              <span className="font-medium text-muted-foreground text-xs sm:text-sm">
+                {t("results.trees-needed")}
+              </span>
+            </div>
+            <span className="font-bold font-mono text-green-400 text-lg sm:text-xl">
+              {confirmedEmissions?.treesNeeded ?? 0}
+            </span>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Progress Bar */}
-      <div className="relative h-2 overflow-hidden rounded-full bg-gradient-to-r from-teal-800/60 to-secondary/60">
-        <div
-          className="absolute top-0 left-0 h-full bg-gradient-to-r from-teal-500 to-emerald-500 transition-all duration-500 ease-out"
-          style={{
-            width: `${progress}%`,
-          }}
-        />
-      </div>
-
-      {/* Step Counter */}
-      <div className="text-center text-muted-foreground text-sm">
-        {t("header.step-counter", {
-          current: currentStepDisplay + 1,
-          total: totalSteps,
-        })}
-      </div>
-
-      {/* Permanent CO₂ and Trees Display - shown from step 2 onwards */}
-      {currentStep >= 2 && (
-        <div className="grid grid-cols-2 gap-4">
-          {/* CO₂ Footprint Card */}
-          <Card className="gap-2 border-red-500/30 bg-gradient-to-br from-red-500/10 to-red-600/10 p-4 text-center md:gap-4 lg:gap-6">
-            <div className="mb-2 flex justify-center">
-              <Factory className="size-12 text-red-400 md:size-16 lg:size-20" />
-            </div>
-            <div className="mb-1 font-bold font-mono text-3xl text-red-400 tracking-tighter">
-              {(confirmedEmissions?.totalCO2 ?? 0).toFixed(1)} kg
-            </div>
-            <div className="mt-1 text-foreground text-sm md:text-base lg:text-lg">
-              {t("results.co2-footprint")}
-            </div>
-          </Card>
-
-          {/* Trees Needed Card */}
-          <Card className="gap-2 border-green-500/30 bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-4 text-center font-mono md:gap-4 lg:gap-6">
-            <div className="mb-2 flex justify-center">
-              <TreePine className="size-12 text-green-400 md:size-16 lg:size-20" />
-            </div>
-            <div className="mb-1 font-bold text-3xl text-green-400">
-              {confirmedEmissions?.treesNeeded ?? 0}
-            </div>
-            <div className="mt-1 text-foreground text-sm md:text-base lg:text-lg">
-              {t("results.trees-needed")}
-            </div>
-          </Card>
+      <div className="space-y-2">
+        <Progress value={progress} className="h-2" />
+        <div className="text-right text-muted-foreground text-xs">
+          {t("header.step-counter", {
+            current: currentStepDisplay + 1,
+            total: totalSteps,
+          })}
         </div>
-      )}
+      </div>
 
       {/* Impact Modal */}
       {showImpactModal && impactData && (
@@ -407,487 +351,525 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       )}
 
       {/* Question Card */}
-      <Card className="border-primary/20 bg-card/50 p-6 backdrop-blur-sm sm:p-8">
-        {/* Step 0: Welcome */}
-        {currentStep === 0 && (
-          <div className="space-y-12 text-center">
-            <p className="text-lg text-muted-foreground">
-              {project.welcomeMessage || t("welcome.default-message")}
-            </p>
-            <AnimatedGroup variants={transitionVariants}>
-              <p className="mt-4 text-center text-3xl text-emerald-500">
-                {t("welcome.ready")}
-              </p>
-              <p className="mt-4 text-center font-bold text-secondary text-xl">
-                {t("welcome.every-choice")}
-              </p>
-              <p className="mx-auto mt-8 max-w-xl text-center font-semibold text-2xl text-foreground">
-                {t("welcome.fun-message")}
-              </p>
-            </AnimatedGroup>
-            <Button
-              onClick={handleNext}
-              size="lg"
-              className="mt-8 bg-gradient-to-r from-teal-700 to-emerald-600 px-12 py-6 text-xl transition-colors duration-250 hover:from-teal-800 hover:to-emerald-700"
-            >
-              {t("welcome.start-button")}
-              <ArrowRight className="ml-2 h-6 w-6" />
-            </Button>
-          </div>
-        )}
-
-        {/* Step 1: Participant Info */}
-        {currentStep === 1 && (
-          <div className="space-y-8">
-            <h2 className="mb-6 text-center font-bold text-3xl text-foreground">
-              {t("participant-info.title")}
-            </h2>
-            <div className="space-y-8">
-              <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-foreground">
-                  {t("participant-info.first-name")}{" "}
-                  <span className="text-red-500">
-                    {t("participant-info.required")}
-                  </span>
-                </Label>
-                <Input
-                  id="firstName"
-                  type="text"
-                  placeholder={t("participant-info.first-name-placeholder")}
-                  value={answers.firstName || ""}
-                  onChange={(e) => updateAnswer("firstName", e.target.value)}
-                  className="text-lg"
-                />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStep}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <Card className="border-primary/20 bg-card/50 p-4 backdrop-blur-sm sm:p-6 md:p-8">
+            {/* Step 0: Welcome */}
+            {currentStep === 0 && (
+              <div className="space-y-8 text-center">
+                <p className="text-base text-muted-foreground sm:text-lg">
+                  {project.welcomeMessage || t("welcome.default-message")}
+                </p>
+                <AnimatedGroup>
+                  <p className="mt-4 text-center font-bold text-2xl text-emerald-500 sm:text-3xl">
+                    {t("welcome.ready")}
+                  </p>
+                  <p className="mt-2 text-center font-medium text-lg text-secondary sm:text-xl">
+                    {t("welcome.every-choice")}
+                  </p>
+                  <p className="mx-auto mt-6 max-w-xl text-center font-semibold text-foreground text-xl sm:text-2xl">
+                    {t("welcome.fun-message")}
+                  </p>
+                </AnimatedGroup>
+                <Button
+                  onClick={handleNext}
+                  size="lg"
+                  className="mt-6 w-full bg-gradient-to-r from-teal-700 to-emerald-600 px-8 py-6 text-lg transition-all duration-250 hover:scale-105 hover:from-teal-800 hover:to-emerald-700 sm:w-auto"
+                >
+                  {t("welcome.start-button")}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="country" className="text-foreground">
-                  {t("participant-info.country")}{" "}
-                  <span className="text-red-500">
-                    {t("participant-info.required")}
-                  </span>
-                </Label>
-                <Input
-                  id="country"
-                  type="text"
-                  placeholder={t("participant-info.country-placeholder")}
-                  value={answers.country || ""}
-                  onChange={(e) => updateAnswer("country", e.target.value)}
-                  className="text-lg"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-foreground">
-                  {t("participant-info.email")}{" "}
-                  <span className="text-red-500">
-                    {t("participant-info.required")}
-                  </span>
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder={t("participant-info.email-placeholder")}
-                  value={answers.email || ""}
-                  onChange={(e) => updateAnswer("email", e.target.value)}
-                  className="text-lg"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Days */}
-        {currentStep === 2 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              {t("days.question")}
-            </Label>
-            <p className="text-muted-foreground text-sm">{t("days.note")}</p>
-            <Input
-              type="number"
-              min="1"
-              placeholder={t("days.placeholder")}
-              value={answers.days || ""}
-              onChange={(e) =>
-                updateAnswer("days", Number.parseInt(e.target.value, 10))
-              }
-              className="text-lg"
-            />
-          </div>
-        )}
-
-        {/* Step 3: Accommodation Category */}
-        {currentStep === 3 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              Which type of accommodation are you staying in?
-            </Label>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {ACCOMMODATION_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => updateAnswer("accommodationCategory", option)}
-                  className={`rounded-lg border-2 p-4 text-left transition-all ${
-                    answers.accommodationCategory === option
-                      ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400"
-                      : "border-border text-foreground hover:border-border/50 hover:bg-accent"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Step 4: Room Occupancy */}
-        {currentStep === 4 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              How many people are sharing the room/tent?
-            </Label>
-            <div className="grid grid-cols-2 gap-3">
-              {ROOM_OCCUPANCY_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => updateAnswer("roomOccupancy", option)}
-                  className={`rounded-lg border-2 p-4 transition-all ${
-                    answers.roomOccupancy === option
-                      ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400"
-                      : "border-border text-foreground hover:border-border/50 hover:bg-accent"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Step 5: Electricity */}
-        {currentStep === 5 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              Which type of energy does your accommodation use?
-            </Label>
-            <div className="grid grid-cols-1 gap-2">
-              {ELECTRICITY_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => updateAnswer("electricity", option)}
-                  className={`rounded-lg border-2 p-4 text-left transition-all ${
-                    answers.electricity === option
-                      ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400"
-                      : "border-border text-foreground hover:border-border/50 hover:bg-accent"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Step 6: Food */}
-        {currentStep === 6 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              How often do you plan to eat meat on your project?
-            </Label>
-            <div className="grid grid-cols-1 gap-2">
-              {FOOD_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => updateAnswer("food", option)}
-                  className={`rounded-lg border-2 p-4 text-left transition-all ${
-                    answers.food === option
-                      ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400"
-                      : "border-border text-foreground hover:border-border/50 hover:bg-accent"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Step 7: Flight km */}
-        {currentStep === 7 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              Your way TO the project: How many kilometres did you fly?
-            </Label>
-            <Input
-              type="number"
-              min="0"
-              step="0.1"
-              placeholder="0"
-              value={answers.flightKm ?? ""}
-              onChange={(e) =>
-                updateAnswer("flightKm", Number.parseFloat(e.target.value) || 0)
-              }
-              className="text-lg"
-            />
-          </div>
-        )}
-
-        {/* Step 8: Boat km */}
-        {currentStep === 8 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              Your way TO the project: How many kilometres did you go by boat?
-            </Label>
-            <Input
-              type="number"
-              min="0"
-              step="0.1"
-              placeholder="0"
-              value={answers.boatKm ?? ""}
-              onChange={(e) =>
-                updateAnswer("boatKm", Number.parseFloat(e.target.value) || 0)
-              }
-              className="text-lg"
-            />
-          </div>
-        )}
-
-        {/* Step 9: Train km */}
-        {currentStep === 9 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              Your way TO the project: How many kilometres did you go by train or
-              metro?
-            </Label>
-            <Input
-              type="number"
-              min="0"
-              step="0.1"
-              placeholder="0"
-              value={answers.trainKm ?? ""}
-              onChange={(e) =>
-                updateAnswer("trainKm", Number.parseFloat(e.target.value) || 0)
-              }
-              className="text-lg"
-            />
-          </div>
-        )}
-
-        {/* Step 10: Bus km */}
-        {currentStep === 10 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              Your way TO the project: How many kilometres did you go by bus/van?
-            </Label>
-            <Input
-              type="number"
-              min="0"
-              step="0.1"
-              placeholder="0"
-              value={answers.busKm ?? ""}
-              onChange={(e) =>
-                updateAnswer("busKm", Number.parseFloat(e.target.value) || 0)
-              }
-              className="text-lg"
-            />
-          </div>
-        )}
-
-        {/* Step 11: Car km */}
-        {currentStep === 11 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              Your way TO the project: How many kilometres did you go by car?
-            </Label>
-            <Input
-              type="number"
-              min="0"
-              step="0.1"
-              placeholder="0"
-              value={answers.carKm ?? ""}
-              onChange={(e) =>
-                updateAnswer("carKm", Number.parseFloat(e.target.value) || 0)
-              }
-              className="text-lg"
-            />
-          </div>
-        )}
-
-        {/* Step 11: Car Type (conditional) */}
-        {currentStep === 12 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              What type of car did you use?
-            </Label>
-            <div className="grid grid-cols-1 gap-2">
-              {CAR_TYPE_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => updateAnswer("carType", option)}
-                  className={`rounded-lg border-2 p-4 text-left transition-all ${
-                    answers.carType === option
-                      ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400"
-                      : "border-border text-foreground hover:border-border/50 hover:bg-accent"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Step 12: Car Passengers (conditional) */}
-        {currentStep === 13 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              How many participants (including you) were sitting in the car?
-            </Label>
-            <Input
-              type="number"
-              min="1"
-              placeholder="1"
-              value={answers.carPassengers || ""}
-              onChange={(e) =>
-                updateAnswer("carPassengers", Number.parseInt(e.target.value, 10))
-              }
-              className="text-lg"
-            />
-          </div>
-        )}
-
-        {/* Step 14: Age */}
-        {currentStep === 14 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              How old are you?
-            </Label>
-            <Input
-              type="number"
-              min="1"
-              placeholder="Age"
-              value={answers.age || ""}
-              onChange={(e) =>
-                updateAnswer("age", Number.parseInt(e.target.value, 10))
-              }
-              className="text-lg"
-            />
-          </div>
-        )}
-
-        {/* Step 15: Gender */}
-        {currentStep === 15 && (
-          <div className="space-y-8">
-            <Label className="font-bold text-foreground text-xl md:text-2xl lg:text-3xl">
-              What is your gender?
-            </Label>
-            <div className="grid grid-cols-1 gap-2">
-              {GENDER_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => updateAnswer("gender", option)}
-                  className={`rounded-lg border-2 p-4 text-left transition-all ${
-                    answers.gender === option
-                      ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400"
-                      : "border-border text-foreground hover:border-border/50 hover:bg-accent"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Navigation */}
-        {currentStep > 0 && (
-          <div className="mt-6 flex gap-3">
-            {currentStep > 0 && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleBack}
-                className="flex-1"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("navigation.back")}
-              </Button>
             )}
-            <Button
-              type="button"
-              onClick={handleNext}
-              disabled={!canProceed()}
-              className={`flex-1 bg-gradient-to-r from-teal-500 to-emerald-500 text-white transition-colors duration-250 hover:from-teal-600 hover:to-emerald-600 ${
-                currentStep === 0 ? "w-full" : ""
-              }`}
-            >
-              {currentStep === 14 ? (
-                <>
-                  <CheckCircle2 className="mr-2 h-4 w-4" />
-                  {t("navigation.complete")}
-                </>
-              ) : (
-                <>
-                  {t("navigation.continue")}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </>
-              )}
-            </Button>
-          </div>
-        )}
-      </Card>
+
+            {/* Step 1: Participant Info */}
+            {currentStep === 1 && (
+              <div className="space-y-6">
+                <h2 className="mb-4 text-center font-bold text-2xl text-foreground sm:text-3xl">
+                  {t("participant-info.title")}
+                </h2>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName" className="text-foreground">
+                      {t("participant-info.first-name")}{" "}
+                      <span className="text-red-500">
+                        {t("participant-info.required")}
+                      </span>
+                    </Label>
+                    <Input
+                      id="firstName"
+                      type="text"
+                      placeholder={t("participant-info.first-name-placeholder")}
+                      value={answers.firstName || ""}
+                      onChange={(e) => updateAnswer("firstName", e.target.value)}
+                      className="text-lg"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-foreground">
+                      {t("participant-info.country")}{" "}
+                      <span className="text-red-500">
+                        {t("participant-info.required")}
+                      </span>
+                    </Label>
+                    <CountrySelect
+                      value={answers.country || ""}
+                      onValueChange={(value) => updateAnswer("country", value)}
+                      placeholder={t("participant-info.country-placeholder")}
+                      className="text-lg"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-foreground">
+                      {t("participant-info.email")}{" "}
+                      <span className="text-red-500">
+                        {t("participant-info.required")}
+                      </span>
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder={t("participant-info.email-placeholder")}
+                      value={answers.email || ""}
+                      onChange={(e) => updateAnswer("email", e.target.value)}
+                      className="text-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 2: Days */}
+            {currentStep === 2 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  {t("days.question")}
+                </Label>
+                <p className="text-muted-foreground text-sm">{t("days.note")}</p>
+                <Input
+                  type="number"
+                  min="1"
+                  placeholder={t("days.placeholder")}
+                  value={answers.days || ""}
+                  onChange={(e) =>
+                    updateAnswer("days", Number.parseInt(e.target.value, 10))
+                  }
+                  className="h-12 text-lg"
+                />
+              </div>
+            )}
+
+            {/* Step 3: Accommodation Category */}
+            {currentStep === 3 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  Which type of accommodation are you staying in?
+                </Label>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {ACCOMMODATION_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() =>
+                        updateAnswer("accommodationCategory", option)
+                      }
+                      className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.02] active:scale-[0.98] ${
+                        answers.accommodationCategory === option
+                          ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
+                          : "border-border text-foreground hover:border-border/50 hover:bg-accent"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 4: Room Occupancy */}
+            {currentStep === 4 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  How many people are sharing the room/tent?
+                </Label>
+                <div className="grid grid-cols-2 gap-3">
+                  {ROOM_OCCUPANCY_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => updateAnswer("roomOccupancy", option)}
+                      className={`rounded-lg border-2 p-4 transition-all hover:scale-[1.02] active:scale-[0.98] ${
+                        answers.roomOccupancy === option
+                          ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
+                          : "border-border text-foreground hover:border-border/50 hover:bg-accent"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 5: Electricity */}
+            {currentStep === 5 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  Which type of energy does your accommodation use?
+                </Label>
+                <div className="grid grid-cols-1 gap-3">
+                  {ELECTRICITY_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => updateAnswer("electricity", option)}
+                      className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.01] active:scale-[0.99] ${
+                        answers.electricity === option
+                          ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
+                          : "border-border text-foreground hover:border-border/50 hover:bg-accent"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 6: Food */}
+            {currentStep === 6 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  How often do you plan to eat meat on your project?
+                </Label>
+                <div className="grid grid-cols-1 gap-3">
+                  {FOOD_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => updateAnswer("food", option)}
+                      className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.01] active:scale-[0.99] ${
+                        answers.food === option
+                          ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
+                          : "border-border text-foreground hover:border-border/50 hover:bg-accent"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 7: Flight km */}
+            {currentStep === 7 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  Your way TO the project: How many kilometres did you fly?
+                </Label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  placeholder="0"
+                  value={answers.flightKm ?? ""}
+                  onChange={(e) =>
+                    updateAnswer(
+                      "flightKm",
+                      Number.parseFloat(e.target.value) || 0,
+                    )
+                  }
+                  className="h-12 text-lg"
+                />
+              </div>
+            )}
+
+            {/* Step 8: Boat km */}
+            {currentStep === 8 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  Your way TO the project: How many kilometres did you go by boat?
+                </Label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  placeholder="0"
+                  value={answers.boatKm ?? ""}
+                  onChange={(e) =>
+                    updateAnswer("boatKm", Number.parseFloat(e.target.value) || 0)
+                  }
+                  className="h-12 text-lg"
+                />
+              </div>
+            )}
+
+            {/* Step 9: Train km */}
+            {currentStep === 9 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  Your way TO the project: How many kilometres did you go by train
+                  or metro?
+                </Label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  placeholder="0"
+                  value={answers.trainKm ?? ""}
+                  onChange={(e) =>
+                    updateAnswer(
+                      "trainKm",
+                      Number.parseFloat(e.target.value) || 0,
+                    )
+                  }
+                  className="h-12 text-lg"
+                />
+              </div>
+            )}
+
+            {/* Step 10: Bus km */}
+            {currentStep === 10 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  Your way TO the project: How many kilometres did you go by
+                  bus/van?
+                </Label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  placeholder="0"
+                  value={answers.busKm ?? ""}
+                  onChange={(e) =>
+                    updateAnswer("busKm", Number.parseFloat(e.target.value) || 0)
+                  }
+                  className="h-12 text-lg"
+                />
+              </div>
+            )}
+
+            {/* Step 11: Car km */}
+            {currentStep === 11 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  Your way TO the project: How many kilometres did you go by car?
+                </Label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  placeholder="0"
+                  value={answers.carKm ?? ""}
+                  onChange={(e) =>
+                    updateAnswer("carKm", Number.parseFloat(e.target.value) || 0)
+                  }
+                  className="h-12 text-lg"
+                />
+              </div>
+            )}
+
+            {/* Step 12: Car Type (conditional) */}
+            {currentStep === 12 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  What type of car did you use?
+                </Label>
+                <div className="grid grid-cols-1 gap-3">
+                  {CAR_TYPE_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => updateAnswer("carType", option)}
+                      className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.01] active:scale-[0.99] ${
+                        answers.carType === option
+                          ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
+                          : "border-border text-foreground hover:border-border/50 hover:bg-accent"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 13: Car Passengers (conditional) */}
+            {currentStep === 13 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  How many participants (including you) were sitting in the car?
+                </Label>
+                <Input
+                  type="number"
+                  min="1"
+                  placeholder="1"
+                  value={answers.carPassengers || ""}
+                  onChange={(e) =>
+                    updateAnswer(
+                      "carPassengers",
+                      Number.parseInt(e.target.value, 10),
+                    )
+                  }
+                  className="h-12 text-lg"
+                />
+              </div>
+            )}
+
+            {/* Step 14: Age */}
+            {currentStep === 14 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  How old are you?
+                </Label>
+                <Input
+                  type="number"
+                  min="1"
+                  placeholder="Age"
+                  value={answers.age || ""}
+                  onChange={(e) =>
+                    updateAnswer("age", Number.parseInt(e.target.value, 10))
+                  }
+                  className="h-12 text-lg"
+                />
+              </div>
+            )}
+
+            {/* Step 15: Gender */}
+            {currentStep === 15 && (
+              <div className="space-y-6">
+                <Label className="font-bold text-foreground text-xl md:text-2xl">
+                  What is your gender?
+                </Label>
+                <div className="grid grid-cols-1 gap-3">
+                  {GENDER_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => updateAnswer("gender", option)}
+                      className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.01] active:scale-[0.99] ${
+                        answers.gender === option
+                          ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
+                          : "border-border text-foreground hover:border-border/50 hover:bg-accent"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Navigation */}
+            {currentStep > 0 && (
+              <div className="mt-8 flex gap-3">
+                {currentStep > 0 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleBack}
+                    className="h-12 flex-1 text-base"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {t("navigation.back")}
+                  </Button>
+                )}
+                <Button
+                  type="button"
+                  onClick={handleNext}
+                  disabled={!canProceed()}
+                  className={`h-12 flex-1 bg-gradient-to-r from-teal-500 to-emerald-500 text-base text-white transition-all duration-250 hover:from-teal-600 hover:to-emerald-600 hover:shadow-md ${
+                    currentStep === 0 ? "w-full" : ""
+                  }`}
+                >
+                  {currentStep === 14 ? (
+                    <>
+                      <CheckCircle2 className="mr-2 h-5 w-5" />
+                      {t("navigation.complete")}
+                    </>
+                  ) : (
+                    <>
+                      {t("navigation.continue")}
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
+          </Card>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Show final results after completion */}
       {currentStep === 15 && emissions.totalCO2 > 0 && (
-        <Card className="border-teal-500/30 bg-gradient-to-br from-teal-500/20 to-emerald-500/20 p-6">
-          <div className="space-y-8">
-            <h3 className="text-center font-bold text-3xl text-foreground">
-              {t("results.summary-title")}
-            </h3>
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">
-                  {t("results.transport")}
-                </span>
-                <span className="font-semibold text-foreground">
-                  {emissions.transportCO2.toFixed(1)} kg CO₂
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">
-                  {t("results.accommodation")}
-                </span>
-                <span className="font-semibold text-foreground">
-                  {emissions.accommodationCO2.toFixed(1)} kg CO₂
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">{t("results.food")}</span>
-                <span className="font-semibold text-foreground">
-                  {emissions.foodCO2.toFixed(1)} kg CO₂
-                </span>
-              </div>
-              <div className="border-teal-500/30 border-t pt-3">
-                <div className="flex justify-between text-lg">
-                  <span className="font-bold text-foreground">
-                    {t("results.total")}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card className="border-teal-500/30 bg-gradient-to-br from-teal-500/20 to-emerald-500/20 p-6">
+            <div className="space-y-6">
+              <h3 className="text-center font-bold text-2xl text-foreground sm:text-3xl">
+                {t("results.summary-title")}
+              </h3>
+              <div className="space-y-3 text-sm sm:text-base">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">
+                    {t("results.transport")}
                   </span>
-                  <span className="font-bold text-teal-400">
-                    {emissions.totalCO2.toFixed(1)} kg CO₂
+                  <span className="font-semibold text-foreground">
+                    {emissions.transportCO2.toFixed(1)} kg CO₂
                   </span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">
+                    {t("results.accommodation")}
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {emissions.accommodationCO2.toFixed(1)} kg CO₂
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">
+                    {t("results.food")}
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {emissions.foodCO2.toFixed(1)} kg CO₂
+                  </span>
+                </div>
+                {emissions.projectActivitiesCO2 > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">
+                      {t("results.project-activities")}
+                    </span>
+                    <span className="font-semibold text-foreground">
+                      {emissions.projectActivitiesCO2.toFixed(1)} kg CO₂
+                    </span>
+                  </div>
+                )}
+                <div className="border-teal-500/30 border-t pt-3">
+                  <div className="flex justify-between text-lg sm:text-xl">
+                    <span className="font-bold text-foreground">
+                      {t("results.total")}
+                    </span>
+                    <span className="font-bold text-teal-400">
+                      {emissions.totalCO2.toFixed(1)} kg CO₂
+                    </span>
+                  </div>
+                </div>
               </div>
+              <p className="pt-2 text-center text-muted-foreground text-xs sm:text-sm">
+                {t("results.console-note")}
+              </p>
             </div>
-            <p className="pt-4 text-center text-muted-foreground text-sm">
-              {t("results.console-note")}
-            </p>
-          </div>
-        </Card>
+          </Card>
+        </motion.div>
       )}
     </div>
   );

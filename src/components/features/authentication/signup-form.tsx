@@ -25,9 +25,9 @@ import {
   FieldGroup,
   FieldSeparator,
 } from "@/components/ui/field";
+import { DASHBOARD_PATH, LOGIN_PATH } from "@/config/AppRoutes";
 import { env } from "@/env";
 import { authClient } from "@/lib/better-auth/auth-client";
-import { DASHBOARD_PATH, LOGIN_PATH } from "@/lib/config/app";
 import { Link, useRouter } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 

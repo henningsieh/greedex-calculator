@@ -3,11 +3,6 @@
 
 export type CalculatorType = "moment" | "deal" | "day";
 
-export interface WorkshopMetadata {
-  id: CalculatorType;
-  image: string;
-}
-
 // External link URLs (not internal routes, those are handled by next-intl)
 export const WORKSHOP_LINKS = {
   erasmusCalculator:

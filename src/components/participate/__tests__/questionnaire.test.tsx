@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
+import type { ProjectActivityType } from "@/components/features/projects/types";
 import {
   ACCOMMODATION_FACTORS,
   CO2_FACTORS,
   calculateEmissions,
+  calculateProjectActivitiesCO2,
   type ParticipantAnswers,
 } from "@/components/participate/questionnaire-types";
 
@@ -133,6 +135,210 @@ describe("Questionnaire Types and Calculations", () => {
 
       expect(emissions.totalCO2).toBe(0);
       expect(emissions.treesNeeded).toBe(0);
+    });
+  });
+
+  describe("Project Activities Calculations", () => {
+    it("should calculate project activities CO2 correctly", () => {
+      const activities: ProjectActivityType[] = [
+        {
+          id: "1",
+          projectId: "project1",
+          activityType: "bus",
+          distanceKm: "50.0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: "2",
+          projectId: "project1",
+          activityType: "train",
+          distanceKm: "100.0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      const activitiesCO2 = calculateProjectActivitiesCO2(activities);
+
+      // Bus: 50 * 0.089 = 4.45
+      // Train: 100 * 0.041 = 4.1
+      // Total: 8.55
+      expect(activitiesCO2).toBeCloseTo(8.55, 2);
+    });
+
+    it("should include project activities in total emissions", () => {
+      const answers: Partial<ParticipantAnswers> = {
+        days: 5,
+        accommodationCategory: "Hostel",
+        roomOccupancy: "2 people",
+        electricity: "conventional energy",
+        food: "sometimes",
+        flightKm: 200,
+        trainKm: 0,
+        busKm: 0,
+        boatKm: 0,
+        carKm: 0,
+      };
+
+      const projectActivities: ProjectActivityType[] = [
+        {
+          id: "1",
+          projectId: "project1",
+          activityType: "car",
+          distanceKm: "30.0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      const emissionsWithoutActivities = calculateEmissions(answers);
+      const emissionsWithActivities = calculateEmissions(
+        answers,
+        projectActivities,
+      );
+
+      // Project activities: 30 * 0.192 = 5.76
+      expect(emissionsWithActivities.projectActivitiesCO2).toBeCloseTo(5.76, 2);
+      expect(emissionsWithActivities.totalCO2).toBeCloseTo(
+        emissionsWithoutActivities.totalCO2 + 5.76,
+        1,
+      );
+    });
+
+    it("should handle multiple project activities", () => {
+      const activities: ProjectActivityType[] = [
+        {
+          id: "1",
+          projectId: "project1",
+          activityType: "boat",
+          distanceKm: "20.0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: "2",
+          projectId: "project1",
+          activityType: "bus",
+          distanceKm: "40.0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: "3",
+          projectId: "project1",
+          activityType: "train",
+          distanceKm: "15.0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: "4",
+          projectId: "project1",
+          activityType: "car",
+          distanceKm: "25.0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      const activitiesCO2 = calculateProjectActivitiesCO2(activities);
+
+      // Boat: 20 * 0.115 = 2.3
+      // Bus: 40 * 0.089 = 3.56
+      // Train: 15 * 0.041 = 0.615
+      // Car: 25 * 0.192 = 4.8
+      // Total: 11.275
+      expect(activitiesCO2).toBeCloseTo(11.275, 2);
+    });
+
+    it("should handle empty project activities", () => {
+      const activities: ProjectActivityType[] = [];
+      const activitiesCO2 = calculateProjectActivitiesCO2(activities);
+      expect(activitiesCO2).toBe(0);
+    });
+
+    it("should handle invalid distance values in project activities", () => {
+      const activities: ProjectActivityType[] = [
+        {
+          id: "1",
+          projectId: "project1",
+          activityType: "bus",
+          distanceKm: "0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: "2",
+          projectId: "project1",
+          activityType: "train",
+          distanceKm: "-10",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: "3",
+          projectId: "project1",
+          activityType: "car",
+          distanceKm: "invalid",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: "4",
+          projectId: "project1",
+          activityType: "boat",
+          distanceKm: "50.0",
+          description: null,
+          activityDate: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      const activitiesCO2 = calculateProjectActivitiesCO2(activities);
+
+      // Only boat should be counted: 50 * 0.115 = 5.75
+      expect(activitiesCO2).toBeCloseTo(5.75, 2);
+    });
+
+    it("should return 0 for project activities CO2 when no activities provided", () => {
+      const answers: Partial<ParticipantAnswers> = {
+        days: 5,
+        accommodationCategory: "Camping",
+        roomOccupancy: "alone",
+        electricity: "green energy",
+        food: "never",
+        flightKm: 100,
+        trainKm: 0,
+        busKm: 0,
+        boatKm: 0,
+        carKm: 0,
+      };
+
+      const emissions = calculateEmissions(answers);
+
+      expect(emissions.projectActivitiesCO2).toBe(0);
     });
   });
 });

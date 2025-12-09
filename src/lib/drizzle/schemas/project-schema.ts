@@ -3,6 +3,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { organization, user, member } from "@/lib/drizzle/schemas/auth-schema";
 import { activityTypeValues, ActivityType } from "@/components/features/projects/types";
+import type { CountryCode } from "@/lib/i18n/countries";
 
 
 // ============================================================================
@@ -25,8 +26,8 @@ export const projectsTable = pgTable("project", {
   name: text("name").notNull(),
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
-  location: text("location"),
-  country: text("country").notNull(),
+  location: text("location").notNull(),
+  country: text("country").$type<CountryCode>().notNull(),
   welcomeMessage: text("welcome_message"),
 
   // Foreign key to user (responsible team member)
@@ -64,8 +65,8 @@ export const projectActivitiesTable = pgTable("project_activity", {
     .$type<ActivityType>()
     .notNull(),
 
-  // Distance in kilometers
-  distanceKm: decimal("distance_km", { precision: 10, scale: 2 }).notNull(),
+  // Distance in kilometers (scale 1 supports 0.1 km increments)
+  distanceKm: decimal("distance_km", { precision: 10, scale: 1 }).notNull(),
 
   // Optional fields for additional activity details
   description: text("description"),
@@ -81,7 +82,9 @@ export const projectActivitiesTable = pgTable("project_activity", {
 /**
  * Project Participant table
  * 
- * Links project participants (members of the organization) to projects
+ * Links project participants (members of the organization) to projects.
+ * Country is stored here because it comes from the participation questionnaire,
+ * not from the user's account registration.
  */
 export const projectParticipantsTable = pgTable("project_participant", {
   id: text("id").primaryKey().$defaultFn(() => createId()),
@@ -94,6 +97,9 @@ export const projectParticipantsTable = pgTable("project_participant", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  
+  // Country code from participation questionnaire (EU member state)
+  country: text("country").$type<CountryCode>().notNull(),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

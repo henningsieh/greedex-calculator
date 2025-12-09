@@ -14,3 +14,18 @@ export const ProjectParticipantWithUserSchema = createSelectSchema(
     updatedAt: true,
   }),
 });
+
+// Schema for UI participant display - flattens user fields for easier access
+export const ParticipantSchema = createSelectSchema(
+  projectParticipantsTable,
+).extend({
+  name: createSelectSchema(userTable).shape.name,
+  // Note: country is already in projectParticipantsTable, no need to extend
+});
+
+// Computed fields type for participant statistics
+// These are calculated on-the-fly and not stored in the database
+export type ParticipantComputedFields = {
+  totalCO2: number;
+  rank?: number;
+};
