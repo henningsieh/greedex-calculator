@@ -2,6 +2,7 @@ import { ClockIcon } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { AnimatedGroup } from "@/components/animated-group";
+import { AuthBackground } from "@/components/features/authentication/auth-background";
 import { WORKSHOPS } from "@/components/landingpage/workshops/workshops.config";
 import {
   Card,
@@ -19,9 +20,11 @@ export async function WorkshopsHeroSection() {
   return (
     <section
       id="workshops"
-      className="min-h-[calc(100vh-5rem)] bg-background/60 py-24 md:py-32"
+      className="relative min-h-[calc(100vh-5rem)] overflow-hidden py-24 md:py-32"
     >
-      <div className="@container mx-auto max-w-6xl px-6 lg:px-0">
+      <AuthBackground />
+
+      <div className="@container relative z-10 mx-auto max-w-6xl px-6 lg:px-0">
         <div className="space-y-8 text-center">
           <h2 className="text-balance font-semibold text-4xl lg:text-5xl">
             {t("workshops.headingPrefix")}{" "}
@@ -85,7 +88,7 @@ export async function WorkshopsHeroSection() {
                 href={`/workshops?type=${workshop.id}`}
                 className="group block h-full"
               >
-                <Card className="group-hover:-translate-y-1 flex h-full flex-col overflow-hidden transition-transform duration-300 will-change-transform group-hover:shadow-lg">
+                <Card className="group-hover:-translate-y-1 flex h-full flex-col overflow-hidden border-border/40 bg-card/40 backdrop-blur-sm transition-all duration-300 will-change-transform group-hover:shadow-2xl group-hover:shadow-primary/10">
                   <CardHeader className="p-0">
                     <div className="relative h-44 w-full">
                       <Image
@@ -93,7 +96,7 @@ export async function WorkshopsHeroSection() {
                         alt={title}
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                     <CardTitle className="space-y-3 p-6 text-center">
@@ -116,7 +119,7 @@ export async function WorkshopsHeroSection() {
           })}
         </AnimatedGroup>
 
-        <div className="mx-auto mt-16 max-w-5xl space-y-8 text-center">
+        <div className="mx-auto mt-16 max-w-6xl space-y-8 text-center">
           <p>{t("workshops.bottomP1")}</p>
 
           <p>

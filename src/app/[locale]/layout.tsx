@@ -86,7 +86,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html
       lang={locale}
       suppressHydrationWarning
-      data-scroll-behavior="smooth"
+      style={{ scrollBehavior: "smooth" }}
       className={`${comfortaa.variable} ${jetbrainsMono.variable} ${sourceSerif4.variable}`}
     >
       <head>

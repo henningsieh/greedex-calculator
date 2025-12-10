@@ -1,4 +1,8 @@
+"use client";
+
+import { motion } from "motion/react";
 import Image from "next/image";
+import { AnimatedGroup } from "@/components/animated-group";
 import { cn } from "@/lib/utils";
 
 type RightSideImageProps = {
@@ -25,13 +29,34 @@ export function RightSideImage({
   return (
     <div className="relative hidden xl:flex xl:w-1/2">
       <div className="relative flex-1 py-14">
-        <div
+        <AnimatedGroup
           className={cn(
-            "relative flex h-full flex-col gap-8 overflow-hidden lg:p-10",
-            // "rounded border border-border bg-card p-6 shadow-xl backdrop-blur",
+            "relative flex h-full flex-col gap-8 overflow-hidden rounded-3xl border border-border/40 bg-card/30 p-10 shadow-2xl backdrop-blur-xl",
           )}
+          variants={{
+            container: {
+              visible: {
+                transition: {
+                  staggerChildren: 0.1,
+                  delayChildren: 0.2,
+                },
+              },
+            },
+            item: {
+              hidden: { opacity: 0, x: 20, filter: "blur(4px)" },
+              visible: {
+                opacity: 1,
+                x: 0,
+                filter: "blur(0px)",
+                transition: {
+                  duration: 0.6,
+                  ease: "easeOut",
+                },
+              },
+            },
+          }}
         >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--primary)_0%,_transparent_70%)] opacity-20" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--primary)_0%,_transparent_60%)] opacity-20" />
 
           {/* Brand headline and description */}
           <div className="relative z-10 flex flex-col gap-5">
@@ -46,9 +71,9 @@ export function RightSideImage({
             {highlights.map((value, index) => (
               <li
                 key={`${value}-${index}`}
-                className="flex items-center gap-3 rounded-2xl border border-border bg-muted/50 px-4 py-2 font-medium text-sm"
+                className="flex items-center gap-3 rounded-2xl border border-border/50 bg-muted/30 px-4 py-2 font-medium text-sm backdrop-blur-sm"
               >
-                <span className="h-2 w-2 flex-shrink-0 rounded-full bg-primary" />
+                <span className="h-2 w-2 flex-shrink-0 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
                 <span className="text-foreground">{value}</span>
               </li>
             ))}
@@ -57,7 +82,7 @@ export function RightSideImage({
           {/* Hero section */}
           <div className="relative z-10 space-y-3">
             <div className="flex items-center gap-3 font-semibold text-primary text-xs uppercase tracking-[0.4em]">
-              <span className="h-2 w-2 rounded-full bg-primary" />
+              <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
               <span>{heroBadge}</span>
             </div>
             <h3 className="font-semibold text-2xl text-foreground">
@@ -67,7 +92,11 @@ export function RightSideImage({
           </div>
 
           {/* Hero image */}
-          <div className="relative z-10 h-48 w-full overflow-hidden rounded-3xl border border-border bg-muted/50">
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.4 }}
+            className="relative z-10 h-48 w-full overflow-hidden rounded-3xl border border-border/50 bg-muted/30 shadow-lg"
+          >
             <Image
               src="/Greendex-hero-banner.png"
               alt="Greendex dashboards"
@@ -75,18 +104,18 @@ export function RightSideImage({
               sizes="(max-width: 1024px) 100vw, 540px"
               className="object-cover"
             />
-          </div>
+          </motion.div>
 
           {/* Stats */}
           <div className="relative z-10 grid gap-3 text-[0.65rem] uppercase tracking-[0.4em] sm:grid-cols-2">
-            <span className="rounded-2xl border border-primary/50 bg-primary/10 px-3 py-2 text-primary">
+            <span className="rounded-2xl border border-primary/50 bg-primary/10 px-3 py-2 text-center text-primary backdrop-blur-sm">
               {heroStatOne}
             </span>
-            <span className="rounded-2xl border border-border bg-muted/50 px-3 py-2 text-muted-foreground">
+            <span className="rounded-2xl border border-border/50 bg-muted/30 px-3 py-2 text-center text-muted-foreground backdrop-blur-sm">
               {heroStatTwo}
             </span>
           </div>
-        </div>
+        </AnimatedGroup>
       </div>
     </div>
   );

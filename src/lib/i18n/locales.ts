@@ -63,6 +63,12 @@ export const getLocaleData = (): LocaleData[] => {
       englishName,
       Flag,
     };
+  }).map((entry) => {
+    // Special case: Use UK flag for International English to indicate default fallback
+    if (entry.code === "en") {
+      entry.Flag = flagRegistry.GB;
+    }
+    return entry;
   });
 };
 

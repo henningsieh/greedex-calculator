@@ -69,7 +69,7 @@ export const LandingHeader = () => {
           className={cn(
             "mx-auto mt-2 max-w-7xl px-6 transition-all lg:px-12",
             isScrolled &&
-              "max-w-5xl rounded-2xl border bg-background/50 backdrop-blur-lg lg:px-5",
+              "max-w-6xl rounded-2xl border bg-background/50 backdrop-blur-lg lg:px-5",
           )}
         >
           <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:flex-nowrap lg:gap-0 lg:py-4">
