@@ -3,7 +3,6 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { AnimatedGradientCTA } from "@/components/animated-cta";
 import { AnimatedGroup } from "@/components/animated-group";
-import { BackgroundAnimations } from "@/components/background-animations";
 import { TextEffect } from "@/components/ui/text-effect";
 import { DASHBOARD_PATH } from "@/config/AppRoutes";
 import { Link } from "@/lib/i18n/navigation";
@@ -45,12 +44,10 @@ export async function HeroSection() {
           src="/herobg.jpg"
           alt="hero background"
           fill
-          className="object-cover opacity-70 dark:opacity-20"
+          className="object-cover opacity-50 dark:opacity-15"
           priority
         />
       </div>
-
-      <BackgroundAnimations />
 
       <section>
         <div className="relative pt-20">

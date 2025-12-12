@@ -1,4 +1,5 @@
 import { LandingHeader } from "@/components/landingpage/landing-header";
+import { LandingPageGradients } from "@/components/landingpage/landing-page-gradients";
 
 export default function LandingPageLayout({
   children,
@@ -6,9 +7,12 @@ export default function LandingPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <LandingHeader />
-      {children}
-    </>
+    <div className="relative min-h-screen">
+      <LandingPageGradients />
+      <div className="relative z-10">
+        <LandingHeader />
+        {children}
+      </div>
+    </div>
   );
 }
