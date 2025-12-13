@@ -118,6 +118,9 @@ export function OrganizationSwitcher() {
 
                     // Redirect to projects list to prevent staying on invalid project page
                     router.push(PROJECTS_PATH);
+                    router.refresh(); // Force immediate refresh to ensure navigation completes
+                  } catch (error) {
+                    console.error("Failed to switch organization:", error);
                   } finally {
                     stopLoading();
                   }
