@@ -21,23 +21,26 @@
 
 ### orpc/
 #### Core Concepts
-- [Getting Started](orpc.init.installation.md)
-- [Procedures](orpc.procedure.md)
-- [Routers](orpc.router.md)
-- [Server-Side Clients](orpc.server-side.md)
+- [Getting Started](orpc/orpc.init.installation.md)
+- [Procedures](orpc/orpc.procedure.md)
+- [Routers](orpc/orpc.router.md)
+- [Server-Side Clients](orpc/orpc.server-side.md)
 
 #### Integrations
-- [Better Auth](orpc.better-auth.md)
-- [TanStack Query](orpc.tanstack-query.md)
-- [Next.js Adapter](orpcNextjs.adapter.md)
+- [Better Auth](orpc/orpc.better-auth.md)
+- [TanStack Query](orpc/orpc.tanstack-query.md)
+- [Next.js Adapter](orpc/orpcNextjs.adapter.md)
 
 #### OpenAPI
-- [OpenAPI Handler](orpc.openapi-handler.md)
-- [OpenAPI Link](orpc.openapi-link.md)
-- [OpenAPI Specification](orpc.openapi-specification.md)
+- [OpenAPI Handler](orpc/orpc.openapi-handler.md)
+- [OpenAPI Link](orpc/orpc.openapi-link.md)
+- [OpenAPI Specification](orpc/orpc.openapi-specification.md)
+- [Scalar (Swagger)](orpc/orpc.openapi.scalar.md)
+- [OpenAPI Reference Plugin](orpc/orpc.openapi-reference.md)
+- [Smart Coercion Plugin](orpc/orpc.smart-coercion.md)
 
 #### Advanced
-- [Optimize Server-Side Rendering (SSR)](orpc.Optimize-Server-Side-Rendering.SSR.md)
+- [Optimize Server-Side Rendering (SSR)](orpc/orpc.Optimize-Server-Side-Rendering.SSR.md)
 
 ### permissions/
 - [README.md](permissions/README.md)
