@@ -8,30 +8,27 @@ import { describe, expect, it, beforeAll } from "vitest";
  *
  * These tests are separate from the RPC tests and ensure the REST API layer
  * can be used by third-party integrations or tools that expect standard HTTP REST APIs.
+ *
+ * Note: These tests require a running server and are skipped in CI if the server is not available.
  */
 describe("OpenAPI REST Endpoint", () => {
   const baseUrl = "http://localhost:3000/api/openapi";
+  let serverAvailable = false;
 
-  // Skip tests in CI if server is not running
-  const isServerAvailable = async () => {
-    try {
-      await fetch(baseUrl);
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
+  // Check if server is available before running tests
   beforeAll(async () => {
-    const available = await isServerAvailable();
-    if (!available) {
+    try {
+      await fetch(baseUrl, { signal: AbortSignal.timeout(1000) });
+      serverAvailable = true;
+    } catch {
+      serverAvailable = false;
       console.warn(
-        "Warning: OpenAPI server not running, skipping integration tests",
+        "⚠️  OpenAPI server not running, skipping integration tests",
       );
     }
   });
 
-  describe("Public Endpoints", () => {
+  describe.skipIf(!serverAvailable)("Public Endpoints", () => {
     it("should return health status via GET /health", async () => {
       const response = await fetch(`${baseUrl}/health`, {
         method: "GET",
@@ -79,7 +76,7 @@ describe("OpenAPI REST Endpoint", () => {
     });
   });
 
-  describe("Protected Endpoints", () => {
+  describe.skipIf(!serverAvailable)("Protected Endpoints", () => {
     it("should return 401 for protected endpoints without auth", async () => {
       const response = await fetch(`${baseUrl}/users/profile`, {
         method: "GET",
@@ -103,7 +100,7 @@ describe("OpenAPI REST Endpoint", () => {
     });
   });
 
-  describe("Error Handling", () => {
+  describe.skipIf(!serverAvailable)("Error Handling", () => {
     it("should return 404 for non-existent endpoints", async () => {
       const response = await fetch(`${baseUrl}/non-existent-endpoint`, {
         method: "GET",
@@ -126,7 +123,7 @@ describe("OpenAPI REST Endpoint", () => {
     });
   });
 
-  describe("CORS Headers", () => {
+  describe.skipIf(!serverAvailable)("CORS Headers", () => {
     it("should include CORS headers in responses", async () => {
       const response = await fetch(`${baseUrl}/health`, {
         method: "GET",
@@ -141,40 +138,42 @@ describe("OpenAPI REST Endpoint", () => {
 
 describe("OpenAPI Specification", () => {
   const specUrl = "http://localhost:3000/api/openapi-spec";
+  let serverAvailable = false;
 
-  it("should serve OpenAPI specification", async () => {
-    const available = await (async () => {
-      try {
-        await fetch(specUrl);
-        return true;
-      } catch {
-        return false;
-      }
-    })();
-
-    if (!available) {
-      console.warn("Warning: OpenAPI spec endpoint not running, skipping test");
-      return;
+  beforeAll(async () => {
+    try {
+      await fetch(specUrl, { signal: AbortSignal.timeout(1000) });
+      serverAvailable = true;
+    } catch {
+      serverAvailable = false;
+      console.warn(
+        "⚠️  OpenAPI spec endpoint not running, skipping specification tests",
+      );
     }
-
-    const response = await fetch(specUrl);
-    expect(response.status).toBe(200);
-
-    const spec = await response.json();
-
-    // Verify it's a valid OpenAPI spec
-    expect(spec).toHaveProperty("openapi");
-    expect(spec.openapi).toMatch(/^3\.\d+\.\d+$/); // Should be OpenAPI 3.x.x
-
-    expect(spec).toHaveProperty("info");
-    expect(spec.info).toHaveProperty("title");
-    expect(spec.info).toHaveProperty("version");
-
-    expect(spec).toHaveProperty("paths");
-    expect(typeof spec.paths).toBe("object");
-
-    // Check that some of our endpoints are documented
-    expect(spec.paths).toHaveProperty("/health");
-    expect(spec.paths).toHaveProperty("/helloWorld");
   });
+
+  it.skipIf(!serverAvailable)(
+    "should serve OpenAPI specification",
+    async () => {
+      const response = await fetch(specUrl);
+      expect(response.status).toBe(200);
+
+      const spec = await response.json();
+
+      // Verify it's a valid OpenAPI spec
+      expect(spec).toHaveProperty("openapi");
+      expect(spec.openapi).toMatch(/^3\.\d+\.\d+$/); // Should be OpenAPI 3.x.x
+
+      expect(spec).toHaveProperty("info");
+      expect(spec.info).toHaveProperty("title");
+      expect(spec.info).toHaveProperty("version");
+
+      expect(spec).toHaveProperty("paths");
+      expect(typeof spec.paths).toBe("object");
+
+      // Check that some of our endpoints are documented
+      expect(spec.paths).toHaveProperty("/health");
+      expect(spec.paths).toHaveProperty("/helloWorld");
+    },
+  );
 });
