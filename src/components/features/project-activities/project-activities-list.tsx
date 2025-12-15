@@ -1,15 +1,8 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  BusIcon,
-  CarIcon,
-  EditIcon,
-  PlusIcon,
-  ShipIcon,
-  TrainIcon,
-  Trash2Icon,
-} from "lucide-react";
+import { EditIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -54,24 +47,10 @@ interface ProjectActivitiesListProps {
   canEdit?: boolean;
 }
 
-// Helper function to get icon for activity type
-function getActivityIcon(type: ActivityType) {
-  const exhaustiveCheck = (_: never): never => {
-    throw new Error(`Unhandled activity type: ${_}`);
-  };
-
-  switch (type) {
-    case "boat":
-      return <ShipIcon className="h-4 w-4" />;
-    case "bus":
-      return <BusIcon className="h-4 w-4" />;
-    case "train":
-      return <TrainIcon className="h-4 w-4" />;
-    case "car":
-      return <CarIcon className="h-4 w-4" />;
-    default:
-      return exhaustiveCheck(type);
-  }
+// Use a single, consistent icon to avoid visual noise across activity types
+function getActivityIcon(_: ActivityType) {
+  const Icon = PROJECT_ICONS.activities;
+  return <Icon className="h-4 w-4" />;
 }
 
 export function ProjectActivitiesList({
@@ -147,7 +126,7 @@ export function ProjectActivitiesList({
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <ShipIcon className="h-5 w-5" />
+              <PROJECT_ICONS.activities className="h-5 w-5" />
               {t("title")}
             </CardTitle>
             <p className="mt-1 text-muted-foreground text-sm">
@@ -194,7 +173,7 @@ export function ProjectActivitiesList({
           <Empty className="border">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <ShipIcon className="h-6 w-6" />
+                <PROJECT_ICONS.activities className="h-6 w-6" />
               </EmptyMedia>
               <EmptyTitle>{t("empty.title")}</EmptyTitle>
               <EmptyDescription>{t("empty.description")}</EmptyDescription>

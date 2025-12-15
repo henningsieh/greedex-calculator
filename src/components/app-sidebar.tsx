@@ -38,6 +38,7 @@ import {
   TEAM_PATH,
 } from "@/config/AppRoutes";
 import { Link, usePathname } from "@/lib/i18n/routing";
+import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -61,7 +62,7 @@ export function AppSidebar() {
     },
     {
       title: t("organization.projects"),
-      icon: MapPinnedIcon,
+      icon: PROJECT_ICONS.projects,
       url: PROJECTS_PATH,
     },
     {

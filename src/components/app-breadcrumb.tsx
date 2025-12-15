@@ -2,6 +2,7 @@
 
 import {
   useMutation,
+  useQuery,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
@@ -11,7 +12,6 @@ import {
   Building2Icon,
   Edit2Icon,
   LayoutDashboardIcon,
-  MapPinnedIcon,
   SettingsIcon,
   Trash2Icon,
   TriangleAlertIcon,
@@ -21,6 +21,7 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { CreateProjectButton } from "@/components/features/projects/create-project-button";
 import { EditProjectForm } from "@/components/features/projects/edit-project-form";
+import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -61,7 +62,7 @@ const orgRouteKeyToIcon: Record<
   LucideIcon
 > = {
   dashboard: LayoutDashboardIcon,
-  projects: MapPinnedIcon,
+  projects: PROJECT_ICONS.projects,
   team: UsersIcon,
   settings: SettingsIcon,
 };
@@ -73,7 +74,11 @@ type BreadcrumbLevel = "organization" | "project";
 
 function getBreadcrumbLevel(pathname: string): BreadcrumbLevel {
   // Liveview route is project-specific
-  if (pathname === LIVE_VIEW_PATH || pathname.startsWith("/org/activeproject/liveview")) {
+  if (
+    pathname === LIVE_VIEW_PATH ||
+    pathname.startsWith("/org/activeproject/liveview") ||
+    pathname.startsWith("/org/projects/")
+  ) {
     return "project";
   }
   return "organization";
@@ -104,6 +109,11 @@ export function AppBreadcrumb() {
   const pathname = usePathname();
   const t = useTranslations("app.sidebar");
 
+  const projectIdFromPath = (() => {
+    const match = pathname.match(/\/org\/projects\/([^/]+)/);
+    return match?.[1] ?? null;
+  })();
+
   const level = getBreadcrumbLevel(pathname);
   const isProjectLevel = level === "project";
 
@@ -123,6 +133,15 @@ export function AppBreadcrumb() {
   const activeProject = projects?.find(
     (project) => project.id === session?.session.activeProjectId,
   );
+
+  const { data: projectFromPath } = useQuery({
+    ...orpcQuery.projects.getById.queryOptions({
+      input: { id: projectIdFromPath ?? "" },
+    }),
+    enabled: Boolean(projectIdFromPath),
+  });
+
+  const currentProject = projectFromPath ?? activeProject;
 
   // Permission helpers for project level actions
   const {
@@ -144,7 +163,7 @@ export function AppBreadcrumb() {
     useMutation({
       mutationFn: () =>
         orpc.projects.delete({
-          id: activeProject?.id ?? "",
+          id: currentProject?.id ?? "",
         }),
       onSuccess: (result) => {
         if (result.success) {
@@ -215,47 +234,66 @@ export function AppBreadcrumb() {
 
           {/* Second breadcrumb: Route or Project name */}
           {isProjectLevel ? (
-            // Project level: show project name
+            // Project level: Projects list > Project name (from path or active)
             <>
               <BreadcrumbItem>
-                {activeProject ? (
+                <BreadcrumbLink asChild>
+                  <Link
+                    href={PROJECTS_PATH}
+                    className={cn(
+                      "flex items-center gap-2 transition-colors duration-300",
+                      primaryColorClasses,
+                    )}
+                  >
+                    <PROJECT_ICONS.projects className="size-4" />
+                    <span className="font-semibold">
+                      {t("organization.projects")}
+                    </span>
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+
+              <BreadcrumbSeparator className={separatorClasses} />
+
+              <BreadcrumbItem>
+                {currentProject ? (
                   isLiveView ? (
-                    // If on liveview, project name is a link to project details
                     <BreadcrumbLink asChild>
                       <Link
-                        href={`/org/projects/${activeProject.id}` as "/org/projects/[id]"}
+                        href={
+                          `/org/projects/${currentProject.id}` as "/org/projects/[id]"
+                        }
                         className={cn(
                           "flex items-center gap-2 transition-colors duration-300",
                           primaryColorClasses,
                         )}
                       >
-                        <MapPinnedIcon className="size-4" />
+                        <PROJECT_ICONS.project className="size-4" />
                         <span className="font-semibold">
-                          {activeProject.name}
+                          {currentProject.name}
                         </span>
                       </Link>
                     </BreadcrumbLink>
                   ) : (
-                    // Project name as current page (shouldn't happen anymore, but keeping as fallback)
                     <BreadcrumbPage
                       className={cn("flex items-center gap-2", pageColorClasses)}
                     >
-                      <MapPinnedIcon className="size-4" />
-                      <span className="font-semibold">{activeProject.name}</span>
+                      <PROJECT_ICONS.project className="size-4" />
+                      <span className="font-semibold">{currentProject.name}</span>
                     </BreadcrumbPage>
                   )
                 ) : (
                   <span className="flex items-center gap-2 text-rose-500/80">
                     <TriangleAlertIcon className="size-4" />
                     <span className="font-semibold italic">
-                      No project selected
+                      {t("organization.projects")}
                     </span>
                   </span>
                 )}
               </BreadcrumbItem>
 
               {/* Third breadcrumb: Liveview (only if on liveview page) */}
-              {isLiveView && activeProject && (
+              {isLiveView && currentProject && (
                 <>
                   <BreadcrumbSeparator className={separatorClasses} />
                   <BreadcrumbItem>
@@ -297,7 +335,7 @@ export function AppBreadcrumb() {
       <div className="flex items-center gap-2">
         {isProjectLevel ? (
           // Project-level actions (Edit / Delete)
-          activeProject ? (
+          currentProject ? (
             <div className="flex items-center gap-2">
               <Dialog>
                 <DialogTrigger asChild>
@@ -315,7 +353,10 @@ export function AppBreadcrumb() {
                   <DialogHeader>
                     <DialogTitle>Edit project</DialogTitle>
                   </DialogHeader>
-                  <EditProjectForm project={activeProject} onSuccess={() => {}} />
+                  <EditProjectForm
+                    project={currentProject}
+                    onSuccess={() => {}}
+                  />
                 </DialogContent>
               </Dialog>
 
@@ -325,7 +366,7 @@ export function AppBreadcrumb() {
                 onClick={async () => {
                   const confirmed = await confirm({
                     title: "Delete project",
-                    description: `Delete project ${activeProject?.name}?`,
+                    description: `Delete project ${currentProject?.name}?`,
                     confirmText: "Delete",
                     cancelText: "Cancel",
                     isDestructive: true,

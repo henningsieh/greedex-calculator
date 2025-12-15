@@ -2,16 +2,11 @@
 
 import { ORPCError } from "@orpc/client";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Calendar,
-  Globe,
-  MapPinnedIcon,
-  MessageSquare,
-  RouteIcon,
-  Users,
-} from "lucide-react";
+import { Calendar, Globe, MessageSquare, Users } from "lucide-react";
+import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import { notFound } from "next/navigation";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useTranslations, useLocale } from "next-intl";
+import { getCountryData } from "@/lib/i18n/country-i18n";
 import { toast } from "sonner";
 import { ParticipantsLinkControls } from "@/components/features/participants/participants-link-controls";
 import {
@@ -23,7 +18,7 @@ import {
   ProjectActivitiesListSkeleton,
 } from "@/components/features/project-activities/project-activities-list";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardAction, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PROJECTS_PATH } from "@/config/AppRoutes";
@@ -40,6 +35,7 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
   const router = useRouter();
   const { canUpdate } = useProjectPermissions();
   const format = useFormatter();
+  const locale = useLocale();
 
   // Fetch project details
   const { data: project, error: projectError } = useQuery(
@@ -90,32 +86,22 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
   );
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <div className="mx-auto max-w-6xl space-y-6">
       {/* Project Header with Statistics */}
-      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary/80 via-primary/60 to-accent p-8 shadow-xl">
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5" />
-        <div className="relative z-10 space-y-6">
+      <Card className="shadow-md">
+        <CardHeader>
           <div>
-            <Badge
-              variant="secondary"
-              className="mb-4 bg-white/20 text-white hover:bg-white/30"
-            >
-              <Globe className="mr-1 h-3 w-3" />
-              {project.country}
-            </Badge>
-            <h1 className="mb-4 font-bold text-3xl text-white md:text-4xl">
-              {project.name}
-            </h1>
-            <div className="flex flex-wrap items-center gap-4 text-white/90">
-              <div className="flex items-center gap-2">
+            <CardTitle className="text-2xl sm:text-3xl">{project.name}</CardTitle>
+            <CardDescription>
+              <div className="inline-flex items-center gap-3 text-muted-foreground text-sm">
                 <Calendar className="h-4 w-4" />
                 <span>
                   {format.dateTime(project.startDate, {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
-                  })}{" "}
-                  -{" "}
+                  })}
+                  {" "}-{" "}
                   {format.dateTime(project.endDate, {
                     year: "numeric",
                     month: "short",
@@ -123,93 +109,133 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
                   })}
                 </span>
               </div>
-              {project.location && (
-                <div className="flex items-center gap-2">
-                  <MapPinnedIcon className="h-4 w-4" />
-                  <span>{project.location}</span>
-                </div>
-              )}
-            </div>
+            </CardDescription>
           </div>
 
+          <CardAction className="flex flex-col items-end gap-2">
+            {/* Consolidated location badge: Flag + localized country name + city */}
+            {(() => {
+              const country = project.country ?? "";
+              const countryData = getCountryData(country, locale);
+              const Flag = countryData?.Flag;
+              const countryName = countryData?.name ?? country;
+
+              return (
+                <Badge
+                  variant="outline"
+                  className="inline-flex items-center gap-3 py-1.5 px-3"
+                  title={`${countryName}${project.location ? ` | ${project.location}` : ""}`}>
+                  {Flag ? (
+                    <Flag className="h-5 w-5 rounded-sm flex-shrink-0" />
+                  ) : (
+                    <Globe className="h-4 w-4" />
+                  )}
+
+                  <span className="flex items-baseline gap-2 whitespace-nowrap overflow-hidden">
+                    <span className="text-sm font-medium text-muted-foreground truncate max-w-[10rem]">
+                      {countryName}
+                    </span>
+                    {project.location && (
+                      <span className="text-sm font-semibold text-muted-foreground truncate max-w-[8rem]">
+                        {` | ${project.location}`}
+                      </span>
+                    )}
+                  </span>
+                </Badge>
+              );
+            })()}
+          </CardAction>
+        </CardHeader>
+
+        <CardContent className="space-y-6 p-6 sm:p-8">
+
           {/* Statistics Cards */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div className="rounded-lg border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-white/70 text-sm">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
                 <Users className="h-4 w-4" />
                 {t("statistics.participants")}
               </div>
-              <div className="mt-2 font-bold text-2xl text-white">
+              <div className="mt-2 font-semibold text-2xl text-foreground">
                 {participantsCount}
               </div>
             </div>
-            <div className="rounded-lg border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-white/70 text-sm">
-                <RouteIcon className="h-4 w-4" />
+            <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <PROJECT_ICONS.activities className="h-4 w-4" />
                 {t("statistics.activities")}
               </div>
-              <div className="mt-2 font-bold text-2xl text-white">
+              <div className="mt-2 font-semibold text-2xl text-foreground">
                 {activitiesCount}
               </div>
             </div>
-            <div className="rounded-lg border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-white/70 text-sm">
-                <RouteIcon className="h-4 w-4" />
+            <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <PROJECT_ICONS.activities className="h-4 w-4" />
                 {t("statistics.total-distance")}
               </div>
-              <div className="mt-2 font-bold text-2xl text-white">
+              <div className="mt-2 font-semibold text-2xl text-foreground">
                 {totalDistance.toFixed(1)}{" "}
-                <span className="font-normal text-base">
+                <span className="font-normal text-base text-muted-foreground">
                   {t("statistics.km")}
                 </span>
               </div>
             </div>
-            <div className="rounded-lg border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-white/70 text-sm">
+            <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
                 <Calendar className="h-4 w-4" />
                 {t("statistics.duration")}
               </div>
-              <div className="mt-2 font-bold text-2xl text-white">
+              <div className="mt-2 font-semibold text-2xl text-foreground">
                 {duration}{" "}
-                <span className="font-normal text-base">
+                <span className="font-normal text-base text-muted-foreground">
                   {t("statistics.days")}
                 </span>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Participation Link */}
-      <ParticipantsLinkControls activeProjectId={id} />
+                                    <ParticipantsLinkControls activeProjectId={id} />
 
       {/* Tabs Navigation */}
-      <Tabs defaultValue="details" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="details">
-            <MapPinnedIcon className="mr-2 h-4 w-4" />
+      <Tabs defaultValue="details" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 bg-transparent p-0">
+          <TabsTrigger
+            value="details"
+            className="flex items-center justify-center gap-2 rounded-md border bg-card text-foreground shadow-sm data-[state=active]:border-primary data-[state=active]:shadow"
+          >
+            <PROJECT_ICONS.project className="h-4 w-4" />
             {t("tabs.details")}
           </TabsTrigger>
-          <TabsTrigger value="activities">
-            <RouteIcon className="mr-2 h-4 w-4" />
+          <TabsTrigger
+            value="activities"
+            className="flex items-center justify-center gap-2 rounded-md border bg-card text-foreground shadow-sm data-[state=active]:border-primary data-[state=active]:shadow"
+          >
+            <PROJECT_ICONS.activities className="h-4 w-4" />
             {t("tabs.activities")}
           </TabsTrigger>
-          <TabsTrigger value="participants">
-            <Users className="mr-2 h-4 w-4" />
+          <TabsTrigger
+            value="participants"
+            className="flex items-center justify-center gap-2 rounded-md border bg-card text-foreground shadow-sm data-[state=active]:border-primary data-[state=active]:shadow"
+          >
+            <Users className="h-4 w-4" />
             {t("tabs.participants")}
           </TabsTrigger>
         </TabsList>
 
         {/* Project Details Tab */}
         <TabsContent value="details" className="space-y-6">
-          <Card className="shadow-lg">
-            <CardHeader className="pb-3">
+          <Card className="shadow-sm">
+            <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-lg">
-                <MapPinnedIcon className="h-5 w-5 text-primary" />
+                <PROJECT_ICONS.project className="h-5 w-5 text-primary" />
                 {t("title")}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 p-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-1">
                   <p className="font-medium text-muted-foreground text-sm">
@@ -258,13 +284,11 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
 
               {project.welcomeMessage && (
                 <div className="space-y-2 border-t pt-4">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                    <p className="font-medium text-muted-foreground text-sm">
-                      {t("welcome-message")}
-                    </p>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <MessageSquare className="h-4 w-4" />
+                    <p className="font-medium text-sm">{t("welcome-message")}</p>
                   </div>
-                  <blockquote className="border-primary/20 border-l-4 pl-4 text-muted-foreground italic">
+                  <blockquote className="border-l-4 border-primary/20 pl-4 text-muted-foreground italic">
                     {project.welcomeMessage}
                   </blockquote>
                 </div>
@@ -291,43 +315,43 @@ export function ProjectDetailsSkeleton() {
   const t = useTranslations("project.details");
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <div className="mx-auto max-w-6xl space-y-6">
       {/* Project Header Skeleton */}
-      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary/80 via-primary/60 to-accent p-8 shadow-xl">
-        <div className="relative z-10 space-y-6">
+      <Card className="shadow-md">
+        <CardHeader>
           <div>
-            <Skeleton className="mb-4 h-6 w-24 bg-white/20" />
-            <Skeleton className="mb-4 h-10 w-3/4 bg-white/20">
-              {t("loading")}
-            </Skeleton>
-            <div className="flex gap-4">
-              <Skeleton className="h-5 w-48 bg-white/20" />
-            </div>
+            <CardTitle className="text-2xl sm:text-3xl"><Skeleton className="h-6 w-44" /></CardTitle>
+            <CardDescription>
+              <div className="inline-flex items-center gap-3 text-muted-foreground text-sm">
+                <Skeleton className="h-4 w-40" />
+              </div>
+            </CardDescription>
           </div>
 
-          {/* Statistics Skeleton */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <CardAction className="flex flex-col items-end gap-2">
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-4 w-32" />
+          </CardAction>
+        </CardHeader>
+
+        <CardContent className="space-y-6 p-6 sm:p-8">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[...Array(4)].map((_, i) => (
-              <div
-                key={i}
-                className="rounded-lg border border-white/20 bg-white/10 p-4 backdrop-blur-sm"
-              >
-                <Skeleton className="mb-2 h-4 w-24 bg-white/20" />
-                <Skeleton className="h-8 w-16 bg-white/20" />
+              <div key={i} className="rounded-lg border border-border bg-card p-4 shadow-sm">
+                <Skeleton className="mb-2 h-4 w-24" />
+                <Skeleton className="h-8 w-16" />
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Participation Link Skeleton */}
-      <Card className="mb-8 border border-border/60 bg-card/80 shadow-sm">
-        <CardHeader className="gap-6">
+      <Card className="shadow-sm">
+        <CardContent className="space-y-3 p-6">
           <Skeleton className="h-6 w-48" />
           <Skeleton className="h-4 w-full" />
-        </CardHeader>
-        <CardContent>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <Skeleton className="h-10 flex-1" />
             <Skeleton className="h-10 w-32" />
           </div>
@@ -335,22 +359,22 @@ export function ProjectDetailsSkeleton() {
       </Card>
 
       {/* Tabs Skeleton */}
-      <div className="space-y-6">
-        <div className="grid h-9 w-full grid-cols-3 gap-1 rounded-lg bg-muted p-[3px]">
-          <Skeleton className="h-full" />
-          <Skeleton className="h-full" />
-          <Skeleton className="h-full" />
+      <div className="space-y-4">
+        <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3">
+          <Skeleton className="h-10 rounded-md" />
+          <Skeleton className="h-10 rounded-md" />
+          <Skeleton className="h-10 rounded-md" />
         </div>
 
         {/* Content Skeleton */}
-        <Card className="shadow-lg">
-          <CardHeader className="pb-3">
+        <Card className="shadow-sm">
+          <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2">
               <Skeleton className="h-5 w-5" />
               <Skeleton className="h-6 w-32" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 p-6">
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="space-y-1">
                 <Skeleton className="h-4 w-20" />

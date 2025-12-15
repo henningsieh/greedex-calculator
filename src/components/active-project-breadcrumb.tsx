@@ -1,7 +1,8 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { MapPinnedIcon, TriangleAlertIcon } from "lucide-react";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { TriangleAlertIcon } from "lucide-react";
+import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,12 +12,19 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Skeleton } from "@/components/ui/skeleton";
 import { orpcQuery } from "@/lib/orpc/orpc";
+import { Link, usePathname } from "@/lib/i18n/routing";
 
 export function ActiveProjectBreadcrumb() {
   // Use oRPC queries instead of authClient.useSession() to enable:
   // 1. Server-side prefetching for optimal performance
   // 2. Stable hydration (no SSR/client mismatch)
   // 3. Server-side Suspense boundaries without errors
+  const pathname = usePathname();
+  const projectIdFromPath = (() => {
+    const match = pathname.match(/\/org\/projects\/([^/]+)/);
+    return match?.[1] ?? null;
+  })();
+
   const { data: session } = useSuspenseQuery(
     orpcQuery.betterauth.getSession.queryOptions(),
   );
@@ -24,21 +32,34 @@ export function ActiveProjectBreadcrumb() {
     orpcQuery.projects.list.queryOptions(),
   );
 
+  const { data: projectFromPath } = useQuery({
+    ...orpcQuery.projects.getById.queryOptions({
+      input: { id: projectIdFromPath ?? "" },
+    }),
+    enabled: Boolean(projectIdFromPath),
+  });
+
   const activeProject = projects?.find(
     (project) => project.id === session?.session.activeProjectId,
   );
+
+  const project = projectFromPath ?? activeProject;
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          {activeProject ? (
+          {project ? (
             <BreadcrumbLink
-              href={`/projects/${activeProject.id}`}
+              asChild
               className="flex items-center gap-2 transition-colors duration-300 hover:text-secondary-foreground"
             >
-              <MapPinnedIcon className="size-5" />
-              <span className="font-bold text-lg">{activeProject.name}</span>
+              <Link href={`/org/projects/${project.id}` as "/org/projects/[id]"}>
+                <span className="flex items-center gap-2">
+                  <PROJECT_ICONS.project className="size-5" />
+                  <span className="font-bold text-lg">{project.name}</span>
+                </span>
+              </Link>
             </BreadcrumbLink>
           ) : (
             <span className="flex items-center gap-2 text-rose-500/80">
