@@ -516,7 +516,10 @@
       "activities": "Activities",
       "activities-description": "Project activities will be displayed here.",
       "loading": "loading project details...",
-      "error": "Failed to load project details."
+      "error": "Failed to load project details.",
+      "people-joined": "people have already joined",
+      "no-participants-yet": "No participants yet",
+      "share-the-participation-link": "Share the participation link to invite people to this project."
     },
     "activities": {
       "title": "Project Activities",
@@ -851,5 +854,8 @@
       "signup": "Sign Up",
       "openMenu": "Open Menu"
     }
-  }
+  },
+  "people-joined": "people joined",
+  "no-participants-yet": "No participants yet",
+  "share-the-participation-link": "Share the participation link to invite people to this project."
 }

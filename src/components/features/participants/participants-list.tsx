@@ -2,7 +2,7 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Users2Icon, UsersIcon } from "lucide-react";
-import { useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -20,6 +20,7 @@ interface ParticipantsListProps {
 
 export function ParticipantsList({ activeProjectId }: ParticipantsListProps) {
   const format = useFormatter();
+  const t = useTranslations("project.details");
 
   const { data: participants } = useSuspenseQuery(
     orpcQuery.projects.getParticipants.queryOptions({
@@ -39,10 +40,10 @@ export function ParticipantsList({ activeProjectId }: ParticipantsListProps) {
           <div>
             <CardTitle>
               <p className="font-medium text-secondary/70 text-xs uppercase tracking-[0.2em]">
-                Participants
+                {t('participants')}
               </p>
               <h2 className="font-semibold text-lg text-secondary-foreground">
-                {participants?.length || 0} people joined
+                {participants?.length || 0} {t('people-joined')}
               </h2>
             </CardTitle>
           </div>
@@ -55,9 +56,9 @@ export function ParticipantsList({ activeProjectId }: ParticipantsListProps) {
             <EmptyMedia variant="icon">
               <Users2Icon className="h-12 w-12" />
             </EmptyMedia>
-            <EmptyTitle>No participants yet</EmptyTitle>
+            <EmptyTitle>{t('no-participants-yet')}</EmptyTitle>
             <EmptyDescription>
-              Share the participation link to invite people to this project.
+              {t('share-the-participation-link')}
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
