@@ -522,16 +522,17 @@
       "share-the-participation-link": "Teilen Sie den Teilnahmelink, um Personen zu diesem Projekt einzuladen.",
       "tabs": {
         "details": "Projektdetails",
-        "activities": "Aktivitäten",
+        "activities": "Projektaktivitäten",
         "participants": "Teilnehmende"
       },
       "statistics": {
         "participants": "Teilnehmende",
-        "activities": "Aktivitäten",
+        "activities": "Projektaktivitäten",
         "total-distance": "Gesamtstrecke",
-        "duration": "Dauer",
+        "duration": "Projektdauer",
         "km": "km",
-        "days": "Tage"
+        "days": "Tage",
+        "co2-emissions": "Projektemissionen"
       }
     },
     "activities": {

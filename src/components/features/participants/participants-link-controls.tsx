@@ -3,7 +3,7 @@
 import { CopyIcon, ExternalLinkIcon, Link2Icon, QrCodeIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import QRCode from "qrcode";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -45,6 +45,24 @@ export function ParticipantsLinkControls({
   const participationUrl = activeProjectId
     ? `${env.NEXT_PUBLIC_BASE_URL}/project/${activeProjectId}/participate`
     : "";
+
+  // Input ref to focus & select URL for easy copying
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // Auto-focus and select the URL when it's available (select without scrolling to the end)
+  useEffect(() => {
+    const input = inputRef.current;
+    if (participationUrl && input) {
+      // focus without scrolling the page
+      input.focus?.({ preventScroll: true } as FocusOptions);
+      // select entire value but anchor at the start so the beginning stays visible
+      input.setSelectionRange(0, participationUrl.length);
+      // ensure horizontal scroll shows the start
+      requestAnimationFrame(() => {
+        input.scrollLeft = 0;
+      });
+    }
+  }, [participationUrl]);
 
   // Generate QR code when modal opens
   useEffect(() => {
@@ -88,7 +106,6 @@ export function ParticipantsLinkControls({
           <Dialog open={isQrModalOpen} onOpenChange={setIsQrModalOpen}>
             <DialogTrigger asChild>
               <Button
-                // size="lg"
                 variant="outline"
                 className="size-10 border-secondary/40 text-secondary hover:bg-secondary/10 hover:text-secondary sm:size-fit dark:border-secondary/40"
                 onClick={() => setIsQrModalOpen(true)}
@@ -137,10 +154,18 @@ export function ParticipantsLinkControls({
         <div className="mt-6 flex flex-wrap gap-3">
           <InputGroup className="flex-1 border border-secondary/30 bg-background has-[[data-slot=input-group-control]:focus-visible]:border-secondary has-[[data-slot=input-group-control]:focus-visible]:ring-secondary/40">
             <InputGroupInput
+              ref={inputRef}
               type="text"
               value={participationUrl}
               readOnly
-              className="truncate border-0 font-mono text-secondary-foreground text-sm selection:bg-secondary selection:text-secondary-foreground"
+              onFocus={(e) => {
+                const target = e.currentTarget;
+                target.setSelectionRange(0, target.value.length);
+                requestAnimationFrame(() => {
+                  target.scrollLeft = 0;
+                });
+              }}
+              className="truncate border-0 font-mono text-muted-foreground text-sm selection:bg-secondary selection:text-secondary-foreground"
               title={t("participation.linkLabel")}
             />
             <InputGroupAddon>
