@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   Calendar,
   Globe,
-  Link2Icon,
   MapPinnedIcon,
   MessageSquare,
   RouteIcon,
