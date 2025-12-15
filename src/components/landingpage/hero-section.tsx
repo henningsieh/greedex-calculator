@@ -44,28 +44,37 @@ export async function HeroSection() {
           src="/herobg.jpg"
           alt="hero background"
           fill
-          className="object-cover opacity-70 dark:opacity-20"
+          className="object-cover opacity-50 dark:opacity-15"
           priority
         />
       </div>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 isolate hidden opacity-65 contain-strict lg:block"
-      >
-        <div className="-translate-y-87.5 -rotate-45 absolute top-0 left-0 h-320 w-140 rounded-full bg-[radial-gradient(68.54%_68.72%_at_55.02%_31.46%,hsla(0,0%,85%,.08)_0,hsla(0,0%,55%,.02)_50%,hsla(0,0%,45%,0)_80%)]" />
-        <div className="-rotate-45 absolute top-0 left-0 h-320 w-60 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.06)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)] [translate:5%_-50%]" />
-        <div className="-translate-y-87.5 -rotate-45 absolute top-0 left-0 h-320 w-60 bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.04)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)]" />
-      </div>
+
       <section>
-        <div className="relative pt-20 md:pt-32">
+        <div className="relative pt-20">
           <div
             aria-hidden
             className="-z-10 absolute inset-0 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,var(--color-background)_75%)]"
           />
 
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center sm:mx-auto lg:mt-0 lg:mr-auto">
-              <AnimatedGroup variants={transitionVariants}>
+          <AnimatedGroup
+            variants={{
+              container: {
+                visible: {
+                  transition: {
+                    staggerChildren: 0.05,
+                    delayChildren: 0.2,
+                  },
+                },
+              },
+              ...transitionVariants,
+            }}
+          >
+            <div
+              id="herobanner"
+              className="mask-b-from-55% relative mb-16 overflow-hidden px-2 sm:mr-0"
+            >
+              {/* CTA placed at the top, centered above the hero image */}
+              <div className="relative z-20 mx-auto mb-6 flex max-w-7xl justify-center px-4">
                 <Link
                   href={DASHBOARD_PATH}
                   title={t("launchButtonAria")}
@@ -76,7 +85,54 @@ export async function HeroSection() {
                     {t("launchButton")}
                   </AnimatedGradientCTA>
                 </Link>
+              </div>
 
+              <div className="relative inset-shadow-2xs mx-auto aspect-video max-w-6xl overflow-hidden rounded-3xl border border-border/40 bg-card/30 p-4 shadow-2xl shadow-primary/10 ring-1 ring-background backdrop-blur-xl dark:inset-shadow-white/20">
+                <Image
+                  className="relative hidden aspect-15/8 rounded-2xl bg-background object-cover dark:block"
+                  src="/Greendex-hero-banner.png"
+                  alt="app screen"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
+                />
+                <Image
+                  className="relative aspect-15/8 rounded-2xl bg-background object-cover dark:hidden"
+                  src="/Greendex-hero-banner.png"
+                  alt="app screen"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
+                />
+              </div>
+            </div>
+          </AnimatedGroup>
+
+          <div className="mx-auto mt-16 mb-32 hidden items-center justify-center md:flex">
+            <a
+              href="#hero-text"
+              aria-label={t("hero.scrollDown")}
+              className="group inline-block"
+            >
+              <div
+                className="animate-bounce animate-gradient-shift rounded-full p-3 shadow-emerald-500/50 shadow-lg ring-2 ring-emerald-400/30 ring-offset-2 ring-offset-background transition-all group-hover:scale-110 group-hover:shadow-cyan-500/70 group-hover:shadow-xl group-hover:ring-cyan-400/50"
+                style={
+                  {
+                    background:
+                      "linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #10b981 100%)",
+                    backgroundSize: "200% 200%",
+                  } as React.CSSProperties
+                }
+              >
+                <ChevronDown className="size-7 shrink-0 stroke-[3] text-white drop-shadow-lg transition-transform group-hover:translate-y-0.5" />
+              </div>
+            </a>
+          </div>
+
+          <div
+            id="hero-text"
+            className="mx-auto max-w-7xl scroll-mt-32 px-6 pb-40"
+          >
+            <div className="text-center sm:mx-auto lg:mt-0 lg:mr-auto">
+              <AnimatedGroup variants={transitionVariants}>
                 <TextEffect
                   preset="fade-in-blur"
                   speedSegment={0.3}
@@ -94,7 +150,7 @@ export async function HeroSection() {
                   speedSegment={0.5}
                   delay={0.2}
                   as="p"
-                  className="mx-auto mt-6 max-w-6xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
+                  className="mx-auto mt-6 max-w-7xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
                 >
                   {t("hero.missionText")}
                 </TextEffect>
@@ -118,74 +174,17 @@ export async function HeroSection() {
                   speedSegment={0.5}
                   delay={0.7}
                   as="p"
-                  className="mx-auto mt-6 max-w-6xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
+                  className="mx-auto mt-6 max-w-7xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
                 >
                   {t("hero.visionText")}
                 </TextEffect>
               </AnimatedGroup>
-
-              <a
-                href="#herobanner"
-                aria-label={t("hero.scrollDown")}
-                className="group mx-auto block"
-              >
-                <div className="mt-12 flex items-center justify-center">
-                  <div
-                    className="animate-bounce animate-gradient-shift rounded-full p-3 shadow-emerald-500/50 shadow-lg ring-2 ring-emerald-400/30 ring-offset-2 ring-offset-background transition-all group-hover:scale-110 group-hover:shadow-cyan-500/70 group-hover:shadow-xl group-hover:ring-cyan-400/50"
-                    style={
-                      {
-                        background:
-                          "linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #10b981 100%)",
-                        backgroundSize: "200% 200%",
-                      } as React.CSSProperties
-                    }
-                  >
-                    <ChevronDown className="size-7 stroke-[3] text-white drop-shadow-lg transition-transform group-hover:translate-y-0.5" />
-                  </div>
-                </div>
-              </a>
             </div>
           </div>
-
-          <AnimatedGroup
-            variants={{
-              container: {
-                visible: {
-                  transition: {
-                    staggerChildren: 0.05,
-                    delayChildren: 0.75,
-                  },
-                },
-              },
-              ...transitionVariants,
-            }}
-          >
-            <div
-              id="herobanner"
-              className="mask-b-from-55% relative mt-8 scroll-mt-20 overflow-hidden px-2 sm:mr-0"
-            >
-              <div className="relative inset-shadow-2xs mx-auto aspect-video max-w-6xl overflow-hidden rounded-2xl border bg-background p-4 shadow-lg shadow-zinc-950/15 ring-1 ring-background dark:inset-shadow-white/20">
-                <Image
-                  className="relative hidden aspect-15/8 rounded-2xl bg-background object-cover dark:block"
-                  src="/Greendex-hero-banner.png"
-                  alt="app screen"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
-                />
-                <Image
-                  className="relative aspect-15/8 rounded-2xl bg-background object-cover dark:hidden"
-                  src="/Greendex-hero-banner.png"
-                  alt="app screen"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
-                />
-              </div>
-            </div>
-          </AnimatedGroup>
         </div>
       </section>
       <section className="bg-background pt-16 pb-16 md:pb-32">
-        <div className="group relative m-auto max-w-5xl px-6">
+        <div className="group relative m-auto max-w-7xl px-6">
           <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
             <Link
               href={DASHBOARD_PATH}

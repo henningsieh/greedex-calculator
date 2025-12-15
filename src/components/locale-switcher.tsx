@@ -11,7 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getLocaleData, type LocaleCode } from "@/lib/i18n/locales";
+import type { LocaleCode } from "@/config/Languages";
+import { getLocaleData } from "@/lib/i18n/locales";
 import { usePathname, useRouter } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
 

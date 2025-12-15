@@ -63,14 +63,14 @@ export const getLocaleData = (): LocaleData[] => {
       englishName,
       Flag,
     };
+  }).map((entry) => {
+    // Special case: Use UK flag for International English to indicate default fallback
+    if (entry.code === "en") {
+      entry.Flag = flagRegistry.GB;
+    }
+    return entry;
   });
 };
-
-export {
-  LOCALE_CODES,
-  type LocaleCode,
-  type SupportedLocale,
-} from "../../config/Languages";
 
 export const isSupportedLocale = (
   value: string | undefined,
