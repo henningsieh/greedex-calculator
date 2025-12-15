@@ -21,7 +21,9 @@ beforeAll(async () => {
 
   try {
     console.log(`Checking server availability at: ${baseUrl}/health`);
-    const response = await fetch(`${baseUrl}/health`, { signal: controller.signal });
+    const response = await fetch(`${baseUrl}/health`, {
+      signal: controller.signal,
+    });
     console.log(`Server response status: ${response.status}`);
     if (response.ok) {
       serverAvailable = true;
@@ -32,7 +34,10 @@ beforeAll(async () => {
     }
   } catch (error) {
     serverAvailable = false;
-    console.warn("⚠️  OpenAPI server not running, skipping integration tests", error);
+    console.warn(
+      "⚠️  OpenAPI server not running, skipping integration tests",
+      error,
+    );
   } finally {
     clearTimeout(timeout);
   }
@@ -202,12 +207,18 @@ describe("OpenAPI REST Endpoint", () => {
         },
       });
 
-      expect(response.headers.get("Access-Control-Allow-Origin")).toBe("http://localhost:3000");
+      expect(response.headers.get("Access-Control-Allow-Origin")).toBe(
+        "http://localhost:3000",
+      );
       expect(response.headers.get("Access-Control-Allow-Methods")).toBeDefined();
       expect(response.headers.get("Access-Control-Allow-Headers")).toBeDefined();
-      expect(response.headers.get("Access-Control-Allow-Credentials")).toBe("true");
+      expect(response.headers.get("Access-Control-Allow-Credentials")).toBe(
+        "true",
+      );
       // Required for OpenAPILink file detection
-      expect(response.headers.get("Access-Control-Expose-Headers")).toContain("Content-Disposition");
+      expect(response.headers.get("Access-Control-Expose-Headers")).toContain(
+        "Content-Disposition",
+      );
     });
 
     it("should handle CORS preflight requests", async () => {
@@ -221,12 +232,20 @@ describe("OpenAPI REST Endpoint", () => {
       });
 
       expect(response.status).toBe(204); // or 200
-      expect(response.headers.get("Access-Control-Allow-Origin")).toBe("http://localhost:3000");
-      expect(response.headers.get("Access-Control-Allow-Methods")).toContain("GET");
+      expect(response.headers.get("Access-Control-Allow-Origin")).toBe(
+        "http://localhost:3000",
+      );
+      expect(response.headers.get("Access-Control-Allow-Methods")).toContain(
+        "GET",
+      );
       expect(response.headers.get("Access-Control-Allow-Headers")).toBeDefined();
-      expect(response.headers.get("Access-Control-Allow-Credentials")).toBe("true");
+      expect(response.headers.get("Access-Control-Allow-Credentials")).toBe(
+        "true",
+      );
       // Required for OpenAPILink file detection
-      expect(response.headers.get("Access-Control-Expose-Headers")).toContain("Content-Disposition");
+      expect(response.headers.get("Access-Control-Expose-Headers")).toContain(
+        "Content-Disposition",
+      );
     });
   });
 });
