@@ -1,3 +1,4 @@
+import type { ProjectActivityType } from "@/components/features/projects/types";
 import { type AppRoute, PROJECT_DETAIL_PATH } from "@/config/AppRoutes";
 import { orpc } from "@/lib/orpc/orpc";
 
@@ -10,10 +11,10 @@ export const getProjectDetailPath = (projectId: string): AppRoute =>
   PROJECT_DETAIL_PATH.replace("[id]", projectId) as AppRoute;
 
 /**
- * Retrieve a project's data and its activities by project ID.
+ * Retrieves project data and associated activities for the given project ID.
  *
  * @param projectId - The project's unique identifier
- * @returns The project data including its activities, or `null` if an error occurs while fetching
+ * @returns The project data including its activities, or `null` if fetching fails
  */
 export async function getProjectData(projectId: string) {
   try {
@@ -22,4 +23,62 @@ export async function getProjectData(projectId: string) {
     console.error("Failed to fetch project data:", error);
     return null;
   }
+}
+
+export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+
+// CO₂ emission factors (kg CO₂ per km per person)
+export const CO2_FACTORS = {
+  car: 0.192,
+  boat: 0.115,
+  bus: 0.089,
+  train: 0.041,
+  // Reserved for participant questionnaire calculations:
+  plane: 0.255,
+  electricCar: 0.053,
+};
+
+/**
+ * Compute total CO₂ emissions for a list of transport activities.
+ *
+ * Ignores activities whose `distanceKm` is not a positive number and skips activity types other than `car`, `boat`, `bus`, and `train`.
+ *
+ * @param activities - Array of activities containing `activityType` and `distanceKm` (kilometers)
+ * @returns Total CO₂ emissions in kilograms
+ */
+export function calculateActivitiesCO2(
+  activities: ProjectActivityType[],
+): number {
+  let activitiesCO2 = 0;
+
+  if (!activities || activities.length === 0) {
+    return activitiesCO2;
+  }
+
+  for (const activity of activities) {
+    const distanceKm = Number(activity.distanceKm);
+    if (Number.isNaN(distanceKm) || distanceKm <= 0) continue;
+
+    switch (activity.activityType) {
+      case "boat":
+        activitiesCO2 += distanceKm * CO2_FACTORS.boat;
+        break;
+      case "bus":
+        activitiesCO2 += distanceKm * CO2_FACTORS.bus;
+        break;
+      case "train":
+        activitiesCO2 += distanceKm * CO2_FACTORS.train;
+        break;
+      case "car":
+        // Use conventional car factor for activities
+        activitiesCO2 += distanceKm * CO2_FACTORS.car;
+        break;
+      default:
+        // Unknown activity type; skip calculation
+        console.error(`Unknown activity type: ${activity.activityType}`);
+        break;
+    }
+  }
+
+  return activitiesCO2;
 }

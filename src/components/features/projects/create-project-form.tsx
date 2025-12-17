@@ -11,7 +11,7 @@ import type { z } from "zod";
 import { CountrySelect } from "@/components/country-select";
 import { DatePickerWithInput } from "@/components/date-picker-with-input";
 import {
-  activityTypeValues,
+  activityValues,
   DISTANCE_KM_STEP,
   MIN_DISTANCE_KM,
 } from "@/components/features/projects/types";
@@ -51,15 +51,13 @@ interface CreateProjectFormProps {
 }
 
 /**
- * Render a two-step form to create a project and optional activities.
+ * Render a two-step form for creating a project and optional activities.
  *
- * The first step collects project details (name, dates, country, location,
- * welcome message). The second step allows adding zero or more activities
- * (type, distance, description, date). Submitting the form creates the project
- * and any provided activities, shows success or error toasts, navigates to the
- * created project's detail page on success, and invalidates the projects list cache.
+ * Step 1 collects project details (name, dates, country, location, welcome message).
+ * Step 2 collects zero or more activities (type, distance, description, date).
+ * Submitting creates the project and any provided activities, shows success or error toasts, navigates to the created project's detail page on success, and invalidates the projects list cache.
  *
- * @param activeOrganizationId - The ID of the active organization for the project
+ * @param activeOrganizationId - ID of the active organization used as the project's organizationId default
  * @returns The CreateProjectForm React element
  */
 export function CreateProjectForm({
@@ -366,7 +364,7 @@ export function CreateProjectForm({
                                   />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  {activityTypeValues.map((type) => (
+                                  {activityValues.map((type) => (
                                     <SelectItem key={type} value={type}>
                                       {tActivities(`types.${type}`)}
                                     </SelectItem>

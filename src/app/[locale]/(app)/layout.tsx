@@ -89,9 +89,13 @@ export default async function AppLayout({
                       "hover:bg-secondary hover:text-secondary-foreground dark:hover:bg-secondary/50",
                     )}
                   />
-                  <Suspense fallback={<AppBreadcrumbSkeleton />}>
-                    <AppBreadcrumb />
-                  </Suspense>
+                  <ErrorBoundary
+                    fallback={<div>Unable to load project breadcrumb</div>}
+                  >
+                    <Suspense fallback={<AppBreadcrumbSkeleton />}>
+                      <AppBreadcrumb />
+                    </Suspense>
+                  </ErrorBoundary>
                 </div>
                 <div className="space-y-8 p-2 md:p-4 lg:p-6 xl:p-8">
                   {children}
