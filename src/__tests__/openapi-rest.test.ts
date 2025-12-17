@@ -1,6 +1,6 @@
-import { env } from "@/env";
 import "dotenv/config";
 import { beforeAll, describe, expect, it } from "vitest";
+import { env } from "@/env";
 
 /**
  * REST API Integration Tests for OpenAPI Endpoint
