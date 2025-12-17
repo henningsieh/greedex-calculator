@@ -282,10 +282,11 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   };
 
   const emissions = calculateEmissions(answers, project.activities);
+  // Adjust step display when car questions are skipped
   const currentStepDisplay =
     currentStep === QUESTIONNAIRE_STEPS.AGE &&
     (!answers.carKm || answers.carKm === 0)
-      ? QUESTIONNAIRE_STEPS.CAR_TYPE // Show as step 12 if we skipped car questions
+      ? QUESTIONNAIRE_STEPS.CAR_TYPE
       : currentStep;
 
   return (

@@ -16,20 +16,30 @@ export function isNonEmptyString(value: string | undefined): boolean {
  * Check if a value is a positive number (greater than 0).
  *
  * @param value - The value to validate
- * @returns true if the value is a number greater than 0
+ * @returns true if the value is a finite number greater than 0
  */
 export function isPositiveNumber(value: unknown): boolean {
-  return typeof value === "number" && value > 0;
+  return (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    !Number.isNaN(value) &&
+    value > 0
+  );
 }
 
 /**
  * Check if a value is a non-negative number (greater than or equal to 0).
  *
  * @param value - The value to validate
- * @returns true if the value is a number >= 0
+ * @returns true if the value is a finite number >= 0
  */
 export function isNonNegativeNumber(value: unknown): boolean {
-  return typeof value === "number" && value >= 0;
+  return (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    !Number.isNaN(value) &&
+    value >= 0
+  );
 }
 
 /**
@@ -37,10 +47,15 @@ export function isNonNegativeNumber(value: unknown): boolean {
  *
  * @param value - The value to validate
  * @param min - The minimum allowed value (inclusive)
- * @returns true if the value is a number >= min
+ * @returns true if the value is a finite number >= min
  */
 export function isNumberAtLeast(value: unknown, min: number): boolean {
-  return typeof value === "number" && value >= min;
+  return (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    !Number.isNaN(value) &&
+    value >= min
+  );
 }
 
 /**
