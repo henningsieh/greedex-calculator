@@ -1,7 +1,7 @@
 "use client";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { CalendarDaysIcon, FlagIcon, GlobeIcon, LeafIcon } from "lucide-react";
+import { CalendarDaysIcon, GlobeIcon, LeafIcon } from "lucide-react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { ParticipantsLinkControls } from "@/components/features/participants/participants-link-controls";
 import { ParticipantsList } from "@/components/features/participants/participants-list";
@@ -120,7 +120,7 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
             {/* Consolidated location badge: Flag + localized country name + city */}
             {(() => {
               const countryData = getCountryData(project.country, locale);
-              const Flag = countryData?.Flag;
+              const ProjectCountryFlag = countryData?.Flag;
               const countryName = countryData?.name ?? project.country;
 
               return (
@@ -134,8 +134,8 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
                     </span>
                     {/* <span>{` | `}</span> */}
                     <div className="flex items-center gap-1.5">
-                      {Flag ? (
-                        <FlagIcon className="size-6 shrink-0 rounded-sm" />
+                      {ProjectCountryFlag ? (
+                        <ProjectCountryFlag className="size-6 shrink-0 rounded-sm" />
                       ) : (
                         <GlobeIcon className="h-4 w-4" />
                       )}
