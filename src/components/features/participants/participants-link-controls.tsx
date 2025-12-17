@@ -71,7 +71,7 @@ export function ParticipantsLinkControls({
     const input = inputRef.current;
     if (participationUrl && input) {
       // focus without scrolling the page
-      input.focus?.({ preventScroll: true } as FocusOptions);
+      input.focus?.({ preventScroll: true });
       selectUrlText(input);
     }
   }, [participationUrl, selectUrlText]);
@@ -98,8 +98,10 @@ export function ParticipantsLinkControls({
   }
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(participationUrl);
-    toast.success(t("participation.copySuccess"));
+    navigator.clipboard
+      .writeText(participationUrl)
+      .then(() => toast.success(t("participation.copySuccess")))
+      .catch(() => toast.error("Failed to copy to clipboard"));
   };
 
   return (

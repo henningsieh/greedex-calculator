@@ -15,6 +15,7 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import { toast } from "sonner";
 import { CreateProjectButton } from "@/components/features/projects/create-project-button";
 import { EditProjectForm } from "@/components/features/projects/edit-project-form";
@@ -101,6 +102,7 @@ function parsePathname(pathname: string) {
     section,
     projectId,
     isProjectDetail: section === "projects" && !!projectId,
+    isKnownRoute: section ? section in ORG_ROUTES : false,
   };
 }
 
@@ -192,7 +194,7 @@ function AppBreadcrumbOrgLevel({
           ) : (
             <BreadcrumbItem>
               <BreadcrumbPage className={cn("font-semibold", pageColorClasses)}>
-                {pathname}
+                {pathInfo?.section ?? pathname}
               </BreadcrumbPage>
             </BreadcrumbItem>
           )}
@@ -237,6 +239,8 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
     canDelete,
     isPending: permissionsPending,
   } = useProjectPermissions();
+
+  const [open, setOpen] = useState(false);
 
   const { confirm, ConfirmDialogComponent } = useConfirmDialog();
   const queryClient = useQueryClient();
@@ -328,7 +332,7 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
 
       {/* Action toolbar */}
       <div className="flex items-center gap-2">
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button
               size="sm"
@@ -344,7 +348,10 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
             <DialogHeader>
               <DialogTitle>Edit project</DialogTitle>
             </DialogHeader>
-            <EditProjectForm project={currentProject} onSuccess={() => {}} />
+            <EditProjectForm
+              project={currentProject}
+              onSuccess={() => setOpen(false)}
+            />
           </DialogContent>
         </Dialog>
 

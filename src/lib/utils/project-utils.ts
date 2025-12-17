@@ -73,6 +73,10 @@ export function calculateActivitiesCO2(
         // Use conventional car factor for activities
         activitiesCO2 += distanceKm * CO2_FACTORS.car;
         break;
+      default:
+        // Unknown activity type; skip calculation
+        console.error(`Unknown activity type: ${activity.activityType}`);
+        break;
     }
   }
 

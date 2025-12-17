@@ -1,7 +1,7 @@
 "use client";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Calendar, Globe, Leaf, Users } from "lucide-react";
+import { CalendarDaysIcon, FlagIcon, GlobeIcon, LeafIcon } from "lucide-react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { ParticipantsLinkControls } from "@/components/features/participants/participants-link-controls";
 import { ParticipantsList } from "@/components/features/participants/participants-list";
@@ -98,7 +98,7 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
             <CardTitle className="text-2xl sm:text-3xl">{project.name}</CardTitle>
             <CardDescription>
               <div className="inline-flex items-center gap-3 text-muted-foreground text-sm">
-                <Calendar className="h-4 w-4" />
+                <CalendarDaysIcon className="h-4 w-4" />
                 <span>
                   {format.dateTime(project.startDate, {
                     year: "numeric",
@@ -135,9 +135,9 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
                     {/* <span>{` | `}</span> */}
                     <div className="flex items-center gap-1.5">
                       {Flag ? (
-                        <Flag className="size-6 shrink-0 rounded-sm" />
+                        <FlagIcon className="size-6 shrink-0 rounded-sm" />
                       ) : (
-                        <Globe className="h-4 w-4" />
+                        <GlobeIcon className="h-4 w-4" />
                       )}
                       <span className="truncate font-medium text-muted-foreground text-sm">
                         {countryName}
@@ -156,7 +156,7 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
             {/* Project Duration */}
             <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
               <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                <Calendar className="h-4 w-4" />
+                <CalendarDaysIcon className="h-4 w-4" />
                 {t("statistics.duration")}
               </div>
               <div className="mt-2 font-semibold text-2xl text-foreground">
@@ -169,7 +169,7 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
             {/* Participants Count */}
             <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
               <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                <Users className="h-4 w-4" />
+                <PROJECT_ICONS.participants className="h-4 w-4" />
                 {t("statistics.participants")}
               </div>
               <div className="mt-2 font-semibold text-2xl text-foreground">
@@ -194,7 +194,7 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
             {/* CO2 Emissions by Project Activities */}
             <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
               <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                <Leaf className="h-4 w-4" />
+                <LeafIcon className="h-4 w-4" />
                 {t("statistics.co2-emissions")}
               </div>
               <div className="mt-2 font-semibold text-2xl text-foreground">
@@ -233,7 +233,7 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
             value="participants"
             className="flex items-center justify-center gap-2 rounded-md border bg-card text-foreground shadow-sm data-[state=active]:border-primary data-[state=active]:shadow"
           >
-            <Users className="h-4 w-4" />
+            <PROJECT_ICONS.participants className="h-4 w-4" />
             {t("tabs.participants")}
           </TabsTrigger>
         </TabsList>
