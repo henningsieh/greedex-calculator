@@ -438,7 +438,8 @@
           "modalDescription": "Scan this QR code to access the participation page",
           "linkLabel": "Participation URL",
           "copyClipboard": "Copy participation URL to clipboard"
-        }
+        },
+        "copyFailure": "Failed to copy to clipboard"
       }
     },
     "team": {
@@ -875,5 +876,6 @@
       "signup": "Sign Up",
       "openMenu": "Open Menu"
     }
-  }
+  },
+  "copyFailure": "Failed to copy to clipboard"
 }

@@ -101,7 +101,7 @@ export function ParticipantsLinkControls({
     navigator.clipboard
       .writeText(participationUrl)
       .then(() => toast.success(t("participation.copySuccess")))
-      .catch(() => toast.error("Failed to copy to clipboard"));
+      .catch(() => toast.error(t("copyFailure")));
   };
 
   return (
@@ -191,13 +191,7 @@ export function ParticipantsLinkControls({
           </InputGroup>
 
           {/* Button open link external */}
-          <Button
-            size="icon"
-            variant="secondary"
-            className="sm:w-36"
-            asChild
-            rel={`noopener noreferrer`}
-          >
+          <Button size="icon" variant="secondary" className="sm:w-36" asChild>
             <a
               className="flex items-center gap-2"
               href={participationUrl}

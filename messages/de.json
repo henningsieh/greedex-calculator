@@ -438,7 +438,8 @@
           "modalDescription": "Scanne diesen QR-Code, um auf die Teilnahme-Seite zu gelangen",
           "linkLabel": "Teilnahme-URL",
           "copyClipboard": "Teilnahme-URL in die Zwischenablage kopieren"
-        }
+        },
+        "copyFailure": "Kopieren in die Zwischenablage fehlgeschlagen"
       }
     },
     "team": {
