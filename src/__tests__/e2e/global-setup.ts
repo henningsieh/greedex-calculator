@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { chromium, type FullConfig } from "@playwright/test";
+import { env } from "@/env";
 
 /**
  * Global setup for Playwright tests
@@ -11,7 +12,7 @@ async function globalSetup(config: FullConfig) {
   const page = await browser.newPage();
 
   try {
-    const baseURL = config.projects[0].use?.baseURL || "http://localhost:3000";
+    const baseURL = config.projects[0].use.baseURL || env.NEXT_PUBLIC_BASE_URL;
     await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
     console.log("✅ Server is running and accessible");
   } catch (error) {

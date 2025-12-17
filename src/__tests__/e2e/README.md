@@ -10,7 +10,7 @@ E2E tests are located at `src/__tests__/e2e/` following the colocated testing pa
 
 - Bun runtime installed
 - PostgreSQL database running and configured
-- Application dev server running on `http://localhost:3000`
+- Application dev server running on your configured `NEXT_PUBLIC_BASE_URL`
 
 ## Running E2E Tests
 

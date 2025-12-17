@@ -1,4 +1,6 @@
+import "dotenv/config";
 import { defineConfig, devices } from "@playwright/test";
+import { env } from "@/env";
 
 /**
  * Playwright configuration for end-to-end tests
@@ -6,18 +8,18 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   testDir: "./src/__tests__/e2e",
-  fullyParallel: true,
+  fullyParallel: false, // Sequential execution to prevent database conflicts
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 2 : 1, // Retry once locally for robustness
+  workers: 1, // Always use 1 worker to prevent database race conditions
   reporter: [["html", { outputFolder: "src/__tests__/e2e/.playwright/report" }]],
   outputDir: "src/__tests__/e2e/.playwright/results",
   globalSetup: "./src/__tests__/e2e/global-setup.ts",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: env.NEXT_PUBLIC_BASE_URL,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
-    headless: false,
+    headless: true,
     video: "retain-on-failure",
   },
 
@@ -31,7 +33,7 @@ export default defineConfig({
   // Run local dev server before starting tests
   webServer: {
     command: "bun run dev",
-    url: "http://localhost:3000",
+    url: env.NEXT_PUBLIC_BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
