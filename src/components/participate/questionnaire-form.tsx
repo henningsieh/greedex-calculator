@@ -29,6 +29,13 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import {
+  areAllNonEmpty,
+  isNonNegativeNumber,
+  isNumberAtLeast,
+  isPositiveNumber,
+  isTruthy,
+} from "@/lib/utils/form-validation-utils";
 
 interface QuestionnaireFormProps {
   project: Project;
@@ -242,41 +249,39 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       case 0:
         return true; // Welcome
       case 1:
-        return (
-          !!answers.firstName?.trim() &&
-          !!answers.country?.trim() &&
-          !!answers.email?.trim()
+        return areAllNonEmpty(
+          answers.firstName,
+          answers.country,
+          answers.email,
         );
       case 2:
-        return typeof answers.days === "number" && answers.days > 0;
+        return isPositiveNumber(answers.days);
       case 3:
-        return !!answers.accommodationCategory;
+        return isTruthy(answers.accommodationCategory);
       case 4:
-        return !!answers.roomOccupancy;
+        return isTruthy(answers.roomOccupancy);
       case 5:
-        return !!answers.electricity;
+        return isTruthy(answers.electricity);
       case 6:
-        return !!answers.food;
+        return isTruthy(answers.food);
       case 7:
-        return typeof answers.flightKm === "number" && answers.flightKm >= 0;
+        return isNonNegativeNumber(answers.flightKm);
       case 8:
-        return typeof answers.boatKm === "number" && answers.boatKm >= 0;
+        return isNonNegativeNumber(answers.boatKm);
       case 9:
-        return typeof answers.trainKm === "number" && answers.trainKm >= 0;
+        return isNonNegativeNumber(answers.trainKm);
       case 10:
-        return typeof answers.busKm === "number" && answers.busKm >= 0;
+        return isNonNegativeNumber(answers.busKm);
       case 11:
-        return typeof answers.carKm === "number" && answers.carKm >= 0;
+        return isNonNegativeNumber(answers.carKm);
       case 12:
-        return !!answers.carType;
+        return isTruthy(answers.carType);
       case 13:
-        return (
-          typeof answers.carPassengers === "number" && answers.carPassengers >= 1
-        );
+        return isNumberAtLeast(answers.carPassengers, 1);
       case 14:
-        return typeof answers.age === "number" && answers.age > 0;
+        return isPositiveNumber(answers.age);
       case 15:
-        return !!answers.gender;
+        return isTruthy(answers.gender);
       default:
         return false;
     }
