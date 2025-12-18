@@ -85,14 +85,14 @@ export const LandingHeader = () => {
 
               {/* Mobile burger menu */}
               <div className="flex items-center gap-2 lg:hidden">
-                <ThemeSwitcher />
-                <LocaleSwitcher className="rounded-md has-[>svg]:px-2" />
+                <ThemeSwitcher className="rounded-md" />
+                <LocaleSwitcher className="h-8 rounded-md has-[>svg]:px-2" />
                 <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
                   <DropdownMenuTrigger asChild>
                     <Button
                       size="lg"
                       aria-label={t("navigation.openMenu")}
-                      className="relative z-20 block h-10 cursor-pointer p-1.5 lg:hidden"
+                      className="relative z-20 block h-8 cursor-pointer items-center bg-accent ring-1 ring-primary lg:hidden"
                     >
                       <MenuIcon
                         className={`m-auto size-6 duration-500 ${
