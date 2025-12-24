@@ -22,8 +22,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 // Skip if DATABASE_URL is not configured properly
 const DATABASE_URL = process.env.DATABASE_URL;
 const shouldRunTests =
-  DATABASE_URL &&
-  DATABASE_URL.includes("sslmode=require") &&
+  DATABASE_URL?.includes("sslmode=require") &&
   DATABASE_URL.includes("uselibpqcompat=true");
 
 describe.skipIf(!shouldRunTests)("Database SSL Connection", () => {

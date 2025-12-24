@@ -1,13 +1,16 @@
 ---
-id: ssr
-title: Server Rendering & Hydration
+applyTo: '**'
+url: https://tanstack.com/query/v5/docs/framework/react/guides/ssr
+description: Learn how to use React Query with server rendering and hydration.
 ---
+
+# Server Rendering & Hydration
 
 In this guide you'll learn how to use React Query with server rendering.
 
-See the guide on [Prefetching & Router Integration](../prefetching.md) for some background. You might also want to check out the [Performance & Request Waterfalls guide](../request-waterfalls.md) before that.
+See the guide on [Prefetching & Router Integration](./prefetching.md) for some background. You might also want to check out the [Performance & Request Waterfalls guide](./request-waterfalls.md) before that.
 
-For advanced server rendering patterns, such as streaming, Server Components and the new Next.js app router, see the [Advanced Server Rendering guide](../advanced-ssr.md).
+For advanced server rendering patterns, such as streaming, Server Components and the new Next.js app router, see the [Advanced Server Rendering guide](./advanced-ssr.md).
 
 If you just want to see some code, you can skip ahead to the [Full Next.js pages router example](#full-nextjs-pages-router-example) or the [Full Remix example](#full-remix-example) below.
 
@@ -21,7 +24,7 @@ For this repository we use oRPC with an SSR-aware client split to avoid the serv
 - `src/lib/orpc/orpc.ts` — exports `orpc` which uses the server client during SSR (`globalThis.$client`) and falls back to `createORPCClient(RPCLink)` in the browser.
 - `src/app/layout.tsx` & `src/instrumentation.ts` import `client.server.ts` to initialize the server-side client during SSR.
 
-This ensures Type-safe, in-process procedure calls during SSR and efficient RPCLink usage in the browser.
+This ensures type-safe, in-process procedure calls during SSR and efficient RPCLink usage in the browser.
 
 Examples:
 
@@ -218,11 +221,11 @@ With just a little more setup, you can use a `queryClient` to prefetch queries d
 
 > An interesting detail is that there are actually _three_ `queryClient`s involved. The framework loaders are a form of "preloading" phase that happens before rendering, and this phase has its own `queryClient` that does the prefetching. The dehydrated result of this phase gets passed to **both** the server rendering process **and** the client rendering process which each has its own `queryClient`. This ensures they both start with the same data so they can return the same markup.
 
-> Server Components are another form of "preloading" phase, that can also "preload" (pre-render) parts of a React component tree. Read more in the [Advanced Server Rendering guide](../advanced-ssr.md).
+> Server Components are another form of "preloading" phase, that can also "preload" (pre-render) parts of a React component tree. Read more in the [Advanced Server Rendering guide](./advanced-ssr.md).
 
 ### Full Next.js pages router example
 
-> For app router documentation, see the [Advanced Server Rendering guide](../advanced-ssr.md).
+> For app router documentation, see the [Advanced Server Rendering guide](./advanced-ssr.md).
 
 Initial setup:
 
@@ -589,7 +592,7 @@ On the server, `gcTime` defaults to `Infinity` which disables manual garbage col
 
 Avoid setting `gcTime` to `0` as it may result in a hydration error. This occurs because the [Hydration Boundary](../../reference/hydration.md#hydrationboundary) places necessary data into the cache for rendering, but if the garbage collector removes the data before the rendering completes, issues may arise. If you require a shorter `gcTime`, we recommend setting it to `2 * 1000` to allow sufficient time for the app to reference the data.
 
-To clear the cache after it is not needed and to lower memory consumption, you can add a call to [`queryClient.clear()`](../../../../reference/QueryClient.md#queryclientclear) after the request is handled and dehydrated state has been sent to the client.
+To clear the cache after it is not needed and to lower memory consumption, you can add a call to [`queryClient.clear()`](https://tanstack.com/query/v5/docs/reference/QueryClient.md) after the request is handled and dehydrated state has been sent to the client.
 
 Alternatively, you can set a smaller `gcTime`.
 

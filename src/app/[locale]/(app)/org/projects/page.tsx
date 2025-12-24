@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ProjectsTab } from "@/components/features/projects/dashboard/projects-tab";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient } from "@/lib/react-query/hydration";
+import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
 
 export default async function ProjectsPage() {
   const t = await getTranslations("organization.projects");

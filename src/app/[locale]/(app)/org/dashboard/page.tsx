@@ -6,7 +6,7 @@ import { memberRoles } from "@/components/features/organizations/types";
 import { DEFAULT_PROJECT_SORTING_FIELD } from "@/components/features/projects/types";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient } from "@/lib/react-query/hydration";
+import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
 export default async function DashboardPage() {
   const t = await getTranslations("organization.dashboard");
   const queryClient = getQueryClient();

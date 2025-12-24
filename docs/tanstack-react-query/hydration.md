@@ -1,7 +1,10 @@
 ---
-id: hydration
-title: hydration
+applyTo: '**'
+url: https://tanstack.com/query/v5/docs/framework/react/reference/hydration
+description: API reference for dehydrate, hydrate, and HydrationBoundary utilities for server-side rendering.
 ---
+
+# Hydration
 
 ## `dehydrate`
 

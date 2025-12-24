@@ -18,7 +18,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/config/AppRoutes";
 import { redirect } from "@/lib/i18n/routing";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient, HydrateClient } from "@/lib/react-query/hydration";
+import {
+  getQueryClient,
+  HydrateClient,
+} from "@/lib/tanstack-react-query/hydration";
 import { cn } from "@/lib/utils";
 import {
   checkAuthAndOrgs,
