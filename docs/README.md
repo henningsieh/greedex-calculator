@@ -58,6 +58,14 @@
 - [shadcn-ui.data-table.md](shadcn/shadcn-ui.data-table.md)
 - [shadcn-ui.new-field.documentation.md](shadcn/shadcn-ui.new-field.documentation.md)
 - [shadcn.empty.component.md](shadcn/shadcn.empty.component.md)
+
+### tanstack-query/
+- [Advanced Server Rendering](tanstack-query/advanced-ssr.md)
+- [Server Rendering & Hydration](tanstack-query/ssr.md)
+- [Performance & Request Waterfalls](tanstack-query/request-waterfalls.md)
+- [Prefetching & Router Integration](tanstack-query/prefetching.md)
+- [Hydration API Reference](tanstack-query/hydration.md)
+
 ### participate/
 - [flow.md](participate/flow.md)
 - [emissions-calculations.md](participate/emissions-calculations.md)

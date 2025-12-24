@@ -8,7 +8,7 @@ import {
   ProjectTabs,
 } from "@/components/features/projects/project-tabs";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient } from "@/lib/react-query/hydration";
+import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
 
 /**
  * Render the project details tabs for a given project while ensuring server-side query data for the project, its participants, and activities is prefetched into the React Query cache.

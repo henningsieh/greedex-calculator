@@ -23,7 +23,7 @@ export function createQueryClient() {
             meta,
           });
         },
-        staleTime: 60 * 1000, // > 0 to prevent immediate refetching on mount
+        staleTime: 60 * 1000, // With SSR, > 0 to prevent immediate refetching on client mount
       },
       dehydrate: {
         shouldDehydrateQuery: (query) =>
