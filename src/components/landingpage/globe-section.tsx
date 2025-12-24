@@ -66,7 +66,7 @@ export function GlobeSection() {
                 environmental sustainability and green initiatives.
               </p>
 
-              <div className="grid gap-6 pt-4 sm:grid-cols-2">
+              <div className="grid grid-cols-2 gap-6 pt-4">
                 <div className="space-y-2">
                   <div className="font-bold text-4xl text-primary">
                     {EU_MEMBER_COUNT}
@@ -103,13 +103,13 @@ export function GlobeSection() {
                   return (
                     <span
                       key={countryCode}
-                      className="rounded-full border border-border bg-muted/50 px-3 py-1 text-xs"
+                      className="rounded-full border border-primary/90 bg-muted px-3 py-1 text-xs dark:bg-muted/20"
                     >
                       {city.name}
                     </span>
                   );
                 })}
-                <span className="rounded-full border border-primary/50 bg-primary/10 px-3 py-1 font-semibold text-primary text-xs">
+                <span className="rounded-full border border-primary/90 bg-primary/30 px-3 py-1 font-semibold text-primary-foreground/50 text-xs">
                   +{EU_MEMBER_COUNT - 8} more
                 </span>
               </div>
@@ -127,7 +127,7 @@ export function GlobeSection() {
                   cities={EU_CAPITAL_CITIES}
                   width={800}
                   height={800}
-                  phi={4.5}
+                  phi={4}
                   theta={0.6}
                   mapSamples={44000}
                   mapBrightness={3}

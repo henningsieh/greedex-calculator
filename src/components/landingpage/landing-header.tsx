@@ -70,7 +70,7 @@ export const LandingHeader = () => {
           className={cn(
             "mx-auto mt-2 max-w-7xl px-4 transition-all duration-300 ease-in-out sm:px-6 lg:px-12",
             isScrolled &&
-              "max-w-6xl rounded-2xl border bg-background/80 backdrop-blur-lg lg:px-8",
+              "max-w-6xl rounded-2xl border bg-background/40 backdrop-blur-lg lg:px-8",
           )}
         >
           <div className="relative flex flex-wrap items-center justify-between gap-4 py-3 lg:flex-nowrap lg:gap-6 lg:py-4">
@@ -109,7 +109,7 @@ export const LandingHeader = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
-                    className="rounded-3xl border bg-background p-4 shadow-2xl shadow-zinc-300/20"
+                    className="border bg-background p-4 shadow-2xl shadow-zinc-300/20"
                     align="end"
                   >
                     <ul className="space-y-6 text-base">
@@ -127,21 +127,10 @@ export const LandingHeader = () => {
                     <DropdownMenuSeparator />
                     <div className="flex w-full items-center justify-end gap-3">
                       <div
-                        className={cn(
-                          "relative h-8 overflow-hidden transition-[max-width] duration-300 ease-in-out",
-                          isScrolled ? "max-w-0" : "max-w-[7.5rem]",
-                        )}
+                        className={cn("relative h-8 overflow-hidden")}
                         aria-hidden={isScrolled}
                       >
-                        <Button
-                          asChild
-                          variant="outline"
-                          size="sm"
-                          className={cn(
-                            "transition-opacity ease-in-out",
-                            isScrolled ? "opacity-0" : "opacity-100",
-                          )}
-                        >
+                        <Button asChild variant="outline" size="sm">
                           <Link href={LOGIN_PATH}>
                             <span>{t("navigation.login")}</span>
                           </Link>
