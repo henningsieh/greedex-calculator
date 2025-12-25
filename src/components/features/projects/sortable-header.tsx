@@ -17,6 +17,26 @@ interface SortableHeaderProps<TData, TValue> {
   className?: string;
 }
 
+const getSortIcon = (state: "asc" | "desc" | false, numeric: boolean) => {
+  if (state === "asc") {
+    return numeric ? (
+      <ArrowUp01 className="ml-2 h-4 w-4 text-primary" />
+    ) : (
+      <ArrowUpAZIcon className="ml-2 h-4 w-4 text-primary" />
+    );
+  }
+
+  if (state === "desc") {
+    return numeric ? (
+      <ArrowDown10 className="ml-2 h-4 w-4 text-primary" />
+    ) : (
+      <ArrowDownZAIcon className="ml-2 h-4 w-4 text-primary" />
+    );
+  }
+
+  return <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />;
+};
+
 export function SortableHeader<TData, TValue>({
   column,
   table,
@@ -31,26 +51,6 @@ export function SortableHeader<TData, TValue>({
   if (currentSort) {
     sortState = currentSort.desc ? "desc" : "asc";
   }
-
-  const getSortIcon = (state: "asc" | "desc" | false, numeric: boolean) => {
-    if (state === "asc") {
-      return numeric ? (
-        <ArrowUp01 className="ml-2 h-4 w-4 text-primary" />
-      ) : (
-        <ArrowUpAZIcon className="ml-2 h-4 w-4 text-primary" />
-      );
-    }
-
-    if (state === "desc") {
-      return numeric ? (
-        <ArrowDown10 className="ml-2 h-4 w-4 text-primary" />
-      ) : (
-        <ArrowDownZAIcon className="ml-2 h-4 w-4 text-primary" />
-      );
-    }
-
-    return <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />;
-  };
 
   // Compute accessible sort state
   let sortDirection: "ascending" | "descending" | "none";

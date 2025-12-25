@@ -107,9 +107,19 @@ export const searchMembers = authorized
         })
       : allMembers;
 
+    // Deduplicate members by id first
+    const seen = new Set<string>();
+    const uniqueFiltered = filteredMembers.filter((member) => {
+      if (seen.has(member.id)) {
+        return false;
+      }
+      seen.add(member.id);
+      return true;
+    });
+
     // Sorting
     const sortedMembers = sortBy
-      ? [...filteredMembers].sort((a, b) => {
+      ? [...uniqueFiltered].sort((a, b) => {
           const dir = sortDirection === "asc" ? 1 : -1;
           const aKey = getSortKey(a, sortBy);
           const bKey = getSortKey(b, sortBy);
@@ -121,22 +131,16 @@ export const searchMembers = authorized
           }
           return 0;
         })
-      : [...filteredMembers].sort((a, b) => {
-          const aTime = new Date(a.createdAt).getTime();
-          const bTime = new Date(b.createdAt).getTime();
-          const aVal = Number.isNaN(aTime) ? 0 : aTime;
-          const bVal = Number.isNaN(bTime) ? 0 : bTime;
+      : [...uniqueFiltered].sort((a, b) => {
+          const aVal = getSortKey(a, "createdAt") as number;
+          const bVal = getSortKey(b, "createdAt") as number;
           return bVal - aVal; // desc
         });
-    const uniqueMembers = sortedMembers.filter(
-      (member, index, self) =>
-        index === self.findIndex((m) => m.id === member.id),
-    );
 
     // Apply pagination
-    const paged = uniqueMembers.slice(offset, offset + limit);
+    const paged = sortedMembers.slice(offset, offset + limit);
     return {
       members: paged,
-      total: uniqueMembers.length,
+      total: sortedMembers.length,
     };
   });

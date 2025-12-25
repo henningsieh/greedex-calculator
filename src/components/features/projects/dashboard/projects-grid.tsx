@@ -56,6 +56,17 @@ export function ProjectsGrid({
       const aValue = a[sortBy as keyof ProjectType];
       const bValue = b[sortBy as keyof ProjectType];
 
+      // Handle null/undefined - push them to the end
+      if (aValue == null && bValue == null) {
+        return 0;
+      }
+      if (aValue == null) {
+        return sortDesc ? -1 : 1;
+      }
+      if (bValue == null) {
+        return sortDesc ? 1 : -1;
+      }
+
       let result = 0;
       if (aValue instanceof Date && bValue instanceof Date) {
         result = aValue.getTime() - bValue.getTime();
