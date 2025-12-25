@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Internationalization (i18n) documentation index and overview
+---
+
 # Internationalization (i18n) Documentation
 
 This folder contains documentation for internationalization features in the application.

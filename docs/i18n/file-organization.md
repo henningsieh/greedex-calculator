@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: i18n and country configuration file organization and relationships
+---
+
 # i18n and Country Configuration File Organization
 
 This document clarifies the purpose and relationship between the various configuration and utility files.

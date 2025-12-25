@@ -1,3 +1,10 @@
+=======
+---
+applyTo: '**'
+url: https://ultracite.dev/docs/usage
+description: Ultracite usage guide and CLI commands
+---
+
 # Usage
 
 

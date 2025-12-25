@@ -1,12 +1,10 @@
+---
+applyTo: '**'
+url: https://www.better-auth.com/llms.txt/docs/reference/options
+description: Better Auth configuration options reference
+---
+
 # Options
-
-Better Auth configuration options reference.
-
-***
-
-title: Options
-description: Better Auth configuration options reference.
----------------------------------------------------------
 
 List of all the available options for configuring Better Auth. See [Better Auth Options](https://github.com/better-auth/better-auth/blob/main/packages/core/src/types/init-options.ts).
 

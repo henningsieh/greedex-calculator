@@ -64,7 +64,12 @@ The server-side oRPC client is initialized in `src/instrumentation.ts` and attac
 
 All docs are in `docs/` — the README at `docs/README.md` has the full TOC.
 
+**⚠️ CRITICAL**: This repository contains **comprehensive, extensive documentation** for EVERY library and feature in `/docs/`. Always consult these detailed guides before making changes or asking questions.
+
 ### Integration Instructions (`.github/instructions/`)
+
+**Quick reference guides** that point to comprehensive documentation in `/docs/`:
+
 | File | Purpose |
 |------|---------|
 | `orpc.instructions.md` | oRPC procedures, routers, adapters, and TanStack Query integration |
@@ -72,7 +77,10 @@ All docs are in `docs/` — the README at `docs/README.md` has the full TOC.
 | `i18n.instructions.md` | next-intl setup |
 | `shadcn.instructions.md` | UI component patterns |
 
-### Key Documentation Files
+### Key Documentation Files (ALL in `/docs/`)
+
+**Every library has comprehensive documentation** - always read the relevant docs before implementing features:
+
 | Topic | File |
 |-------|------|
 | oRPC SSR optimization | `docs/orpc/orpc.Optimize-Server-Side-Rendering.SSR.md` |
@@ -84,6 +92,23 @@ All docs are in `docs/` — the README at `docs/README.md` has the full TOC.
 | Organizations | `docs/better-auth/better-auth.organizations.md` |
 | Permissions design | `docs/permissions/README.md` |
 | Questionnaire flows | `docs/participate/` |
+| i18n with next-intl | `docs/i18n/next-intl.internationalization.md` |
+| Country selection | `docs/i18n/Country-Selection-Utils.md` |
+| Shadcn UI components | `docs/shadcn/` |
+| React Email | `docs/react-email/` |
+| Ultracite linting | `docs/ultracite/` |
+
+**Documentation Coverage:**
+- Better Auth → `/docs/better-auth/` (4 files)
+- i18n → `/docs/i18n/` (6 files)
+- oRPC → `/docs/orpc/` (17 files)
+- TanStack Query → `/docs/tanstack-query/` (5 files)
+- Shadcn UI → `/docs/shadcn/` (3 files)
+- React Email → `/docs/react-email/` (4 files)
+- Permissions → `/docs/permissions/` (1 file)
+- Questionnaire → `/docs/participate/` (5 files)
+- Ultracite → `/docs/ultracite/` (3 files)
+- Database → `/docs/database/` (1 file)
 
 ---
 

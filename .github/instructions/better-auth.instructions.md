@@ -1,14 +1,26 @@
 ---
-applyTo: "**"
+applyTo: '**/*.{ts,tsx,js,jsx}'
+description: Better Auth configuration, authentication, and oRPC SSR integration patterns
 ---
 
-# Better-Auth documentation
+# Better-Auth Instructions
 
-fetch the latest documentation from this URL: https://www.better-auth.com/llms.txt
+## Comprehensive Documentation
 
-You will find further instructions there on how to set up Better-Auth with Google OAuth and other providers.
+**⚠️ CRITICAL**: This repository contains extensive Better Auth documentation in `/docs/better-auth/`. **Always consult these comprehensive guides first** for detailed configuration options, integration patterns, and examples:
 
-Some additional instructions for integrating Better Auth with oRPC can be found in `/docs/orpc/orpc.better-auth.md`.
+- **Options & Configuration**: [docs/better-auth/better-auth.options.md](../../docs/better-auth/better-auth.options.md) - Complete reference for all Better Auth configuration options
+- **Organizations**: [docs/better-auth/better-auth.organizations.md](../../docs/better-auth/better-auth.organizations.md) - Organization features and permissions
+- **Credentials (Email/Password)**: [docs/better-auth/better-auth.credentials.email_password.md](../../docs/better-auth/better-auth.credentials.email_password.md) - Email/password authentication setup
+- **LastLoginMethod Utility**: [docs/better-auth/better-auth.utility.LastLoginMethod.md](../../docs/better-auth/better-auth.utility.LastLoginMethod.md) - Track user login methods
+
+For oRPC integration patterns, see [docs/orpc/orpc.better-auth.md](../../docs/orpc/orpc.better-auth.md).
+
+### Official Better Auth Resources
+
+For the latest upstream documentation:
+- Official docs: https://www.better-auth.com/llms.txt
+- Google OAuth and other providers setup instructions available there
 
 ---
 

@@ -1,3 +1,9 @@
+---
+applyTo: '**'
+url: https://ultracite.dev/docs/configuration
+description: Ultracite configuration options and customization
+---
+
 # Configuration
 
 

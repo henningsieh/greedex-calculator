@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Emissions calculations formulas and logic for the Greendex questionnaire
+---
+
 # Emissions Calculations — Greendex Questionnaire
 
 This document contains all numeric factors, formulas, example calculations, and how emissions are displayed during and after the questionnaire.

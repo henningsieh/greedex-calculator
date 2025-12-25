@@ -1,6 +1,10 @@
+---
+applyTo: '**'
+url: https://ultracite.dev/docs/setup
+description: Ultracite installation and setup guide
+---
+
 # Setup
-
-
 
 Ultracite can be installed with all major package managers. You'll need Node.js v14.18+ (Node 18+ recommended) and a project with a `package.json` file.
 

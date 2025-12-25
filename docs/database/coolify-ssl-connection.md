@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Configure SSL connections to PostgreSQL databases hosted on Coolify
+---
+
 # Database SSL Connection with Coolify
 
 This document explains how to configure SSL connections to PostgreSQL databases hosted on Coolify.

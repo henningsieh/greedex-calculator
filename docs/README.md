@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Comprehensive documentation index for all libraries and features in the project
+---
+
 # Documentation Index
 
 ## All Files in docs/

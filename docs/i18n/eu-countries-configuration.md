@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Centralized EU countries configuration - single source of truth for member states, capitals, and coordinates
+---
+
 # EU Countries Configuration
 
 This document describes the centralized EU countries configuration system that serves as the single source of truth for EU member states, their capitals, and coordinates.

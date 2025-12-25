@@ -1,12 +1,10 @@
+---
+applyTo: '**'
+url: https://www.better-auth.com/llms.txt/docs/plugins/organization
+description: Organization plugin for managing members, teams, roles, and permissions
+---
+
 # Organization
-
-The organization plugin allows you to manage your organization's members and teams.
-
-***
-
-title: Organization
-description: The organization plugin allows you to manage your organization's members and teams.
-------------------------------------------------------------------------------------------------
 
 Organizations simplifies user access and permissions management. Assign roles and permissions to streamline project management, team coordination, and partnerships.
 
