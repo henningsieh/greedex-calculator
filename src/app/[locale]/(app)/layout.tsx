@@ -15,7 +15,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/config/AppRoutes";
+import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/config/app-routes";
 import { redirect } from "@/lib/i18n/routing";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import {
@@ -52,7 +52,8 @@ export default async function AppLayout({
     });
   }
 
-  const sidebarisOpen = (await cookies()).get("sidebar_state")?.value === "true";
+  const sidebarStateIsOpen =
+    (await cookies()).get("sidebar_state")?.value === "true";
 
   // Prefetch all data needed by client components that use useSuspenseQuery.
   // Using await ensures data is in cache BEFORE dehydration, preventing hydration mismatches.
@@ -75,8 +76,8 @@ export default async function AppLayout({
         <Navbar />
         <LoadingProvider>
           <SidebarProvider
-            defaultOpen={sidebarisOpen}
             className="min-h-[calc(svh-4rem)]"
+            defaultOpen={sidebarStateIsOpen}
           >
             <ErrorBoundary fallback={<div>Failed to load sidebar.</div>}>
               <Suspense fallback={<AppSidebarSkeleton />}>
@@ -108,7 +109,7 @@ export default async function AppLayout({
           </SidebarProvider>
         </LoadingProvider>
 
-        <Toaster richColors position="top-right" />
+        <Toaster position="top-right" richColors />
       </div>
     </HydrateClient>
   );

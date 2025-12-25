@@ -1,6 +1,9 @@
 import type { InferSelectModel } from "drizzle-orm";
 import type { z } from "zod";
-import type { projectActivitiesTable, projectsTable } from "@/lib/drizzle/schema";
+import type {
+  projectActivitiesTable,
+  projectsTable,
+} from "@/lib/drizzle/schema";
 import type {
   ProjectWithActivitiesSchema,
   ProjectWithRelationsSchema,
@@ -14,7 +17,9 @@ import type {
 export type ProjectType = InferSelectModel<typeof projectsTable>;
 
 // Type inferred from schema with relations (user, organization)
-export type ProjectWithRelationsType = z.infer<typeof ProjectWithRelationsSchema>;
+export type ProjectWithRelationsType = z.infer<
+  typeof ProjectWithRelationsSchema
+>;
 
 // Type inferred from schema with relations and activities
 export type ProjectWithActivitiesType = z.infer<
@@ -45,7 +50,9 @@ export const activityValues = ["boat", "bus", "train", "car"] as const;
 export type ActivityValueType = (typeof activityValues)[number];
 
 // Type inferred from DB schema
-export type ProjectActivityType = InferSelectModel<typeof projectActivitiesTable>;
+export type ProjectActivityType = InferSelectModel<
+  typeof projectActivitiesTable
+>;
 
 // ============================================================================
 // DISTANCE CONSTANTS

@@ -5,7 +5,7 @@ import { routing } from "./lib/i18n/routing";
 
 const nextIntlMiddleware = createMiddleware(routing);
 
-export async function proxy(request: NextRequest): Promise<NextResponse> {
+export function proxy(request: NextRequest): NextResponse {
   const pathname = request.nextUrl.pathname;
   const search = request.nextUrl.search;
   const segments = pathname.split("/");

@@ -53,7 +53,7 @@ export function OrganizationSwitcher() {
 
   const { isMobile, state } = useSidebar();
 
-  if (!session || !activeOrganization || !organizations) {
+  if (!(session && activeOrganization && organizations)) {
     return null;
   }
 
@@ -63,12 +63,12 @@ export function OrganizationSwitcher() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
-              size="lg"
               className={cn(
                 "border border-sidebar-accent/60 ring-sidebar-accent",
                 "hover:bg-sidebar-primary/40 hover:text-sidebar-foreground",
                 "data-[state=open]:bg-sidebar-primary/30 data-[state=open]:text-sidebar-foreground/60",
               )}
+              size="lg"
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary">
                 <Building2Icon className="size-4 text-primary-foreground" />
@@ -80,12 +80,12 @@ export function OrganizationSwitcher() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
+            align="end"
             className={cn(
               "border border-sidebar-accent/50 bg-background/80 backdrop-blur-md",
               state === "expanded" && "w-(--radix-dropdown-menu-trigger-width)",
               state === "collapsed" && "w-72",
             )}
-            align="end"
             side={isMobile ? undefined : "right"}
             sideOffset={4}
           >
@@ -135,9 +135,9 @@ export function OrganizationSwitcher() {
               label="Add Organization"
               triggerNode={
                 <DropdownMenuItem
-                  variant="default"
                   className="flex justify-center"
                   onSelect={(e) => e.preventDefault()}
+                  variant="default"
                 >
                   <PlusIcon className="size-4" />
                   Add Organization

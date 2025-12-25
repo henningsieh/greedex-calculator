@@ -1,9 +1,31 @@
 import { z } from "zod";
-import { memberRoles } from "@/components/features/organizations/types";
+import {
+  memberRoles,
+  type SortField,
+  validSortFields,
+} from "@/components/features/organizations/types";
 import { MemberWithUserSchema } from "@/components/features/organizations/validation-schemas";
 import { auth } from "@/lib/better-auth";
 import { base } from "@/lib/orpc/context";
 import { authorized } from "@/lib/orpc/middleware";
+
+function getSortKey(
+  member: z.infer<typeof MemberWithUserSchema>,
+  sortBy: SortField,
+): string | number {
+  if (sortBy === "createdAt") {
+    const time = new Date(member.createdAt).getTime();
+    return Number.isNaN(time) ? 0 : time;
+  }
+  if (sortBy === "user.name") {
+    return (member.user?.name || "").toLowerCase();
+  }
+  if (sortBy === "email") {
+    return (member.user?.email || "").toLowerCase();
+  }
+  // This should never happen due to the enum constraint, but TypeScript requires it
+  throw new Error(`Invalid sortBy field: ${sortBy}`);
+}
 
 /**
  * List user's organizations using Better Auth
@@ -38,7 +60,7 @@ export const searchMembers = authorized
           // Simple search string to match against user name or email
           search: z.string().optional(),
           // Sorting: a field name (e.g. "createdAt" | "user.name" | "email")
-          sortBy: z.string().optional(),
+          sortBy: z.enum(validSortFields).optional(),
           sortDirection: z.enum(["asc", "desc"]).optional(),
           // limit/offset for pagination
           limit: z.number().optional(),
@@ -56,7 +78,7 @@ export const searchMembers = authorized
   .handler(async ({ context, input }) => {
     const { organizationId, filters } = input;
 
-    const allMembers = [];
+    const allMembers: Array<z.infer<typeof MemberWithUserSchema>> = [];
     // Ensure filters exist and default values
     const roles = filters?.roles || [];
     const search = filters?.search || undefined;
@@ -90,28 +112,40 @@ export const searchMembers = authorized
         })
       : allMembers;
 
+    // Deduplicate members by id first
+    const seen = new Set<string>();
+    const uniqueFiltered = filteredMembers.filter((member) => {
+      if (seen.has(member.id)) {
+        return false;
+      }
+      seen.add(member.id);
+      return true;
+    });
+
     // Sorting
     const sortedMembers = sortBy
-      ? filteredMembers.sort((a, b) => {
+      ? [...uniqueFiltered].sort((a, b) => {
           const dir = sortDirection === "asc" ? 1 : -1;
-          const aVal = sortBy === "createdAt" ? a.createdAt : a.user?.name || "";
-          const bVal = sortBy === "createdAt" ? b.createdAt : b.user?.name || "";
-          if (aVal < bVal) return -1 * dir;
-          if (aVal > bVal) return 1 * dir;
+          const aKey = getSortKey(a, sortBy);
+          const bKey = getSortKey(b, sortBy);
+          if (aKey < bKey) {
+            return -1 * dir;
+          }
+          if (aKey > bKey) {
+            return 1 * dir;
+          }
           return 0;
         })
-      : filteredMembers.sort((a, b) =>
-          new Date(b.createdAt) > new Date(a.createdAt) ? 1 : -1,
-        );
-    const uniqueMembers = sortedMembers.filter(
-      (member, index, self) =>
-        index === self.findIndex((m) => m.id === member.id),
-    );
+      : [...uniqueFiltered].sort((a, b) => {
+          const aVal = getSortKey(a, "createdAt") as number;
+          const bVal = getSortKey(b, "createdAt") as number;
+          return bVal - aVal; // desc
+        });
 
     // Apply pagination
-    const paged = uniqueMembers.slice(offset, offset + limit);
+    const paged = sortedMembers.slice(offset, offset + limit);
     return {
       members: paged,
-      total: uniqueMembers.length,
+      total: sortedMembers.length,
     };
   });

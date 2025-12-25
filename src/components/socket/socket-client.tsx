@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { io, type Socket } from "socket.io-client";
+import { Empty, EmptyTitle } from "@/components/ui/empty";
 
 interface Message {
+  id: string;
   text: string;
   timestamp: string;
   type?: "message" | "ping";
@@ -85,20 +87,22 @@ export default function SocketClient({ socketUrl }: Props) {
         {/* Message Input */}
         <div className="mb-6 flex gap-2">
           <input
-            type="text"
-            value={inputMessage}
+            className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 dark:border-gray-700 dark:bg-gray-800"
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") sendMessage();
+              if (e.key === "Enter") {
+                sendMessage();
+              }
             }}
             placeholder="Type a message..."
-            className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 dark:border-gray-700 dark:bg-gray-800"
+            type="text"
+            value={inputMessage}
           />
           <button
-            type="button"
-            onClick={sendMessage}
-            disabled={!isConnected || !inputMessage.trim()}
             className="rounded-lg bg-blue-500 px-6 py-2 font-medium text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={!(isConnected && inputMessage.trim())}
+            onClick={sendMessage}
+            type="button"
           >
             Send
           </button>
@@ -108,13 +112,15 @@ export default function SocketClient({ socketUrl }: Props) {
         <div className="h-96 overflow-y-auto rounded-lg border border-gray-300 p-4 dark:border-gray-700">
           <h2 className="mb-4 font-semibold text-xl">Messages</h2>
           {messages.length === 0 ? (
-            <p className="text-gray-500">No messages yet...</p>
+            <Empty>
+              <EmptyTitle>No messages yet...</EmptyTitle>
+            </Empty>
           ) : (
             <div className="space-y-2">
               {messages.map((msg) => (
                 <div
-                  key={msg.timestamp}
                   className="rounded-lg bg-gray-100 p-3 dark:bg-gray-800"
+                  key={msg.id}
                 >
                   <p className="text-sm">{msg.text}</p>
                   <p className="mt-1 text-gray-500 text-xs">

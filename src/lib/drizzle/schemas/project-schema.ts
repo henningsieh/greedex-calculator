@@ -3,7 +3,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { organization, user, member } from "@/lib/drizzle/schemas/auth-schema";
 import { activityValues, ActivityValueType } from "@/components/features/projects/types";
-import type { CountryCode } from "@/lib/i18n/countries";
+import { EUCountryCode } from "@/config/eu-countries";
 
 
 // ============================================================================
@@ -27,7 +27,7 @@ export const projectsTable = pgTable("project", {
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
   location: text("location").notNull(),
-  country: text("country").$type<CountryCode>().notNull(),
+  country: text("country").$type<EUCountryCode>().notNull(),
   welcomeMessage: text("welcome_message"),
 
   // Foreign key to user (responsible team member)
@@ -99,7 +99,7 @@ export const projectParticipantsTable = pgTable("project_participant", {
     .references(() => user.id, { onDelete: "cascade" }),
   
   // Country code from participation questionnaire (EU member state)
-  country: text("country").$type<CountryCode>().notNull(),
+  country: text("country").$type<EUCountryCode>().notNull(),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

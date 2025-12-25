@@ -1,4 +1,4 @@
-import SocketClient from "@/components/socket/SocketClient";
+import SocketClient from "@/components/socket/socket-client";
 import { env } from "@/env";
 
 /**

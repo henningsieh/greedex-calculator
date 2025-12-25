@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CREATE_PROJECT_PATH } from "@/config/AppRoutes";
+import { CREATE_PROJECT_PATH } from "@/config/app-routes";
 import { usePathname } from "@/lib/i18n/routing";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
@@ -43,8 +43,8 @@ export function OrganizationHeader() {
           {pathname !== CREATE_PROJECT_PATH && (
             <CreateProjectButton
               className="hidden sm:inline-flex"
-              variant="secondary"
               showIcon={true}
+              variant="secondary"
             />
           )}
         </CardAction>

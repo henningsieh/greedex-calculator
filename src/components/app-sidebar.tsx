@@ -36,7 +36,7 @@ import {
   PROJECTS_PATH,
   SETTINGS_PATH,
   TEAM_PATH,
-} from "@/config/AppRoutes";
+} from "@/config/app-routes";
 import { Link, usePathname } from "@/lib/i18n/routing";
 
 /**
@@ -86,8 +86,8 @@ export function AppSidebar() {
   return (
     <Sidebar
       className="h-[calc(svh-4rem)] overflow-x-hidden"
-      variant="sidebar"
       collapsible="icon"
+      variant="sidebar"
     >
       <SidebarHeader>
         <ProjectSwitcher />
@@ -105,7 +105,7 @@ export function AppSidebar() {
                     asChild
                     className="hover:bg-secondary hover:text-secondary-foreground active:bg-secondary active:text-secondary-foreground data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground data-[state=open]:hover:bg-secondary data-[state=open]:hover:text-secondary-foreground"
                   >
-                    <Link href={item.url} data-active={pathname === item.url}>
+                    <Link data-active={pathname === item.url} href={item.url}>
                       <item.icon className="size-4" />
                       <span>{item.title}</span>
                     </Link>
@@ -125,7 +125,7 @@ export function AppSidebar() {
               {organizationMenuItems.map((item) => (
                 <SidebarMenuItem key={item.title} title={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} data-active={pathname === item.url}>
+                    <Link data-active={pathname === item.url} href={item.url}>
                       <item.icon className="size-4" />
                       <span>{item.title}</span>
                     </Link>
@@ -143,8 +143,8 @@ export function AppSidebar() {
             onClick={() => setOpen(!state || state === "collapsed")}
           >
             <SidebarMenuButton
-              variant="outline"
               className="text-nowrap [&>svg]:size-4"
+              variant="outline"
             >
               {state === "expanded" && <PanelRightOpenIcon />}
               {state === "collapsed" && <PanelRightCloseIcon />}
@@ -170,7 +170,11 @@ export function AppSidebar() {
 
 export function AppSidebarSkeleton() {
   return (
-    <Sidebar className="h-[calc(svh-4rem)]" variant="sidebar" collapsible="icon">
+    <Sidebar
+      className="h-[calc(svh-4rem)]"
+      collapsible="icon"
+      variant="sidebar"
+    >
       <SidebarHeader>
         <div className="h-12 w-full animate-pulse rounded-md bg-muted" />
       </SidebarHeader>

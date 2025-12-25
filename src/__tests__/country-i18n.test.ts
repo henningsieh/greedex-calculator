@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { EU_COUNTRY_CODES } from "@/config/eu-countries";
 import {
-  EU_COUNTRY_CODES,
   getAllCountries,
   getCountryData,
   getCountryFlag,

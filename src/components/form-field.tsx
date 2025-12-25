@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
-type FormFieldProps<TFieldValues extends Record<string, unknown>> = {
+interface FormFieldProps<TFieldValues extends Record<string, unknown>> {
   name: Path<TFieldValues>;
   control: Control<TFieldValues>;
   label: string;
@@ -19,7 +19,7 @@ type FormFieldProps<TFieldValues extends Record<string, unknown>> = {
   description?: React.ReactNode;
   rightLabel?: React.ReactNode;
   inputProps?: React.ComponentProps<typeof Input>;
-};
+}
 
 export function FormField<TFieldValues extends Record<string, unknown>>({
   name,
@@ -36,14 +36,28 @@ export function FormField<TFieldValues extends Record<string, unknown>>({
 
   return (
     <Controller
-      name={name}
       control={control}
+      name={name}
       render={({ field, fieldState }) => {
         const inputValue = field.value as unknown as
           | string
           | number
           | readonly string[]
           | undefined;
+
+        // Prevent inputProps from overriding critical attributes
+        const {
+          id: _id,
+          placeholder: _placeholder,
+          type: _type,
+          value: _value,
+          disabled: inputDisabled,
+          onChange: _onChange,
+          onBlur: _onBlur,
+          name: _name,
+          ref: _ref,
+          ...safeInputProps
+        } = inputProps || {};
 
         return (
           <Field data-invalid={fieldState.invalid}>
@@ -53,13 +67,13 @@ export function FormField<TFieldValues extends Record<string, unknown>>({
             </div>
             <Input
               {...field}
-              value={inputValue ?? ""}
-              id={inputId}
-              type={type}
-              placeholder={placeholder}
               aria-invalid={fieldState.invalid}
-              disabled={inputProps?.disabled}
-              {...inputProps}
+              disabled={inputDisabled}
+              id={inputId}
+              placeholder={placeholder}
+              type={type}
+              value={inputValue ?? ""}
+              {...safeInputProps}
             />
             {description && <FieldDescription>{description}</FieldDescription>}
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

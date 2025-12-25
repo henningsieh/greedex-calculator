@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 describe("dotenv config import in node entrypoints", () => {
   const files = ["src/socket-server.ts"];
 
-  files.forEach((file) => {
+  for (const file of files) {
     it(`should import "dotenv/config" at top of ${file}`, () => {
       const content = readFileSync(path.resolve(file), "utf8");
       const lines = content.split("\n");
@@ -15,5 +15,5 @@ describe("dotenv config import in node entrypoints", () => {
       expect(importLine).toBeGreaterThanOrEqual(0);
       expect(importLine).toBeLessThan(3); // Should be within first 3 lines
     });
-  });
+  }
 });

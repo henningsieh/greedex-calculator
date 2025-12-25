@@ -26,25 +26,25 @@ export default function AboutPage() {
 
         <section className="grid gap-8 md:grid-cols-2">
           {PARTNERS.map((p) => (
-            <Card key={p.id} className="relative flex flex-col border-accent">
+            <Card className="relative flex flex-col border-accent" key={p.id}>
               {/* Shadcn Partner Badge with secondary color */}
               <Badge
-                variant="secondary"
                 className="absolute top-4 right-4 border border-secondary bg-secondary/25 pt-1 font-bold text-secondary text-sm"
+                variant="secondary"
               >
                 Partner
               </Badge>
               <CardHeader className="flex flex-row items-center gap-4 space-y-0">
                 <div className="relative h-24 w-24 flex-shrink-0 rounded-sm border border-border">
                   <Image
-                    src={p.logo}
                     alt={`${p.name} logo`}
                     fill
+                    priority={false}
                     sizes="240px"
+                    src={p.logo}
                     style={{
                       objectFit: "contain",
                     }}
-                    priority={false}
                   />
                 </div>
                 <div className="space-y-3">
@@ -62,10 +62,10 @@ export default function AboutPage() {
               <CardFooter className="mt-auto flex items-center gap-4">
                 {p.website ? (
                   <a
-                    href={p.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="font-medium text-primary text-sm underline-offset-2 hover:underline"
+                    href={p.website}
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
                     Visit website
                   </a>

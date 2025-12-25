@@ -23,7 +23,7 @@ export function CreateOrganizationModal({
   const [open, setOpen] = useState(false);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         {triggerNode || <Button variant="default">{label}</Button>}
       </DialogTrigger>

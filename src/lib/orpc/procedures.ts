@@ -17,7 +17,7 @@ export const helloWorld = base
       name: z.string().optional().default("World"),
     }),
   )
-  .handler(async ({ input }) => {
+  .handler(({ input }) => {
     return {
       message: `Hello, ${input.name}!`,
       timestamp: new Date().toISOString(),
@@ -28,7 +28,7 @@ export const helloWorld = base
  * Public health check procedure
  * Returns server status and uptime
  */
-export const getHealth = base.route({ method: "GET" }).handler(async () => {
+export const getHealth = base.route({ method: "GET" }).handler(() => {
   return {
     status: "ok",
     timestamp: new Date().toISOString(),
@@ -43,8 +43,8 @@ export const getHealth = base.route({ method: "GET" }).handler(async () => {
  */
 export const getProfile = authorized
   .route({ method: "GET", path: "/users/profile", summary: "Get user profile" })
-  .handler(async ({ context, errors }) => {
-    if (!context.user || !context.session) {
+  .handler(({ context, errors }) => {
+    if (!(context.user && context.session)) {
       throw errors.UNAUTHORIZED();
     }
     return {

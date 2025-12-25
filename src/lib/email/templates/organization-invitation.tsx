@@ -48,16 +48,16 @@ export function OrganizationInvitation({
                 marginBottom: 16,
               }}
             >
-              {inviterName ? `${inviterName} invited you` : "You were invited"} to
-              join the organization "{organizationName}".
+              {inviterName ? `${inviterName} invited you` : "You were invited"}{" "}
+              to join the organization "{organizationName}".
             </Text>
             <Button
+              href={inviteLink}
               style={{
                 backgroundColor: "#2563eb",
                 color: "#fff",
                 textDecoration: "none",
               }}
-              href={inviteLink}
             >
               Accept Invitation
             </Button>

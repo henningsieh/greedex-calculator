@@ -21,6 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Empty, EmptyDescription } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 
 interface ProjectsGridProps {
@@ -28,11 +29,14 @@ interface ProjectsGridProps {
   sortBy?: ProjectSortField;
 }
 
-export function ProjectsGrid({ projects }: ProjectsGridProps) {
+export function ProjectsGrid({
+  projects,
+  sortBy: initialSortBy,
+}: ProjectsGridProps) {
   const t = useTranslations("organization.projects");
 
   const [sortBy, setSortBy] = useState<ProjectSortField>(
-    DEFAULT_PROJECT_SORTING_FIELD,
+    initialSortBy ?? DEFAULT_PROJECT_SORTING_FIELD,
   );
   const [sortDesc, setSortDesc] = useState(false);
   const [filter, setFilter] = useState("");
@@ -45,8 +49,6 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
   ];
 
   const sortedProjects = useMemo(() => {
-    if (!projects) return [];
-
     const filtered = projects.filter((p) =>
       (p.name || "").toLowerCase().includes(filter.toLowerCase()),
     );
@@ -54,6 +56,17 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
     return [...filtered].sort((a, b) => {
       const aValue = a[sortBy as keyof ProjectType];
       const bValue = b[sortBy as keyof ProjectType];
+
+      // Handle null/undefined - push them to the end
+      if (aValue == null && bValue == null) {
+        return 0;
+      }
+      if (aValue == null) {
+        return sortDesc ? -1 : 1;
+      }
+      if (bValue == null) {
+        return sortDesc ? 1 : -1;
+      }
 
       let result = 0;
       if (aValue instanceof Date && bValue instanceof Date) {
@@ -70,38 +83,38 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
     <>
       <div className="my-auto flex h-14 items-center">
         <Input
+          className="h-8 max-w-sm"
+          onChange={(e) => setFilter(e.target.value)}
           placeholder={t("table.filter-projects")}
           value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="h-8 max-w-sm"
         />
         <div className="ml-auto flex items-center gap-2">
           <Button
-            variant="outline"
-            size="sm"
             onClick={() => setSortDesc((s) => !s)}
+            size="sm"
+            variant="outline"
           >
             <ArrowUpDown className={sortDesc ? "rotate-180" : ""} />
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                size="sm"
-                variant="outline"
                 className="flex w-32 items-center justify-end"
                 onClick={(e) => e.stopPropagation()}
+                size="sm"
+                variant="outline"
               >
                 {t("sort-label")} <ChevronDownIcon className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="space-y-1" align="end">
+            <DropdownMenuContent align="end" className="space-y-1">
               <DropdownMenuLabel>{t("sort-projects")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {sortOptions.map((opt) => (
                 <DropdownMenuItem
+                  className={sortBy === opt.value ? "bg-accent" : ""}
                   key={opt.value}
                   onClick={() => setSortBy(opt.value as ProjectSortField)}
-                  className={sortBy === opt.value ? "bg-accent" : ""}
                 >
                   {opt.label}
                 </DropdownMenuItem>
@@ -111,9 +124,15 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {sortedProjects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+        {sortedProjects.length > 0 ? (
+          sortedProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))
+        ) : (
+          <Empty className="col-span-full">
+            <EmptyDescription>{t("no-projects-yet.title")}</EmptyDescription>
+          </Empty>
+        )}
       </div>
     </>
   );

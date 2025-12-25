@@ -3,9 +3,9 @@
 import { ORPCError } from "@orpc/client";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { PROJECTS_PATH } from "@/config/AppRoutes";
+import { PROJECTS_PATH } from "@/config/app-routes";
 import { useRouter } from "@/lib/i18n/routing";
-import type { ErrorCode } from "@/lib/orpc/router";
+import type { ErrorCode } from "@/lib/orpc/context";
 
 /**
  * Determines whether a value is an ORPCError with a known ErrorCode.
@@ -37,7 +37,8 @@ export function ErrorFallback({ error }: { error: Error }) {
       toast.error(t("project-not-found"));
       router.push(PROJECTS_PATH);
       return null;
-    } else if (error.code === "FORBIDDEN") {
+    }
+    if (error.code === "FORBIDDEN") {
       toast.error(t("project-access-denied"));
       router.push(PROJECTS_PATH);
       return null;

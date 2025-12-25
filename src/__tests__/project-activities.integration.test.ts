@@ -1,10 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { eq, like, sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type {
-  ProjectActivityType,
-  ProjectType,
-} from "@/components/features/projects/types";
+import type { ProjectType } from "@/components/features/projects/types";
+import type { EUCountryCode } from "@/config/eu-countries";
 import { db } from "@/lib/drizzle/db";
 import {
   member,
@@ -13,7 +11,7 @@ import {
   projectsTable,
   user,
 } from "@/lib/drizzle/schema";
-import type { CountryCode } from "@/lib/i18n/countries";
+import type { ProjectActivityType } from "../components/features/projects/types";
 
 // Test data constants
 const TEST_USER = {
@@ -42,7 +40,7 @@ describe("Project Activities Integration Tests", () => {
         SELECT ${projectsTable.id} FROM ${projectsTable}
         WHERE ${projectsTable.organizationId} IN (
           SELECT ${organization.id} FROM ${organization}
-          WHERE ${organization.slug} LIKE ${`test-org-%`}
+          WHERE ${organization.slug} LIKE ${"test-org-%"}
         )
       )`,
     );
@@ -50,19 +48,19 @@ describe("Project Activities Integration Tests", () => {
     await db.delete(projectsTable).where(
       sql`${projectsTable.organizationId} IN (
         SELECT ${organization.id} FROM ${organization}
-        WHERE ${organization.slug} LIKE ${`test-org-%`}
+        WHERE ${organization.slug} LIKE ${"test-org-%"}
       )`,
     );
 
     await db.delete(member).where(
       sql`${member.organizationId} IN (
         SELECT ${organization.id} FROM ${organization}
-        WHERE ${organization.slug} LIKE ${`test-org-%`}
+        WHERE ${organization.slug} LIKE ${"test-org-%"}
       )`,
     );
 
-    await db.delete(organization).where(like(organization.slug, `test-org-%`));
-    await db.delete(user).where(like(user.email, `test-user-%@example.com`));
+    await db.delete(organization).where(like(organization.slug, "test-org-%"));
+    await db.delete(user).where(like(user.email, "test-user-%@example.com"));
   });
 
   afterAll(async () => {
@@ -139,7 +137,7 @@ describe("Project Activities Integration Tests", () => {
       await db.insert(member).values({
         id: randomUUID(),
         organizationId: orgId,
-        userId: userId,
+        userId,
         role: "owner",
         createdAt: new Date(),
       });
@@ -165,7 +163,7 @@ describe("Project Activities Integration Tests", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
         location: "Test Location",
-        country: "DE" as CountryCode,
+        country: "DE" as EUCountryCode,
         welcomeMessage: "Welcome to test project",
         responsibleUserId: userId,
         organizationId: orgId,
@@ -196,7 +194,7 @@ describe("Project Activities Integration Tests", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
         location: "Berlin",
-        country: "DE" as CountryCode,
+        country: "DE" as EUCountryCode,
         welcomeMessage: "Welcome to project with activities",
         responsibleUserId: userId,
         organizationId: orgId,
@@ -458,7 +456,7 @@ describe("Project Activities Integration Tests", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
         location: "Test Location",
-        country: "DE" as CountryCode,
+        country: "DE" as EUCountryCode,
         welcomeMessage: null,
         responsibleUserId: userId,
         organizationId: orgId,
@@ -592,7 +590,8 @@ describe("Project Activities Integration Tests", () => {
 
     it("should handle concurrent operations safely", async () => {
       // Test that multiple operations don't interfere
-      const operations = [];
+      // const operations : PgInsertBase<PgTableWithColumns<any>, any>[] = [];
+      const operations: Promise<unknown>[] = [];
 
       for (let i = 0; i < 5; i++) {
         const concurrentActivity = {

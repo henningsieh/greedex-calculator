@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DASHBOARD_PATH } from "@/config/AppRoutes";
+import { DASHBOARD_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { cn } from "@/lib/utils";
 
@@ -74,25 +74,25 @@ export function MagicLinkForm({
 
         <CardContent>
           <FormField
-            name="email"
             control={form.control}
-            label="Email"
             id="email"
-            type="email"
-            placeholder="m@example.com"
             inputProps={{
               disabled: form.formState.isSubmitting,
             }}
+            label="Email"
+            name="email"
+            placeholder="m@example.com"
+            type="email"
           />
         </CardContent>
 
         <CardFooter>
           <div className="w-full">
             <Button
+              className="w-full"
+              disabled={form.formState.isSubmitting}
               type="submit"
               variant="default"
-              disabled={form.formState.isSubmitting}
-              className="w-full"
             >
               {form.formState.isSubmitting ? "Sending..." : "Send magic link"}
             </Button>

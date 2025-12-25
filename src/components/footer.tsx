@@ -11,7 +11,7 @@ import {
   SIGNUP_PATH,
   TIPS_AND_TRICKS_PATH,
   WORKSHOPS_ANCHOR,
-} from "@/config/AppRoutes";
+} from "@/config/app-routes";
 import { Link } from "@/lib/i18n/routing";
 
 export default async function FooterSection() {
@@ -61,9 +61,9 @@ export default async function FooterSection() {
         <div className="grid gap-12 md:grid-cols-5">
           <div className="md:col-span-2">
             <Link
-              href={HOME_PATH}
               aria-label="go home"
               className="block size-fit"
+              href={HOME_PATH}
             >
               <Logo />
             </Link>
@@ -72,10 +72,10 @@ export default async function FooterSection() {
             </p> */}
             <div className="mt-8">
               <Link
-                href={DASHBOARD_PATH}
-                title={tLanding("launchButtonAria")}
                 aria-label={tLanding("launchButtonAria")}
                 className="inline-block"
+                href={DASHBOARD_PATH}
+                title={tLanding("launchButtonAria")}
               >
                 <AnimatedGradientCTA leftEmoji={"🌳"}>
                   {tLanding("launchButton")}
@@ -92,9 +92,9 @@ export default async function FooterSection() {
               <div className="flex flex-col space-y-3">
                 {navigationLinks.map((item, index) => (
                   <Link
-                    key={index}
-                    href={item.href}
                     className="text-muted-foreground transition-colors hover:text-primary"
+                    href={item.href}
+                    key={index}
                   >
                     {item.title}
                   </Link>
@@ -109,9 +109,9 @@ export default async function FooterSection() {
               <div className="flex flex-col space-y-3">
                 {companyLinks.map((item, index) => (
                   <Link
-                    key={index}
-                    href={item.href}
                     className="text-muted-foreground transition-colors hover:text-primary"
+                    href={item.href}
+                    key={index}
                   >
                     {item.title}
                   </Link>
@@ -126,9 +126,9 @@ export default async function FooterSection() {
               <div className="flex flex-col space-y-3">
                 {appLinks.map((item, index) => (
                   <Link
-                    key={index}
-                    href={item.href}
                     className="text-muted-foreground transition-colors hover:text-primary"
+                    href={item.href}
+                    key={index}
                   >
                     {item.title}
                   </Link>

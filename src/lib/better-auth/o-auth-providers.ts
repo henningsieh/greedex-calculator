@@ -5,7 +5,11 @@ import {
   GoogleIcon,
 } from "@/components/features/authentication/o-auth-icons";
 
-export const SUPPORTED_OAUTH_PROVIDERS = ["google", "discord", "github"] as const;
+export const SUPPORTED_OAUTH_PROVIDERS = [
+  "google",
+  "discord",
+  "github",
+] as const;
 export type SupportedOAuthProvider = (typeof SUPPORTED_OAUTH_PROVIDERS)[number];
 
 export const SUPPORTED_OAUTH_PROVIDER_DETAILS: Record<

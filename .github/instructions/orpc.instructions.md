@@ -54,6 +54,8 @@ description: oRPC procedures, routers, integrations, and SSR optimization patter
 ## Advanced Topics
 - **SSR Optimization**: Optimizing SSR performance by avoiding redundant network calls.
   - See: [docs/orpc/orpc.Optimize-Server-Side-Rendering.SSR.md](../../docs/orpc/orpc.Optimize-Server-Side-Rendering.SSR.md)
+- **oRPC + TanStack Query Prefetching & Hydration**: Combined patterns for SSR prefetching.
+  - See: [docs/orpc/orpc.Optimize-Server-Side-Rendering.SSR.md](../../docs/orpc/orpc.Optimize-Server-Side-Rendering.SSR.md), [docs/orpc/orpc.tanstack-query.md](../../docs/orpc/orpc.tanstack-query.md), and related TanStack Query docs in `/docs/tanstack-react-query/`
 - **Dual Setup**: Understanding the dual client/server setup in this repository.
   - See: [docs/orpc/DUAL-SETUP.md](../../docs/orpc/DUAL-SETUP.md)
 - **TanStack Query Prefetching & Hydration**: Combined patterns for SSR prefetching with TanStack Query.

@@ -136,20 +136,20 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
       <div className="w-full">
         <div className="my-auto flex h-14 items-center gap-2">
           <Input
-            placeholder={t("table.filter-projects")}
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            className="h-8 max-w-sm"
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
             }
-            className="h-8 max-w-sm"
+            placeholder={t("table.filter-projects")}
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           />
           {selectedRows.length > 0 && (
             <Button
-              variant="destructive"
-              size="sm"
-              onClick={handleBatchDelete}
-              disabled={isBatchDeleting}
               className="ml-4"
+              disabled={isBatchDeleting}
+              onClick={handleBatchDelete}
+              size="sm"
+              variant="destructive"
             >
               <Trash2Icon className="mr-2 h-4 w-4" />
               {t("table.batch-delete", {
@@ -160,9 +160,9 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="outline"
-                size="sm"
                 className="ml-auto flex w-32 items-center justify-end"
+                size="sm"
+                variant="outline"
               >
                 {t("table.columns")} <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
@@ -174,9 +174,9 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                 .map((column) => {
                   return (
                     <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
                       checked={column.getIsVisible()}
+                      className="capitalize"
+                      key={column.id}
                       onCheckedChange={(value) =>
                         column.toggleVisibility(!!value)
                       }
@@ -193,14 +193,14 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
             <TableHeader className="border-b bg-muted/50">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
-                  key={headerGroup.id}
                   className="border-b transition-colors"
+                  key={headerGroup.id}
                 >
                   {headerGroup.headers.map((header) => {
                     return (
                       <TableHead
-                        key={header.id}
                         className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:px-2"
+                        key={header.id}
                       >
                         {header.isPlaceholder
                           ? null
@@ -218,12 +218,12 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
                     className="transition-colors hover:bg-accent/40"
+                    data-state={row.getIsSelected() && "selected"}
+                    key={row.id}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="pl-3">
+                      <TableCell className="pl-3" key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
@@ -235,8 +235,8 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={columns.length}
                     className="h-24 text-center"
+                    colSpan={columns.length}
                   >
                     No results.
                   </TableCell>
@@ -252,18 +252,18 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
           </div>
           <div className="space-x-2">
             <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              onClick={() => table.previousPage()}
+              size="sm"
+              variant="outline"
             >
               Previous
             </Button>
             <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              onClick={() => table.nextPage()}
+              size="sm"
+              variant="outline"
             >
               Next
             </Button>

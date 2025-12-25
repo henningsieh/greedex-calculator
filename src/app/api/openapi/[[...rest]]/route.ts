@@ -14,7 +14,15 @@ import { router } from "@/lib/orpc/router";
 const handler = new OpenAPIHandler(router, {
   plugins: [
     new CORSPlugin({
-      allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+      allowMethods: [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "HEAD",
+        "OPTIONS",
+      ],
       allowHeaders: ["Content-Type", "Authorization"],
       exposeHeaders: ["Content-Disposition"], // Required for OpenAPILink file detection
       credentials: true,

@@ -9,9 +9,14 @@
  * @returns The masked email, e.g., "j***@example.com".
  */
 export function maskEmail(email?: string): string {
-  if (!email) return email || "";
+  if (!email) {
+    return email || "";
+  }
   const [local, domain] = String(email).split("@");
-  if (!domain) return email;
+  if (!domain) {
+    // Return empty string for malformed emails to avoid leaking invalid data
+    return "";
+  }
   const firstChar = local?.[0] || "";
   return `${firstChar}***@${domain}`;
 }

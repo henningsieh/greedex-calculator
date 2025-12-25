@@ -78,11 +78,11 @@ export function InviteMemberDialog({
           onError: (ctx) => {
             toast.error(ctx.error.message || "Failed to send invitation");
           },
-          onSuccess: () => {
+          onSuccess: async () => {
             toast.success(tInvite("successToast"));
             setOpen(false);
             form.reset();
-            void queryClient.invalidateQueries(
+            await queryClient.invalidateQueries(
               orpcQuery.members.search.queryOptions({
                 input: {
                   organizationId,
@@ -105,9 +105,9 @@ export function InviteMemberDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="ml-auto">
+        <Button className="ml-auto" variant="outline">
           <UserPlusIcon className="size-5" />
           {tInvite("button")}
         </Button>
@@ -122,28 +122,28 @@ export function InviteMemberDialog({
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <InputField
-                name="email"
                 control={form.control}
-                label={tInvite("emailLabel")}
-                id="invite-email"
-                type="email"
-                placeholder="name@domain.com"
                 description={tInvite("emailDescription")}
+                id="invite-email"
                 inputProps={{
                   disabled: form.formState.isSubmitting,
                 }}
+                label={tInvite("emailLabel")}
+                name="email"
+                placeholder="name@domain.com"
+                type="email"
               />
 
               <InputField
-                name="name"
                 control={form.control}
-                label={tInvite("nameLabel")}
                 id="invite-name"
-                type="text"
-                placeholder="Jane Doe"
                 inputProps={{
                   disabled: form.formState.isSubmitting,
                 }}
+                label={tInvite("nameLabel")}
+                name="name"
+                placeholder="Jane Doe"
+                type="text"
               />
 
               <FormField<z.infer<typeof InviteFormSchema>, "role">
@@ -153,9 +153,14 @@ export function InviteMemberDialog({
                   <FormItem>
                     <FormLabel>{tInvite("roleLabel")}</FormLabel>
                     <FormControl>
-                      <Select value={field.value} onValueChange={field.onChange}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <SelectTrigger id="invite-role" size="default">
-                          <SelectValue placeholder={tInvite("rolePlaceholder")} />
+                          <SelectValue
+                            placeholder={tInvite("rolePlaceholder")}
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           {allowedRoles.map((role) => (
@@ -175,7 +180,7 @@ export function InviteMemberDialog({
                 <DialogClose asChild>
                   <Button variant="outline">{tInvite("cancelButton")}</Button>
                 </DialogClose>
-                <Button type="submit" disabled={form.formState.isSubmitting}>
+                <Button disabled={form.formState.isSubmitting} type="submit">
                   {form.formState.isSubmitting
                     ? tInvite("sendingButton")
                     : tInvite("sendButton")}

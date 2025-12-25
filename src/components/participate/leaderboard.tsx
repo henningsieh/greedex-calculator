@@ -36,11 +36,12 @@ export function Leaderboard({ participants }: LeaderboardProps) {
 
           return (
             <div
-              key={participant.id}
               className={cn(
                 "px-6 py-4 transition-all duration-300 hover:bg-accent/50",
-                isTopThree && "bg-gradient-to-r from-teal-500/5 to-emerald-500/5",
+                isTopThree &&
+                  "bg-gradient-to-r from-teal-500/5 to-emerald-500/5",
               )}
+              key={participant.id}
             >
               <div className="flex items-center justify-between gap-4">
                 <div className="flex min-w-0 flex-1 items-center gap-4">
@@ -78,7 +79,9 @@ export function Leaderboard({ participants }: LeaderboardProps) {
                     <span className="font-bold text-2xl text-teal-400">
                       {participant.totalCO2.toFixed(1)}
                     </span>
-                    <span className="text-muted-foreground text-sm">kg CO₂</span>
+                    <span className="text-muted-foreground text-sm">
+                      kg CO₂
+                    </span>
                   </div>
                 </div>
               </div>

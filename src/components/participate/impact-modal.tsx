@@ -65,17 +65,23 @@ const getImpactMessage = (
       )} kg CO₂ to your footprint`;
 
     case "trainKm":
-      if (Number(value) === 0) return "🚆 No train travel this time";
+      if (Number(value) === 0) {
+        return "🚆 No train travel this time";
+      }
       return `🚆 Excellent choice! Train travel is eco-friendly (+${impact.toFixed(
         1,
       )} kg CO₂)`;
 
     case "busKm":
-      if (Number(value) === 0) return "🚌 No bus travel";
+      if (Number(value) === 0) {
+        return "🚌 No bus travel";
+      }
       return `🚌 Good public transport choice! (+${impact.toFixed(1)} kg CO₂)`;
 
     case "boatKm":
-      if (Number(value) === 0) return "⛴️ No boat travel";
+      if (Number(value) === 0) {
+        return "⛴️ No boat travel";
+      }
       return `⛴️ Boat travel adds ${impact.toFixed(1)} kg CO₂`;
 
     case "carKm":
@@ -146,16 +152,28 @@ const getImpactMessage = (
 };
 
 const getImpactColor = (impact: number): string => {
-  if (impact < CO2_THRESHOLDS.LOW) return "text-green-500";
-  if (impact < CO2_THRESHOLDS.MODERATE) return "text-yellow-500";
-  if (impact < CO2_THRESHOLDS.HIGH) return "text-orange-500";
+  if (impact < CO2_THRESHOLDS.LOW) {
+    return "text-green-500";
+  }
+  if (impact < CO2_THRESHOLDS.MODERATE) {
+    return "text-yellow-500";
+  }
+  if (impact < CO2_THRESHOLDS.HIGH) {
+    return "text-orange-500";
+  }
   return "text-red-500";
 };
 
 const getCO2Color = (co2: number): string => {
-  if (co2 <= TOTAL_CO2_THRESHOLDS.LOW) return "text-green-500";
-  if (co2 <= TOTAL_CO2_THRESHOLDS.MODERATE) return "text-yellow-500";
-  if (co2 <= TOTAL_CO2_THRESHOLDS.HIGH) return "text-orange-500";
+  if (co2 <= TOTAL_CO2_THRESHOLDS.LOW) {
+    return "text-green-500";
+  }
+  if (co2 <= TOTAL_CO2_THRESHOLDS.MODERATE) {
+    return "text-yellow-500";
+  }
+  if (co2 <= TOTAL_CO2_THRESHOLDS.HIGH) {
+    return "text-orange-500";
+  }
   return "text-red-500";
 };
 
@@ -180,7 +198,9 @@ export function ImpactModal({
 
   // Start animation when modal opens
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
 
     setAnimationPhase("start");
     setDisplayCO2(previousCO2.toFixed(1));
@@ -203,7 +223,9 @@ export function ImpactModal({
     return () => clearTimeout(showTimer);
   }, [isOpen, previousCO2, newCO2, counterValue]);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const impactMessage = getImpactMessage(
     stepKey,
@@ -219,10 +241,6 @@ export function ImpactModal({
 
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        scale: 0.9,
-      }}
       animate={
         isOpen
           ? {
@@ -234,17 +252,21 @@ export function ImpactModal({
               scale: 0.9,
             }
       }
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 sm:p-10"
+      initial={{
+        opacity: 0,
+        scale: 0.9,
+      }}
       transition={{
         duration: 0.5,
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 sm:p-10"
     >
       <div className="w-full max-w-3xl text-center">
         <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
           aria-label="Close"
+          className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+          onClick={onClose}
+          type="button"
         >
           <XIcon className="h-6 w-6" />
         </button>
@@ -276,7 +298,9 @@ export function ImpactModal({
               <TreePineIcon className="h-8 w-8 text-green-400" />
             </div>
             <div className="mb-2 text-lg text-white/80">Trees Needed</div>
-            <div className="font-bold text-5xl text-green-400">{treesNeeded}</div>
+            <div className="font-bold text-5xl text-green-400">
+              {treesNeeded}
+            </div>
             <div className="mt-2 text-white/60">to offset</div>
           </div>
         </div>
@@ -300,9 +324,9 @@ export function ImpactModal({
 
         {/* Continue Button */}
         <Button
+          className="bg-gradient-to-r from-teal-500 to-emerald-500 text-lg text-white hover:from-teal-600 hover:to-emerald-600"
           onClick={onClose}
           size="lg"
-          className="bg-gradient-to-r from-teal-500 to-emerald-500 text-lg text-white hover:from-teal-600 hover:to-emerald-600"
         >
           Continue
           <ArrowRightIcon className="ml-2 h-5 w-5" />

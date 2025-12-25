@@ -14,6 +14,8 @@
  *   which sets rejectUnauthorized: false for "require" mode (without sslrootcert)
  */
 
+const POSTGRES_PROTOCOL_REGEX = /^postgres(ql)?:\/\//;
+
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -77,7 +79,9 @@ describe.skipIf(!shouldRunTests)("Database SSL Connection", () => {
     expect(result2.rows[0]).toHaveProperty("current_time");
 
     // Third query
-    const result3 = await db.execute("SELECT pg_is_in_recovery() as is_replica");
+    const result3 = await db.execute(
+      "SELECT pg_is_in_recovery() as is_replica",
+    );
     expect(result3.rows[0]).toHaveProperty("is_replica");
   });
 });
@@ -89,7 +93,7 @@ describe("DATABASE_URL Configuration", () => {
   });
 
   it("should use postgres protocol", () => {
-    expect(DATABASE_URL).toMatch(/^postgres(ql)?:\/\//);
+    expect(DATABASE_URL).toMatch(POSTGRES_PROTOCOL_REGEX);
   });
 
   it("should include sslmode=require parameter", () => {

@@ -2,7 +2,7 @@
 
 import { Loader2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import * as React from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type LoadingMode = "project" | "organization";
@@ -11,12 +11,12 @@ const getModeStyles = (mode?: LoadingMode) => {
   switch (mode) {
     case "project":
       return {
-        containerClassName: `border-2 border-secondary bg-secondary/20`,
+        containerClassName: "border-2 border-secondary bg-secondary/20",
         textColor: "text-secondary",
       };
     case "organization":
       return {
-        containerClassName: `border-2 border-accent bg-accent/20`,
+        containerClassName: "border-2 border-accent bg-accent/20",
         textColor: "text-accent",
       };
     default:
@@ -38,17 +38,15 @@ interface LoadingContextType {
   setLoading: (_: Partial<LoadingState>) => void;
 }
 
-const LoadingContext = React.createContext<LoadingContextType | undefined>(
-  undefined,
-);
+const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
 export function LoadingProvider({ children }: { children: React.ReactNode }) {
   const t = useTranslations("app.loading");
-  const [loadingState, setLoadingState] = React.useState<LoadingState>({
+  const [loadingState, setLoadingState] = useState<LoadingState>({
     isLoading: false,
   });
 
-  const setLoading = React.useCallback((updates: Partial<LoadingState>) => {
+  const setLoading = useCallback((updates: Partial<LoadingState>) => {
     setLoadingState((prev) => ({ ...prev, ...updates }));
   }, []);
 
@@ -87,9 +85,9 @@ export function useAppLoading(options?: {
   message?: string;
   mode?: "project" | "organization";
 }) {
-  const context = React.useContext(LoadingContext);
+  const context = useContext(LoadingContext);
   if (!context) {
-    throw new Error(`useAppLoading must be used within LoadingProvider`);
+    throw new Error("useAppLoading must be used within LoadingProvider");
   }
 
   const { loadingState, setLoading } = context;

@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { LocaleCode } from "@/config/Languages";
+import type { LocaleCode } from "@/config/languages";
 import { getLocaleData } from "@/lib/i18n/locales";
 import { usePathname, useRouter } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -41,14 +41,14 @@ export function LocaleSwitcher({ className }: { className?: string }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="border border-muted">
         <Button
-          variant="ghost"
-          size="sm"
           className={cn(
             "gap-2 rounded-full bg-background p-1 ring-1 ring-border dark:bg-background/20 dark:hover:bg-background/30",
             isPending ? "opacity-70" : "",
             className,
           )}
           disabled={isPending}
+          size="sm"
+          variant="ghost"
         >
           {currentLocale?.Flag && (
             <currentLocale.Flag className="size-6 rounded-sm border-none" />
@@ -57,21 +57,21 @@ export function LocaleSwitcher({ className }: { className?: string }) {
             {currentLocale?.nativeName ?? currentLocale?.label}
           </span> */}
           <ChevronDown
-            className={cn("size-4", isPending && "animate-pulse")}
             aria-hidden
+            className={cn("size-4", isPending && "animate-pulse")}
           />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" side="bottom" className="w-60">
+      <DropdownMenuContent align="end" className="w-60" side="bottom">
         {locales.map((entry) => (
           <DropdownMenuItem
+            className="group flex items-center justify-between gap-3"
+            disabled={entry.code === locale}
             key={entry.code}
             onSelect={(event) => {
               event.preventDefault();
               handleLocaleChange(entry.code);
             }}
-            disabled={entry.code === locale}
-            className="group flex items-center justify-between gap-3"
           >
             <span className="flex items-center gap-2">
               {entry.Flag && (
@@ -87,7 +87,7 @@ export function LocaleSwitcher({ className }: { className?: string }) {
               </span>
             </span>
             {locale === entry.code && (
-              <Check className="size-4 text-primary" aria-hidden />
+              <Check aria-hidden className="size-4 text-primary" />
             )}
           </DropdownMenuItem>
         ))}

@@ -16,19 +16,19 @@ export type ParticipantActivityValueType =
  * Represents individual travel segments calculated from participant questionnaire responses
  * Not stored in database, computed at runtime for display purposes
  */
-export type ParticipantActivity = {
+export interface ParticipantActivity {
   id: string;
   type: ParticipantActivityValueType; // Includes all transport modes: boat, bus, train, car, plane, electricCar
   distanceKm: number;
   co2Kg: number;
-};
+}
 
 // Computed fields type for participant statistics
 // These are calculated on-the-fly and are not stored in the database
-type ParticipantComputedFields = {
+interface ParticipantComputedFields {
   totalCO2: number;
   rank?: number;
-};
+}
 
 /**
  * Participant type for UI display with computed fields
@@ -42,7 +42,7 @@ export type Participant = z.infer<typeof ParticipantSchema> & {
  * Project statistics type - computed values only, not persisted
  * This is calculated on-the-fly from participant and activity data
  */
-export type ProjectStats = {
+export interface ProjectStats {
   totalParticipants: number;
   totalCO2: number;
   averageCO2: number;
@@ -55,4 +55,4 @@ export type ProjectStats = {
     }
   >;
   treesNeeded: number; // Average tree absorbs ~22kg CO₂ per year, ~1 ton in lifetime (~45 years)
-};
+}

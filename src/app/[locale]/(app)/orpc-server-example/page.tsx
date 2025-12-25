@@ -25,7 +25,8 @@ export default async function ORPCServerExample() {
       <div className="space-y-2">
         <h1 className="font-bold text-3xl">oRPC Server Component Example</h1>
         <p className="text-muted-foreground">
-          This page demonstrates oRPC usage in a Server Component (SSR optimized)
+          This page demonstrates oRPC usage in a Server Component (SSR
+          optimized)
         </p>
       </div>
 
@@ -36,7 +37,9 @@ export default async function ORPCServerExample() {
               Health Check
               <Badge variant="outline">{health.status}</Badge>
             </CardTitle>
-            <CardDescription>Server status retrieved during SSR</CardDescription>
+            <CardDescription>
+              Server status retrieved during SSR
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="grid grid-cols-2 gap-2 text-sm">
@@ -98,7 +101,7 @@ export default async function ORPCServerExample() {
           </ul>
           <p className="mt-4 text-muted-foreground">
             Compare this with the{" "}
-            <a href="/orpc-test" className="underline">
+            <a className="underline" href="/orpc-test">
               /orpc-test page
             </a>{" "}
             which uses client-side RPC calls.

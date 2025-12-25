@@ -13,13 +13,14 @@ import { env } from "@/env";
  *
  * Note: These tests require a running server and are skipped in CI if the server is not available.
  */
+const OPENAPI_VERSION_REGEX = /^3\.\d+\.\d+$/;
 const baseUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/openapi`;
 let serverAvailable = false;
 
 // Check if server is available before running tests
 beforeAll(async () => {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10000);
+  const timeout = setTimeout(() => controller.abort(), 10_000);
 
   try {
     console.log(`Checking server availability at: ${baseUrl}/health`);
@@ -89,14 +90,16 @@ describe("OpenAPI REST Endpoint", () => {
           $client?: unknown;
         };
         g2.fetch = originalFetch;
-        delete g2.$client;
+        g2.$client = undefined;
       }
     });
   });
 
   describe("Public Endpoints", () => {
     it("should return health status via GET /health", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/health`, {
         method: "GET",
       });
@@ -111,7 +114,9 @@ describe("OpenAPI REST Endpoint", () => {
     });
 
     it("should handle hello world via POST /helloWorld", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/helloWorld`, {
         method: "POST",
         headers: {
@@ -129,7 +134,9 @@ describe("OpenAPI REST Endpoint", () => {
     });
 
     it("should use default name when name not provided", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/helloWorld`, {
         method: "POST",
         headers: {
@@ -147,7 +154,9 @@ describe("OpenAPI REST Endpoint", () => {
 
   describe("Protected Endpoints", () => {
     it("should return 401 for protected endpoints without auth", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/users/profile`, {
         method: "GET",
       });
@@ -157,7 +166,9 @@ describe("OpenAPI REST Endpoint", () => {
     });
 
     it("should return session info when requesting /auth/session", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/auth/session`, {
         method: "GET",
       });
@@ -173,7 +184,9 @@ describe("OpenAPI REST Endpoint", () => {
 
   describe("Error Handling", () => {
     it("should return 404 for non-existent endpoints", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/non-existent-endpoint`, {
         method: "GET",
       });
@@ -185,7 +198,9 @@ describe("OpenAPI REST Endpoint", () => {
     });
 
     it("should handle invalid JSON input gracefully", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/helloWorld`, {
         method: "POST",
         headers: {
@@ -201,7 +216,9 @@ describe("OpenAPI REST Endpoint", () => {
 
   describe("CORS Headers", () => {
     it("should include proper CORS headers", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/health`, {
         method: "GET",
         headers: {
@@ -212,8 +229,12 @@ describe("OpenAPI REST Endpoint", () => {
       expect(response.headers.get("Access-Control-Allow-Origin")).toBe(
         env.NEXT_PUBLIC_BASE_URL,
       );
-      expect(response.headers.get("Access-Control-Allow-Methods")).toBeDefined();
-      expect(response.headers.get("Access-Control-Allow-Headers")).toBeDefined();
+      expect(
+        response.headers.get("Access-Control-Allow-Methods"),
+      ).toBeDefined();
+      expect(
+        response.headers.get("Access-Control-Allow-Headers"),
+      ).toBeDefined();
       expect(response.headers.get("Access-Control-Allow-Credentials")).toBe(
         "true",
       );
@@ -224,7 +245,9 @@ describe("OpenAPI REST Endpoint", () => {
     });
 
     it("should handle CORS preflight requests", async () => {
-      if (!serverAvailable) throw new Error("Server not available");
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
       const response = await fetch(`${baseUrl}/health`, {
         method: "OPTIONS",
         headers: {
@@ -240,7 +263,9 @@ describe("OpenAPI REST Endpoint", () => {
       expect(response.headers.get("Access-Control-Allow-Methods")).toContain(
         "GET",
       );
-      expect(response.headers.get("Access-Control-Allow-Headers")).toBeDefined();
+      expect(
+        response.headers.get("Access-Control-Allow-Headers"),
+      ).toBeDefined();
       expect(response.headers.get("Access-Control-Allow-Credentials")).toBe(
         "true",
       );
@@ -256,7 +281,9 @@ describe("OpenAPI Specification", () => {
   const specUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/openapi-spec`;
 
   it("should serve OpenAPI specification", async () => {
-    if (!serverAvailable) throw new Error("Server not available");
+    if (!serverAvailable) {
+      throw new Error("Server not available");
+    }
     const response = await fetch(specUrl);
     expect(response.status).toBe(200);
 
@@ -264,7 +291,7 @@ describe("OpenAPI Specification", () => {
 
     // Verify it's a valid OpenAPI spec
     expect(spec).toHaveProperty("openapi");
-    expect(spec.openapi).toMatch(/^3\.\d+\.\d+$/); // Should be OpenAPI 3.x.x
+    expect(spec.openapi).toMatch(OPENAPI_VERSION_REGEX); // Should be OpenAPI 3.x.x
 
     expect(spec).toHaveProperty("info");
     expect(spec.info).toHaveProperty("title");

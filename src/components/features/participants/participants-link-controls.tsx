@@ -1,6 +1,11 @@
 "use client";
 
-import { CopyIcon, ExternalLinkIcon, Link2Icon, QrCodeIcon } from "lucide-react";
+import {
+  CopyIcon,
+  ExternalLinkIcon,
+  Link2Icon,
+  QrCodeIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -115,12 +120,12 @@ export function ParticipantsLinkControls({
 
         <CardAction>
           {/* QR Code Modal */}
-          <Dialog open={isQrModalOpen} onOpenChange={setIsQrModalOpen}>
+          <Dialog onOpenChange={setIsQrModalOpen} open={isQrModalOpen}>
             <DialogTrigger asChild>
               <Button
-                variant="secondaryoutline"
                 className="size-10 border-secondary/40 text-secondary hover:bg-secondary/10 hover:text-secondary sm:size-fit dark:border-secondary/40"
                 onClick={() => setIsQrModalOpen(true)}
+                variant="secondaryoutline"
               >
                 <QrCodeIcon className="size-6" />
                 <span className="hidden sm:inline">
@@ -143,10 +148,10 @@ export function ParticipantsLinkControls({
               <div className="flex flex-col items-center gap-4 py-4">
                 {qrCodeDataUrl ? (
                   <div
-                    style={{ backgroundImage: `url(${qrCodeDataUrl})` }}
+                    aria-label={t("participation.modalTitle")}
                     className="h-[300px] w-[300px] rounded-lg border border-secondary/70 bg-center bg-contain bg-no-repeat"
                     role="img"
-                    aria-label={t("participation.modalTitle")}
+                    style={{ backgroundImage: `url(${qrCodeDataUrl})` }}
                   />
                 ) : (
                   <div className="flex h-[300px] w-[300px] items-center justify-center rounded-lg border border-secondary/70">
@@ -166,24 +171,24 @@ export function ParticipantsLinkControls({
         <div className="mt-6 flex flex-wrap gap-3">
           <InputGroup className="flex-1 border border-secondary/30 bg-background has-[[data-slot=input-group-control]:focus-visible]:border-secondary has-[[data-slot=input-group-control]:focus-visible]:ring-secondary/40">
             <InputGroupInput
-              ref={inputRef}
-              type="text"
-              value={participationUrl}
-              readOnly
+              className="truncate border-0 font-mono text-muted-foreground text-sm selection:bg-secondary selection:text-secondary-foreground"
               onFocus={(e) => {
                 selectUrlText(e.currentTarget);
               }}
-              className="truncate border-0 font-mono text-muted-foreground text-sm selection:bg-secondary selection:text-secondary-foreground"
+              readOnly
+              ref={inputRef}
               title={t("participation.linkLabel")}
+              type="text"
+              value={participationUrl}
             />
             <InputGroupAddon>
               <InputGroupButton
-                variant="secondaryghost"
-                size="icon-xs"
+                aria-label={t("participation.copyClipboard")}
                 className="rounded-sm text-secondary"
                 onClick={copyToClipboard}
+                size="icon-xs"
                 title={t("participation.copyClipboard")}
-                aria-label={t("participation.copyClipboard")}
+                variant="secondaryghost"
               >
                 <CopyIcon />
               </InputGroupButton>
@@ -191,12 +196,12 @@ export function ParticipantsLinkControls({
           </InputGroup>
 
           {/* Button open link external */}
-          <Button size="icon" variant="secondary" className="sm:w-36" asChild>
+          <Button asChild className="sm:w-36" size="icon" variant="secondary">
             <a
               className="flex items-center gap-2"
               href={participationUrl}
+              rel={"noopener noreferrer"}
               target="_blank"
-              rel={`noopener noreferrer`}
             >
               <ExternalLinkIcon className="size-5" />
               <span className="hidden sm:inline">

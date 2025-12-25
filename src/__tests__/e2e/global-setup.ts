@@ -13,7 +13,7 @@ async function globalSetup(config: FullConfig) {
 
   try {
     const baseURL = config.projects[0].use.baseURL || env.NEXT_PUBLIC_BASE_URL;
-    await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
+    await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30_000 });
     console.log("✅ Server is running and accessible");
   } catch (error) {
     console.error("❌ Server is not accessible:", error);

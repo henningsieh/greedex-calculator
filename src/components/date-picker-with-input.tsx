@@ -6,7 +6,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface DatePickerWithInputProps {
   id: string;
@@ -28,7 +32,17 @@ function DatePickerWithInput({
   return (
     <div className="relative flex gap-2">
       <Input
+        className="cursor-pointer bg-background pr-10"
         id={id}
+        onClick={() => setOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+            e.preventDefault();
+            setOpen(true);
+          }
+        }}
+        placeholder={placeholder}
+        readOnly
         type="text"
         value={
           value
@@ -39,44 +53,34 @@ function DatePickerWithInput({
               })
             : ""
         }
-        placeholder={placeholder}
-        readOnly
-        className="cursor-pointer bg-background pr-10"
-        onClick={() => setOpen(true)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
-            e.preventDefault();
-            setOpen(true);
-          }
-        }}
       />
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover onOpenChange={setOpen} open={open}>
         <PopoverTrigger asChild>
           <Button
+            className="absolute top-1/2 right-1 size-7.5 -translate-y-1/2"
             type="button"
             variant="ghost"
-            className="-translate-y-1/2 absolute top-1/2 right-1 size-7.5"
           >
             <CalendarIcon className="size-3.5" />
             <span className="sr-only">Select date</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto overflow-hidden p-0"
           align="end"
           alignOffset={-8}
+          className="w-auto overflow-hidden p-0"
           sideOffset={10}
         >
           <Calendar
-            mode="single"
-            selected={value}
             captionLayout="dropdown"
+            mode="single"
             month={month}
             onMonthChange={setMonth}
             onSelect={(date) => {
               onChange(date);
               setOpen(false);
             }}
+            selected={value}
           />
         </PopoverContent>
       </Popover>
