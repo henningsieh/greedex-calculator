@@ -1,4 +1,3 @@
-=======
 ---
 applyTo: '**'
 url: https://ultracite.dev/docs/usage
