@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Permissions and access control model using Better Auth organization plugin
+---
+
 ## Permissions & Access Control (Better Auth)
 
 This consolidated document explains the abstract permissions model used in this project and the current concrete implementation. The design is an abstract, extensible access control pattern based on Better Auth's organization plugin and an access control statement. In this repository the model is currently implemented for the `project` resource — see `src/components/features/projects` for full implementation details.

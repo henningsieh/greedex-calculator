@@ -1,12 +1,10 @@
-# Last Login Method
-
-Track and display the last authentication method used by users
-
-***
-
-title: Last Login Method
+---
+applyTo: '**'
+url: https://www.better-auth.com/llms.txt/docs/plugins/last-login-method
 description: Track and display the last authentication method used by users
----------------------------------------------------------------------------
+---
+
+# Last Login Method
 
 The last login method plugin tracks the most recent authentication method used by users (email, OAuth providers, etc.). This enables you to display helpful indicators on login pages, such as "Last signed in with Google" or prioritize certain login methods based on user preferences.
 

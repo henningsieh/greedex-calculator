@@ -1,10 +1,9 @@
 ---
 applyTo: '**'
----
-
 title: Shadcn Empty Component
 description: Use the Empty component to display an empty state.
 component: true
+---
 
 <ComponentPreview name="empty-demo" className="[&_.preview]:p-0" />
 

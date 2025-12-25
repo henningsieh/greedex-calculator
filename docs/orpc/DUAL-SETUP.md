@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: oRPC dual setup - RPC endpoint for app use and OpenAPI endpoint for external integrations
+---
+
 # oRPC Dual Setup: RPC and OpenAPI
 
 This document describes the dual oRPC setup in this Next.js application, providing both efficient RPC calls for the application and REST/OpenAPI for external integrations and documentation.

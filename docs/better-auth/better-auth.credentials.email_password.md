@@ -1,12 +1,10 @@
+---
+applyTo: '**'
+url: https://www.better-auth.com/llms.txt/docs/authentication/email-password
+description: Implementing email and password authentication with Better Auth
+---
+
 # Email & Password
-
-Implementing email and password authentication with Better Auth.
-
-***
-
-title: Email & Password
-description: Implementing email and password authentication with Better Auth.
------------------------------------------------------------------------------
 
 Email and password authentication is a common method used by many applications. Better Auth provides a built-in email and password authenticator that you can easily integrate into your project.
 

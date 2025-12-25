@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Country selection utilities for EU countries, flags, and localized names
+---
+
 # Country Selection Utilities
 
 This document describes the country selection utilities available in `src/lib/i18n/countries.ts`.

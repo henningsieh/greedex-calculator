@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Next.js internationalization implementation guide using next-intl library
+---
+
 # Next.js Internationalization with next-intl
 
 This guide explains how internationalization (i18n) is implemented in this Next.js project using the `next-intl` library.

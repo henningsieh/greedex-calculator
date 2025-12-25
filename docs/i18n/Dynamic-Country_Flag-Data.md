@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Recommended approach for handling country and flag data dynamically
+---
+
 # Recommended Approach: Dynamic Country/Flag Data
 
 ### 1. **Install Required Libraries**

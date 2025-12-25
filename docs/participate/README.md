@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Greendex participant questionnaire documentation index
+---
+
 # Participate (Questionnaire) docs
 
 This folder contains documentation for the Greendex participant questionnaire used in the public participation flow.

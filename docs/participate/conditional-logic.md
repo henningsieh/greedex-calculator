@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: Conditional logic and step flow in the questionnaire
+---
+
 # Conditional Logic & Step Flow
 
 This file documents the questionnaire's conditional steps and how skip/undo/back navigation behaves depending on prior answers.
