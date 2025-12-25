@@ -11,7 +11,7 @@ import {
   type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { FilterXIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, FilterXIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import type z from "zod";
@@ -258,6 +258,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
                               onClick={() => header.column.toggleSorting()}
                               onKeyDown={(e) => {
                                 if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
                                   header.column.toggleSorting();
                                 }
                               }}
@@ -266,6 +267,12 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
                               {flexRender(
                                 header.column.columnDef.header,
                                 header.getContext(),
+                              )}
+                              {sortState === "asc" && (
+                                <ArrowUpIcon className="size-4" />
+                              )}
+                              {sortState === "desc" && (
+                                <ArrowDownIcon className="size-4" />
                               )}
                             </button>
                           );
