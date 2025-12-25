@@ -15,7 +15,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 border-b bg-background/20 backdrop-blur-sm">
       <div className="mx-auto flex h-[63px] items-center p-2">
         <div className="flex w-full items-center justify-between">
-          <Link href="/" className="flex gap-2">
+          <Link className="flex gap-2" href="/">
             <Logo />
           </Link>
           <div className="flex items-center gap-2 px-2 md:gap-3 lg:gap-4">

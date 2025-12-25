@@ -1,29 +1,20 @@
+// biome-ignore lint/performance/noNamespaceImport: <the list of country flags is flexible and will chqange based on supported locales>
 import * as Flags from "country-flag-icons/react/3x2";
 import countries from "i18n-iso-countries";
 import deCountries from "i18n-iso-countries/langs/de.json";
 import enCountries from "i18n-iso-countries/langs/en.json";
 import type { ComponentType, SVGProps } from "react";
-import {
-  EU_COUNTRY_CODES,
-  type EUCountryCode,
-  isEUCountry as isEUCountryBase,
-} from "@/config/eu-countries";
-import { SUPPORTED_LOCALES } from "@/config/Languages";
+import { SUPPORTED_LOCALES } from "@/config/languages";
 
 // Register country locales for supported languages
 countries.registerLocale(enCountries);
 countries.registerLocale(deCountries);
 
-/**
- * Re-export EU country codes and type from the central configuration
- */
-export { EU_COUNTRY_CODES, type EUCountryCode };
-
-/**
- * Type alias for country codes - using EU countries for type safety
- * Based on i18n-iso-countries EU member states
- */
-export type CountryCode = EUCountryCode;
+import {
+  EU_COUNTRY_CODES,
+  type EUCountryCode,
+  isEUCountry as isEUCountryBase,
+} from "@/config/eu-countries";
 
 export interface CountryData {
   code: string;

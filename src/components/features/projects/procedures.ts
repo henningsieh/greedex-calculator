@@ -264,7 +264,10 @@ export const updateProject = authorized
       .where(
         and(
           eq(projectsTable.id, input.id),
-          eq(projectsTable.organizationId, context.session.activeOrganizationId),
+          eq(
+            projectsTable.organizationId,
+            context.session.activeOrganizationId,
+          ),
         ),
       )
       .limit(1);
@@ -275,7 +278,9 @@ export const updateProject = authorized
       });
     }
 
-    if (existingProject.organizationId !== context.session.activeOrganizationId) {
+    if (
+      existingProject.organizationId !== context.session.activeOrganizationId
+    ) {
       throw errors.FORBIDDEN({
         message: "You don't have permission to update this project",
       });
@@ -347,7 +352,10 @@ export const deleteProject = authorized
       .where(
         and(
           eq(projectsTable.id, input.id),
-          eq(projectsTable.organizationId, context.session.activeOrganizationId),
+          eq(
+            projectsTable.organizationId,
+            context.session.activeOrganizationId,
+          ),
         ),
       )
       .limit(1);
@@ -391,7 +399,8 @@ export const setActiveProject = authorized
     if (input.projectId) {
       if (!context.session.activeOrganizationId) {
         throw errors.BAD_REQUEST({
-          message: "No active organization. Please select an organization first.",
+          message:
+            "No active organization. Please select an organization first.",
         });
       }
 
@@ -483,7 +492,10 @@ export const getProjectParticipants = authorized
       .where(
         and(
           eq(projectsTable.id, input.projectId),
-          eq(projectsTable.organizationId, context.session.activeOrganizationId),
+          eq(
+            projectsTable.organizationId,
+            context.session.activeOrganizationId,
+          ),
         ),
       )
       .limit(1);
@@ -563,7 +575,10 @@ export const batchDeleteProjects = authorized
       .where(
         and(
           inArray(projectsTable.id, input.projectIds),
-          eq(projectsTable.organizationId, context.session.activeOrganizationId),
+          eq(
+            projectsTable.organizationId,
+            context.session.activeOrganizationId,
+          ),
         ),
       );
 
@@ -580,7 +595,10 @@ export const batchDeleteProjects = authorized
       .where(
         and(
           inArray(projectsTable.id, input.projectIds),
-          eq(projectsTable.organizationId, context.session.activeOrganizationId),
+          eq(
+            projectsTable.organizationId,
+            context.session.activeOrganizationId,
+          ),
         ),
       );
 
@@ -781,14 +799,18 @@ export const updateProjectActivity = authorized
       });
     }
 
-    if (existingActivity.projectOrgId !== context.session.activeOrganizationId) {
+    if (
+      existingActivity.projectOrgId !== context.session.activeOrganizationId
+    ) {
       throw errors.FORBIDDEN({
         message: "You don't have permission to update this activity",
       });
     }
 
     const { distanceKm, ...restData } = input.data;
-    const updateData: typeof restData & { distanceKm?: string } = { ...restData };
+    const updateData: typeof restData & { distanceKm?: string } = {
+      ...restData,
+    };
     if (distanceKm !== undefined) {
       updateData.distanceKm = distanceKm.toString();
     }
@@ -859,7 +881,9 @@ export const deleteProjectActivity = authorized
       });
     }
 
-    if (existingActivity.projectOrgId !== context.session.activeOrganizationId) {
+    if (
+      existingActivity.projectOrgId !== context.session.activeOrganizationId
+    ) {
       throw errors.FORBIDDEN({
         message: "You don't have permission to delete this activity",
       });

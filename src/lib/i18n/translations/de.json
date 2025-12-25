@@ -868,6 +868,37 @@
       "heroCaption": "Greendex macht Klima-Storys sichtbar, damit ihr euch auf die Umsetzung konzentrieren könnt.",
       "heroStatOne": "24 % schnellere Impact-Reports",
       "heroStatTwo": "88 % planeten-freundliche Check-ins"
+    },
+    "verifyEmail": {
+      "emailRequired": {
+        "title": "E-Mail erforderlich",
+        "description": "Keine E-Mail-Adresse wurde angegeben. Bitte melde dich an oder registriere dich erneut.",
+        "goToSignUp": "Zur Registrierung"
+      },
+      "title": "E-Mail verifizieren",
+      "description": "Wir haben eine Bestätigungs-E-Mail gesendet an",
+      "steps": {
+        "title": "Was passiert als nächstes?",
+        "checkInbox": "Überprüfe dein Postfach auf die Bestätigungs-E-Mail",
+        "clickLink": "Klicke auf den Bestätigungs-Link in der E-Mail",
+        "autoSignIn": "Du wirst automatisch angemeldet und weitergeleitet"
+      },
+      "important": {
+        "label": "Wichtig:",
+        "text": "Du musst deine E-Mail verifizieren, bevor du dich anmelden kannst."
+      },
+      "resend": {
+        "sending": "Wird gesendet...",
+        "button": "Bestätigungs-E-Mail erneut senden",
+        "disabled": "Erneut senden in {countdown}s",
+        "footer": "Hast du die E-Mail nicht erhalten? Überprüfe deinen Spam-Ordner oder versuche es erneut."
+      },
+      "toast": {
+        "emailRequired": "E-Mail-Adresse ist erforderlich",
+        "waitBeforeResend": "Bitte warte {countdown} Sekunden, bevor du erneut sendest",
+        "success": "Bestätigungs-E-Mail erfolgreich gesendet!",
+        "error": "Bestätigungs-E-Mail konnte nicht gesendet werden"
+      }
     }
   },
   "header": {

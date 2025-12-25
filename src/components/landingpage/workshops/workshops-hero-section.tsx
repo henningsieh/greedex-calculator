@@ -19,8 +19,8 @@ export async function WorkshopsHeroSection() {
   const intro2Parts = intro2.split("workshops");
   return (
     <section
-      id="workshops"
       className="relative min-h-[calc(100vh-5rem)] overflow-hidden py-24 md:py-32"
+      id="workshops"
     >
       <BackgroundAnimations />
 
@@ -44,11 +44,8 @@ export async function WorkshopsHeroSection() {
         </div>
 
         <AnimatedGroup
+          className="mx-auto mt-8 grid max-w-6xl gap-6 px-4 md:mt-12 md:grid-cols-3"
           triggerOnView
-          viewport={{
-            once: true,
-            amount: 0.35,
-          }}
           variants={{
             container: {
               visible: {
@@ -74,7 +71,10 @@ export async function WorkshopsHeroSection() {
               },
             },
           }}
-          className="mx-auto mt-8 grid max-w-6xl gap-6 px-4 md:mt-12 md:grid-cols-3"
+          viewport={{
+            once: true,
+            amount: 0.35,
+          }}
         >
           {WORKSHOPS.map((workshop) => {
             const workshopId = workshop.id;
@@ -84,19 +84,19 @@ export async function WorkshopsHeroSection() {
 
             return (
               <Link
-                key={workshop.id}
-                href={`/workshops?type=${workshop.id}`}
                 className="group block h-full"
+                href={`/workshops?type=${workshop.id}`}
+                key={workshop.id}
               >
-                <Card className="group-hover:-translate-y-1 flex h-full flex-col overflow-hidden border-border/40 bg-card/40 backdrop-blur-sm transition-all duration-300 will-change-transform group-hover:shadow-2xl group-hover:shadow-primary/10">
+                <Card className="flex h-full flex-col overflow-hidden border-border/40 bg-card/40 backdrop-blur-sm transition-all duration-300 will-change-transform group-hover:-translate-y-1 group-hover:shadow-2xl group-hover:shadow-primary/10">
                   <CardHeader className="p-0">
                     <div className="relative h-44 w-full">
                       <Image
-                        src={workshop.image}
                         alt={title}
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        src={workshop.image}
                       />
                     </div>
                     <CardTitle className="space-y-3 p-6 text-center">

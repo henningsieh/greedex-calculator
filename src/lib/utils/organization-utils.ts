@@ -32,7 +32,9 @@ const RANDOM_STRING_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
  * - collapses multiple `-` and trims leading/trailing `-`
  */
 function slugify(input: string) {
-  if (!input) return "";
+  if (!input) {
+    return "";
+  }
   return (
     input
       .toString()
@@ -54,7 +56,9 @@ function randomString(length = DEFAULT_RANDOM_STRING_LENGTH) {
   let out = "";
   for (let i = 0; i < length; i++) {
     out +=
-      RANDOM_STRING_CHARS[Math.floor(Math.random() * RANDOM_STRING_CHARS.length)];
+      RANDOM_STRING_CHARS[
+        Math.floor(Math.random() * RANDOM_STRING_CHARS.length)
+      ];
   }
   return out;
 }

@@ -44,7 +44,7 @@ import {
   PROJECTS_PATH,
   SETTINGS_PATH,
   TEAM_PATH,
-} from "@/config/AppRoutes";
+} from "@/config/app-routes";
 import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import { Link, usePathname } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
@@ -123,7 +123,7 @@ export function AppBreadcrumb() {
   }
 
   // Otherwise, render organization-level breadcrumb
-  return <AppBreadcrumbOrgLevel pathname={pathname} pathInfo={pathInfo} />;
+  return <AppBreadcrumbOrgLevel pathInfo={pathInfo} pathname={pathname} />;
 }
 
 /**
@@ -161,11 +161,11 @@ function AppBreadcrumbOrgLevel({
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link
-                href={DASHBOARD_PATH}
                 className={cn(
                   "flex items-center gap-2 transition-colors duration-300",
                   primaryColorClasses,
                 )}
+                href={DASHBOARD_PATH}
               >
                 <span className={cn("rounded-full p-1.5", iconBgClasses)}>
                   <Building2Icon className="size-4" />
@@ -206,8 +206,8 @@ function AppBreadcrumbOrgLevel({
         {canCreate && pathInfo?.section !== "create-project" && (
           <CreateProjectButton
             className="hidden sm:inline-flex"
-            variant="secondary"
             showIcon={true}
+            variant="secondary"
           />
         )}
       </div>
@@ -280,11 +280,11 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link
-                href={DASHBOARD_PATH}
                 className={cn(
                   "flex items-center gap-2 transition-colors duration-300",
                   primaryColorClasses,
                 )}
+                href={DASHBOARD_PATH}
               >
                 <span className={cn("rounded-md p-1.5", iconBgClasses)}>
                   <Building2Icon className="size-4" />
@@ -302,11 +302,11 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link
-                href={PROJECTS_PATH}
                 className={cn(
                   "flex items-center gap-2 transition-colors duration-300",
                   primaryColorClasses,
                 )}
+                href={PROJECTS_PATH}
               >
                 <PROJECT_ICONS.projects className="size-4" />
                 <span className="font-semibold">
@@ -332,13 +332,13 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
 
       {/* Action toolbar */}
       <div className="flex items-center gap-2">
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog onOpenChange={setOpen} open={open}>
           <DialogTrigger asChild>
             <Button
-              size="sm"
-              variant="secondaryghost"
               className="border-secondary/40 text-secondary"
               disabled={!canUpdate || permissionsPending}
+              size="sm"
+              variant="secondaryghost"
             >
               <Edit2Icon className="h-4 w-4" />
               <span className="ml-1 hidden sm:inline">Edit</span>
@@ -349,15 +349,14 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
               <DialogTitle>Edit project</DialogTitle>
             </DialogHeader>
             <EditProjectForm
-              project={currentProject}
               onSuccess={() => setOpen(false)}
+              project={currentProject}
             />
           </DialogContent>
         </Dialog>
 
         <Button
-          size="sm"
-          variant="destructive"
+          disabled={!canDelete || isDeleting || permissionsPending}
           onClick={async () => {
             const confirmed = await confirm({
               title: "Delete project",
@@ -374,7 +373,8 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
               }
             }
           }}
-          disabled={!canDelete || isDeleting || permissionsPending}
+          size="sm"
+          variant="destructive"
         >
           <Trash2Icon className="h-4 w-4" />
         </Button>

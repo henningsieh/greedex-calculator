@@ -2,8 +2,7 @@
 
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useLocale } from "next-intl";
-import * as React from "react";
-
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -13,7 +12,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { getAllCountries, getEUCountries } from "@/lib/i18n/countries";
 import { cn } from "@/lib/utils";
 
@@ -48,9 +51,9 @@ export function CountrySelect({
   disabled = false,
 }: CountrySelectProps) {
   const locale = useLocale();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const countries = React.useMemo(
+  const countries = useMemo(
     () => (euOnly ? getEUCountries(locale) : getAllCountries(locale)),
     [euOnly, locale],
   );
@@ -58,14 +61,14 @@ export function CountrySelect({
   const selectedCountry = countries.find((country) => country.code === value);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           aria-expanded={open}
           className={cn("w-full justify-between", className)}
           disabled={disabled}
+          role="combobox"
+          variant="outline"
         >
           {selectedCountry ? (
             <span className="flex items-center gap-2">
@@ -80,7 +83,7 @@ export function CountrySelect({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0" align="start">
+      <PopoverContent align="start" className="w-[300px] p-0">
         <Command>
           <CommandInput placeholder="Search country..." />
           <CommandList>
@@ -89,12 +92,12 @@ export function CountrySelect({
               {countries.map((country) => (
                 <CommandItem
                   key={country.code}
-                  value={country.code}
                   keywords={[country.name, country.code]}
                   onSelect={(currentValue) => {
                     onValueChange(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
+                  value={country.code}
                 >
                   <Check
                     className={cn(

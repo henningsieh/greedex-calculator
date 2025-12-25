@@ -8,13 +8,13 @@ import {
   DISTANCE_KM_STEP,
   MIN_DISTANCE_KM,
 } from "@/components/features/projects/types";
+import { EU_COUNTRY_CODES } from "@/config/eu-countries";
 import {
   organization,
   projectActivitiesTable,
   projectsTable,
   user,
 } from "@/lib/drizzle/schema";
-import { EU_COUNTRY_CODES } from "@/lib/i18n/countries";
 import { validateDistanceStep } from "@/lib/utils/distance-utils";
 
 // Common form field extensions with custom error messages
@@ -129,9 +129,11 @@ export const ActivityFormItemSchema = CreateActivityInputSchema.omit({
 });
 
 // Combined form schema with optional activities
-export const CreateProjectWithActivitiesSchema = ProjectCreateFormSchema.extend({
-  activities: z.array(ActivityFormItemSchema).optional(),
-});
+export const CreateProjectWithActivitiesSchema = ProjectCreateFormSchema.extend(
+  {
+    activities: z.array(ActivityFormItemSchema).optional(),
+  },
+);
 
 export type CreateProjectWithActivities = z.infer<
   typeof CreateProjectWithActivitiesSchema

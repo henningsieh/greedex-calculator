@@ -23,11 +23,11 @@ export function LastUsedBadge({
 
   return (
     <Badge
-      variant={variant}
       className={cn(
-        "-top-7.5 absolute self-center border border-secondary bg-secondary/50 text-secondary-foreground",
+        "absolute -top-7.5 self-center border border-secondary bg-secondary/50 text-secondary-foreground",
         className,
       )}
+      variant={variant}
       {...props}
     >
       {label}

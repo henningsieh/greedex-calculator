@@ -32,7 +32,7 @@ import {
   FORGOT_PASSWORD_PATH,
   SIGNUP_PATH,
   VERIFY_EMAIL_PATH,
-} from "@/config/AppRoutes";
+} from "@/config/app-routes";
 import { env } from "@/env";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { Link, useRouter } from "@/lib/i18n/routing";
@@ -147,7 +147,7 @@ export function LoginForm({
 
         <CardContent className="px-0">
           {/* Badges are positioned absolute within the relative containers in the top right */}
-          <Tabs defaultValue="password" className="w-full space-y-5">
+          <Tabs className="w-full space-y-5" defaultValue="password">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger className="relative" value="password">
                 {t("login.tabs.password")}
@@ -165,42 +165,42 @@ export function LoginForm({
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FieldGroup className="">
                   <FormField
-                    name="email"
                     control={form.control}
                     id="email"
-                    type="email"
-                    label={t("login.fields.email")}
-                    placeholder={t("login.fields.emailPlaceholder")}
                     inputProps={{
                       disabled: form.formState.isSubmitting,
                     }}
+                    label={t("login.fields.email")}
+                    name="email"
+                    placeholder={t("login.fields.emailPlaceholder")}
+                    type="email"
                   />
                   <FormField
-                    name="password"
                     control={form.control}
                     id="password"
-                    type="password"
+                    inputProps={{
+                      disabled: form.formState.isSubmitting,
+                    }}
                     label={t("login.fields.password")}
+                    name="password"
                     rightLabel={
-                      <Button variant="link" className="px-0" asChild>
+                      <Button asChild className="px-0" variant="link">
                         <Link
-                          href={FORGOT_PASSWORD_PATH}
                           className="ml-auto text-sm underline-offset-4 hover:underline"
+                          href={FORGOT_PASSWORD_PATH}
                         >
                           {t("login.fields.forgotPassword")}
                         </Link>
                       </Button>
                     }
-                    inputProps={{
-                      disabled: form.formState.isSubmitting,
-                    }}
+                    type="password"
                   />
 
                   <Button
                     className="mt-2"
+                    disabled={form.formState.isSubmitting}
                     type="submit"
                     variant="default"
-                    disabled={form.formState.isSubmitting}
                   >
                     {form.formState.isSubmitting
                       ? t("login.buttons.signingIn")
@@ -213,22 +213,22 @@ export function LoginForm({
               <form onSubmit={magicLinkForm.handleSubmit(onMagicLinkSubmit)}>
                 <FieldGroup className="gap-4">
                   <FormField
-                    name="email"
                     control={magicLinkForm.control}
-                    label={t("login.fields.email")}
                     id="magic-email"
-                    type="email"
-                    placeholder={t("login.fields.emailPlaceholder")}
                     inputProps={{
                       disabled: magicLinkForm.formState.isSubmitting,
                     }}
+                    label={t("login.fields.email")}
+                    name="email"
+                    placeholder={t("login.fields.emailPlaceholder")}
+                    type="email"
                   />
 
                   <Button
                     className="mt-2"
+                    disabled={magicLinkForm.formState.isSubmitting}
                     type="submit"
                     variant="default"
-                    disabled={magicLinkForm.formState.isSubmitting}
                   >
                     {magicLinkForm.formState.isSubmitting
                       ? t("login.buttons.sending")
@@ -257,7 +257,7 @@ export function LoginForm({
                     )}`;
                   }
                   return (
-                    <Button variant="link" className="px-0 pl-1" asChild>
+                    <Button asChild className="px-0 pl-1" variant="link">
                       <Link href={signupHref}>{t("login.footer.signUp")}</Link>
                     </Button>
                   );
@@ -269,8 +269,8 @@ export function LoginForm({
               </FieldSeparator>
 
               <SocialButtons
-                disabled={form.formState.isSubmitting}
                 callbackUrl={callbackURL}
+                disabled={form.formState.isSubmitting}
                 lastLoginMethod={lastLoginMethod}
               />
             </Field>

@@ -15,6 +15,7 @@ import {
 } from "@/components/features/projects/permissions";
 import { env } from "@/env";
 import { db } from "@/lib/drizzle/db";
+// biome-ignore lint/performance/noNamespaceImport: <import all schemes from a single entry point>
 import * as schema from "@/lib/drizzle/schema";
 import { member } from "@/lib/drizzle/schema";
 import {
@@ -156,7 +157,7 @@ export const auth = betterAuth({
       },
 
       update: {
-        before: async (session) => {
+        before: (session, _context) => {
           // console.log("=== SESSION UPDATE HOOK CALLED ===");
           // console.log(
           //   "Incoming session object:",
@@ -183,7 +184,7 @@ export const auth = betterAuth({
           // console.log("Returning:", JSON.stringify(result, null, 2));
           // console.log("=== END HOOK ===");
 
-          return result;
+          return Promise.resolve(result);
         },
       },
     },

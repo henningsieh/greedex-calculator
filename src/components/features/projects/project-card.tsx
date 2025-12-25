@@ -1,7 +1,12 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Edit2Icon, EyeIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import {
+  Edit2Icon,
+  EyeIcon,
+  MoreHorizontalIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useFormatter } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -104,8 +109,8 @@ export function ProjectCard({ project }: ProjectDetailCardProps) {
   return (
     <>
       <DropdownMenu>
-        <Link href={getProjectDetailPath(project.id)} className="block">
-          <Card key={project.id} className="transition-transform duration-150">
+        <Link className="block" href={getProjectDetailPath(project.id)}>
+          <Card className="transition-transform duration-150" key={project.id}>
             <CardHeader>
               <div className="flex-1">
                 <CardTitle className="truncate font-semibold text-lg leading-none">
@@ -119,10 +124,10 @@ export function ProjectCard({ project }: ProjectDetailCardProps) {
               <CardAction className="">
                 <DropdownMenuTrigger asChild>
                   <Button
-                    variant="outline"
-                    size="icon"
                     className="h-8 w-8 p-0"
                     onClick={(e) => e.stopPropagation()}
+                    size="icon"
+                    variant="outline"
                   >
                     <span className="sr-only">Open actions</span>
                     <MoreHorizontalIcon className="h-4 w-4" />
@@ -158,8 +163,8 @@ export function ProjectCard({ project }: ProjectDetailCardProps) {
 
           <DropdownMenuItem asChild>
             <Link
-              href={getProjectDetailPath(project.id)}
               className="flex items-center gap-2"
+              href={getProjectDetailPath(project.id)}
             >
               <EyeIcon className="mr-2 h-4 w-4" />
               <span>View Details</span>
@@ -175,9 +180,9 @@ export function ProjectCard({ project }: ProjectDetailCardProps) {
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={handleDelete}
-                disabled={isDeleting || permissionsPending}
                 className="text-destructive"
+                disabled={isDeleting || permissionsPending}
+                onClick={handleDelete}
               >
                 <Trash2Icon className="mr-2 h-4 w-4" />
                 Delete Project
@@ -188,14 +193,14 @@ export function ProjectCard({ project }: ProjectDetailCardProps) {
       </DropdownMenu>
 
       {canUpdate && (
-        <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <Dialog onOpenChange={setIsEditModalOpen} open={isEditModalOpen}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Edit Project</DialogTitle>
             </DialogHeader>
             <EditProjectForm
-              project={project}
               onSuccess={() => setIsEditModalOpen(false)}
+              project={project}
             />
           </DialogContent>
         </Dialog>

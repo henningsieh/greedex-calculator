@@ -1,7 +1,7 @@
 import { LastUsedBadge } from "@/components/features/authentication/last-used-badge";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { DASHBOARD_PATH } from "@/config/AppRoutes";
+import { DASHBOARD_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
 import {
   SUPPORTED_OAUTH_PROVIDER_DETAILS,
@@ -15,11 +15,16 @@ interface Props {
   lastLoginMethod?: string | null;
 }
 
-export function SocialButtons({ disabled, callbackUrl, lastLoginMethod }: Props) {
+export function SocialButtons({
+  disabled,
+  callbackUrl,
+  lastLoginMethod,
+}: Props) {
   const handleSocialSignIn = async (provider: SupportedOAuthProvider) => {
     await authClient.signIn.social({
       provider,
-      callbackURL: typeof callbackUrl === "string" ? callbackUrl : DASHBOARD_PATH,
+      callbackURL:
+        typeof callbackUrl === "string" ? callbackUrl : DASHBOARD_PATH,
     });
   };
 
@@ -30,16 +35,16 @@ export function SocialButtons({ disabled, callbackUrl, lastLoginMethod }: Props)
           const { name, Icon } = SUPPORTED_OAUTH_PROVIDER_DETAILS[provider];
 
           return (
-            <div key={provider} className="relative grow">
+            <div className="relative grow" key={provider}>
               {lastLoginMethod && lastLoginMethod === provider && (
                 <LastUsedBadge className="-top-7" />
               )}
               <Button
+                className="w-full"
+                disabled={disabled}
+                onClick={() => handleSocialSignIn(provider)}
                 type="button"
                 variant="outline"
-                className="w-full"
-                onClick={() => handleSocialSignIn(provider)}
-                disabled={disabled}
               >
                 <Icon />
                 {name}

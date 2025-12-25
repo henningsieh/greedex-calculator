@@ -6,7 +6,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "production", "test"]),
     PORT: z.preprocess(
       (val) => (typeof val === "string" ? Number(val) : val),
-      z.number().int().min(1).max(65535),
+      z.number().int().min(1).max(65_535),
     ),
     ORPC_DEV_DELAY_MS: z.preprocess(
       (val) => (typeof val === "string" ? Number(val) : val),
@@ -61,7 +61,7 @@ export const env = createEnv({
       .transform((value) => value === "true"),
     SOCKET_PORT: z.preprocess(
       (val) => (typeof val === "string" ? Number(val) : val),
-      z.number().int().min(1).max(65535),
+      z.number().int().min(1).max(65_535),
     ),
     NEXT_DIST_DIR: z.string().min(1),
   },

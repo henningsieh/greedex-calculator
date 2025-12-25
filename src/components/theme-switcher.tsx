@@ -24,12 +24,12 @@ const themes = [
   },
 ];
 
-export type ThemeSwitcherProps = {
+export interface ThemeSwitcherProps {
   value?: "light" | "dark" | "system";
   onChange?: (theme: "light" | "dark" | "system") => void;
   defaultValue?: "light" | "dark" | "system";
   className?: string;
-};
+}
 
 export const ThemeSwitcher = ({
   value,
@@ -78,11 +78,11 @@ export const ThemeSwitcher = ({
       )}
     >
       <motion.div
-        className="absolute left-0 h-6 w-6 rounded-full bg-accent"
-        style={{ top: "calc(50% - 11.5px)" }}
         animate={{
           x: [3.8, 26.8, 50][themes.findIndex((t) => t.key === currentTheme)],
         }}
+        className="absolute left-0 h-6 w-6 rounded-full bg-accent"
+        style={{ top: "calc(50% - 11.5px)" }}
         transition={{
           type: "spring",
           duration: 0.3,
@@ -100,11 +100,11 @@ export const ThemeSwitcher = ({
             type="button"
           >
             <Icon
-              strokeWidth="2.6"
               className={cn(
                 "relative m-auto h-4 w-4",
                 isActive ? "text-accent-foreground" : "text-muted-foreground",
               )}
+              strokeWidth="2.6"
             />
           </button>
         );

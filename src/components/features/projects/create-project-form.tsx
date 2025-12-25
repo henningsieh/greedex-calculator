@@ -238,9 +238,9 @@ export function CreateProjectForm({
           <FieldGroup>
             <FormField
               control={control}
-              name="name"
-              label={t("name")}
               description={t("name-description")}
+              label={t("name")}
+              name="name"
             />
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -252,12 +252,14 @@ export function CreateProjectForm({
                   render={({ field }) => (
                     <DatePickerWithInput
                       id="startDate"
-                      value={field.value}
                       onChange={field.onChange}
+                      value={field.value}
                     />
                   )}
                 />
-                <FieldDescription>{t("start-date-description")}</FieldDescription>
+                <FieldDescription>
+                  {t("start-date-description")}
+                </FieldDescription>
                 <FieldError errors={[errors.startDate]} />
               </Field>
 
@@ -269,8 +271,8 @@ export function CreateProjectForm({
                   render={({ field }) => (
                     <DatePickerWithInput
                       id="endDate"
-                      value={field.value}
                       onChange={field.onChange}
+                      value={field.value}
                     />
                   )}
                 />
@@ -286,10 +288,10 @@ export function CreateProjectForm({
                 name="country"
                 render={({ field }) => (
                   <CountrySelect
-                    value={field.value}
-                    onValueChange={field.onChange}
                     euOnly={true}
+                    onValueChange={field.onChange}
                     placeholder={t("country-placeholder")}
+                    value={field.value}
                   />
                 )}
               />
@@ -299,9 +301,9 @@ export function CreateProjectForm({
 
             <FormField
               control={control}
-              name="location"
-              label={t("location")}
               description={t("location-description")}
+              label={t("location")}
+              name="location"
             />
 
             <Field>
@@ -315,10 +317,10 @@ export function CreateProjectForm({
             </Field>
 
             <Button
+              className="w-fit"
+              onClick={handleNextStep}
               type="button"
               variant="secondary"
-              onClick={handleNextStep}
-              className="w-fit"
             >
               {tActivities("title")}
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -331,7 +333,9 @@ export function CreateProjectForm({
           <FieldGroup>
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">{tActivities("title")}</CardTitle>
+                <CardTitle className="text-lg">
+                  {tActivities("title")}
+                </CardTitle>
                 <p className="text-muted-foreground text-sm">
                   {tActivities("description")}
                 </p>
@@ -344,15 +348,15 @@ export function CreateProjectForm({
                 ) : (
                   fields.map((field, index) => (
                     <div
-                      key={field.id}
                       className="relative rounded-lg border p-4"
+                      key={field.id}
                     >
                       <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
                         className="absolute top-2 right-2"
                         onClick={() => remove(index)}
+                        size="icon"
+                        type="button"
+                        variant="ghost"
                       >
                         <Trash2 className="h-4 w-4 text-destructive" />
                       </Button>
@@ -394,7 +398,9 @@ export function CreateProjectForm({
                         </Field>
 
                         <Field
-                          data-invalid={!!errors.activities?.[index]?.distanceKm}
+                          data-invalid={
+                            !!errors.activities?.[index]?.distanceKm
+                          }
                         >
                           <FieldLabel htmlFor={`activities.${index}.distance`}>
                             {tActivities("form.distance")}
@@ -405,18 +411,19 @@ export function CreateProjectForm({
                             render={({ field }) => (
                               <Input
                                 id={`activities.${index}.distance`}
-                                type="number"
-                                step={DISTANCE_KM_STEP}
                                 min={MIN_DISTANCE_KM}
+                                onChange={(e) =>
+                                  field.onChange(
+                                    Number.parseFloat(e.target.value) ||
+                                      MIN_DISTANCE_KM,
+                                  )
+                                }
                                 placeholder={tActivities(
                                   "form.distance-placeholder",
                                 )}
+                                step={DISTANCE_KM_STEP}
+                                type="number"
                                 value={field.value || ""}
-                                onChange={(e) =>
-                                  field.onChange(
-                                    parseFloat(e.target.value) || MIN_DISTANCE_KM,
-                                  )
-                                }
                               />
                             )}
                           />
@@ -440,11 +447,11 @@ export function CreateProjectForm({
                 )}
 
                 <Button
+                  className="w-full"
+                  onClick={addActivity}
+                  size="sm"
                   type="button"
                   variant="outline"
-                  size="sm"
-                  onClick={addActivity}
-                  className="w-full"
                 >
                   <Plus className="mr-2 h-4 w-4" />
                   {tActivities("form.title")}
@@ -454,20 +461,22 @@ export function CreateProjectForm({
 
             <div className="flex gap-2">
               <Button
+                className="w-fit"
+                onClick={() =>
+                  setCurrentStep(PROJECT_FORM_STEPS.PROJECT_DETAILS)
+                }
                 type="button"
                 variant="outline"
-                onClick={() => setCurrentStep(PROJECT_FORM_STEPS.PROJECT_DETAILS)}
-                className="w-fit"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 {t("back")}
               </Button>
 
               <Button
+                className="w-fit"
+                disabled={isCreatingProject}
                 type="submit"
                 variant="secondary"
-                disabled={isCreatingProject}
-                className="w-fit"
               >
                 {isCreatingProject ? (
                   t("creating")

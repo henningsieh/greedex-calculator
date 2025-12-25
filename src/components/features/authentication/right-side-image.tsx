@@ -2,10 +2,11 @@
 
 import { motion } from "motion/react";
 import Image from "next/image";
+import { useId } from "react";
 import { AnimatedGroup } from "@/components/animated-group";
 import { cn } from "@/lib/utils";
 
-type RightSideImageProps = {
+interface RightSideImageProps {
   headline: string;
   description: string;
   highlights: string[];
@@ -14,7 +15,7 @@ type RightSideImageProps = {
   heroCaption: string;
   heroStatOne: string;
   heroStatTwo: string;
-};
+}
 
 export function RightSideImage({
   headline,
@@ -26,6 +27,8 @@ export function RightSideImage({
   heroStatOne,
   heroStatTwo,
 }: RightSideImageProps) {
+  const baseId = useId();
+
   return (
     <div className="relative hidden w-full max-w-xl lg:flex lg:w-1/2 lg:max-w-none">
       <AnimatedGroup
@@ -66,11 +69,12 @@ export function RightSideImage({
         </div>
 
         {/* Highlights list */}
+
         <ul className="relative z-10 grid gap-2 text-sm">
           {highlights.map((value, index) => (
             <li
-              key={`${value}-${index}`}
               className="flex items-center gap-3 rounded-2xl border border-border/50 bg-muted/30 px-3 py-2 font-medium text-sm backdrop-blur-sm"
+              key={`${baseId}-${index}`}
             >
               <span className="h-2 w-2 flex-shrink-0 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
               <span className="text-foreground">{value}</span>
@@ -90,16 +94,16 @@ export function RightSideImage({
 
         {/* Hero image */}
         <motion.div
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.4 }}
           className="relative z-10 h-52 w-full overflow-hidden rounded-3xl border border-border/50 bg-muted/30 shadow-lg"
+          transition={{ duration: 0.4 }}
+          whileHover={{ scale: 1.02 }}
         >
           <Image
-            src="/Greendex-hero-banner.png"
             alt="Greendex dashboards"
+            className="object-cover"
             fill
             sizes="(max-width: 1024px) 100vw, 540px"
-            className="object-cover"
+            src="/Greendex-hero-banner.png"
           />
         </motion.div>
 

@@ -19,8 +19,8 @@ export function WorkshopContent({
 
   return (
     <Tabs
-      value={type}
       onValueChange={(value) => setType(value as CalculatorType)}
+      value={type}
     >
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="moment">Greendex Moment</TabsTrigger>
@@ -28,15 +28,15 @@ export function WorkshopContent({
         <TabsTrigger value="day">Greendex Day</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="moment" className="mt-8">
+      <TabsContent className="mt-8" value="moment">
         <WorkshopDetails type="moment" />
       </TabsContent>
 
-      <TabsContent value="deal" className="mt-8">
+      <TabsContent className="mt-8" value="deal">
         <WorkshopDetails type="deal" />
       </TabsContent>
 
-      <TabsContent value="day" className="mt-8">
+      <TabsContent className="mt-8" value="day">
         <WorkshopDetails type="day" />
       </TabsContent>
     </Tabs>

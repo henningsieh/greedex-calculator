@@ -70,13 +70,13 @@ export function ParticipantsList({ activeProjectId }: ParticipantsListProps) {
         <CardContent>
           {participants.map((participant) => (
             <div
-              key={participant.id}
               className="flex items-center gap-4 rounded-xl border border-secondary/20 bg-background p-4 transition-colors hover:border-secondary/40 hover:bg-secondary/5"
+              key={participant.id}
             >
               <Avatar>
                 <AvatarImage
-                  src={participant.user.image || undefined}
                   alt={participant.user.name}
+                  src={participant.user.image || undefined}
                 />
                 <AvatarFallback>
                   {participant.user.name.charAt(0).toUpperCase()}
@@ -122,17 +122,17 @@ export function ParticipantsListSkeleton() {
             <div className="animate-pulse font-medium text-secondary/70 text-xs uppercase tracking-[0.2em]">
               {t("participants")}
             </div>
-            <div className="mt-1 h-6 w-32 animate-pulse rounded bg-secondary/50"></div>
+            <div className="mt-1 h-6 w-32 animate-pulse rounded bg-secondary/50" />
           </div>
         </div>
       </CardHeader>
 
       <CardContent>
         <div className="space-y-2">
-          {[...Array(7)].map((_, index) => (
+          {[...new Array(7)].map((_, index) => (
             <div
-              key={index}
               className="flex animate-pulse items-center gap-4 rounded-xl border border-secondary/20 bg-background p-4"
+              key={index}
             >
               <div className="h-10 w-10 rounded-full bg-secondary/50" />
               <div className="flex-1 space-y-2">

@@ -45,7 +45,9 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
   ];
 
   const sortedProjects = useMemo(() => {
-    if (!projects) return [];
+    if (!projects) {
+      return [];
+    }
 
     const filtered = projects.filter((p) =>
       (p.name || "").toLowerCase().includes(filter.toLowerCase()),
@@ -70,38 +72,38 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
     <>
       <div className="my-auto flex h-14 items-center">
         <Input
+          className="h-8 max-w-sm"
+          onChange={(e) => setFilter(e.target.value)}
           placeholder={t("table.filter-projects")}
           value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="h-8 max-w-sm"
         />
         <div className="ml-auto flex items-center gap-2">
           <Button
-            variant="outline"
-            size="sm"
             onClick={() => setSortDesc((s) => !s)}
+            size="sm"
+            variant="outline"
           >
             <ArrowUpDown className={sortDesc ? "rotate-180" : ""} />
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                size="sm"
-                variant="outline"
                 className="flex w-32 items-center justify-end"
                 onClick={(e) => e.stopPropagation()}
+                size="sm"
+                variant="outline"
               >
                 {t("sort-label")} <ChevronDownIcon className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="space-y-1" align="end">
+            <DropdownMenuContent align="end" className="space-y-1">
               <DropdownMenuLabel>{t("sort-projects")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {sortOptions.map((opt) => (
                 <DropdownMenuItem
+                  className={sortBy === opt.value ? "bg-accent" : ""}
                   key={opt.value}
                   onClick={() => setSortBy(opt.value as ProjectSortField)}
-                  className={sortBy === opt.value ? "bg-accent" : ""}
                 >
                   {opt.label}
                 </DropdownMenuItem>

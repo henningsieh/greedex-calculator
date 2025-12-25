@@ -14,9 +14,9 @@ const io = new Server(httpServer, {
     methods: ["GET", "POST"],
     credentials: true,
   },
-  pingInterval: 10000,
+  pingInterval: 10_000,
   pingTimeout: 5000,
-  connectTimeout: 45000,
+  connectTimeout: 45_000,
 });
 
 io.on("connection", (socket) => {

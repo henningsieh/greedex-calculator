@@ -18,7 +18,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FieldGroup } from "@/components/ui/field";
-import { LOGIN_PATH, RESET_PASSWORD_PATH } from "@/config/AppRoutes";
+import { LOGIN_PATH, RESET_PASSWORD_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { Link } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -78,25 +78,25 @@ export function ForgotPasswordForm({
         </CardHeader>
 
         <CardContent className="px-0">
-          <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+          <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup className="gap-4">
               <FormField
-                name="email"
                 control={form.control}
-                label={t("forgotPassword.fields.email")}
                 id="email"
-                type="email"
-                placeholder={t("forgotPassword.fields.emailPlaceholder")}
                 inputProps={{
                   disabled: form.formState.isSubmitting,
                 }}
+                label={t("forgotPassword.fields.email")}
+                name="email"
+                placeholder={t("forgotPassword.fields.emailPlaceholder")}
+                type="email"
               />
 
               <Button
                 className="mt-2"
+                disabled={form.formState.isSubmitting}
                 type="submit"
                 variant="default"
-                disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting
                   ? t("forgotPassword.buttons.sending")
@@ -108,7 +108,7 @@ export function ForgotPasswordForm({
 
         <CardFooter className="px-0">
           <div className="w-full text-center">
-            <Button variant="link" className="px-0" asChild>
+            <Button asChild className="px-0" variant="link">
               <Link href={LOGIN_PATH}>
                 {t("forgotPassword.buttons.backToLogin")}
               </Link>

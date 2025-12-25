@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { DASHBOARD_PATH } from "@/config/AppRoutes";
+import { DASHBOARD_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { useRouter } from "@/lib/i18n/routing";
 
@@ -18,7 +18,6 @@ export function AcceptInvitationButton({ invitationId }: Props) {
   return (
     <div className="flex gap-2">
       <Button
-        variant="default"
         disabled={loading}
         onClick={async () => {
           setLoading(true);
@@ -35,11 +34,14 @@ export function AcceptInvitationButton({ invitationId }: Props) {
 
             router.push(DASHBOARD_PATH);
           } catch (err) {
-            toast.error((err as Error)?.message || "Failed to accept invitation");
+            toast.error(
+              (err as Error)?.message || "Failed to accept invitation",
+            );
           } finally {
             setLoading(false);
           }
         }}
+        variant="default"
       >
         {loading ? "Accepting..." : "Accept Invitation"}
       </Button>

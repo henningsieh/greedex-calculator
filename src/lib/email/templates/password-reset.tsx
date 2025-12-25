@@ -20,7 +20,7 @@ export function PasswordResetEmail({
   resetUrl,
 }: PasswordResetEmailProps) {
   return (
-    <Html lang="en" dir="ltr">
+    <Html dir="ltr" lang="en">
       <Head />
       <Tailwind>
         <Body className="bg-gray-50 font-sans">
@@ -38,8 +38,8 @@ export function PasswordResetEmail({
               </Text>
               <Section className="my-8 text-center">
                 <Button
-                  href={resetUrl}
                   className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-base text-white no-underline"
+                  href={resetUrl}
                 >
                   Reset Password
                 </Button>
@@ -53,8 +53,8 @@ export function PasswordResetEmail({
               </Text>
               <Hr className="my-6 border-gray-300" />
               <Text className="text-gray-500 text-sm">
-                If you didn't request a password reset, you can safely ignore this
-                email. Your password will remain unchanged.
+                If you didn't request a password reset, you can safely ignore
+                this email. Your password will remain unchanged.
               </Text>
               <Text className="mt-4 text-gray-400 text-xs">
                 This link will expire in 24 hours for security reasons.

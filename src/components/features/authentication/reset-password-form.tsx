@@ -18,7 +18,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FieldGroup } from "@/components/ui/field";
-import { LOGIN_PATH } from "@/config/AppRoutes";
+import { LOGIN_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { Link, useRouter } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -96,33 +96,35 @@ export function ResetPasswordForm({
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup className="gap-4">
               <FormField
-                name="password"
                 control={form.control}
-                label={t("resetPassword.fields.newPassword")}
-                id="password"
-                type="password"
                 description={t("resetPassword.fields.newPasswordDescription")}
+                id="password"
                 inputProps={{
                   disabled: form.formState.isSubmitting,
                 }}
+                label={t("resetPassword.fields.newPassword")}
+                name="password"
+                type="password"
               />
               <FormField
-                name="confirmPassword"
                 control={form.control}
-                label={t("resetPassword.fields.confirmPassword")}
+                description={t(
+                  "resetPassword.fields.confirmPasswordDescription",
+                )}
                 id="confirm-password"
-                type="password"
-                description={t("resetPassword.fields.confirmPasswordDescription")}
                 inputProps={{
                   disabled: form.formState.isSubmitting,
                 }}
+                label={t("resetPassword.fields.confirmPassword")}
+                name="confirmPassword"
+                type="password"
               />
 
               <Button
                 className="mt-2"
+                disabled={form.formState.isSubmitting}
                 type="submit"
                 variant="default"
-                disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting
                   ? t("resetPassword.buttons.resetting")
@@ -134,7 +136,7 @@ export function ResetPasswordForm({
 
         <CardFooter className="px-0">
           <div className="w-full text-center">
-            <Button variant="link" className="px-0" asChild>
+            <Button asChild className="px-0" variant="link">
               <Link href={LOGIN_PATH}>
                 {t("resetPassword.buttons.backToLogin")}
               </Link>

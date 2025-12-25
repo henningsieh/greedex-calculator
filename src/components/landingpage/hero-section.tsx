@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { AnimatedGradientCTA } from "@/components/animated-cta";
 import { AnimatedGroup } from "@/components/animated-group";
 import { TextEffect } from "@/components/ui/text-effect";
-import { DASHBOARD_PATH } from "@/config/AppRoutes";
+import { DASHBOARD_PATH } from "@/config/app-routes";
 import { Link } from "@/lib/i18n/routing";
 
 const transitionVariants = {
@@ -39,29 +39,29 @@ export async function HeroSection() {
   return (
     <>
       {/* subtle background image behind everything (low opacity, non-interactive) */}
-      <div aria-hidden className="-z-30 pointer-events-none absolute inset-0">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-30">
         <Image
-          src="/herobg.jpg"
           alt="hero background"
-          fill
           className="object-cover opacity-50 dark:opacity-15"
+          fill
           priority
+          src="/herobg.jpg"
         />
       </div>
 
       <section className="relative md:min-h-svh">
         <div
           aria-hidden
-          className="-z-10 absolute inset-0 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,var(--color-background)_75%)]"
+          className="absolute inset-0 -z-10 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,var(--color-background)_75%)]"
         />
         <div className="relative flex h-full flex-col justify-between gap-8 pt-24 pb-8 md:pb-12">
           {/* CTA placed at the top */}
           <div className="relative mx-auto flex max-w-7xl shrink-0 justify-center px-4">
             <Link
-              href={DASHBOARD_PATH}
-              title={t("launchButtonAria")}
               aria-label={t("launchButtonAria")}
               className="inline-block"
+              href={DASHBOARD_PATH}
+              title={t("launchButtonAria")}
             >
               <AnimatedGradientCTA leftEmoji={"🌳"}>
                 {t("launchButton")}
@@ -86,23 +86,23 @@ export async function HeroSection() {
           >
             {/* Hero Image Container */}
             <div
-              id="herobanner"
               className="mask-b-from-55% relative flex h-full w-full items-center justify-center overflow-hidden px-2 sm:mr-0"
+              id="herobanner"
             >
               <div className="relative inset-shadow-2xs mx-auto aspect-video max-h-full w-full max-w-6xl overflow-hidden rounded-3xl border border-border/40 bg-card/30 object-contain p-4 shadow-2xl shadow-primary/10 ring-1 ring-background backdrop-blur-xl dark:inset-shadow-white/20">
                 <Image
-                  className="relative hidden aspect-15/8 rounded-2xl bg-background object-cover dark:block"
-                  src="/Greendex-hero-banner.png"
                   alt="app screen"
+                  className="relative hidden aspect-15/8 rounded-2xl bg-background object-cover dark:block"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
+                  src="/Greendex-hero-banner.png"
                 />
                 <Image
-                  className="relative aspect-15/8 rounded-2xl bg-background object-cover dark:hidden"
-                  src="/Greendex-hero-banner.png"
                   alt="app screen"
+                  className="relative aspect-15/8 rounded-2xl bg-background object-cover dark:hidden"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
+                  src="/Greendex-hero-banner.png"
                 />
               </div>
             </div>
@@ -111,9 +111,9 @@ export async function HeroSection() {
           {/* Scroll down trigger */}
           <div className="mx-auto hidden shrink-0 animate-bounce items-center justify-center md:flex">
             <a
-              href="#hero-text"
               aria-label={t("hero.scrollDown")}
               className="group inline-block"
+              href="#hero-text"
             >
               <div
                 className="animate-bounce animate-gradient-shift rounded-full p-3 shadow-emerald-500/50 shadow-lg ring-2 ring-emerald-400/30 ring-offset-2 ring-offset-background transition-all group-hover:scale-110 group-hover:shadow-cyan-500/70 group-hover:shadow-xl group-hover:ring-cyan-400/50"
@@ -133,14 +133,17 @@ export async function HeroSection() {
       </section>
 
       <section>
-        <div id="hero-text" className="mx-auto max-w-7xl scroll-mt-32 px-6 py-20">
+        <div
+          className="mx-auto max-w-7xl scroll-mt-32 px-6 py-20"
+          id="hero-text"
+        >
           <div className="text-center sm:mx-auto lg:mt-0 lg:mr-auto">
             <AnimatedGroup variants={transitionVariants}>
               <TextEffect
-                preset="fade-in-blur"
-                speedSegment={0.3}
                 as="h1"
                 className="mx-auto mt-8 text-balance font-semibold text-5xl tracking-tight max-md:font-semibold md:text-6xl lg:mt-14 xl:text-7xl"
+                preset="fade-in-blur"
+                speedSegment={0.3}
               >
                 {t("hero.missionTitle")}
               </TextEffect>
@@ -148,23 +151,23 @@ export async function HeroSection() {
               <BrushStroke />
 
               <TextEffect
+                as="p"
+                className="mx-auto mt-6 max-w-7xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
+                delay={0.2}
                 per="line"
                 preset="fade-in-blur"
                 speedSegment={0.5}
-                delay={0.2}
-                as="p"
-                className="mx-auto mt-6 max-w-7xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
               >
                 {t("hero.missionText")}
               </TextEffect>
 
               <TextEffect
+                as="h2"
+                className="mx-auto mt-8 text-balance font-semibold text-4xl tracking-tight max-md:font-semibold md:text-5xl lg:mt-14 xl:text-6xl"
+                delay={0.5}
                 per="line"
                 preset="fade-in-blur"
                 speedSegment={0.3}
-                delay={0.5}
-                as="h2"
-                className="mx-auto mt-8 text-balance font-semibold text-4xl tracking-tight max-md:font-semibold md:text-5xl lg:mt-14 xl:text-6xl"
               >
                 {t("hero.visionTitle")}
               </TextEffect>
@@ -172,12 +175,12 @@ export async function HeroSection() {
               <BrushStroke />
 
               <TextEffect
+                as="p"
+                className="mx-auto mt-6 max-w-7xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
+                delay={0.7}
                 per="line"
                 preset="fade-in-blur"
                 speedSegment={0.5}
-                delay={0.7}
-                as="p"
-                className="mx-auto mt-6 max-w-7xl text-balance text-base text-foreground/90 leading-relaxed md:text-lg"
               >
                 {t("hero.visionText")}
               </TextEffect>
@@ -189,10 +192,10 @@ export async function HeroSection() {
         <div className="group relative m-auto max-w-7xl px-6">
           <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
             <Link
-              href={DASHBOARD_PATH}
-              title={t("hero.meetCustomers")}
               aria-label={t("hero.meetCustomers")}
               className="block text-sm duration-150 hover:opacity-75"
+              href={DASHBOARD_PATH}
+              title={t("hero.meetCustomers")}
             >
               <span>{t("hero.meetCustomers")}</span>
 
@@ -203,108 +206,108 @@ export async function HeroSection() {
             {/** Ensure external SVGs maintain aspect ratio when CSS changes one dimension. We set height via classes and keep width auto inline. */}
             <div className="flex">
               <Image
-                className="mx-auto h-5 dark:invert"
-                src="https://html.tailus.io/blocks/customers/nvidia.svg"
                 alt="Nvidia Logo"
-                width={64}
+                className="mx-auto h-5 dark:invert"
                 height={20}
+                src="https://html.tailus.io/blocks/customers/nvidia.svg"
                 style={{
                   width: "auto",
                   height: "auto",
                 }}
+                width={64}
               />
             </div>
 
             <div className="flex">
               <Image
-                className="mx-auto dark:invert"
-                src="https://html.tailus.io/blocks/customers/column.svg"
                 alt="Column Logo"
-                width={64}
+                className="mx-auto dark:invert"
                 height={16}
+                src="https://html.tailus.io/blocks/customers/column.svg"
                 style={{
                   width: 64,
                   height: 16,
                 }}
+                width={64}
               />
             </div>
             <div className="flex">
               <Image
-                className="mx-auto dark:invert"
-                src="https://html.tailus.io/blocks/customers/github.svg"
                 alt="GitHub Logo"
-                width={64}
-                height={16}
-                style={{
-                  width: 64,
-                  height: 16,
-                }}
-              />
-            </div>
-            <div className="flex">
-              <Image
-                className="mx-auto h-5 dark:invert"
-                src="https://html.tailus.io/blocks/customers/nike.svg"
-                alt="Nike Logo"
-                width={64}
-                height={20}
-                style={{
-                  width: "auto",
-                  height: "auto",
-                }}
-              />
-            </div>
-            <div className="flex">
-              <Image
-                className="mx-auto h-5 dark:invert"
-                src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg"
-                alt="Lemon Squeezy Logo"
-                width={64}
-                height={20}
-                style={{
-                  width: "auto",
-                  height: "auto",
-                }}
-              />
-            </div>
-            <div className="flex">
-              <Image
                 className="mx-auto dark:invert"
-                src="https://html.tailus.io/blocks/customers/laravel.svg"
-                alt="Laravel Logo"
-                width={64}
                 height={16}
+                src="https://html.tailus.io/blocks/customers/github.svg"
                 style={{
                   width: 64,
                   height: 16,
                 }}
+                width={64}
               />
             </div>
             <div className="flex">
               <Image
-                className="mx-auto h-7 dark:invert"
-                src="https://html.tailus.io/blocks/customers/lilly.svg"
-                alt="Lilly Logo"
-                width={64}
-                height={28}
+                alt="Nike Logo"
+                className="mx-auto h-5 dark:invert"
+                height={20}
+                src="https://html.tailus.io/blocks/customers/nike.svg"
                 style={{
                   width: "auto",
                   height: "auto",
                 }}
+                width={64}
+              />
+            </div>
+            <div className="flex">
+              <Image
+                alt="Lemon Squeezy Logo"
+                className="mx-auto h-5 dark:invert"
+                height={20}
+                src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg"
+                style={{
+                  width: "auto",
+                  height: "auto",
+                }}
+                width={64}
+              />
+            </div>
+            <div className="flex">
+              <Image
+                alt="Laravel Logo"
+                className="mx-auto dark:invert"
+                height={16}
+                src="https://html.tailus.io/blocks/customers/laravel.svg"
+                style={{
+                  width: 64,
+                  height: 16,
+                }}
+                width={64}
+              />
+            </div>
+            <div className="flex">
+              <Image
+                alt="Lilly Logo"
+                className="mx-auto h-7 dark:invert"
+                height={28}
+                src="https://html.tailus.io/blocks/customers/lilly.svg"
+                style={{
+                  width: "auto",
+                  height: "auto",
+                }}
+                width={64}
               />
             </div>
 
             <div className="flex">
               <Image
-                className="mx-auto h-6 dark:invert"
-                src="https://html.tailus.io/blocks/customers/openai.svg"
                 alt="OpenAI Logo"
-                width={64}
+                className="mx-auto h-6 dark:invert"
                 height={24}
+                src="https://html.tailus.io/blocks/customers/openai.svg"
                 style={{
                   width: "auto",
                   height: "auto",
                 }}
+                width={64}
               />
             </div>
           </div>

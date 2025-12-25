@@ -99,11 +99,13 @@ export function GlobeSection() {
                   const city = EU_CAPITAL_CITIES.find(
                     (c) => c.countryCode === countryCode,
                   );
-                  if (!city) return null;
+                  if (!city) {
+                    return null;
+                  }
                   return (
                     <span
-                      key={countryCode}
                       className="rounded-full border border-primary/90 bg-muted px-3 py-1 text-xs dark:bg-muted/20"
+                      key={countryCode}
                     >
                       {city.name}
                     </span>
@@ -119,21 +121,21 @@ export function GlobeSection() {
             <div className="relative flex items-center justify-center">
               <div className="relative">
                 {/* Glow effect behind globe */}
-                <div className="-z-10 absolute inset-0 rounded-full bg-gradient-to-br from-emerald-400/20 via-teal-500/20 to-cyan-400/20 blur-3xl dark:from-emerald-500/30 dark:via-teal-600/30 dark:to-cyan-500/30" />
+                <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-emerald-400/20 via-teal-500/20 to-cyan-400/20 blur-3xl dark:from-emerald-500/30 dark:via-teal-600/30 dark:to-cyan-500/30" />
 
                 {/* Globe component (CSS glow removed to avoid double halo) */}
                 <Globe
-                  className="mx-auto"
-                  cities={EU_CAPITAL_CITIES}
-                  width={800}
-                  height={800}
-                  phi={4}
-                  theta={0.6}
-                  mapSamples={44000}
-                  mapBrightness={3}
                   autoRotate={true}
                   autoRotateSpeed={0.001}
+                  cities={EU_CAPITAL_CITIES}
+                  className="mx-auto"
+                  height={800}
+                  mapBrightness={3}
+                  mapSamples={44_000}
                   markerColor={[0.15, 0.65, 0.4]}
+                  phi={4}
+                  theta={0.6}
+                  width={800}
                 />
               </div>
             </div>

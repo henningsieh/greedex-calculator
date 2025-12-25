@@ -95,7 +95,9 @@ export class TestProjectFixture {
   async teardown() {
     try {
       // Delete project
-      await db.delete(projectsTable).where(eq(projectsTable.id, this.projectId));
+      await db
+        .delete(projectsTable)
+        .where(eq(projectsTable.id, this.projectId));
 
       // Delete organization membership
       await db.delete(member).where(eq(member.organizationId, this.orgId));

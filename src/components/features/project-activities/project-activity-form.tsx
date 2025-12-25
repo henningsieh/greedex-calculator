@@ -18,7 +18,12 @@ import {
   type UpdateActivityInputSchema,
 } from "@/components/features/projects/validation-schemas";
 import { Button } from "@/components/ui/button";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -72,7 +77,7 @@ export function ProjectActivityForm({
       projectId,
       activityType: activity?.activityType ?? undefined,
       distanceKm: activity?.distanceKm
-        ? parseFloat(activity.distanceKm)
+        ? Number.parseFloat(activity.distanceKm)
         : MIN_DISTANCE_KM,
       description: activity?.description ?? null,
       activityDate: activity?.activityDate ?? null,
@@ -147,6 +152,13 @@ export function ProjectActivityForm({
     }
   }
 
+  const buttonText = (() => {
+    if (isPending) {
+      return isEditing ? t("form.updating") : t("form.adding");
+    }
+    return isEditing ? t("form.update") : t("form.submit");
+  })();
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FieldGroup>
@@ -186,14 +198,16 @@ export function ProjectActivityForm({
               render={({ field }) => (
                 <Input
                   id="distanceKm"
-                  type="number"
-                  step={DISTANCE_KM_STEP}
                   min={MIN_DISTANCE_KM}
-                  placeholder={t("form.distance-placeholder")}
-                  value={field.value ?? ""}
                   onChange={(e) =>
-                    field.onChange(parseFloat(e.target.value) || MIN_DISTANCE_KM)
+                    field.onChange(
+                      Number.parseFloat(e.target.value) || MIN_DISTANCE_KM,
+                    )
                   }
+                  placeholder={t("form.distance-placeholder")}
+                  step={DISTANCE_KM_STEP}
+                  type="number"
+                  value={field.value ?? ""}
                 />
               )}
             />
@@ -220,25 +234,24 @@ export function ProjectActivityForm({
             render={({ field }) => (
               <DatePickerWithInput
                 id="activityDate"
-                value={field.value ?? undefined}
                 onChange={field.onChange}
+                value={field.value ?? undefined}
               />
             )}
           />
         </Field>
 
         <div className="flex gap-2">
-          <Button type="submit" disabled={isPending} size="sm">
-            {isPending
-              ? isEditing
-                ? t("form.updating")
-                : t("form.adding")
-              : isEditing
-                ? t("form.update")
-                : t("form.submit")}
+          <Button disabled={isPending} size="sm" type="submit">
+            {buttonText}
           </Button>
           {onCancel && (
-            <Button type="button" variant="outline" size="sm" onClick={onCancel}>
+            <Button
+              onClick={onCancel}
+              size="sm"
+              type="button"
+              variant="outline"
+            >
               {t("form.cancel")}
             </Button>
           )}

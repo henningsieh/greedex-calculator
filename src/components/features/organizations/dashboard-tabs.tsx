@@ -33,9 +33,9 @@ export function DashboardTabs({ organizationId }: DashboardTabsProps) {
 
   return (
     <Tabs
-      value={activeTab || "dashboard"}
-      onValueChange={setActiveTab}
       className="w-full space-y-6"
+      onValueChange={setActiveTab}
+      value={activeTab || "dashboard"}
     >
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger

@@ -20,7 +20,7 @@ const link = new RPCLink({
 
     return `${window.location.origin}/api/rpc`;
   },
-  headers: async () => {
+  headers: () => {
     // Client-side headers can be added here if needed
     return {};
   },

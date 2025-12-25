@@ -54,11 +54,14 @@ export function TransportBreakdown({ stats }: TransportBreakdownProps) {
           const percentage = maxCO2 > 0 ? (co2 / maxCO2) * 100 : 0;
 
           return (
-            <div key={type} className="space-y-2">
+            <div className="space-y-2" key={type}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <TransportIcon type={type} className="h-5 w-5 text-primary" />
+                    <TransportIcon
+                      className="h-5 w-5 text-primary"
+                      type={type}
+                    />
                   </div>
                   <div>
                     <p className="font-semibold text-foreground">

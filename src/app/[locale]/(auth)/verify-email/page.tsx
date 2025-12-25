@@ -2,11 +2,11 @@
 
 import AuthFlowLayout from "@/components/features/authentication/auth-flow-layout";
 import { VerifyEmailContent } from "@/components/features/authentication/verify-email-content";
-import { LOGIN_PATH } from "@/config/AppRoutes";
+import { LOGIN_PATH } from "@/config/app-routes";
 
 export default async function VerifyEmailPage() {
   return (
-    <AuthFlowLayout backLabel="Back to login" backHref={LOGIN_PATH}>
+    <AuthFlowLayout backHref={LOGIN_PATH} backLabel="Back to login">
       <VerifyEmailContent />
     </AuthFlowLayout>
   );

@@ -8,22 +8,24 @@ import { cn } from "@/lib/utils";
 
 const highlightKeys = ["one", "two", "three"] as const;
 
-type AuthFlowLayoutProps = {
+interface AuthFlowLayoutProps {
   children: ReactNode;
   backLabel?: string;
   backHref?: string;
-};
+}
 
 export function normalizeRedirectPath(
   nextPageUrl: string | string[] | undefined,
   fallbackPath: string,
 ): string {
-  const normalizedRedirect =
-    typeof nextPageUrl === "string"
-      ? nextPageUrl
-      : Array.isArray(nextPageUrl)
-        ? nextPageUrl[0]
-        : undefined;
+  let normalizedRedirect: string | undefined;
+  if (typeof nextPageUrl === "string") {
+    normalizedRedirect = nextPageUrl;
+  } else if (Array.isArray(nextPageUrl)) {
+    normalizedRedirect = nextPageUrl[0];
+  } else {
+    normalizedRedirect = undefined;
+  }
   return normalizedRedirect ?? fallbackPath;
 }
 
@@ -52,7 +54,7 @@ export default async function AuthFlowLayout({
       <div className="relative z-10 mx-auto flex min-h-svh max-w-7xl flex-col justify-center gap-6 p-4 sm:px-6 sm:py-8 md:px-8">
         {/* Back to Home button positioned outside cards */}
         <div className="mx-auto w-full max-w-7xl">
-          <BackToHome label={backLabel ?? "Back to Home"} href={backHref} />
+          <BackToHome href={backHref} label={backLabel ?? "Back to Home"} />
         </div>
 
         {/* Cards container with equal heights */}
@@ -102,14 +104,14 @@ export default async function AuthFlowLayout({
 
           {/* Right card - Hero image with equal height */}
           <RightSideImage
-            headline={t("headline")}
             description={t("description")}
-            highlights={highlights}
+            headline={t("headline")}
             heroBadge={t("heroBadge")}
-            heroTitle={t("heroTitle")}
             heroCaption={t("heroCaption")}
             heroStatOne={t("heroStatOne")}
             heroStatTwo={t("heroStatTwo")}
+            heroTitle={t("heroTitle")}
+            highlights={highlights}
           />
         </div>
       </div>

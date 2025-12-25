@@ -16,10 +16,10 @@ export default async () => {
 
   // Get session and organizations for server-side data
   const session = await auth.api.getSession({
-    headers: headers,
+    headers,
   });
   const organizations = await auth.api.listOrganizations({
-    headers: headers,
+    headers,
   });
 
   const activeOrganizationId =

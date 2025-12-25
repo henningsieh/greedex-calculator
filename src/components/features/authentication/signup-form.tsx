@@ -25,7 +25,7 @@ import {
   FieldGroup,
   FieldSeparator,
 } from "@/components/ui/field";
-import { DASHBOARD_PATH, LOGIN_PATH } from "@/config/AppRoutes";
+import { DASHBOARD_PATH, LOGIN_PATH } from "@/config/app-routes";
 import { env } from "@/env";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { Link, useRouter } from "@/lib/i18n/routing";
@@ -70,7 +70,8 @@ export function SignupForm({
   });
 
   const finalRedirect =
-    env.NEXT_PUBLIC_BASE_URL + normalizeRedirectPath(nextPageUrl, DASHBOARD_PATH);
+    env.NEXT_PUBLIC_BASE_URL +
+    normalizeRedirectPath(nextPageUrl, DASHBOARD_PATH);
 
   console.debug("SignupForm onSubmit finalRedirect:", finalRedirect);
 
@@ -117,55 +118,55 @@ export function SignupForm({
         <CardContent className="px-0">
           <FieldGroup className="gap-3">
             <FormField
-              name="name"
               control={form.control}
-              label={t("signup.fields.fullName")}
               id="name"
-              type="text"
+              inputProps={{
+                disabled: form.formState.isSubmitting,
+              }}
+              label={t("signup.fields.fullName")}
+              name="name"
               placeholder={t("signup.fields.fullNamePlaceholder")}
-              inputProps={{
-                disabled: form.formState.isSubmitting,
-              }}
+              type="text"
             />
             <FormField
-              name="email"
               control={form.control}
-              label={t("signup.fields.email")}
-              id="email"
-              type="email"
-              placeholder={t("signup.fields.emailPlaceholder")}
               description={t("signup.fields.emailDescription")}
+              id="email"
               inputProps={{
                 disabled: form.formState.isSubmitting,
               }}
+              label={t("signup.fields.email")}
+              name="email"
+              placeholder={t("signup.fields.emailPlaceholder")}
+              type="email"
             />
             <FormField
-              name="password"
               control={form.control}
-              label={t("signup.fields.password")}
-              id="password"
-              type="password"
               description={t("signup.fields.passwordDescription")}
+              id="password"
               inputProps={{
                 disabled: form.formState.isSubmitting,
               }}
+              label={t("signup.fields.password")}
+              name="password"
+              type="password"
             />
             <FormField
-              name="confirmPassword"
               control={form.control}
-              label={t("signup.fields.confirmPassword")}
-              id="confirm-password"
-              type="password"
               description={t("signup.fields.confirmPasswordDescription")}
+              id="confirm-password"
               inputProps={{
                 disabled: form.formState.isSubmitting,
               }}
+              label={t("signup.fields.confirmPassword")}
+              name="confirmPassword"
+              type="password"
             />
 
             <Button
-              type="submit"
-              disabled={form.formState.isSubmitting}
               className="mt-2"
+              disabled={form.formState.isSubmitting}
+              type="submit"
             >
               {form.formState.isSubmitting
                 ? t("signup.buttons.creatingAccount")
@@ -179,7 +180,7 @@ export function SignupForm({
             <Field>
               <FieldDescription className="px-6 text-center font-bold">
                 {t("signup.footer.haveAccount")}
-                <Button variant="link" className="px-0 pl-1" asChild>
+                <Button asChild className="px-0 pl-1" variant="link">
                   <Link href={LOGIN_PATH}>{t("signup.footer.signIn")}</Link>
                 </Button>
               </FieldDescription>

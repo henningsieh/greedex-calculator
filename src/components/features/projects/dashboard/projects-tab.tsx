@@ -47,7 +47,9 @@ export function ProjectsTab() {
             <FolderOpen className="size-6" />
           </EmptyMedia>
           <EmptyTitle>{t("no-projects-yet.title")}</EmptyTitle>
-          <EmptyDescription>{t("no-projects-yet.description")}</EmptyDescription>
+          <EmptyDescription>
+            {t("no-projects-yet.description")}
+          </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
           <CreateProjectButton />
@@ -58,8 +60,8 @@ export function ProjectsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center"></div>
-      <ProjectsViewSelect view={view} setView={setView} />
+      <div className="flex items-center" />
+      <ProjectsViewSelect setView={setView} view={view} />
       {view === "grid" ? (
         <ProjectsGrid projects={projects} />
       ) : (

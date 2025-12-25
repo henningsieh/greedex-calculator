@@ -35,9 +35,12 @@ const rawBase = os
  * Delay is applied uniformly to all oRPC invocations, regardless of execution context.
  */
 const ORPC_DELAY_IN_MS = Number(env.ORPC_DEV_DELAY_MS);
-const DEV_DELAY_ENABLED = env.NODE_ENV === "development" && ORPC_DELAY_IN_MS > 0;
+const DEV_DELAY_ENABLED =
+  env.NODE_ENV === "development" && ORPC_DELAY_IN_MS > 0;
 const delayMiddleware = rawBase.middleware(async ({ next, path }) => {
-  if (!DEV_DELAY_ENABLED) return next();
+  if (!DEV_DELAY_ENABLED) {
+    return next();
+  }
 
   try {
     console.log(
@@ -64,10 +67,10 @@ export const base = rawBase.use(delayMiddleware);
  * Type extracts keys from the errorMap using the special "~orpc" property
  * that all oRPC builders expose for type inference
  */
-export type BaseErrorCode = keyof (typeof rawBase)["~orpc"]["errorMap"];
+export type ErrorCode = keyof (typeof rawBase)["~orpc"]["errorMap"];
 
 // Runtime list of allowed error codes derived from the oRPC builder's error map.
 // This is useful for tests and any runtime checks that need to enumerate valid codes.
-export const ERROR_CODES: BaseErrorCode[] = Object.keys(
+export const ERROR_CODES: ErrorCode[] = Object.keys(
   rawBase["~orpc"].errorMap,
-) as BaseErrorCode[];
+) as ErrorCode[];

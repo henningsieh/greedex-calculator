@@ -24,7 +24,7 @@ import { NextResponse } from "next/server";
 const SCALAR_SRI_HASH =
   "sha384-aYYa3Qxeo6+Z48D3AmUywxDcZRSrJHutGAgpJiBtkiofix52Px1F0p8tFptEbnNX";
 
-export async function GET() {
+export function GET() {
   const html = `
 <!DOCTYPE html>
 <html lang="en">

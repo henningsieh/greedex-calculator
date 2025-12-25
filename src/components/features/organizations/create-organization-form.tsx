@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { DASHBOARD_PATH } from "@/config/AppRoutes";
+import { DASHBOARD_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { useRouter } from "@/lib/i18n/routing";
 import { findAvailableSlug } from "@/lib/utils/organization-utils";
@@ -64,7 +64,9 @@ export function CreateOrganizationForm({
       );
     } catch (error: unknown) {
       const errorMessage =
-        error instanceof Error ? error.message : "Failed to create organization";
+        error instanceof Error
+          ? error.message
+          : "Failed to create organization";
       toast.error(errorMessage);
     }
   }
@@ -110,12 +112,14 @@ export function CreateOrganizationForm({
           />
 
           <Button
-            type="button"
-            onClick={handleSubmit}
             className="w-full"
             disabled={form.formState.isSubmitting || !form.watch("name")}
+            onClick={handleSubmit}
+            type="button"
           >
-            {form.formState.isSubmitting ? "Creating..." : "Create Organization"}
+            {form.formState.isSubmitting
+              ? "Creating..."
+              : "Create Organization"}
           </Button>
         </div>
       </Form>

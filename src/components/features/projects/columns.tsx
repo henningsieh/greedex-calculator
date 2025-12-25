@@ -2,7 +2,12 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Edit2Icon, EyeIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import {
+  Edit2Icon,
+  EyeIcon,
+  MoreHorizontalIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -55,20 +60,20 @@ export function getProjectColumns(
       id: "select",
       header: ({ table }) => (
         <Checkbox
+          aria-label="Select all"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
           // onClick={(e) => e.stopPropagation()}
         />
       ),
       cell: ({ row }) => (
         <Checkbox
+          aria-label="Select row"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
           // onClick={(e) => e.stopPropagation()}
         />
       ),
@@ -82,8 +87,8 @@ export function getProjectColumns(
       ),
       cell: ({ row }) => (
         <Link
-          href={getProjectDetailPath(row.original.id)}
           className="block font-medium"
+          href={getProjectDetailPath(row.original.id)}
         >
           {row.getValue(PROJECT_SORT_FIELDS.name)}
         </Link>
@@ -93,7 +98,7 @@ export function getProjectColumns(
       accessorKey: "country",
       header: t("table.country"),
       cell: ({ row }) => (
-        <Link href={getProjectDetailPath(row.original.id)} className="block">
+        <Link className="block" href={getProjectDetailPath(row.original.id)}>
           {row.getValue("country")}
         </Link>
       ),
@@ -103,15 +108,15 @@ export function getProjectColumns(
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
+          isNumeric
           table={table}
           title={t("table.start-date")}
-          isNumeric
         />
       ),
       cell: ({ row }) => {
         const date = row.getValue(PROJECT_SORT_FIELDS.startDate) as Date;
         return (
-          <Link href={getProjectDetailPath(row.original.id)} className="block">
+          <Link className="block" href={getProjectDetailPath(row.original.id)}>
             <DateCell date={date} />
           </Link>
         );
@@ -127,15 +132,15 @@ export function getProjectColumns(
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
+          isNumeric
           table={table}
           title={t("table.created")}
-          isNumeric
         />
       ),
       cell: ({ row }) => {
         const date = row.getValue(PROJECT_SORT_FIELDS.createdAt) as Date;
         return (
-          <Link href={getProjectDetailPath(row.original.id)} className="block">
+          <Link className="block" href={getProjectDetailPath(row.original.id)}>
             <DateCell date={date} />
           </Link>
         );
@@ -151,15 +156,15 @@ export function getProjectColumns(
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
+          isNumeric
           table={table}
           title={t("table.updated")}
-          isNumeric
         />
       ),
       cell: ({ row }) => {
         const date = row.getValue(PROJECT_SORT_FIELDS.updatedAt) as Date;
         return (
-          <Link href={getProjectDetailPath(row.original.id)} className="block">
+          <Link className="block" href={getProjectDetailPath(row.original.id)}>
             <DateCell date={date} />
           </Link>
         );
@@ -241,9 +246,9 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="ghost"
             className="h-8 w-8 p-0"
             onClick={(e) => e.stopPropagation()}
+            variant="ghost"
           >
             <span className="sr-only">{t("table.open-menu")}</span>
             <MoreHorizontalIcon className="h-4 w-4" />
@@ -267,9 +272,9 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={handleDelete}
-                disabled={isDeleting || permissionsPending}
                 className="text-destructive"
+                disabled={isDeleting || permissionsPending}
+                onClick={handleDelete}
               >
                 <Trash2Icon className="mr-2 h-4 w-4" />
                 {t("table.delete-project")}
@@ -280,14 +285,14 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
       </DropdownMenu>
 
       {canUpdate && (
-        <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <Dialog onOpenChange={setIsEditModalOpen} open={isEditModalOpen}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{t("form.edit.title")}</DialogTitle>
             </DialogHeader>
             <EditProjectForm
-              project={project}
               onSuccess={() => setIsEditModalOpen(false)}
+              project={project}
             />
           </DialogContent>
         </Dialog>

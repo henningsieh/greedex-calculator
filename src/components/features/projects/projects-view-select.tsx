@@ -21,17 +21,17 @@ export function ProjectsViewSelect({ view, setView }: ProjectsControlsProps) {
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Button
-          variant={view === "table" ? "default" : "outline"}
-          size="sm"
           onClick={() => setView("table")}
+          size="sm"
+          variant={view === "table" ? "default" : "outline"}
         >
           <TablePropertiesIcon className="size-4" />
           <p className="hidden sm:inline">{t("views.table")}</p>
         </Button>
         <Button
-          variant={view === "grid" ? "default" : "outline"}
-          size="sm"
           onClick={() => setView("grid")}
+          size="sm"
+          variant={view === "grid" ? "default" : "outline"}
         >
           <Grid2X2Icon className="size-4" />
           <p className="hidden sm:inline">{t("views.grid")}</p>

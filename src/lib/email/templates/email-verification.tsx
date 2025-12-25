@@ -20,7 +20,7 @@ export function EmailVerification({
   verificationUrl,
 }: EmailVerificationProps) {
   return (
-    <Html lang="en" dir="ltr">
+    <Html dir="ltr" lang="en">
       <Head />
       <Tailwind>
         <Body className="bg-gray-50 font-sans">
@@ -38,8 +38,8 @@ export function EmailVerification({
               </Text>
               <Section className="my-8 text-center">
                 <Button
-                  href={verificationUrl}
                   className="rounded-lg bg-green-600 px-6 py-3 font-semibold text-base text-white no-underline"
+                  href={verificationUrl}
                 >
                   Verify Email Address
                 </Button>
@@ -53,7 +53,8 @@ export function EmailVerification({
               </Text>
               <Hr className="my-6 border-gray-300" />
               <Text className="text-gray-500 text-sm">
-                If you didn't create an account, you can safely ignore this email.
+                If you didn't create an account, you can safely ignore this
+                email.
               </Text>
               <Text className="mt-4 text-gray-400 text-xs">
                 This verification link will expire in 24 hours.

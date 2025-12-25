@@ -2,6 +2,7 @@
 
 import { MailIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
-import { LOGIN_PATH, SIGNUP_PATH } from "@/config/AppRoutes";
+import { LOGIN_PATH, SIGNUP_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { Link } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -28,13 +29,16 @@ export function VerifyEmailContent({
   const [isResending, setIsResending] = useState(false);
   const [lastSentAt, setLastSentAt] = useState<Date | null>(null);
   const [countdown, setCountdown] = useState(0);
+  const t = useTranslations("authentication.verifyEmail");
 
   // 60 second cooldown
   const COOLDOWN_SECONDS = 60;
   const canResend = countdown === 0;
 
   useEffect(() => {
-    if (!lastSentAt) return;
+    if (!lastSentAt) {
+      return;
+    }
 
     const interval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - lastSentAt.getTime()) / 1000);
@@ -51,12 +55,12 @@ export function VerifyEmailContent({
 
   const handleResendEmail = async () => {
     if (!email) {
-      toast.error("Email address is required");
+      toast.error(t("toast.emailRequired"));
       return;
     }
 
     if (!canResend) {
-      toast.error(`Please wait ${countdown} seconds before resending`);
+      toast.error(t("toast.waitBeforeResend", { countdown }));
       return;
     }
 
@@ -69,13 +73,10 @@ export function VerifyEmailContent({
 
       setLastSentAt(new Date());
       setCountdown(COOLDOWN_SECONDS);
-      toast.success("Verification email sent successfully!");
+      toast.success(t("toast.success"));
     } catch (error: unknown) {
       console.error("Failed to resend verification email:", error);
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to send verification email";
+      const message = error instanceof Error ? error.message : t("toast.error");
       toast.error(message);
     } finally {
       setIsResending(false);
@@ -90,11 +91,9 @@ export function VerifyEmailContent({
             <MailIcon className="size-8 text-destructive" />
           </div>
           <CardTitle>
-            <h1 className="font-bold text-2xl">Email Required</h1>
+            <h1 className="font-bold text-2xl">{t("emailRequired.title")}</h1>
           </CardTitle>
-          <CardDescription>
-            No email address was provided. Please sign up or log in again.
-          </CardDescription>
+          <CardDescription>{t("emailRequired.description")}</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -106,14 +105,24 @@ export function VerifyEmailContent({
         <CardFooter>
           <Field className="w-full">
             <Link href={SIGNUP_PATH}>
-              <Button variant="default" className="w-full">
-                Go to Sign Up
+              <Button className="w-full" variant="default">
+                {t("emailRequired.goToSignUp")}
               </Button>
             </Link>
           </Field>
         </CardFooter>
       </Card>
     );
+  }
+
+  // Compute resend button label to avoid nested ternary
+  let resendButtonLabel: string;
+  if (isResending) {
+    resendButtonLabel = t("resend.sending");
+  } else if (canResend) {
+    resendButtonLabel = t("resend.button");
+  } else {
+    resendButtonLabel = t("resend.disabled", { countdown });
   }
 
   return (
@@ -123,10 +132,10 @@ export function VerifyEmailContent({
           <MailIcon className="size-8 text-primary" />
         </div>
         <CardTitle>
-          <h1 className="font-bold text-2xl">Verify your email</h1>
+          <h1 className="font-bold text-2xl">{t("title")}</h1>
         </CardTitle>
         <CardDescription className="text-primary">
-          We&apos;ve sent a verification email to
+          {t("description")}
           <div className="mt-1 font-bold italic">{email}</div>
         </CardDescription>
       </CardHeader>
@@ -135,19 +144,18 @@ export function VerifyEmailContent({
         <FieldGroup className="gap-6">
           <div className="rounded-lg border bg-muted/50 p-4">
             <div className="space-y-2 text-center text-sm">
-              <p className="font-medium">What happens next?</p>
+              <p className="font-medium">{t("steps.title")}</p>
               <ol className="space-y-1 text-left text-muted-foreground">
-                <li>1. Check your inbox for the verification email</li>
-                <li>2. Click the verification link in the email</li>
-                <li>3. You&apos;ll be automatically signed in and redirected</li>
+                <li>1. {t("steps.checkInbox")}</li>
+                <li>2. {t("steps.clickLink")}</li>
+                <li>3. {t("steps.autoSignIn")}</li>
               </ol>
             </div>
           </div>
 
           <div className="space-y-3">
             <FieldDescription className="text-center">
-              <strong>Important:</strong> You must verify your email before you
-              can log in.
+              <strong>{t("important.label")}</strong> {t("important.text")}
             </FieldDescription>
           </div>
         </FieldGroup>
@@ -157,19 +165,15 @@ export function VerifyEmailContent({
         <div className="w-full">
           <Field>
             <Button
-              variant="default"
-              onClick={handleResendEmail}
-              disabled={isResending || !canResend}
               className="w-full"
+              disabled={isResending || !canResend}
+              onClick={handleResendEmail}
+              variant="default"
             >
-              {isResending
-                ? "Sending..."
-                : canResend
-                  ? "Resend verification email"
-                  : `Resend in ${countdown}s`}
+              {resendButtonLabel}
             </Button>
             <FieldDescription className="px-6 text-center font-bold">
-              Didn't receive the email? Check your spam folder or try resending.
+              {t("resend.footer")}
             </FieldDescription>
           </Field>
         </div>

@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { HOME_PATH, LOGIN_PATH } from "@/config/AppRoutes";
+import { HOME_PATH, LOGIN_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { Link, useRouter } from "@/lib/i18n/routing";
 import { orpcQuery } from "@/lib/orpc/orpc";
@@ -40,7 +40,7 @@ export function UserSession() {
   if (!session) {
     return (
       <div className="flex items-center">
-        <Button variant="link" asChild className="px-2">
+        <Button asChild className="px-2" variant="link">
           <Link href={LOGIN_PATH}>Sign in</Link>
         </Button>
       </div>
@@ -58,15 +58,15 @@ export function UserSession() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button className="relative h-8 w-8 rounded-full" variant="ghost">
           <Avatar className="h-8 w-8 ring-1 ring-border">
             {user.image ? (
               <Image
-                src={user.image}
                 alt={user.name || "User avatar"}
-                width={36}
-                height={36}
                 className="rounded-full"
+                height={36}
+                src={user.image}
+                width={36}
               />
             ) : (
               <AvatarFallback>{initials}</AvatarFallback>
@@ -74,7 +74,7 @@ export function UserSession() {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent align="end" className="w-56" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="font-medium text-sm leading-none">{user.name}</p>

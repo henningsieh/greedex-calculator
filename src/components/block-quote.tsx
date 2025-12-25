@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
-type BlockquoteProps = {
+interface BlockquoteProps {
   children?: React.ReactNode;
   className?: string;
-};
+}
 
 const Blockquote = ({ children, className }: BlockquoteProps) => {
   return (

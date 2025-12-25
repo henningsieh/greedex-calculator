@@ -27,34 +27,43 @@ export function SortableHeader<TData, TValue>({
   // Get the current sorting state for this column
   const sorting = table.getState().sorting;
   const currentSort = sorting.find((sort) => sort.id === column.id);
-  const sortState = currentSort?.desc ? "desc" : currentSort ? "asc" : false;
+  let sortState: "asc" | "desc" | false = false;
+  if (currentSort) {
+    sortState = currentSort.desc ? "desc" : "asc";
+  }
+
+  const getSortIcon = (state: string | false, numeric: boolean) => {
+    if (state === "asc") {
+      return numeric ? (
+        <ArrowUp01 className="ml-2 h-4 w-4 text-primary" />
+      ) : (
+        <ArrowUpAZIcon className="ml-2 h-4 w-4 text-primary" />
+      );
+    }
+
+    if (state === "desc") {
+      return numeric ? (
+        <ArrowDown10 className="ml-2 h-4 w-4 text-primary" />
+      ) : (
+        <ArrowDownZAIcon className="ml-2 h-4 w-4 text-primary" />
+      );
+    }
+
+    return <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />;
+  };
 
   return (
     <Button
-      variant="ghost"
-      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       className={cn(
         "-ml-4 h-8 hover:bg-transparent",
         sortState && "sorted font-medium text-foreground",
         className,
       )}
+      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      variant="ghost"
     >
       {title}
-      {sortState === "asc" ? (
-        isNumeric ? (
-          <ArrowUp01 className="ml-2 h-4 w-4 text-primary" />
-        ) : (
-          <ArrowUpAZIcon className="ml-2 h-4 w-4 text-primary" />
-        )
-      ) : sortState === "desc" ? (
-        isNumeric ? (
-          <ArrowDown10 className="ml-2 h-4 w-4 text-primary" />
-        ) : (
-          <ArrowDownZAIcon className="ml-2 h-4 w-4 text-primary" />
-        )
-      ) : (
-        <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />
-      )}
+      {getSortIcon(sortState, isNumeric)}
     </Button>
   );
 }

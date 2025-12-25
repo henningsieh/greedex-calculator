@@ -80,7 +80,9 @@ export function EditOrganizationForm() {
       );
     } catch (error: unknown) {
       const errorMessage =
-        error instanceof Error ? error.message : "Failed to update organization";
+        error instanceof Error
+          ? error.message
+          : "Failed to update organization";
       toast.error(errorMessage);
     }
   }
@@ -122,9 +124,9 @@ export function EditOrganizationForm() {
             />
 
             <Button
-              type="button"
-              onClick={handleSubmit}
               disabled={form.formState.isSubmitting}
+              onClick={handleSubmit}
+              type="button"
             >
               {form.formState.isSubmitting
                 ? "Updating..."

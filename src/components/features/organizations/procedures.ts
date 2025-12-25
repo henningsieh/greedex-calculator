@@ -56,7 +56,7 @@ export const searchMembers = authorized
   .handler(async ({ context, input }) => {
     const { organizationId, filters } = input;
 
-    const allMembers = [];
+    const allMembers: Array<z.infer<typeof MemberWithUserSchema>> = [];
     // Ensure filters exist and default values
     const roles = filters?.roles || [];
     const search = filters?.search || undefined;
@@ -94,10 +94,16 @@ export const searchMembers = authorized
     const sortedMembers = sortBy
       ? filteredMembers.sort((a, b) => {
           const dir = sortDirection === "asc" ? 1 : -1;
-          const aVal = sortBy === "createdAt" ? a.createdAt : a.user?.name || "";
-          const bVal = sortBy === "createdAt" ? b.createdAt : b.user?.name || "";
-          if (aVal < bVal) return -1 * dir;
-          if (aVal > bVal) return 1 * dir;
+          const aVal =
+            sortBy === "createdAt" ? a.createdAt : a.user?.name || "";
+          const bVal =
+            sortBy === "createdAt" ? b.createdAt : b.user?.name || "";
+          if (aVal < bVal) {
+            return -1 * dir;
+          }
+          if (aVal > bVal) {
+            return 1 * dir;
+          }
           return 0;
         })
       : filteredMembers.sort((a, b) =>

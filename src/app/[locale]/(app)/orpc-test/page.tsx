@@ -110,15 +110,15 @@ export default function ORPCTestPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <Input
-              type="text"
-              placeholder="Enter name"
-              value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder="Enter name"
+              type="text"
+              value={name}
             />
             <Button
-              onClick={testHello}
-              disabled={loading.hello}
               className="w-full"
+              disabled={loading.hello}
+              onClick={testHello}
             >
               {loading.hello ? "Loading..." : "Call Hello World"}
             </Button>
@@ -138,9 +138,9 @@ export default function ORPCTestPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <Button
-              onClick={testHealth}
-              disabled={loading.health}
               className="w-full"
+              disabled={loading.health}
+              onClick={testHealth}
             >
               {loading.health ? "Loading..." : "Check Health"}
             </Button>
@@ -162,9 +162,9 @@ export default function ORPCTestPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <Button
-              onClick={testProfile}
-              disabled={loading.profile}
               className="w-full"
+              disabled={loading.profile}
+              onClick={testProfile}
             >
               {loading.profile ? "Loading..." : "Get Profile"}
             </Button>
@@ -188,8 +188,8 @@ export default function ORPCTestPage() {
               parameter
             </li>
             <li>
-              <strong>Health Check:</strong> Public procedure that returns server
-              status
+              <strong>Health Check:</strong> Public procedure that returns
+              server status
             </li>
             <li>
               <strong>Get Profile:</strong> Protected procedure that requires

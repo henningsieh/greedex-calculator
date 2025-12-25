@@ -16,13 +16,13 @@ export function LandingPageGradients() {
           rotate: [0, 15, -10, 0],
           x: [0, 30, -20, 0],
         }}
+        className="absolute -top-32 -left-32 size-[700px] rounded-full bg-gradient-to-br from-emerald-400/30 via-primary/25 to-transparent blur-[120px] dark:from-emerald-500/40 dark:via-primary/35 dark:to-transparent"
         transition={{
           duration: 25,
-          repeat: Infinity,
+          repeat: Number.POSITIVE_INFINITY,
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="-left-32 -top-32 absolute size-[700px] rounded-full bg-gradient-to-br from-emerald-400/30 via-primary/25 to-transparent blur-[120px] dark:from-emerald-500/40 dark:via-primary/35 dark:to-transparent"
       />
 
       {/* Secondary gradient - top right */}
@@ -32,13 +32,13 @@ export function LandingPageGradients() {
           x: [0, -40, 20, 0],
           y: [0, 30, -20, 0],
         }}
+        className="absolute top-1/4 -right-32 size-[600px] rounded-full bg-gradient-to-bl from-cyan-400/25 via-secondary/20 to-transparent blur-[110px] dark:from-cyan-500/35 dark:via-secondary/30 dark:to-transparent"
         transition={{
           duration: 28,
-          repeat: Infinity,
+          repeat: Number.POSITIVE_INFINITY,
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="-right-32 absolute top-1/4 size-[600px] rounded-full bg-gradient-to-bl from-cyan-400/25 via-secondary/20 to-transparent blur-[110px] dark:from-cyan-500/35 dark:via-secondary/30 dark:to-transparent"
       />
 
       {/* Accent gradient - bottom center */}
@@ -48,13 +48,13 @@ export function LandingPageGradients() {
           y: [0, -40, 20, 0],
           x: [0, 40, -30, 0],
         }}
+        className="absolute -bottom-32 left-1/2 size-[800px] -translate-x-1/2 rounded-full bg-gradient-to-t from-teal-400/20 via-accent/20 to-transparent blur-[140px] dark:from-teal-500/30 dark:via-accent/30 dark:to-transparent"
         transition={{
           duration: 30,
-          repeat: Infinity,
+          repeat: Number.POSITIVE_INFINITY,
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="-bottom-32 -translate-x-1/2 absolute left-1/2 size-[800px] rounded-full bg-gradient-to-t from-teal-400/20 via-accent/20 to-transparent blur-[140px] dark:from-teal-500/30 dark:via-accent/30 dark:to-transparent"
       />
 
       {/* Additional gradient - middle right */}
@@ -63,13 +63,13 @@ export function LandingPageGradients() {
           scale: [1, 1.15, 1],
           rotate: [0, -20, 15, 0],
         }}
+        className="absolute top-1/2 -right-20 size-[500px] rounded-full bg-gradient-to-l from-green-400/20 via-emerald-500/15 to-transparent blur-[100px] dark:from-green-500/30 dark:via-emerald-600/25 dark:to-transparent"
         transition={{
           duration: 26,
-          repeat: Infinity,
+          repeat: Number.POSITIVE_INFINITY,
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="-right-20 absolute top-1/2 size-[500px] rounded-full bg-gradient-to-l from-green-400/20 via-emerald-500/15 to-transparent blur-[100px] dark:from-green-500/30 dark:via-emerald-600/25 dark:to-transparent"
       />
     </div>
   );

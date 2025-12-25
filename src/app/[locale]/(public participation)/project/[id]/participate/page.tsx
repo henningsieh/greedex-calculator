@@ -10,7 +10,9 @@ interface ParticipatePageProps {
   }>;
 }
 
-export default async function ParticipatePage({ params }: ParticipatePageProps) {
+export default async function ParticipatePage({
+  params,
+}: ParticipatePageProps) {
   const { id } = await params;
 
   const project = await getProjectData(id);

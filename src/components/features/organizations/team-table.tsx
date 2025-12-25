@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 import { FilterXIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import * as React from "react";
+import { useEffect, useMemo, useState } from "react";
 import type z from "zod";
 import type { MemberRole } from "@/components/features/organizations/types";
 import type { MemberWithUserSchema } from "@/components/features/organizations/validation-schemas";
@@ -41,13 +41,13 @@ interface TeamTableProps {
 export function TeamTable({ organizationId, roles }: TeamTableProps) {
   const tRoles = useTranslations("organization.roles");
   const t = useTranslations("organization.team.table");
-  const [pageIndex, setPageIndex] = React.useState(0);
-  const [pageSize, setPageSize] = React.useState(10);
-  const [search, setSearch] = React.useState("");
-  const [debouncedSearch, setDebouncedSearch] = React.useState("");
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timeout = setTimeout(() => setDebouncedSearch(search), 400);
     return () => clearTimeout(timeout);
   }, [search]);
@@ -78,7 +78,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
 
   type MemberWithUser = z.infer<typeof MemberWithUserSchema>;
 
-  const columns = React.useMemo<
+  const columns = useMemo<
     ColumnDef<MemberWithUser, string | Date | undefined>[]
   >(
     () => [
@@ -128,7 +128,9 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
         enableSorting: true,
         cell: (info) => {
           const val = info.getValue();
-          if (!val) return "";
+          if (!val) {
+            return "";
+          }
           const date = typeof val === "string" ? new Date(val) : (val as Date);
           return new Intl.DateTimeFormat("en-US", {
             year: "numeric",
@@ -177,18 +179,18 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
       <div className="flex flex-col gap-6 py-4 sm:flex-row sm:items-center">
         <div className="flex w-full items-center gap-2">
           <Input
+            onChange={(e) => setSearch(e.target.value)}
             placeholder={t("control.filter")}
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
           />
           <Button
-            variant="outline"
-            size="icon"
             onClick={() => {
               setSearch("");
               setDebouncedSearch("");
               setPageIndex(0);
             }}
+            size="icon"
+            variant="outline"
           >
             <FilterXIcon />
             {/* {t("control.clear")} */}
@@ -196,11 +198,11 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
         </div>
         <div className="ml-auto">
           <InviteMemberDialog
-            organizationId={organizationId}
             allowedRoles={roles}
             onSuccess={() => {
               setPageIndex(0);
             }}
+            organizationId={organizationId}
           />
         </div>
       </div>
@@ -208,31 +210,37 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
         <Table>
           <TableHeader className="border-b bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-b">
+              <TableRow className="border-b" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : header.column.getCanSort() ? (
-                      <button
-                        type="button"
-                        onClick={() => header.column.toggleSorting()}
-                        onKeyDown={(e) => {
-                          if (e.key === `Enter` || e.key === " ") {
-                            header.column.toggleSorting();
-                          }
-                        }}
-                        className="inline-flex items-center gap-2"
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                      </button>
-                    ) : (
-                      flexRender(
+                    {(() => {
+                      if (header.isPlaceholder) {
+                        return null;
+                      }
+                      if (header.column.getCanSort()) {
+                        return (
+                          <button
+                            className="inline-flex items-center gap-2"
+                            onClick={() => header.column.toggleSorting()}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                header.column.toggleSorting();
+                              }
+                            }}
+                            type="button"
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                          </button>
+                        );
+                      }
+                      return flexRender(
                         header.column.columnDef.header,
                         header.getContext(),
-                      )
-                    )}
+                      );
+                    })()}
                   </TableHead>
                 ))}
               </TableRow>
@@ -244,14 +252,17 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={4} className="h-24 text-center">
+                <TableCell className="h-24 text-center" colSpan={4}>
                   {t("noResults")}
                 </TableCell>
               </TableRow>
@@ -268,18 +279,18 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
         </div>
         <div className="space-x-2">
           <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            onClick={() => table.previousPage()}
+            size="sm"
+            variant="outline"
           >
             {t("previous")}
           </Button>
           <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            onClick={() => table.nextPage()}
+            size="sm"
+            variant="outline"
           >
             {t("next")}
           </Button>
@@ -294,6 +305,8 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
  * Used as a fallback while loading the actual TeamTable
  * implementation: Shadcn Skeletons
  */
+
+const SKELETON_ROWS = Array.from({ length: 5 }, (_, i) => `skeleton-${i}`);
 
 export function TeamTableSkeleton() {
   return (
@@ -316,10 +329,8 @@ export function TeamTableSkeleton() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {Array.from({
-            length: 5,
-          }).map((_, index) => (
-            <TableRow key={index}>
+          {SKELETON_ROWS.map((key) => (
+            <TableRow key={key}>
               <TableCell>
                 <Skeleton className="h-8 w-32" />
               </TableCell>

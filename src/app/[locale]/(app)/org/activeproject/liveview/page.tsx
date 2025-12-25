@@ -191,13 +191,13 @@ function calculateStats(participants: Participant[]): ProjectStats {
     {} as ProjectStats["breakdownByType"],
   );
 
-  participants.forEach((participant) => {
-    participant.activities.forEach((activity) => {
+  for (const participant of participants) {
+    for (const activity of participant.activities) {
       breakdownByType[activity.type].distance += activity.distanceKm;
       breakdownByType[activity.type].co2 += activity.co2Kg;
       breakdownByType[activity.type].count += 1;
-    });
-  });
+    }
+  }
 
   // Average tree absorbs ~22kg CO₂/year, ~1000kg in lifetime (45 years)
   const treesNeeded = Math.ceil(totalCO2 / 1000);
@@ -333,8 +333,8 @@ export default function Dashboard() {
           {/* Footer Message */}
           <div className="py-8 text-center">
             <p className="text-muted-foreground text-sm">
-              🌱 Together we're creating a greener future • Every journey counts •
-              Plant trees, offset carbon
+              🌱 Together we're creating a greener future • Every journey counts
+              • Plant trees, offset carbon
             </p>
           </div>
         </div>

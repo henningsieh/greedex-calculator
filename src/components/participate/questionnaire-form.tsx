@@ -134,16 +134,23 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   };
 
   const shouldShowImpact = (stepKey: string | null): boolean => {
-    if (!stepKey) return false;
+    if (!stepKey) {
+      return false;
+    }
 
     // Skip impact for zero-value transport questions
     if (["flightKm", "boatKm", "trainKm", "busKm"].includes(stepKey)) {
       const value = answers[stepKey as keyof ParticipantAnswers];
-      if (Number(value) === 0) return false;
+      if (Number(value) === 0) {
+        return false;
+      }
     }
 
     // Skip carPassengers impact if no car travel
-    if (stepKey === "carPassengers" && (!answers.carKm || answers.carKm === 0)) {
+    if (
+      stepKey === "carPassengers" &&
+      (!answers.carKm || answers.carKm === 0)
+    ) {
       return false;
     }
 
@@ -162,9 +169,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       if (stepKey === "electricity") {
         // For accommodation, calculate impact as total accommodation CO₂
         // by removing all accommodation-related answers
-        delete answersWithoutCurrent.accommodationCategory;
-        delete answersWithoutCurrent.roomOccupancy;
-        delete answersWithoutCurrent.electricity;
+        answersWithoutCurrent.accommodationCategory = undefined;
+        answersWithoutCurrent.roomOccupancy = undefined;
+        answersWithoutCurrent.electricity = undefined;
       } else {
         delete answersWithoutCurrent[stepKey as keyof ParticipantAnswers];
       }
@@ -248,7 +255,11 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       case QUESTIONNAIRE_STEPS.WELCOME:
         return true;
       case QUESTIONNAIRE_STEPS.PARTICIPANT_INFO:
-        return areAllNonEmpty(answers.firstName, answers.country, answers.email);
+        return areAllNonEmpty(
+          answers.firstName,
+          answers.country,
+          answers.email,
+        );
       case QUESTIONNAIRE_STEPS.DAYS:
         return isPositiveNumber(answers.days);
       case QUESTIONNAIRE_STEPS.ACCOMMODATION_CATEGORY:
@@ -299,9 +310,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       {/* Compact Stats Bar - shown from step 2 onwards */}
       {currentStep >= 2 && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-2 gap-3 sm:gap-4"
+          initial={{ opacity: 0, y: -10 }}
         >
           <Card className="flex flex-col items-center justify-between border-red-500/20 bg-red-500/5 p-3 sm:flex-row sm:p-4">
             <div className="mb-1 flex items-center gap-2 sm:mb-0">
@@ -330,7 +341,7 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
 
       {/* Progress Bar */}
       <div className="space-y-2">
-        <Progress value={progress} className="h-2" />
+        <Progress className="h-2" value={progress} />
         <div className="text-right text-muted-foreground text-xs">
           {t("header.step-counter", {
             current: currentStepDisplay + 1,
@@ -342,27 +353,27 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       {/* Impact Modal */}
       {showImpactModal && impactData && (
         <ImpactModal
-          isOpen={showImpactModal}
-          previousCO2={impactData.previousCO2}
-          newCO2={impactData.newCO2}
+          accommodationCategory={answers.accommodationCategory}
+          carKm={answers.carKm}
+          days={answers.days}
           impact={impactData.impact}
+          isOpen={showImpactModal}
+          newCO2={impactData.newCO2}
+          onClose={handleImpactModalClose}
+          previousCO2={impactData.previousCO2}
+          roomOccupancy={answers.roomOccupancy}
           stepKey={impactData.stepKey}
           stepValue={impactData.stepValue}
-          days={answers.days}
-          accommodationCategory={answers.accommodationCategory}
-          roomOccupancy={answers.roomOccupancy}
-          carKm={answers.carKm}
-          onClose={handleImpactModalClose}
         />
       )}
 
       {/* Question Card */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentStep}
-          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: 20 }}
+          key={currentStep}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Card className="border-primary/20 bg-card/50 p-4 backdrop-blur-sm sm:p-6 md:p-8">
@@ -384,9 +395,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                   </p>
                 </AnimatedGroup>
                 <Button
+                  className="mt-6 w-full bg-gradient-to-r from-teal-700 to-emerald-600 px-8 py-6 text-lg transition-all duration-250 hover:scale-105 hover:from-teal-800 hover:to-emerald-700 sm:w-auto"
                   onClick={handleNext}
                   size="lg"
-                  className="mt-6 w-full bg-gradient-to-r from-teal-700 to-emerald-600 px-8 py-6 text-lg transition-all duration-250 hover:scale-105 hover:from-teal-800 hover:to-emerald-700 sm:w-auto"
                 >
                   {t("welcome.start-button")}
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -402,19 +413,21 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                 </h2>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName" className="text-foreground">
+                    <Label className="text-foreground" htmlFor="firstName">
                       {t("participant-info.first-name")}{" "}
                       <span className="text-red-500">
                         {t("participant-info.required")}
                       </span>
                     </Label>
                     <Input
-                      id="firstName"
-                      type="text"
-                      placeholder={t("participant-info.first-name-placeholder")}
-                      value={answers.firstName || ""}
-                      onChange={(e) => updateAnswer("firstName", e.target.value)}
                       className="text-lg"
+                      id="firstName"
+                      onChange={(e) =>
+                        updateAnswer("firstName", e.target.value)
+                      }
+                      placeholder={t("participant-info.first-name-placeholder")}
+                      type="text"
+                      value={answers.firstName || ""}
                     />
                   </div>
                   <div className="space-y-2">
@@ -425,26 +438,26 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                       </span>
                     </Label>
                     <CountrySelect
-                      value={answers.country || ""}
+                      className="text-lg"
                       onValueChange={(value) => updateAnswer("country", value)}
                       placeholder={t("participant-info.country-placeholder")}
-                      className="text-lg"
+                      value={answers.country || ""}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-foreground">
+                    <Label className="text-foreground" htmlFor="email">
                       {t("participant-info.email")}{" "}
                       <span className="text-red-500">
                         {t("participant-info.required")}
                       </span>
                     </Label>
                     <Input
-                      id="email"
-                      type="email"
-                      placeholder={t("participant-info.email-placeholder")}
-                      value={answers.email || ""}
-                      onChange={(e) => updateAnswer("email", e.target.value)}
                       className="text-lg"
+                      id="email"
+                      onChange={(e) => updateAnswer("email", e.target.value)}
+                      placeholder={t("participant-info.email-placeholder")}
+                      type="email"
+                      value={answers.email || ""}
                     />
                   </div>
                 </div>
@@ -457,16 +470,18 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                 <Label className="font-bold text-foreground text-xl md:text-2xl">
                   {t("days.question")}
                 </Label>
-                <p className="text-muted-foreground text-sm">{t("days.note")}</p>
+                <p className="text-muted-foreground text-sm">
+                  {t("days.note")}
+                </p>
                 <Input
-                  type="number"
+                  className="h-12 text-lg"
                   min="1"
-                  placeholder={t("days.placeholder")}
-                  value={answers.days || ""}
                   onChange={(e) =>
                     updateAnswer("days", Number.parseInt(e.target.value, 10))
                   }
-                  className="h-12 text-lg"
+                  placeholder={t("days.placeholder")}
+                  type="number"
+                  value={answers.days || ""}
                 />
               </div>
             )}
@@ -480,16 +495,16 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {ACCOMMODATION_OPTIONS.map((option) => (
                     <button
-                      key={option}
-                      type="button"
-                      onClick={() =>
-                        updateAnswer("accommodationCategory", option)
-                      }
                       className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.02] active:scale-[0.98] ${
                         answers.accommodationCategory === option
                           ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
                           : "border-border text-foreground hover:border-border/50 hover:bg-accent"
                       }`}
+                      key={option}
+                      onClick={() =>
+                        updateAnswer("accommodationCategory", option)
+                      }
+                      type="button"
                     >
                       {option}
                     </button>
@@ -507,14 +522,14 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                 <div className="grid grid-cols-2 gap-3">
                   {ROOM_OCCUPANCY_OPTIONS.map((option) => (
                     <button
-                      key={option}
-                      type="button"
-                      onClick={() => updateAnswer("roomOccupancy", option)}
                       className={`rounded-lg border-2 p-4 transition-all hover:scale-[1.02] active:scale-[0.98] ${
                         answers.roomOccupancy === option
                           ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
                           : "border-border text-foreground hover:border-border/50 hover:bg-accent"
                       }`}
+                      key={option}
+                      onClick={() => updateAnswer("roomOccupancy", option)}
+                      type="button"
                     >
                       {option}
                     </button>
@@ -532,14 +547,14 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                 <div className="grid grid-cols-1 gap-3">
                   {ELECTRICITY_OPTIONS.map((option) => (
                     <button
-                      key={option}
-                      type="button"
-                      onClick={() => updateAnswer("electricity", option)}
                       className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.01] active:scale-[0.99] ${
                         answers.electricity === option
                           ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
                           : "border-border text-foreground hover:border-border/50 hover:bg-accent"
                       }`}
+                      key={option}
+                      onClick={() => updateAnswer("electricity", option)}
+                      type="button"
                     >
                       {option}
                     </button>
@@ -557,14 +572,14 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                 <div className="grid grid-cols-1 gap-3">
                   {FOOD_OPTIONS.map((option) => (
                     <button
-                      key={option}
-                      type="button"
-                      onClick={() => updateAnswer("food", option)}
                       className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.01] active:scale-[0.99] ${
                         answers.food === option
                           ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
                           : "border-border text-foreground hover:border-border/50 hover:bg-accent"
                       }`}
+                      key={option}
+                      onClick={() => updateAnswer("food", option)}
+                      type="button"
                     >
                       {option}
                     </button>
@@ -580,18 +595,18 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                   Your way TO the project: How many kilometres did you fly?
                 </Label>
                 <Input
-                  type="number"
+                  className="h-12 text-lg"
                   min="0"
-                  step="0.1"
-                  placeholder="0"
-                  value={answers.flightKm ?? ""}
                   onChange={(e) =>
                     updateAnswer(
                       "flightKm",
                       Number.parseFloat(e.target.value) || 0,
                     )
                   }
-                  className="h-12 text-lg"
+                  placeholder="0"
+                  step="0.1"
+                  type="number"
+                  value={answers.flightKm ?? ""}
                 />
               </div>
             )}
@@ -600,18 +615,22 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
             {currentStep === 8 && (
               <div className="space-y-6">
                 <Label className="font-bold text-foreground text-xl md:text-2xl">
-                  Your way TO the project: How many kilometres did you go by boat?
+                  Your way TO the project: How many kilometres did you go by
+                  boat?
                 </Label>
                 <Input
-                  type="number"
-                  min="0"
-                  step="0.1"
-                  placeholder="0"
-                  value={answers.boatKm ?? ""}
-                  onChange={(e) =>
-                    updateAnswer("boatKm", Number.parseFloat(e.target.value) || 0)
-                  }
                   className="h-12 text-lg"
+                  min="0"
+                  onChange={(e) =>
+                    updateAnswer(
+                      "boatKm",
+                      Number.parseFloat(e.target.value) || 0,
+                    )
+                  }
+                  placeholder="0"
+                  step="0.1"
+                  type="number"
+                  value={answers.boatKm ?? ""}
                 />
               </div>
             )}
@@ -620,22 +639,22 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
             {currentStep === 9 && (
               <div className="space-y-6">
                 <Label className="font-bold text-foreground text-xl md:text-2xl">
-                  Your way TO the project: How many kilometres did you go by train
-                  or metro?
+                  Your way TO the project: How many kilometres did you go by
+                  train or metro?
                 </Label>
                 <Input
-                  type="number"
+                  className="h-12 text-lg"
                   min="0"
-                  step="0.1"
-                  placeholder="0"
-                  value={answers.trainKm ?? ""}
                   onChange={(e) =>
                     updateAnswer(
                       "trainKm",
                       Number.parseFloat(e.target.value) || 0,
                     )
                   }
-                  className="h-12 text-lg"
+                  placeholder="0"
+                  step="0.1"
+                  type="number"
+                  value={answers.trainKm ?? ""}
                 />
               </div>
             )}
@@ -648,15 +667,18 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                   bus/van?
                 </Label>
                 <Input
-                  type="number"
-                  min="0"
-                  step="0.1"
-                  placeholder="0"
-                  value={answers.busKm ?? ""}
-                  onChange={(e) =>
-                    updateAnswer("busKm", Number.parseFloat(e.target.value) || 0)
-                  }
                   className="h-12 text-lg"
+                  min="0"
+                  onChange={(e) =>
+                    updateAnswer(
+                      "busKm",
+                      Number.parseFloat(e.target.value) || 0,
+                    )
+                  }
+                  placeholder="0"
+                  step="0.1"
+                  type="number"
+                  value={answers.busKm ?? ""}
                 />
               </div>
             )}
@@ -665,18 +687,22 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
             {currentStep === 11 && (
               <div className="space-y-6">
                 <Label className="font-bold text-foreground text-xl md:text-2xl">
-                  Your way TO the project: How many kilometres did you go by car?
+                  Your way TO the project: How many kilometres did you go by
+                  car?
                 </Label>
                 <Input
-                  type="number"
-                  min="0"
-                  step="0.1"
-                  placeholder="0"
-                  value={answers.carKm ?? ""}
-                  onChange={(e) =>
-                    updateAnswer("carKm", Number.parseFloat(e.target.value) || 0)
-                  }
                   className="h-12 text-lg"
+                  min="0"
+                  onChange={(e) =>
+                    updateAnswer(
+                      "carKm",
+                      Number.parseFloat(e.target.value) || 0,
+                    )
+                  }
+                  placeholder="0"
+                  step="0.1"
+                  type="number"
+                  value={answers.carKm ?? ""}
                 />
               </div>
             )}
@@ -690,14 +716,14 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                 <div className="grid grid-cols-1 gap-3">
                   {CAR_TYPE_OPTIONS.map((option) => (
                     <button
-                      key={option}
-                      type="button"
-                      onClick={() => updateAnswer("carType", option)}
                       className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.01] active:scale-[0.99] ${
                         answers.carType === option
                           ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
                           : "border-border text-foreground hover:border-border/50 hover:bg-accent"
                       }`}
+                      key={option}
+                      onClick={() => updateAnswer("carType", option)}
+                      type="button"
                     >
                       {option}
                     </button>
@@ -713,17 +739,17 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                   How many participants (including you) were sitting in the car?
                 </Label>
                 <Input
-                  type="number"
+                  className="h-12 text-lg"
                   min="1"
-                  placeholder="1"
-                  value={answers.carPassengers || ""}
                   onChange={(e) =>
                     updateAnswer(
                       "carPassengers",
                       Number.parseInt(e.target.value, 10),
                     )
                   }
-                  className="h-12 text-lg"
+                  placeholder="1"
+                  type="number"
+                  value={answers.carPassengers || ""}
                 />
               </div>
             )}
@@ -735,14 +761,14 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                   How old are you?
                 </Label>
                 <Input
-                  type="number"
+                  className="h-12 text-lg"
                   min="1"
-                  placeholder="Age"
-                  value={answers.age || ""}
                   onChange={(e) =>
                     updateAnswer("age", Number.parseInt(e.target.value, 10))
                   }
-                  className="h-12 text-lg"
+                  placeholder="Age"
+                  type="number"
+                  value={answers.age || ""}
                 />
               </div>
             )}
@@ -756,14 +782,14 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                 <div className="grid grid-cols-1 gap-3">
                   {GENDER_OPTIONS.map((option) => (
                     <button
-                      key={option}
-                      type="button"
-                      onClick={() => updateAnswer("gender", option)}
                       className={`rounded-lg border-2 p-4 text-left transition-all hover:scale-[1.01] active:scale-[0.99] ${
                         answers.gender === option
                           ? "border-teal-500 bg-teal-500/10 font-semibold text-teal-400 shadow-sm"
                           : "border-border text-foreground hover:border-border/50 hover:bg-accent"
                       }`}
+                      key={option}
+                      onClick={() => updateAnswer("gender", option)}
+                      type="button"
                     >
                       {option}
                     </button>
@@ -777,22 +803,22 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
               <div className="mt-8 flex gap-3">
                 {currentStep > 0 && (
                   <Button
+                    className="h-12 flex-1 text-base"
+                    onClick={handleBack}
                     type="button"
                     variant="outline"
-                    onClick={handleBack}
-                    className="h-12 flex-1 text-base"
                   >
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     {t("navigation.back")}
                   </Button>
                 )}
                 <Button
-                  type="button"
-                  onClick={handleNext}
-                  disabled={!canProceed()}
                   className={`h-12 flex-1 bg-gradient-to-r from-teal-500 to-emerald-500 text-base text-white transition-all duration-250 hover:from-teal-600 hover:to-emerald-600 hover:shadow-md ${
                     currentStep === 0 ? "w-full" : ""
                   }`}
+                  disabled={!canProceed()}
+                  onClick={handleNext}
+                  type="button"
                 >
                   {currentStep === 14 ? (
                     <>
@@ -815,8 +841,8 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       {/* Show final results after completion */}
       {currentStep === 15 && emissions.totalCO2 > 0 && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.5 }}
         >
           <Card className="border-teal-500/30 bg-gradient-to-br from-teal-500/20 to-emerald-500/20 p-6">

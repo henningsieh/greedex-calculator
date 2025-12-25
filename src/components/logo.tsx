@@ -9,21 +9,21 @@ export function Logo({ isScrolled = true }: LogoProps) {
   return (
     <div className="flex items-center gap-3">
       <div
+        aria-hidden={!isScrolled}
         className={cn(
           "relative h-10 overflow-hidden transition-all duration-600 ease-in-out",
           isScrolled ? "w-18" : "w-0",
           "hidden sm:inline-block lg:hidden xl:inline-block",
         )}
-        aria-hidden={!isScrolled}
       >
         <Image
-          src="/greendex_logo.png"
           alt="Logo"
-          fill
-          sizes="(max-width: 640px) 120px, 180px"
           className={`object-contain transition-opacity duration-200 ease-in-out ${
             isScrolled ? "opacity-100" : "opacity-0"
           }`}
+          fill
+          sizes="(max-width: 640px) 120px, 180px"
+          src="/greendex_logo.png"
         />
       </div>
 

@@ -77,8 +77,10 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
   const endDate = new Date(project.endDate);
   const duration = (() => {
     if (
-      !Number.isFinite(startDate.getTime()) ||
-      !Number.isFinite(endDate.getTime())
+      !(
+        Number.isFinite(startDate.getTime()) &&
+        Number.isFinite(endDate.getTime())
+      )
     ) {
       return 0;
     }
@@ -95,7 +97,9 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
       <Card className="shadow-md">
         <CardHeader>
           <div>
-            <CardTitle className="text-2xl sm:text-3xl">{project.name}</CardTitle>
+            <CardTitle className="text-2xl sm:text-3xl">
+              {project.name}
+            </CardTitle>
             <CardDescription>
               <div className="inline-flex items-center gap-3 text-muted-foreground text-sm">
                 <CalendarDaysIcon className="h-4 w-4" />
@@ -125,8 +129,8 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
 
               return (
                 <Badge
-                  variant="secondaryoutline"
                   title={`${countryName}${project.location ? ` | ${project.location}` : ""}`}
+                  variant="secondaryoutline"
                 >
                   <div className="flex h-8 items-center gap-3 overflow-hidden whitespace-nowrap">
                     <span className="truncate font-semibold text-muted-foreground text-sm">
@@ -213,25 +217,25 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
       </Card>
 
       {/* Tabs Navigation */}
-      <Tabs defaultValue="details" className="space-y-4">
+      <Tabs className="space-y-4" defaultValue="details">
         <TabsList className="grid w-full grid-cols-1 gap-2 bg-transparent p-0 sm:w-fit sm:grid-cols-3">
           <TabsTrigger
-            value="details"
             className="flex items-center justify-center gap-2 rounded-md border bg-card text-foreground shadow-sm data-[state=active]:border-primary data-[state=active]:shadow"
+            value="details"
           >
             <PROJECT_ICONS.project className="h-4 w-4" />
             {t("tabs.details")}
           </TabsTrigger>
           <TabsTrigger
-            value="activities"
             className="flex items-center justify-center gap-2 rounded-md border bg-card text-foreground shadow-sm data-[state=active]:border-primary data-[state=active]:shadow"
+            value="activities"
           >
             <PROJECT_ICONS.activities className="h-4 w-4" />
             {t("tabs.activities")}
           </TabsTrigger>
           <TabsTrigger
-            value="participants"
             className="flex items-center justify-center gap-2 rounded-md border bg-card text-foreground shadow-sm data-[state=active]:border-primary data-[state=active]:shadow"
+            value="participants"
           >
             <PROJECT_ICONS.participants className="h-4 w-4" />
             {t("tabs.participants")}
@@ -239,13 +243,13 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
         </TabsList>
 
         {/* Project Details Tab */}
-        <TabsContent value="details" className="space-y-6">
+        <TabsContent className="space-y-6" value="details">
           <ProjectDetails project={project} />
         </TabsContent>
 
         {/* Project Activities Tab */}
         <TabsContent value="activities">
-          <ProjectActivitiesList projectId={id} canEdit={canUpdate} />
+          <ProjectActivitiesList canEdit={canUpdate} projectId={id} />
         </TabsContent>
 
         {/* Participants Tab */}
@@ -287,10 +291,10 @@ export function ProjectDetailsSkeleton() {
 
         <CardContent className="space-y-6 p-6 sm:p-8">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {[...Array(4)].map((_, i) => (
+            {[...new Array(4)].map((_, i) => (
               <div
-                key={i}
                 className="rounded-lg border border-border bg-card p-4 shadow-sm"
+                key={i}
               >
                 <Skeleton className="mb-2 h-4 w-24" />
                 <Skeleton className="h-8 w-16" />

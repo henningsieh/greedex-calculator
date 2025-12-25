@@ -31,12 +31,12 @@ const sourceSerif4 = Source_Serif_4({
   preload: false,
 });
 
-type Props = {
+interface Props {
   children: React.ReactNode;
   params: Promise<{
     locale: string;
   }>;
-};
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({
@@ -60,30 +60,30 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html
+      className={`${comfortaa.variable} ${jetbrainsMono.variable} ${sourceSerif4.variable} scroll-smooth`}
+      data-scroll-behavior="smooth"
       lang={locale}
       suppressHydrationWarning
-      data-scroll-behavior="smooth"
-      className={`${comfortaa.variable} ${jetbrainsMono.variable} ${sourceSerif4.variable} scroll-smooth`}
     >
       <head>
         <link
+          href="/favicon/apple-touch-icon.png"
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/favicon/apple-touch-icon.png"
         />
         <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
           href="/favicon/favicon-32x32.png"
+          rel="icon"
+          sizes="32x32"
+          type="image/png"
         />
         <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
           href="/favicon/favicon-16x16.png"
+          rel="icon"
+          sizes="16x16"
+          type="image/png"
         />
-        <link rel="manifest" href="/favicon/site.webmanifest" />
+        <link href="/favicon/site.webmanifest" rel="manifest" />
         {env.NODE_ENV === "development" && (
           <script
             async

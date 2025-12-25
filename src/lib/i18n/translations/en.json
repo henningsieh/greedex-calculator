@@ -868,6 +868,37 @@
       "heroCaption": "Greendex keeps the climate story visible so you can focus on the work.",
       "heroStatOne": "24% faster impact reports",
       "heroStatTwo": "88% planet-positive check-ins"
+    },
+    "verifyEmail": {
+      "emailRequired": {
+        "title": "Email Required",
+        "description": "No email address was provided. Please sign up or log in again.",
+        "goToSignUp": "Go to Sign Up"
+      },
+      "title": "Verify your email",
+      "description": "We've sent a verification email to",
+      "steps": {
+        "title": "What happens next?",
+        "checkInbox": "Check your inbox for the verification email",
+        "clickLink": "Click the verification link in the email",
+        "autoSignIn": "You'll be automatically signed in and redirected"
+      },
+      "important": {
+        "label": "Important:",
+        "text": "You must verify your email before you can log in."
+      },
+      "resend": {
+        "sending": "Sending...",
+        "button": "Resend verification email",
+        "disabled": "Resend in {countdown}s",
+        "footer": "Didn't receive the email? Check your spam folder or try resending."
+      },
+      "toast": {
+        "emailRequired": "Email address is required",
+        "waitBeforeResend": "Please wait {countdown} seconds before resending",
+        "success": "Verification email sent successfully!",
+        "error": "Failed to send verification email"
+      }
     }
   },
   "header": {

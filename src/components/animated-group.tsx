@@ -1,6 +1,6 @@
 "use client";
 import { motion, type Variants } from "motion/react";
-import React, { type ReactNode } from "react";
+import { Children, type ReactNode, useMemo } from "react";
 
 export type PresetType =
   | "fade"
@@ -14,7 +14,7 @@ export type PresetType =
   | "rotate"
   | "swing";
 
-export type AnimatedGroupProps = {
+export interface AnimatedGroupProps {
   children: ReactNode;
   className?: string;
   variants?: {
@@ -31,7 +31,7 @@ export type AnimatedGroupProps = {
     once?: boolean;
     amount?: number;
   };
-};
+}
 
 const defaultContainerVariants: Variants = {
   visible: {
@@ -182,9 +182,9 @@ function AnimatedGroup({
   const containerVariants = variants?.container || selectedVariants.container;
   const itemVariants = variants?.item || selectedVariants.item;
 
-  const MotionComponent = React.useMemo(() => motion.create(as), [as]);
+  const MotionComponent = useMemo(() => motion.create(as), [as]);
 
-  const MotionChild = React.useMemo(() => motion.create(asChild), [asChild]);
+  const MotionChild = useMemo(() => motion.create(asChild), [asChild]);
 
   // If triggerOnView is true, use `whileInView` + `viewport` so the
   // animation triggers when the element scrolls into view. Otherwise
@@ -203,10 +203,10 @@ function AnimatedGroup({
         : {
             animate: "visible",
           })}
-      variants={containerVariants}
       className={className}
+      variants={containerVariants}
     >
-      {React.Children.map(children, (child, index) => (
+      {Children.map(children, (child, index) => (
         <MotionChild key={index} variants={itemVariants}>
           {child}
         </MotionChild>

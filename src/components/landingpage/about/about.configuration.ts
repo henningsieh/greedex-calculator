@@ -1,11 +1,11 @@
-export type Partner = {
+export interface Partner {
   id: string;
   name: string;
   country?: string;
   website?: string;
   logo: string; // path under /about
   description?: string;
-};
+}
 
 export const PARTNERS_HEADLINE = `Project Greendex is a strategic partnership funded by Erasmus+ that
             researches sustainability, develops educational resources and runs

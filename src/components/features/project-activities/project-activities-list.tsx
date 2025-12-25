@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { EditIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { toast } from "sonner";
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import type {
@@ -144,6 +144,105 @@ export function ProjectActivitiesList({
 
   const hasActivities = activities && activities.length > 0;
 
+  // Prepare activities content to avoid nested ternary
+  let activitiesContent: ReactNode;
+  if (hasActivities) {
+    activitiesContent = (
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>{t("table.type")}</TableHead>
+              <TableHead>{t("table.distance")}</TableHead>
+              <TableHead>{t("table.description")}</TableHead>
+              <TableHead>{t("table.date")}</TableHead>
+              {canEdit && (
+                <TableHead className="w-[100px]">
+                  {t("table.actions")}
+                </TableHead>
+              )}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {activities.map((activity) => (
+              <TableRow key={activity.id}>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    {getActivityIcon(activity.activityType)}
+                    <span>{t(`types.${activity.activityType}`)}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {activity.distanceKm} {t("table.km")}
+                </TableCell>
+                <TableCell className="max-w-[200px] truncate">
+                  {activity.description || "-"}
+                </TableCell>
+                <TableCell>
+                  {activity.activityDate
+                    ? format.dateTime(new Date(activity.activityDate), {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })
+                    : "-"}
+                </TableCell>
+                {canEdit && (
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        onClick={() => setEditingActivity(activity)}
+                        size="icon"
+                        title={t("table.edit")}
+                        variant="ghost"
+                      >
+                        <EditIcon className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        onClick={() => setDeletingActivityId(activity.id)}
+                        size="icon"
+                        title={t("table.delete")}
+                        variant="ghost"
+                      >
+                        <Trash2Icon className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  } else if (showAddForm) {
+    activitiesContent = null;
+  } else {
+    activitiesContent = (
+      <Empty className="border">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <PROJECT_ICONS.activities className="h-6 w-6" />
+          </EmptyMedia>
+          <EmptyTitle>{t("empty.title")}</EmptyTitle>
+          <EmptyDescription>{t("empty.description")}</EmptyDescription>
+        </EmptyHeader>
+        {canEdit && (
+          <EmptyContent>
+            <Button
+              onClick={() => setShowAddForm(true)}
+              size="sm"
+              variant="outline"
+            >
+              <PlusIcon className="mr-2 h-4 w-4" />
+              {t("form.title")}
+            </Button>
+          </EmptyContent>
+        )}
+      </Empty>
+    );
+  }
+
   return (
     <Card className="shadow-lg">
       <CardHeader>
@@ -155,9 +254,9 @@ export function ProjectActivitiesList({
         {canEdit && !showAddForm && !editingActivity && (
           <CardAction>
             <Button
-              variant="secondaryoutline"
-              size="sm"
               onClick={() => setShowAddForm(true)}
+              size="sm"
+              variant="secondaryoutline"
             >
               <PlusIcon className="h-4 w-4" />
               <p className="hidden sm:inline-flex">{t("form.title")}</p>
@@ -170,9 +269,9 @@ export function ProjectActivitiesList({
           <div className="mb-6 rounded-lg border p-4">
             <h3 className="mb-4 font-medium">{t("form.title")}</h3>
             <ProjectActivityForm
-              projectId={projectId}
-              onSuccess={handleFormSuccess}
               onCancel={() => setShowAddForm(false)}
+              onSuccess={handleFormSuccess}
+              projectId={projectId}
             />
           </div>
         )}
@@ -181,109 +280,20 @@ export function ProjectActivitiesList({
           <div className="mb-6 rounded-lg border p-4">
             <h3 className="mb-4 font-medium">{t("form.edit-title")}</h3>
             <ProjectActivityForm
-              projectId={projectId}
               activity={editingActivity}
-              onSuccess={handleFormSuccess}
               onCancel={() => setEditingActivity(null)}
+              onSuccess={handleFormSuccess}
+              projectId={projectId}
             />
           </div>
         )}
 
-        {!hasActivities && !showAddForm ? (
-          <Empty className="border">
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <PROJECT_ICONS.activities className="h-6 w-6" />
-              </EmptyMedia>
-              <EmptyTitle>{t("empty.title")}</EmptyTitle>
-              <EmptyDescription>{t("empty.description")}</EmptyDescription>
-            </EmptyHeader>
-            {canEdit && (
-              <EmptyContent>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowAddForm(true)}
-                >
-                  <PlusIcon className="mr-2 h-4 w-4" />
-                  {t("form.title")}
-                </Button>
-              </EmptyContent>
-            )}
-          </Empty>
-        ) : hasActivities ? (
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t("table.type")}</TableHead>
-                  <TableHead>{t("table.distance")}</TableHead>
-                  <TableHead>{t("table.description")}</TableHead>
-                  <TableHead>{t("table.date")}</TableHead>
-                  {canEdit && (
-                    <TableHead className="w-[100px]">
-                      {t("table.actions")}
-                    </TableHead>
-                  )}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {activities.map((activity) => (
-                  <TableRow key={activity.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        {getActivityIcon(activity.activityType)}
-                        <span>{t(`types.${activity.activityType}`)}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {activity.distanceKm} {t("table.km")}
-                    </TableCell>
-                    <TableCell className="max-w-[200px] truncate">
-                      {activity.description || "-"}
-                    </TableCell>
-                    <TableCell>
-                      {activity.activityDate
-                        ? format.dateTime(new Date(activity.activityDate), {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })
-                        : "-"}
-                    </TableCell>
-                    {canEdit && (
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setEditingActivity(activity)}
-                            title={t("table.edit")}
-                          >
-                            <EditIcon className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setDeletingActivityId(activity.id)}
-                            title={t("table.delete")}
-                          >
-                            <Trash2Icon className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    )}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        ) : null}
+        {activitiesContent}
 
         {/* Delete Confirmation Dialog */}
         <AlertDialog
-          open={!!deletingActivityId}
           onOpenChange={(open) => !open && setDeletingActivityId(null)}
+          open={!!deletingActivityId}
         >
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -295,11 +305,11 @@ export function ProjectActivitiesList({
             <AlertDialogFooter>
               <AlertDialogCancel>{t("delete.cancel-button")}</AlertDialogCancel>
               <AlertDialogAction
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 onClick={() =>
                   deletingActivityId &&
                   deleteActivityMutation.mutate(deletingActivityId)
                 }
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               >
                 {t("delete.confirm-button")}
               </AlertDialogAction>

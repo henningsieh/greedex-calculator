@@ -42,7 +42,7 @@ export function AnimatedGradientCTA({
         {children}
       </AnimatedGradientText>
       <div className="ml-3 size-6 shrink-0 overflow-hidden rounded-full bg-secondary/40 duration-500 ease-in-out group-hover:bg-primary/80">
-        <div className="-translate-x-1/2 flex w-12 duration-500 ease-in-out group-hover:translate-x-0">
+        <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
           <span className="flex size-6">
             <ChevronRightIcon className="m-auto size-3 stroke-foreground" />
           </span>
