@@ -91,8 +91,8 @@ export const LandingHeader = () => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       aria-label={t("navigation.openMenu")}
-                      className="relative z-20 block h-8 cursor-pointer items-center bg-accent ring-1 ring-primary lg:hidden"
-                      size="lg"
+                      className="relative z-20 block cursor-pointer items-center bg-accent ring-1 ring-primary lg:hidden"
+                      size="sm"
                     >
                       <MenuIcon
                         className={`m-auto size-6 duration-500 ${

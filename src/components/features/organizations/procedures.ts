@@ -95,9 +95,13 @@ export const searchMembers = authorized
       ? filteredMembers.sort((a, b) => {
           const dir = sortDirection === "asc" ? 1 : -1;
           const aVal =
-            sortBy === "createdAt" ? a.createdAt : a.user?.name || "";
+            sortBy === "createdAt"
+              ? new Date(a.createdAt).getTime()
+              : a.user?.name || "";
           const bVal =
-            sortBy === "createdAt" ? b.createdAt : b.user?.name || "";
+            sortBy === "createdAt"
+              ? new Date(b.createdAt).getTime()
+              : b.user?.name || "";
           if (aVal < bVal) {
             return -1 * dir;
           }

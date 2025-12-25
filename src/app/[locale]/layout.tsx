@@ -61,7 +61,6 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html
       className={`${comfortaa.variable} ${jetbrainsMono.variable} ${sourceSerif4.variable} scroll-smooth`}
-      data-scroll-behavior="smooth"
       lang={locale}
       suppressHydrationWarning
     >
