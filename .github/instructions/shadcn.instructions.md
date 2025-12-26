@@ -1,5 +1,5 @@
 ---
-applyTo: '**/*.{ts,tsx,js,jsx}'
+applyTo: 'src/components/ui/**/*.{ts,tsx}|src/components/**/form*.{ts,tsx}'
 description: Shadcn UI components - forms, tables, empty states, and accessible UI patterns
 ---
 

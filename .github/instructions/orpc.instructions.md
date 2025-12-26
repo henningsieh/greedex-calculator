@@ -1,5 +1,5 @@
 ---
-applyTo: '**/*.{ts,tsx,js,jsx}'
+applyTo: 'src/lib/orpc/**/*.{ts,tsx}|src/app/api/rpc/**/*.{ts,tsx}'
 description: oRPC procedures, routers, integrations, and SSR optimization patterns
 ---
 

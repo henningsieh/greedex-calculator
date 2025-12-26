@@ -60,55 +60,27 @@ The server-side oRPC client is initialized in `src/instrumentation.ts` and attac
 
 ---
 
-## Documentation Index
+## Documentation
 
-All docs are in `docs/` — the README at `docs/README.md` has the full TOC.
+**⚠️ CRITICAL**: This repository has **comprehensive documentation** for all libraries. When working on a feature:
 
-**⚠️ CRITICAL**: This repository contains **comprehensive, extensive documentation** for EVERY library and feature in `/docs/`. Always consult these detailed guides before making changes or asking questions.
+1. **Check** `/docs/README.md` for the full documentation index
+2. **Read** relevant docs in `/docs/<topic>/` before implementing
+3. **Consult** `.github/instructions/<topic>.instructions.md` for quick patterns
 
-### Integration Instructions (`.github/instructions/`)
+### Documentation Structure
 
-**Quick reference guides** that point to comprehensive documentation in `/docs/`:
+- `/docs/orpc/` — oRPC procedures, routers, SSR optimization, TanStack Query
+- `/docs/better-auth/` — Authentication, organizations, SSR patterns
+- `/docs/i18n/` — next-intl, country selection, localization
+- `/docs/shadcn/` — UI components, forms, tables, empty states
+- `/docs/tanstack-react-query/` — SSR, hydration, prefetching patterns
+- `/docs/react-email/` — Email templates, Nodemailer, Tailwind
+- `/docs/permissions/` — Authorization and permission patterns
+- `/docs/participate/` — Questionnaire flows, calculations, testing
+- `/docs/ultracite/` — Biome linting configuration and standards
 
-| File | Purpose |
-|------|---------|
-| `orpc.instructions.md` | oRPC procedures, routers, adapters, and TanStack Query integration |
-| `better-auth.instructions.md` | Auth + oRPC SSR pattern |
-| `i18n.instructions.md` | next-intl setup |
-| `shadcn.instructions.md` | UI component patterns |
-
-### Key Documentation Files (ALL in `/docs/`)
-
-**Every library has comprehensive documentation** - always read the relevant docs before implementing features:
-
-| Topic | File |
-|-------|------|
-| oRPC SSR optimization | `docs/orpc/orpc.Optimize-Server-Side-Rendering.SSR.md` |
-| oRPC + TanStack Query | `docs/orpc/orpc.tanstack-query.md` |
-| TanStack Query SSR | `docs/tanstack-query/ssr.md` |
-| Advanced SSR (Server Components) | `docs/tanstack-query/advanced-ssr.md` |
-| Hydration API | `docs/tanstack-query/hydration.md` |
-| Better Auth options | `docs/better-auth/better-auth.options.md` |
-| Organizations | `docs/better-auth/better-auth.organizations.md` |
-| Permissions design | `docs/permissions/README.md` |
-| Questionnaire flows | `docs/participate/` |
-| i18n with next-intl | `docs/i18n/next-intl.internationalization.md` |
-| Country selection | `docs/i18n/Country-Selection-Utils.md` |
-| Shadcn UI components | `docs/shadcn/` |
-| React Email | `docs/react-email/` |
-| Ultracite linting | `docs/ultracite/` |
-
-**Documentation Coverage:**
-- Better Auth → `/docs/better-auth/` (4 files)
-- i18n → `/docs/i18n/` (6 files)
-- oRPC → `/docs/orpc/` (17 files)
-- TanStack Query → `/docs/tanstack-query/` (5 files)
-- Shadcn UI → `/docs/shadcn/` (3 files)
-- React Email → `/docs/react-email/` (4 files)
-- Permissions → `/docs/permissions/` (1 file)
-- Questionnaire → `/docs/participate/` (5 files)
-- Ultracite → `/docs/ultracite/` (3 files)
-- Database → `/docs/database/` (1 file)
+Use `read_file` or `semantic_search` tools to access specific documentation when needed.
 
 ---
 

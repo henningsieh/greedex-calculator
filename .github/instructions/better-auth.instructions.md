@@ -1,5 +1,5 @@
 ---
-applyTo: '**/*.{ts,tsx,js,jsx}'
+applyTo: 'src/lib/better-auth/**/*.{ts,tsx}|src/app/api/auth/**/*.{ts,tsx}|src/middleware.{ts,tsx}'
 description: Better Auth configuration, authentication, and oRPC SSR integration patterns
 ---
 
