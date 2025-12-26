@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { memberRoles } from "@/components/features/organizations/types";
+import { MEMBER_ROLES } from "@/components/features/organizations/types";
 import { UsersTable } from "@/components/features/organizations/users-table";
 
 interface ParticipantsTableProps {
@@ -20,7 +20,7 @@ export function ParticipantsTable({ organizationId }: ParticipantsTableProps) {
       emptyDescription={t("emptyState.description")}
       emptyTitle={t("emptyState.title")}
       organizationId={organizationId}
-      roles={[memberRoles.Participant]}
+      roles={[MEMBER_ROLES.Participant]}
       showInviteButton={false}
     />
   );

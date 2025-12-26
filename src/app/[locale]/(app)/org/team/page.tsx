@@ -2,11 +2,12 @@ import { UsersIcon } from "lucide-react";
 import { headers as nextHeaders } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
-import { memberRoles } from "@/components/features/organizations/types";
+import { MEMBER_ROLES } from "@/components/features/organizations/types";
 import {
   TeamTableSkeleton,
   UsersTable,
 } from "@/components/features/organizations/users-table";
+import { DEFAULT_PAGE_SIZE } from "@/config/pagination";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
@@ -33,7 +34,12 @@ export default async () => {
       input: {
         organizationId: activeOrganizationId,
         filters: {
-          roles: [memberRoles.Owner, memberRoles.Employee],
+          roles: [MEMBER_ROLES.Owner, MEMBER_ROLES.Employee],
+          search: undefined,
+          sortBy: undefined,
+          sortDirection: "asc",
+          limit: DEFAULT_PAGE_SIZE,
+          offset: 0,
         },
       },
     }),
@@ -55,7 +61,7 @@ export default async () => {
           emptyDescription={t("emptyState.description")}
           emptyTitle={t("emptyState.title")}
           organizationId={activeOrganizationId}
-          roles={[memberRoles.Owner, memberRoles.Employee]}
+          roles={[MEMBER_ROLES.Owner, MEMBER_ROLES.Employee]}
           showInviteButton={true}
         />
       </Suspense>

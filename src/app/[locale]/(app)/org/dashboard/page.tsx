@@ -2,8 +2,9 @@ import { LayoutDashboardIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { OrganizationDashboard } from "@/components/features/organizations/organization-dashboard";
-import { memberRoles } from "@/components/features/organizations/types";
-import { DEFAULT_PROJECT_SORTING_FIELD } from "@/components/features/projects/types";
+import { MEMBER_ROLES } from "@/components/features/organizations/types";
+import { DEFAULT_PAGE_SIZE } from "@/config/pagination";
+import { DEFAULT_PROJECT_SORTING_FIELD } from "@/config/projects";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
@@ -41,12 +42,12 @@ export default async function DashboardPage() {
         input: {
           organizationId: activeOrganizationId,
           filters: {
-            roles: [memberRoles.Participant],
+            roles: [MEMBER_ROLES.Participant],
             search: undefined,
             sortBy: undefined,
             sortDirection: "asc",
-            limit: 5, // Match UsersTable's initial pageSize
-            offset: 0, // Match UsersTable's initial pageIndex
+            limit: DEFAULT_PAGE_SIZE,
+            offset: 0,
           },
         },
       }),

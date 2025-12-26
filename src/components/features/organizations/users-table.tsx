@@ -17,9 +17,8 @@ import { useEffect, useMemo, useState } from "react";
 import type z from "zod";
 import type {
   MemberRole,
-  SortField,
+  MemberSortField,
 } from "@/components/features/organizations/types";
-import { validSortFields } from "@/components/features/organizations/types";
 import type { MemberWithUserSchema } from "@/components/features/organizations/validation-schemas";
 import { SortableHeader } from "@/components/features/projects/sortable-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -44,6 +43,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { MEMBER_SORT_FIELDS } from "@/config/organizations";
+import { DEFAULT_PAGE_SIZE } from "@/config/pagination";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { InviteEmployeeDialog } from "./invite-employee-dialog";
 
@@ -66,7 +67,7 @@ export function UsersTable({
   const t = useTranslations("organization.userstable");
   const locale = useLocale();
   const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -81,11 +82,11 @@ export function UsersTable({
   const sortDirection = sorting?.[0]?.desc ? "desc" : "asc";
 
   // Map table column IDs to procedure sort fields
-  let procedureSortBy: SortField | undefined;
+  let procedureSortBy: MemberSortField | undefined;
   if (sortBy === "member") {
     procedureSortBy = "user.name";
-  } else if (validSortFields.includes(sortBy as SortField)) {
-    procedureSortBy = sortBy as SortField;
+  } else if (MEMBER_SORT_FIELDS.includes(sortBy as MemberSortField)) {
+    procedureSortBy = sortBy as MemberSortField;
   } else {
     procedureSortBy = undefined;
   }

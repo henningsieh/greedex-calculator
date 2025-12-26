@@ -1,11 +1,11 @@
 import { and, count, countDistinct, eq } from "drizzle-orm";
 import { z } from "zod";
 import {
-  memberRoles,
-  type SortField,
-  validSortFields,
+  MEMBER_ROLES,
+  type MemberSortField,
 } from "@/components/features/organizations/types";
 import { MemberWithUserSchema } from "@/components/features/organizations/validation-schemas";
+import { MEMBER_SORT_FIELDS } from "@/config/organizations";
 import { auth } from "@/lib/better-auth";
 import { db } from "@/lib/drizzle/db";
 import {
@@ -18,7 +18,7 @@ import { authorized } from "@/lib/orpc/middleware";
 
 function getSortKey(
   member: z.infer<typeof MemberWithUserSchema>,
-  sortBy: SortField,
+  sortBy: MemberSortField,
 ): string | number {
   if (sortBy === "createdAt") {
     const time = new Date(member.createdAt).getTime();
@@ -63,11 +63,11 @@ export const searchMembers = authorized
       organizationId: z.string(),
       filters: z
         .object({
-          roles: z.array(z.enum(Object.values(memberRoles))).optional(),
+          roles: z.array(z.enum(Object.values(MEMBER_ROLES))).optional(),
           // Simple search string to match against user name or email
           search: z.string().optional(),
           // Sorting: a field name (e.g. "createdAt" | "user.name" | "email")
-          sortBy: z.enum(validSortFields).optional(),
+          sortBy: z.enum(MEMBER_SORT_FIELDS).optional(),
           sortDirection: z.enum(["asc", "desc"]).optional(),
           // limit/offset for pagination
           limit: z.number().optional(),

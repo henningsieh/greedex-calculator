@@ -2,8 +2,9 @@ import { relations } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
 import { boolean, decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { organization, user, member } from "@/lib/drizzle/schemas/auth-schema";
-import { activityValues, ActivityValueType } from "@/components/features/projects/types";
-import { EUCountryCode } from "@/config/eu-countries";
+import { ACTIVITY_VALUES } from "@/config/activities";
+import type { EUCountryCode } from "@/config/eu-countries";
+import { ActivityValueType } from "@/components/features/projects/types";
 
 
 // ============================================================================
@@ -64,7 +65,7 @@ export const projectActivitiesTable = pgTable("project_activity", {
     .references(() => projectsTable.id, { onDelete: "cascade" }),
 
   // type ActivityType = "boat" | "bus" | "train" | "car"
-  activityType: text("activity_type", { enum: activityValues })
+  activityType: text("activity_type", { enum: ACTIVITY_VALUES })
     .$type<ActivityValueType>()
     .notNull(),
 

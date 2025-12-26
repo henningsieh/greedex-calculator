@@ -1,12 +1,8 @@
 import { and, asc, eq, inArray, type SQL, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { z } from "zod";
-import { memberRoles } from "@/components/features/organizations/types";
+import { MEMBER_ROLES } from "@/components/features/organizations/types";
 import { ProjectParticipantWithUserSchema } from "@/components/features/participants/validation-schemas";
-import {
-  DEFAULT_PROJECT_SORTING_FIELD,
-  PROJECT_SORT_FIELDS,
-} from "@/components/features/projects/types";
 import {
   CreateActivityInputSchema,
   ProjectActivityWithRelationsSchema,
@@ -16,6 +12,10 @@ import {
   ProjectWithRelationsSchema,
   UpdateActivityInputSchema,
 } from "@/components/features/projects/validation-schemas";
+import {
+  DEFAULT_PROJECT_SORTING_FIELD,
+  PROJECT_SORT_FIELDS,
+} from "@/config/projects";
 import { auth } from "@/lib/better-auth";
 import { db } from "@/lib/drizzle/db";
 import {
@@ -435,9 +435,9 @@ export const archiveProject = authorized
     }
 
     // Check permissions: Owner can archive any project, Employee can archive only their own projects
-    const isOwner = role === memberRoles.Owner;
+    const isOwner = role === MEMBER_ROLES.Owner;
     const isResponsibleEmployee =
-      role === memberRoles.Employee &&
+      role === MEMBER_ROLES.Employee &&
       existingProject.responsibleUserId === context.user.id;
 
     if (!(isOwner || isResponsibleEmployee)) {
@@ -508,7 +508,7 @@ export const setActiveProject = authorized
         headers: await headers(),
       });
 
-      if (role !== memberRoles.Employee && role !== memberRoles.Owner) {
+      if (role !== MEMBER_ROLES.Employee && role !== MEMBER_ROLES.Owner) {
         throw errors.FORBIDDEN({
           message: "You don't have permission to set an active project",
         });
