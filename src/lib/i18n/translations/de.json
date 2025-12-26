@@ -472,10 +472,6 @@
         "clear": "Löschen Sie alle Filter"
       },
       "loading": "Teammitglieder werden geladen...",
-      "emptyState": {
-        "title": "Keine Teammitglieder gefunden",
-        "description": "Keine Teammitglieder entsprechen Ihren Suchkriterien. Versuchen Sie, Ihre Filter anzupassen oder laden Sie neue Mitglieder zu Ihrer Organisation ein."
-      },
       "noResults": "Keine Ergebnisse.",
       "rowsSelected": "{selected} von {total} Zeile(n) ausgewählt.",
       "previous": "Zurück",
@@ -497,11 +493,19 @@
         "sendingButton": "Wird gesendet...",
         "sendButton": "Einladung senden",
         "successToast": "Teammitglied erfolgreich eingeladen."
+      },
+      "emptyState": {
+        "title": "Keine Teammitglieder gefunden",
+        "description": "Kein Teammitglied entspricht deinen Suchkriterien. \nVersuche, deine Filter anzupassen oder neue Teammitglieder in die Organisation einzuladen."
       }
     },
     "participants": {
       "title": "Teilnehmer",
-      "description": "Liste aller Projektteilnehmer in deiner Organisation"
+      "description": "Liste aller Projektteilnehmer in deiner Organisation",
+      "emptyState": {
+        "description": "Keine Projektteilnehmer gefunden",
+        "title": "Kein Projektteilnehmer entspricht deinen Suchkriterien. \nVersuche, deine Filter anzupassen oder sende den „Teilnahmelink“ an den gewünschten Teilnehmer."
+      }
     },
     "projectsArchive": {
       "title": "Archivierte Projekte",

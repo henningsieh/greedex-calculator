@@ -52,8 +52,11 @@ export default async () => {
       </div>
       <Suspense fallback={<TeamTableSkeleton />}>
         <UsersTable
+          emptyDescription={t("emptyState.description")}
+          emptyTitle={t("emptyState.title")}
           organizationId={activeOrganizationId}
           roles={[memberRoles.Owner, memberRoles.Employee]}
+          showInviteButton={true}
         />
       </Suspense>
     </div>

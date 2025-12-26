@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import {
-  Building2Icon,
-  PlusCircleIcon,
-} from "lucide-react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Building2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CreateProjectButton } from "@/components/features/projects/create-project-button";
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
@@ -19,10 +14,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  DASHBOARD_PATH,
-  PROJECTS_PATH,
-} from "@/config/app-routes";
+import { DASHBOARD_PATH, PROJECTS_PATH } from "@/config/app-routes";
 import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import { Link, usePathname } from "@/lib/i18n/routing";
 import { orpcQuery } from "@/lib/orpc/orpc";
@@ -36,9 +28,10 @@ import { orpcQuery } from "@/lib/orpc/orpc";
 export function AppBreadcrumb() {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
-  
+
   // Check if we're on a project detail page (/org/projects/[id])
-  const isProjectDetail = segments[0] === "org" && segments[1] === "projects" && segments[2];
+  const isProjectDetail =
+    segments[0] === "org" && segments[1] === "projects" && segments[2];
   const projectId = isProjectDetail ? segments[2] : null;
 
   if (projectId) {
@@ -52,7 +45,7 @@ export function AppBreadcrumb() {
  * Breadcrumb for organization-level routes (no project needed)
  */
 function OrgBreadcrumb() {
-  const t = useTranslations("app.sidebar");
+  const _t = useTranslations("app.sidebar");
 
   // Fetch active organization
   const { data: activeOrganization } = useSuspenseQuery(

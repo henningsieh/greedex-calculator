@@ -472,10 +472,6 @@
         "clear": "Clear all filters"
       },
       "loading": "Loading team members...",
-      "emptyState": {
-        "title": "No team members found",
-        "description": "No team members match your search criteria. Try adjusting your filters or invite new members to your organization."
-      },
       "noResults": "No results.",
       "rowsSelected": "{selected} of {total} row(s) selected.",
       "previous": "Previous",
@@ -497,11 +493,19 @@
         "sendingButton": "Sending...",
         "sendButton": "Send Invite",
         "successToast": "Team member invited successfully."
+      },
+      "emptyState": {
+        "title": "No team members found",
+        "description": "No team members match your search criteria. Try adjusting your filters or invite new team members to your organization."
       }
     },
     "participants": {
       "title": "Participants",
-      "description": "List of all project participants in your organization"
+      "description": "List of all project participants in your organization",
+      "emptyState": {
+        "description": "No project's participants found",
+        "title": "No project's participants match your search criteria. Try adjusting your filters or send the \"participation link\" to the desired participant."
+      }
     },
     "projectsArchive": {
       "title": "Archived Projects",

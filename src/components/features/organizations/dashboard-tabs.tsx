@@ -22,7 +22,7 @@ interface DashboardTabsProps {
  * @returns The tabs-based dashboard UI for the given organization.
  */
 export function DashboardTabs({ organizationId }: DashboardTabsProps) {
-  const t = useTranslations("organization.dashboard");
+  const t = useTranslations("organization");
   const [activeTab, setActiveTab] = useQueryState("tab", {
     defaultValue: "dashboard",
     parse: (value) =>
@@ -43,21 +43,21 @@ export function DashboardTabs({ organizationId }: DashboardTabsProps) {
           value="dashboard"
         >
           <LayoutDashboardIcon className="h-4 w-4" />
-          {t("tabs.dashboard")}
+          {t("dashboard.tabs.dashboard")}
         </TabsTrigger>
         <TabsTrigger
           className="text-muted-foreground/80 data-[state=active]:text-foreground dark:data-[state=active]:border-primary/60 dark:data-[state=active]:bg-accent/60"
           value="projects"
         >
           <PROJECT_ICONS.projects className="h-4 w-4" />
-          {t("tabs.projects")}
+          {t("dashboard.tabs.projects")}
         </TabsTrigger>
         <TabsTrigger
           className="text-muted-foreground/80 data-[state=active]:text-foreground dark:data-[state=active]:border-primary/60 dark:data-[state=active]:bg-accent/60"
           value="participants"
         >
           <PROJECT_ICONS.participants className="h-4 w-4" />
-          {t("tabs.participants")}
+          {t("dashboard.tabs.participants")}
         </TabsTrigger>
       </TabsList>
 
@@ -66,15 +66,18 @@ export function DashboardTabs({ organizationId }: DashboardTabsProps) {
       </TabsContent>
 
       <TabsContent value="projects">
-        <Suspense fallback={<div>{t("tabs.loading-projects")}</div>}>
+        <Suspense fallback={<div>{t("dashboard.tabs.loading-projects")}</div>}>
           <ProjectsTab />
         </Suspense>
       </TabsContent>
 
       <TabsContent value="participants">
         <UsersTable
+          emptyDescription={t("participants.emptyState.description")}
+          emptyTitle={t("participants.emptyState.title")}
           organizationId={organizationId}
           roles={[memberRoles.Participant]}
+          showInviteButton={false}
         />
       </TabsContent>
     </Tabs>
