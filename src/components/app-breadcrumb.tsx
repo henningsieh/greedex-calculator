@@ -16,6 +16,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
+import { Link, usePathname } from "@/lib/i18n/routing";
+import { orpcQuery } from "@/lib/orpc/orpc";
 import {
   DASHBOARD_PATH,
   PARTICIPANTS_PATH,
@@ -23,10 +26,7 @@ import {
   PROJECTS_PATH,
   SETTINGS_PATH,
   TEAM_PATH,
-} from "@/config/app-routes";
-import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
-import { Link, usePathname } from "@/lib/i18n/routing";
-import { orpcQuery } from "@/lib/orpc/orpc";
+} from "@/lib/utils/app-routes";
 
 /**
  * Get the current section info based on pathname
