@@ -150,7 +150,7 @@ export function UsersTable({
         size: 250,
         cell: (info) => (
           <div className="flex items-center gap-3">
-            <Avatar>
+            <Avatar className="size-5">
               <AvatarImage src={info.row.original.user.image || undefined} />
               <AvatarFallback>
                 {info.row.original.user.name?.charAt(0).toUpperCase()}
@@ -293,7 +293,7 @@ export function UsersTable({
                       return "w-12";
                     }
                     if (id === "member") {
-                      return "pl-[52px]";
+                      return "pl-[42px]";
                     }
                     if (id === "email") {
                       return "";
