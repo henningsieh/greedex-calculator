@@ -1,7 +1,7 @@
 import { LayoutDashboardIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { getTranslations } from "next-intl/server";
-import { DashboardTabs } from "@/components/features/organizations/dashboard-tabs";
+import { OrganizationDashboard } from "@/components/features/organizations/organization-dashboard";
 import { memberRoles } from "@/components/features/organizations/types";
 import { DEFAULT_PROJECT_SORTING_FIELD } from "@/components/features/projects/types";
 import { auth } from "@/lib/better-auth";
@@ -55,7 +55,7 @@ export default async function DashboardPage() {
         </div>
         <p className="text-muted-foreground">{t("description")}</p>
       </div>
-      <DashboardTabs organizationId={activeOrganizationId} />
+      <OrganizationDashboard organizationId={activeOrganizationId} />
     </div>
   );
 }

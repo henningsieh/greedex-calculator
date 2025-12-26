@@ -11,7 +11,7 @@ import { ProjectsTab } from "@/components/features/projects/dashboard/projects-t
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-interface DashboardTabsProps {
+interface OrganizationDashboardProps {
   organizationId: string;
 }
 
@@ -21,7 +21,9 @@ interface DashboardTabsProps {
  * @param organizationId - Identifier of the organization; passed to the Participants tab to scope member data.
  * @returns The tabs-based dashboard UI for the given organization.
  */
-export function DashboardTabs({ organizationId }: DashboardTabsProps) {
+export function OrganizationDashboard({
+  organizationId,
+}: OrganizationDashboardProps) {
   const t = useTranslations("organization");
   const [activeTab, setActiveTab] = useQueryState("tab", {
     defaultValue: "dashboard",
