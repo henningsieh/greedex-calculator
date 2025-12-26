@@ -64,7 +64,9 @@ export function OrganizationDashboard({
       </TabsList>
 
       <TabsContent value="dashboard">
-        <OrganizationDashboardStats />
+        <Suspense fallback={<div>{t("dashboard.tabs.loading-stats")}</div>}>
+          <OrganizationDashboardStats organizationId={organizationId} />
+        </Suspense>
       </TabsContent>
 
       <TabsContent value="projects">

@@ -40,7 +40,21 @@ export default async function DashboardPage() {
       orpcQuery.members.search.queryOptions({
         input: {
           organizationId: activeOrganizationId,
-          roles: [memberRoles.Participant],
+          filters: {
+            roles: [memberRoles.Participant],
+            search: undefined,
+            sortBy: undefined,
+            sortDirection: "asc",
+            limit: 5, // Match UsersTable's initial pageSize
+            offset: 0, // Match UsersTable's initial pageIndex
+          },
+        },
+      }),
+    ),
+    queryClient.prefetchQuery(
+      orpcQuery.organizations.getStats.queryOptions({
+        input: {
+          organizationId: activeOrganizationId,
         },
       }),
     ),

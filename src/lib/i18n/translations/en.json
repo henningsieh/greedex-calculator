@@ -314,7 +314,8 @@
         "participants": "Participants",
         "projects": "Projects",
         "loading-projects": "Loading projects...",
-        "statistics": "Statistics"
+        "statistics": "Statistics",
+        "loading-stats": "The statistics are currently gettingloaded."
       }
     },
     "projects": {
