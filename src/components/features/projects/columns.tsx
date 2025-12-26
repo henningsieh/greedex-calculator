@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
+  ArchiveIcon,
   Edit2Icon,
   EyeIcon,
   MoreHorizontalIcon,
@@ -198,6 +199,10 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
     isPending: permissionsPending,
   } = useProjectPermissions();
 
+  // TODO: Check actual archive permission based on owner OR responsible employee
+  // For now, using canUpdate as proxy
+  const canArchive = canUpdate;
+
   const { mutateAsync: deleteProjectMutation, isPending: isDeleting } =
     useMutation({
       mutationFn: () =>
@@ -221,6 +226,34 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
       },
     });
 
+  const { mutateAsync: archiveProjectMutation, isPending: isArchiving } =
+    useMutation({
+      mutationFn: (archived: boolean) =>
+        orpc.projects.archive({
+          id: project.id,
+          archived,
+        }),
+      onSuccess: (result) => {
+        if (result.success) {
+          toast.success(
+            result.project.archived
+              ? t("form.archive.toast-success")
+              : t("form.archive.toast-unarchive-success"),
+          );
+          queryClient.invalidateQueries({
+            queryKey: orpcQuery.projects.list.queryKey(),
+          });
+        } else {
+          toast.error(t("form.archive.toast-error"));
+        }
+      },
+      onError: (err: unknown) => {
+        console.error(err);
+        const message = err instanceof Error ? err.message : String(err);
+        toast.error(message || t("form.archive.toast-error-generic"));
+      },
+    });
+
   const handleDelete = async () => {
     const confirmed = await confirm({
       title: t("form.delete.confirm-title"),
@@ -237,6 +270,31 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
         await deleteProjectMutation();
       } catch (error) {
         console.error("Delete failed:", error);
+      }
+    }
+  };
+
+  const handleArchive = async () => {
+    const isCurrentlyArchived = project.archived ?? false;
+    const confirmed = await confirm({
+      title: isCurrentlyArchived
+        ? t("form.archive.unarchive-title")
+        : t("form.archive.confirm-title"),
+      description: isCurrentlyArchived
+        ? t("form.archive.unarchive-description", { name: project.name })
+        : t("form.archive.confirm-description", { name: project.name }),
+      confirmText: isCurrentlyArchived
+        ? t("form.archive.unarchive-button")
+        : t("form.archive.confirm-button"),
+      cancelText: t("form.archive.cancel-button"),
+      isDestructive: false,
+    });
+
+    if (confirmed) {
+      try {
+        await archiveProjectMutation(!isCurrentlyArchived);
+      } catch (error) {
+        console.error("Archive failed:", error);
       }
     }
   };
@@ -266,6 +324,17 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
             <DropdownMenuItem onClick={() => setIsEditModalOpen(true)}>
               <Edit2Icon className="mr-2 h-4 w-4" />
               {t("table.edit-project")}
+            </DropdownMenuItem>
+          )}
+          {canArchive && (
+            <DropdownMenuItem
+              disabled={isArchiving || permissionsPending}
+              onClick={handleArchive}
+            >
+              <ArchiveIcon className="mr-2 h-4 w-4" />
+              {project.archived
+                ? t("form.archive.unarchive")
+                : t("form.archive.archive")}
             </DropdownMenuItem>
           )}
           {canDelete && (

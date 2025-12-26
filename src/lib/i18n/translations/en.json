@@ -533,6 +533,7 @@
       "organization": {
         "groupLabel": "Organization",
         "dashboard": "Dashboard",
+        "projects": "Projects",
         "team": "Team Members",
         "settings": "Settings",
         "createproject": "Create Project"

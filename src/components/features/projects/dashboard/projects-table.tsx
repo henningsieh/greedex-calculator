@@ -188,7 +188,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="rounded-md border">
+        <div className="overflow-x-auto rounded-md border">
           <Table>
             <TableHeader className="border-b bg-muted/50">
               {table.getHeaderGroups().map((headerGroup) => (

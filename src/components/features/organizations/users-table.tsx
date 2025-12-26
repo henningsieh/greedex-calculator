@@ -248,7 +248,7 @@ export function UsersTable({
           )}
         </div>
       </div>
-      <div className="relative rounded-md border">
+      <div className="relative overflow-x-auto rounded-md border">
         <Table>
           <TableHeader className="border-b bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (
