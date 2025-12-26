@@ -95,7 +95,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup className="overflow-x-hidden">
           <SidebarGroupLabel className="text-nowrap">
-            {t("projects.sectionLabel")}
+            {t("projects.groupLabel")}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -118,7 +118,7 @@ export function AppSidebar() {
         <div className="grow flex-col" />
         <SidebarGroup className="overflow-x-hidden">
           <SidebarGroupLabel className="text-nowrap">
-            {t("organization.sectionLabel")}
+            {t("organization.groupLabel")}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

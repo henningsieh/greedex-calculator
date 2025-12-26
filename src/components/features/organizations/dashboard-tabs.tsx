@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import { useQueryState } from "nuqs";
 import { Suspense } from "react";
 import { DashboardStats } from "@/components/features/organizations/dashboard-stats";
-import { TeamTable } from "@/components/features/organizations/team-table";
 import { memberRoles } from "@/components/features/organizations/types";
+import { UsersTable } from "@/components/features/organizations/users-table";
 import { ProjectsTab } from "@/components/features/projects/dashboard/projects-tab";
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -72,7 +72,7 @@ export function DashboardTabs({ organizationId }: DashboardTabsProps) {
       </TabsContent>
 
       <TabsContent value="participants">
-        <TeamTable
+        <UsersTable
           organizationId={organizationId}
           roles={[memberRoles.Participant]}
         />

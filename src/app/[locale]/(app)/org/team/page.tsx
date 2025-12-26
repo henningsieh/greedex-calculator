@@ -2,11 +2,11 @@ import { UsersIcon } from "lucide-react";
 import { headers as nextHeaders } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
-import {
-  TeamTable,
-  TeamTableSkeleton,
-} from "@/components/features/organizations/team-table";
 import { memberRoles } from "@/components/features/organizations/types";
+import {
+  TeamTableSkeleton,
+  UsersTable,
+} from "@/components/features/organizations/users-table";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
@@ -51,7 +51,7 @@ export default async () => {
         <p className="text-muted-foreground">{t("description")}</p>
       </div>
       <Suspense fallback={<TeamTableSkeleton />}>
-        <TeamTable
+        <UsersTable
           organizationId={activeOrganizationId}
           roles={[memberRoles.Owner, memberRoles.Employee]}
         />

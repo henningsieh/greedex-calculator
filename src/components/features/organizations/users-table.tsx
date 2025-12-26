@@ -11,7 +11,7 @@ import {
   type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowDownIcon, ArrowUpIcon, FilterXIcon } from "lucide-react";
+import { FilterXIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import type z from "zod";
@@ -21,9 +21,18 @@ import type {
 } from "@/components/features/organizations/types";
 import { validSortFields } from "@/components/features/organizations/types";
 import type { MemberWithUserSchema } from "@/components/features/organizations/validation-schemas";
+import { SortableHeader } from "@/components/features/projects/sortable-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -47,9 +56,9 @@ interface TeamTableProps {
   roles: MemberRole[];
 }
 
-export function TeamTable({ organizationId, roles }: TeamTableProps) {
+export function UsersTable({ organizationId, roles }: TeamTableProps) {
   const tRoles = useTranslations("organization.roles");
-  const t = useTranslations("organization.team.table");
+  const t = useTranslations("organization.userstable");
   const locale = useLocale();
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -75,7 +84,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
     procedureSortBy = undefined;
   }
 
-  const { data: membersResult } = useQuery(
+  const { data: membersResult, isFetching } = useQuery(
     orpcQuery.members.search.queryOptions({
       input: {
         organizationId,
@@ -95,6 +104,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
 
   const members = membersResult?.members ?? [];
   const total = membersResult?.total ?? 0;
+  const isLoadingInitialData = isFetching && members.length === 0;
 
   type MemberWithUser = z.infer<typeof MemberWithUserSchema>;
 
@@ -104,7 +114,7 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
     () => [
       {
         id: "member",
-        header: t("member"),
+        header: t("name"),
         accessorFn: (row: MemberWithUser) => row.user?.name ?? undefined,
         enableSorting: true,
         cell: (info) => (
@@ -199,11 +209,13 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
       <div className="flex flex-col gap-6 py-4 sm:flex-row sm:items-center">
         <div className="flex w-full items-center gap-2">
           <Input
+            disabled={isLoadingInitialData}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("control.filter")}
             value={search}
           />
           <Button
+            disabled={isLoadingInitialData}
             onClick={() => {
               setSearch("");
               setDebouncedSearch("");
@@ -226,7 +238,15 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
           />
         </div>
       </div>
-      <div className="rounded-md border">
+      <div className="relative rounded-md border">
+        {isFetching && !isLoadingInitialData && (
+          <div className="absolute top-4 right-4 z-10">
+            <div className="flex items-center gap-2 rounded-md bg-muted px-3 py-1.5 text-muted-foreground text-sm">
+              <div className="size-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
+              <span>{t("loading")}</span>
+            </div>
+          </div>
+        )}
         <Table>
           <TableHeader className="border-b bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -253,28 +273,17 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
                         }
                         if (header.column.getCanSort()) {
                           return (
-                            <button
-                              className="inline-flex items-center gap-2"
-                              onClick={() => header.column.toggleSorting()}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter" || e.key === " ") {
-                                  e.preventDefault();
-                                  header.column.toggleSorting();
-                                }
-                              }}
-                              type="button"
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
+                            <SortableHeader
+                              column={header.column}
+                              isNumeric={header.id === "createdAt"}
+                              table={table}
+                              title={String(
+                                flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                ),
                               )}
-                              {sortState === "asc" && (
-                                <ArrowUpIcon className="size-4" />
-                              )}
-                              {sortState === "desc" && (
-                                <ArrowDownIcon className="size-4" />
-                              )}
-                            </button>
+                            />
                           );
                         }
                         return flexRender(
@@ -289,7 +298,28 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoadingInitialData &&
+              Array.from({ length: pageSize }, (_, i) => (
+                <TableRow key={`loading-${i}`}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="size-10 rounded-full" />
+                      <Skeleton className="h-4 w-32" />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-48" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            {!isLoadingInitialData &&
+              table.getRowModel().rows?.length > 0 &&
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
@@ -301,17 +331,34 @@ export function TeamTable({ organizationId, roles }: TeamTableProps) {
                     </TableCell>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  className="h-24 text-center"
-                  colSpan={columns.length}
-                >
-                  {t("noResults")}
-                </TableCell>
-              </TableRow>
-            )}
+              ))}
+            {!isLoadingInitialData &&
+              table.getRowModel().rows?.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={columns.length}>
+                    <Empty className="border-0 py-8">
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <FilterXIcon className="size-6" />
+                        </EmptyMedia>
+                        <EmptyTitle>{t("emptyState.title")}</EmptyTitle>
+                        <EmptyDescription>
+                          {t("emptyState.description")}
+                        </EmptyDescription>
+                      </EmptyHeader>
+                      <EmptyContent>
+                        <InviteMemberDialog
+                          allowedRoles={roles}
+                          onSuccess={() => {
+                            setPageIndex(0);
+                          }}
+                          organizationId={organizationId}
+                        />
+                      </EmptyContent>
+                    </Empty>
+                  </TableCell>
+                </TableRow>
+              )}
           </TableBody>
         </Table>
       </div>

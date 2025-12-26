@@ -447,23 +447,28 @@
         }
       }
     },
+    "userstable": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "joined": "Joined",
+      "control": {
+        "filter": "Filter list",
+        "clear": "Clear all filters"
+      },
+      "loading": "Loading team members...",
+      "emptyState": {
+        "title": "No team members found",
+        "description": "No team members match your search criteria. Try adjusting your filters or invite new members to your organization."
+      },
+      "noResults": "No results.",
+      "rowsSelected": "{selected} of {total} row(s) selected.",
+      "previous": "Previous",
+      "next": "Next"
+    },
     "team": {
       "title": "Team Members",
       "description": "List of all team members in of your organization",
-      "table": {
-        "member": "Member",
-        "email": "Email",
-        "role": "Role",
-        "joined": "Joined",
-        "control": {
-          "filter": "Filter Team members",
-          "clear": "Clear all filters"
-        },
-        "noResults": "No results.",
-        "rowsSelected": "{selected} of {total} row(s) selected.",
-        "previous": "Previous",
-        "next": "Next"
-      },
       "invite": {
         "button": "New Invite",
         "title": "Invite a new Member to your Team",
@@ -491,12 +496,12 @@
   "app": {
     "sidebar": {
       "projects": {
-        "sectionLabel": "Projects of your organization",
+        "groupLabel": "Projects of your organization",
         "control": "Control",
         "liveView": "Live view"
       },
       "organization": {
-        "sectionLabel": "Your organization",
+        "groupLabel": "Your organization",
         "dashboard": "Dashboard",
         "projects": "Projects",
         "team": "Team Members",
