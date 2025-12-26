@@ -6,11 +6,11 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import {
+  ArchiveIcon,
   Building2Icon,
   Edit2Icon,
   LayoutDashboardIcon,
   PlusCircleIcon,
-  ArchiveIcon,
   SettingsIcon,
   Trash2Icon,
   UsersIcon,
@@ -241,8 +241,8 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
   );
 
   // Check if user can archive (owner OR responsible employee)
-  const canArchive = 
-    session?.user?.id === currentProject.responsibleUserId || 
+  const canArchive =
+    session?.user?.id === currentProject.responsibleUserId ||
     session?.session.activeOrganizationId === currentProject.organizationId;
 
   const {
@@ -290,13 +290,15 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
           toast.success(
             result.project.archived
               ? tProject("archive.toast-success")
-              : tProject("archive.toast-unarchive-success")
+              : tProject("archive.toast-unarchive-success"),
           );
           queryClient.invalidateQueries({
             queryKey: orpcQuery.projects.list.queryKey(),
           });
           queryClient.invalidateQueries({
-            queryKey: orpcQuery.projects.getById.queryKey({ input: { id: currentProject.id } }),
+            queryKey: orpcQuery.projects.getById.queryKey({
+              input: { id: currentProject.id },
+            }),
           });
         } else {
           toast.error(tProject("archive.toast-error"));
@@ -402,12 +404,16 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
           onClick={async () => {
             const isCurrentlyArchived = currentProject.archived ?? false;
             const confirmed = await confirm({
-              title: isCurrentlyArchived 
+              title: isCurrentlyArchived
                 ? tProject("archive.unarchive-title")
                 : tProject("archive.confirm-title"),
               description: isCurrentlyArchived
-                ? tProject("archive.unarchive-description", { name: currentProject.name })
-                : tProject("archive.confirm-description", { name: currentProject.name }),
+                ? tProject("archive.unarchive-description", {
+                    name: currentProject.name,
+                  })
+                : tProject("archive.confirm-description", {
+                    name: currentProject.name,
+                  }),
               confirmText: isCurrentlyArchived
                 ? tProject("archive.unarchive-button")
                 : tProject("archive.confirm-button"),
@@ -427,7 +433,9 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
         >
           <ArchiveIcon className="h-4 w-4" />
           <span className="ml-1 hidden sm:inline">
-            {currentProject.archived ? tProject("archive.unarchive") : tProject("archive.archive")}
+            {currentProject.archived
+              ? tProject("archive.unarchive")
+              : tProject("archive.archive")}
           </span>
         </Button>
 

@@ -3,10 +3,7 @@ import { headers as nextHeaders } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { memberRoles } from "@/components/features/organizations/types";
-import {
-  TeamTableSkeleton,
-  UsersTable,
-} from "@/components/features/organizations/users-table";
+import { TeamTableSkeleton } from "@/components/features/organizations/users-table";
 import { ParticipantsTable } from "@/components/features/participants/participants-table";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";

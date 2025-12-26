@@ -2,7 +2,6 @@
 
 import {
   ArchiveIcon,
-  BarChart3Icon,
   LayoutDashboardIcon,
   PanelRightCloseIcon,
   PanelRightOpenIcon,
@@ -43,11 +42,11 @@ import { Link, usePathname } from "@/lib/i18n/routing";
 /**
  * Renders the application sidebar containing organization and project navigation.
  *
- * The sidebar groups menu items into "Organization" (Dashboard, Team, Settings) 
- * and "Projects" (Projects list, Participants, Archive), highlights the active 
+ * The sidebar groups menu items into "Organization" (Dashboard, Team, Settings)
+ * and "Projects" (Projects list, Participants, Archive), highlights the active
  * item based on the current pathname, and provides a collapse toggle in the footer.
  *
- * @returns The Sidebar element with grouped navigation menus, a collapse toggle, 
+ * @returns The Sidebar element with grouped navigation menus, a collapse toggle,
  * and an OrganizationSwitcher wrapped with a skeleton fallback.
  */
 export function AppSidebar() {
@@ -106,13 +105,16 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup className="overflow-x-hidden">
           <SidebarGroupLabel className="text-nowrap">
-            {t("organization.groupLabel")}
+            {t("projects.groupLabel")}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {organizationMenuItems.map((item) => (
-                <SidebarMenuItem key={item.title} title={item.title}>
-                  <SidebarMenuButton asChild>
+              {projectsMenuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    className="hover:bg-secondary hover:text-secondary-foreground active:bg-secondary active:text-secondary-foreground data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground data-[state=open]:hover:bg-secondary data-[state=open]:hover:text-secondary-foreground"
+                  >
                     <Link data-active={pathname === item.url} href={item.url}>
                       <item.icon className="size-4" />
                       <span>{item.title}</span>
@@ -126,16 +128,13 @@ export function AppSidebar() {
         <SidebarSeparator className="mx-0" />
         <SidebarGroup className="overflow-x-hidden">
           <SidebarGroupLabel className="text-nowrap">
-            {t("projects.groupLabel")}
+            {t("organization.groupLabel")}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {projectsMenuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    className="hover:bg-secondary hover:text-secondary-foreground active:bg-secondary active:text-secondary-foreground data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground data-[state=open]:hover:bg-secondary data-[state=open]:hover:text-secondary-foreground"
-                  >
+              {organizationMenuItems.map((item) => (
+                <SidebarMenuItem key={item.title} title={item.title}>
+                  <SidebarMenuButton asChild>
                     <Link data-active={pathname === item.url} href={item.url}>
                       <item.icon className="size-4" />
                       <span>{item.title}</span>

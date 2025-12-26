@@ -57,7 +57,11 @@ interface TeamTableProps {
   showInviteButton?: boolean; // Optional prop to control invite button visibility
 }
 
-export function UsersTable({ organizationId, roles, showInviteButton = true }: TeamTableProps) {
+export function UsersTable({
+  organizationId,
+  roles,
+  showInviteButton = true,
+}: TeamTableProps) {
   const tRoles = useTranslations("organization.roles");
   const t = useTranslations("organization.userstable");
   const locale = useLocale();

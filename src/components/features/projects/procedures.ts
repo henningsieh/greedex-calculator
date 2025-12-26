@@ -440,7 +440,7 @@ export const archiveProject = authorized
       role === memberRoles.Employee &&
       existingProject.responsibleUserId === context.user.id;
 
-    if (!isOwner && !isResponsibleEmployee) {
+    if (!(isOwner || isResponsibleEmployee)) {
       throw errors.FORBIDDEN({
         message:
           "You don't have permission to archive this project. Only the owner or the responsible employee can archive it.",

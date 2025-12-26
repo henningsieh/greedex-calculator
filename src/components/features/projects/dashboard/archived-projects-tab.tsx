@@ -31,7 +31,8 @@ export function ArchivedProjectsTab() {
   );
 
   // Filter for archived projects only
-  const projects = allProjects?.filter((project) => project.archived === true) || [];
+  const projects =
+    allProjects?.filter((project) => project.archived === true) || [];
 
   if (error) {
     return <div>Error loading archived projects: {error.message}</div>;
