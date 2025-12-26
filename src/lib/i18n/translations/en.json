@@ -470,8 +470,8 @@
       "title": "Team Members",
       "description": "List of all team members in of your organization",
       "invite": {
-        "button": "New Invite",
-        "title": "Invite a new Member to your Team",
+        "button": "New Team Member",
+        "title": "Invite a new Member",
         "description": "Invite a new team member to your organization.",
         "emailLabel": "User Email",
         "emailDescription": "Email address of the person you want to invite",

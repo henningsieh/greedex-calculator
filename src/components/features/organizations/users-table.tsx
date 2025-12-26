@@ -47,7 +47,7 @@ import { orpcQuery } from "@/lib/orpc/orpc";
 import { InviteMemberDialog } from "./invite-member-dialog";
 
 // Helper function with type predicate for sort field validation
-function isValidSortField(value: string | undefined): value is SortField {
+function _isValidSortField(value: string | undefined): value is SortField {
   return value !== undefined && validSortFields.includes(value as SortField);
 }
 
@@ -61,7 +61,7 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
   const t = useTranslations("organization.userstable");
   const locale = useLocale();
   const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -78,8 +78,8 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
   let procedureSortBy: SortField | undefined;
   if (sortBy === "member") {
     procedureSortBy = "user.name";
-  } else if (isValidSortField(sortBy)) {
-    procedureSortBy = sortBy;
+  } else if (validSortFields.includes(sortBy as SortField)) {
+    procedureSortBy = sortBy as SortField;
   } else {
     procedureSortBy = undefined;
   }
@@ -104,7 +104,6 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
 
   const members = membersResult?.members ?? [];
   const total = membersResult?.total ?? 0;
-  const isLoadingInitialData = isFetching && members.length === 0;
 
   type MemberWithUser = z.infer<typeof MemberWithUserSchema>;
 
@@ -117,6 +116,7 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
         header: t("name"),
         accessorFn: (row: MemberWithUser) => row.user?.name ?? undefined,
         enableSorting: true,
+        size: 250,
         cell: (info) => (
           <div className="flex items-center gap-3">
             <Avatar>
@@ -133,7 +133,8 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
         id: "email",
         header: t("email"),
         accessorFn: (row: MemberWithUser) => row.user?.email ?? undefined,
-        enableSorting: false,
+        enableSorting: true,
+        size: 300,
         cell: (info) => <>{String(info.getValue() ?? "")}</>,
       },
       {
@@ -141,6 +142,7 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
         header: t("role"),
         accessorFn: (row: MemberWithUser) => row.role ?? undefined,
         enableSorting: false,
+        size: 120,
         cell: (info) => (
           <Badge
             variant={
@@ -156,6 +158,7 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
         header: t("joined"),
         accessorFn: (row: MemberWithUser) => row.createdAt as Date | undefined,
         enableSorting: true,
+        size: 150,
         cell: (info) => {
           const val = info.getValue();
           if (!val) {
@@ -209,13 +212,13 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
       <div className="flex flex-col gap-6 py-4 sm:flex-row sm:items-center">
         <div className="flex w-full items-center gap-2">
           <Input
-            disabled={isLoadingInitialData}
+            disabled={isFetching}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("control.filter")}
             value={search}
           />
           <Button
-            disabled={isLoadingInitialData}
+            disabled={isFetching}
             onClick={() => {
               setSearch("");
               setDebouncedSearch("");
@@ -239,14 +242,6 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
         </div>
       </div>
       <div className="relative rounded-md border">
-        {isFetching && !isLoadingInitialData && (
-          <div className="absolute top-4 right-4 z-10">
-            <div className="flex items-center gap-2 rounded-md bg-muted px-3 py-1.5 text-muted-foreground text-sm">
-              <div className="size-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
-              <span>{t("loading")}</span>
-            </div>
-          </div>
-        )}
         <Table>
           <TableHeader className="border-b bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -260,11 +255,25 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
                     ariaSort = "descending";
                   }
 
+                  const getWidth = (id: string) => {
+                    if (id === "member") {
+                      return "w-[250px]";
+                    }
+                    if (id === "email") {
+                      return "w-[300px]";
+                    }
+                    if (id === "role") {
+                      return "w-[120px]";
+                    }
+                    return "w-[150px]";
+                  };
+
                   return (
                     <TableHead
                       aria-sort={
                         header.column.getCanSort() ? ariaSort : undefined
                       }
+                      className={getWidth(header.id)}
                       key={header.id}
                     >
                       {(() => {
@@ -298,42 +307,62 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
             ))}
           </TableHeader>
           <TableBody>
-            {isLoadingInitialData &&
-              Array.from({ length: pageSize }, (_, i) => (
-                <TableRow key={`loading-${i}`}>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Skeleton className="size-10 rounded-full" />
-                      <Skeleton className="h-4 w-32" />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-4 w-48" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-20 rounded-full" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-4 w-24" />
-                  </TableCell>
-                </TableRow>
-              ))}
-            {!isLoadingInitialData &&
-              table.getRowModel().rows?.length > 0 &&
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+            {(() => {
+              if (isFetching) {
+                return Array.from({ length: pageSize }, (_, i) => (
+                  <TableRow key={`skeleton-${i}`}>
+                    <TableCell className="w-[250px]">
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="size-10 shrink-0 rounded-full" />
+                        <Skeleton className="h-4 w-32" />
+                      </div>
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            {!isLoadingInitialData &&
-              table.getRowModel().rows?.length === 0 && (
+                    <TableCell className="w-[300px]">
+                      <Skeleton className="h-4 w-48" />
+                    </TableCell>
+                    <TableCell className="w-[120px]">
+                      <Skeleton className="h-6 w-20 rounded-full" />
+                    </TableCell>
+                    <TableCell className="w-[150px]">
+                      <Skeleton className="h-4 w-24" />
+                    </TableCell>
+                  </TableRow>
+                ));
+              }
+
+              if (table.getRowModel().rows?.length > 0) {
+                return table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => {
+                      const getWidth = (id: string) => {
+                        if (id === "member") {
+                          return "w-[250px]";
+                        }
+                        if (id === "email") {
+                          return "w-[300px]";
+                        }
+                        if (id === "role") {
+                          return "w-[120px]";
+                        }
+                        return "w-[150px]";
+                      };
+                      return (
+                        <TableCell
+                          className={getWidth(cell.column.id)}
+                          key={cell.id}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ));
+              }
+
+              return (
                 <TableRow>
                   <TableCell colSpan={columns.length}>
                     <Empty className="border-0 py-8">
@@ -347,18 +376,19 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
                         </EmptyDescription>
                       </EmptyHeader>
                       <EmptyContent>
-                        <InviteMemberDialog
+                        {/* <InviteMemberDialog
                           allowedRoles={roles}
                           onSuccess={() => {
                             setPageIndex(0);
                           }}
                           organizationId={organizationId}
-                        />
+                        /> */}
                       </EmptyContent>
                     </Empty>
                   </TableCell>
                 </TableRow>
-              )}
+              );
+            })()}
           </TableBody>
         </Table>
       </div>
