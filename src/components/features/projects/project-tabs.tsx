@@ -1,14 +1,29 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { CalendarDaysIcon, GlobeIcon, LeafIcon } from "lucide-react";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import {
+  ArchiveIcon,
+  CalendarDaysIcon,
+  Edit2Icon,
+  GlobeIcon,
+  LeafIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
+import { toast } from "sonner";
 import { ParticipantsLinkControls } from "@/components/features/participants/participants-link-controls";
 import { ParticipantsList } from "@/components/features/participants/participants-list";
 import { ProjectActivitiesList } from "@/components/features/project-activities/project-activities-list";
+import { EditProjectForm } from "@/components/features/projects/edit-project-form";
 import { ProjectDetails } from "@/components/features/projects/project-details";
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -18,11 +33,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import { getCountryData } from "@/lib/i18n/countries";
-import { orpcQuery } from "@/lib/orpc/orpc";
+import { orpc, orpcQuery } from "@/lib/orpc/orpc";
 import {
   calculateActivitiesCO2,
   MILLISECONDS_PER_DAY,
@@ -41,7 +63,11 @@ interface ProjectDetailsProps {
 export function ProjectTabs({ id }: ProjectDetailsProps) {
   const t = useTranslations("project.details");
   const tProject = useTranslations("organization.projects");
-  const { canUpdate, canDelete, isPending: permissionsPending } = useProjectPermissions();
+  const {
+    canUpdate,
+    canDelete,
+    isPending: permissionsPending,
+  } = useProjectPermissions();
   const format = useFormatter();
   const locale = useLocale();
   const queryClient = useQueryClient();
@@ -148,7 +174,9 @@ export function ProjectTabs({ id }: ProjectDetailsProps) {
             queryKey: orpcQuery.projects.list.queryKey(),
           });
           queryClient.invalidateQueries({
-            queryKey: orpcQuery.projects.getById.queryKey({ input: { id: project.id } }),
+            queryKey: orpcQuery.projects.getById.queryKey({
+              input: { id: project.id },
+            }),
           });
         } else {
           toast.error(tProject("form.archive.toast-error"));
