@@ -376,6 +376,21 @@
           "toast-error": "Failed to delete projects",
           "toast-error-generic": "An error occurred while deleting the projects"
         },
+        "archive": {
+          "archive": "Archive",
+          "unarchive": "Unarchive",
+          "confirm-title": "Archive this project?",
+          "confirm-description": "This will archive the project \"{name}\". You can restore it later from the archive.",
+          "unarchive-title": "Restore this project?",
+          "unarchive-description": "This will restore the project \"{name}\" from the archive.",
+          "confirm-button": "Archive Project",
+          "unarchive-button": "Restore Project",
+          "cancel-button": "Cancel",
+          "toast-success": "Project archived successfully",
+          "toast-unarchive-success": "Project restored successfully",
+          "toast-error": "Failed to archive project",
+          "toast-error-generic": "An error occurred while archiving the project"
+        },
         "new": {
           "toast": {
             "success": "Project created successfully",
@@ -496,14 +511,14 @@
   "app": {
     "sidebar": {
       "projects": {
-        "groupLabel": "Projects of your organization",
-        "control": "Control",
-        "liveView": "Live view"
+        "groupLabel": "Projects",
+        "projects": "Projects",
+        "participants": "Participants",
+        "archive": "Archive"
       },
       "organization": {
-        "groupLabel": "Your organization",
+        "groupLabel": "Organization",
         "dashboard": "Dashboard",
-        "projects": "Projects",
         "team": "Team Members",
         "settings": "Settings",
         "createproject": "Create Project"

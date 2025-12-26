@@ -4,6 +4,7 @@ import {
   searchMembers,
 } from "@/components/features/organizations/procedures";
 import {
+  archiveProject,
   batchDeleteProjects,
   createProject,
   createProjectActivity,
@@ -64,6 +65,7 @@ export const router = {
     getForParticipation: getProjectForParticipation,
     update: updateProject,
     delete: deleteProject,
+    archive: archiveProject,
     batchDelete: batchDeleteProjects,
     setActive: setActiveProject,
     getParticipants: getProjectParticipants,

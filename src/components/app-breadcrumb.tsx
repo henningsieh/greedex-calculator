@@ -10,6 +10,7 @@ import {
   Edit2Icon,
   LayoutDashboardIcon,
   PlusCircleIcon,
+  ArchiveIcon,
   SettingsIcon,
   Trash2Icon,
   UsersIcon,
@@ -220,6 +221,7 @@ function AppBreadcrumbOrgLevel({
  */
 function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
   const t = useTranslations("app.sidebar");
+  const tProject = useTranslations("organization.projects");
 
   // Fetch active organization
   const { data: activeOrganization } = useSuspenseQuery(
@@ -233,7 +235,16 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
     }),
   );
 
-  // Permission helpers
+  // Permission helpers - get user info
+  const { data: session } = useSuspenseQuery(
+    orpcQuery.betterauth.getSession.queryOptions(),
+  );
+
+  // Check if user can archive (owner OR responsible employee)
+  const canArchive = 
+    session?.user?.id === currentProject.responsibleUserId || 
+    session?.session.activeOrganizationId === currentProject.organizationId;
+
   const {
     canUpdate,
     canDelete,
@@ -264,6 +275,37 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
         console.error(err);
         const message = err instanceof Error ? err.message : String(err);
         toast.error(message || "Unable to delete project");
+      },
+    });
+
+  const { mutateAsync: archiveProjectMutation, isPending: isArchiving } =
+    useMutation({
+      mutationFn: (archived: boolean) =>
+        orpc.projects.archive({
+          id: currentProject.id,
+          archived,
+        }),
+      onSuccess: (result) => {
+        if (result.success) {
+          toast.success(
+            result.project.archived
+              ? tProject("archive.toast-success")
+              : tProject("archive.toast-unarchive-success")
+          );
+          queryClient.invalidateQueries({
+            queryKey: orpcQuery.projects.list.queryKey(),
+          });
+          queryClient.invalidateQueries({
+            queryKey: orpcQuery.projects.getById.queryKey({ input: { id: currentProject.id } }),
+          });
+        } else {
+          toast.error(tProject("archive.toast-error"));
+        }
+      },
+      onError: (err: unknown) => {
+        console.error(err);
+        const message = err instanceof Error ? err.message : String(err);
+        toast.error(message || tProject("archive.toast-error-generic"));
       },
     });
 
@@ -354,6 +396,40 @@ function AppBreadcrumbWithProject({ projectId }: { projectId: string }) {
             />
           </DialogContent>
         </Dialog>
+
+        <Button
+          disabled={!canArchive || isArchiving || permissionsPending}
+          onClick={async () => {
+            const isCurrentlyArchived = currentProject.archived ?? false;
+            const confirmed = await confirm({
+              title: isCurrentlyArchived 
+                ? tProject("archive.unarchive-title")
+                : tProject("archive.confirm-title"),
+              description: isCurrentlyArchived
+                ? tProject("archive.unarchive-description", { name: currentProject.name })
+                : tProject("archive.confirm-description", { name: currentProject.name }),
+              confirmText: isCurrentlyArchived
+                ? tProject("archive.unarchive-button")
+                : tProject("archive.confirm-button"),
+              cancelText: tProject("archive.cancel-button"),
+              isDestructive: false,
+            });
+            if (confirmed) {
+              try {
+                await archiveProjectMutation(!isCurrentlyArchived);
+              } catch (err) {
+                console.error(err);
+              }
+            }
+          }}
+          size="sm"
+          variant="outline"
+        >
+          <ArchiveIcon className="h-4 w-4" />
+          <span className="ml-1 hidden sm:inline">
+            {currentProject.archived ? tProject("archive.unarchive") : tProject("archive.archive")}
+          </span>
+        </Button>
 
         <Button
           disabled={!canDelete || isDeleting || permissionsPending}

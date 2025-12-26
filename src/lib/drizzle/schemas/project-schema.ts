@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
-import { decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { organization, user, member } from "@/lib/drizzle/schemas/auth-schema";
 import { activityValues, ActivityValueType } from "@/components/features/projects/types";
 import { EUCountryCode } from "@/config/eu-countries";
@@ -39,6 +39,9 @@ export const projectsTable = pgTable("project", {
   organizationId: text("organization_id")
     .notNull()
     .references(() => organization.id, { onDelete: "cascade" }),
+
+  // Archived flag - projects can be archived instead of deleted
+  archived: boolean("archived").default(false).notNull(),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

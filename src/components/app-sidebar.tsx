@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArchiveIcon,
   BarChart3Icon,
   LayoutDashboardIcon,
   PanelRightCloseIcon,
@@ -15,7 +16,6 @@ import {
   OrganizationSwitcherSkeleton,
 } from "@/components/features/organizations/organisation-switcher";
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
-import { ProjectSwitcher } from "@/components/features/projects/project-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -32,7 +32,8 @@ import {
 } from "@/components/ui/sidebar";
 import {
   DASHBOARD_PATH,
-  LIVE_VIEW_PATH,
+  PARTICIPANTS_PATH,
+  PROJECTS_ARCHIVE_PATH,
   PROJECTS_PATH,
   SETTINGS_PATH,
   TEAM_PATH,
@@ -40,11 +41,14 @@ import {
 import { Link, usePathname } from "@/lib/i18n/routing";
 
 /**
- * Renders the application sidebar containing project and organization navigation, a project switcher, a collapse control, and an organization switcher.
+ * Renders the application sidebar containing organization and project navigation.
  *
- * The sidebar groups menu items into "Projects" and "Organization", highlights the active item based on the current pathname, and exposes a footer control to toggle the sidebar expanded/collapsed state.
+ * The sidebar groups menu items into "Organization" (Dashboard, Team, Settings) 
+ * and "Projects" (Projects list, Participants, Archive), highlights the active 
+ * item based on the current pathname, and provides a collapse toggle in the footer.
  *
- * @returns The Sidebar element with grouped navigation menus, a collapse toggle in the footer, and an OrganizationSwitcher wrapped with a skeleton fallback.
+ * @returns The Sidebar element with grouped navigation menus, a collapse toggle, 
+ * and an OrganizationSwitcher wrapped with a skeleton fallback.
  */
 export function AppSidebar() {
   const pathname = usePathname();
@@ -52,24 +56,11 @@ export function AppSidebar() {
   const { state, setOpen } = useSidebar();
   const t = useTranslations("app.sidebar");
 
-  const projectsMenuItems = [
-    {
-      title: t("projects.liveView"),
-      icon: BarChart3Icon,
-      url: LIVE_VIEW_PATH,
-    },
-  ] as const;
-
   const organizationMenuItems = [
     {
       title: t("organization.dashboard"),
       icon: LayoutDashboardIcon,
       url: DASHBOARD_PATH,
-    },
-    {
-      title: t("organization.projects"),
-      icon: PROJECT_ICONS.projects,
-      url: PROJECTS_PATH,
     },
     {
       title: t("organization.team"),
@@ -83,6 +74,24 @@ export function AppSidebar() {
     },
   ] as const;
 
+  const projectsMenuItems = [
+    {
+      title: t("projects.projects"),
+      icon: PROJECT_ICONS.projects,
+      url: PROJECTS_PATH,
+    },
+    {
+      title: t("projects.participants"),
+      icon: UsersIcon,
+      url: PARTICIPANTS_PATH,
+    },
+    {
+      title: t("projects.archive"),
+      icon: ArchiveIcon,
+      url: PROJECTS_ARCHIVE_PATH,
+    },
+  ] as const;
+
   return (
     <Sidebar
       className="h-[calc(svh-4rem)] overflow-x-hidden"
@@ -90,9 +99,31 @@ export function AppSidebar() {
       variant="sidebar"
     >
       <SidebarHeader>
-        <ProjectSwitcher />
+        <Suspense fallback={<OrganizationSwitcherSkeleton />}>
+          <OrganizationSwitcher />
+        </Suspense>
       </SidebarHeader>
       <SidebarContent>
+        <SidebarGroup className="overflow-x-hidden">
+          <SidebarGroupLabel className="text-nowrap">
+            {t("organization.groupLabel")}
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {organizationMenuItems.map((item) => (
+                <SidebarMenuItem key={item.title} title={item.title}>
+                  <SidebarMenuButton asChild>
+                    <Link data-active={pathname === item.url} href={item.url}>
+                      <item.icon className="size-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarSeparator className="mx-0" />
         <SidebarGroup className="overflow-x-hidden">
           <SidebarGroupLabel className="text-nowrap">
             {t("projects.groupLabel")}
@@ -105,26 +136,6 @@ export function AppSidebar() {
                     asChild
                     className="hover:bg-secondary hover:text-secondary-foreground active:bg-secondary active:text-secondary-foreground data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground data-[state=open]:hover:bg-secondary data-[state=open]:hover:text-secondary-foreground"
                   >
-                    <Link data-active={pathname === item.url} href={item.url}>
-                      <item.icon className="size-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <div className="grow flex-col" />
-        <SidebarGroup className="overflow-x-hidden">
-          <SidebarGroupLabel className="text-nowrap">
-            {t("organization.groupLabel")}
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {organizationMenuItems.map((item) => (
-                <SidebarMenuItem key={item.title} title={item.title}>
-                  <SidebarMenuButton asChild>
                     <Link data-active={pathname === item.url} href={item.url}>
                       <item.icon className="size-4" />
                       <span>{item.title}</span>
@@ -152,17 +163,6 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <Suspense fallback={<OrganizationSwitcherSkeleton />}>
-          <OrganizationSwitcher />
-        </Suspense>
-        {/* <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Settings className="size-4" />
-              <span>Account Settings</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu> */}
       </SidebarFooter>
     </Sidebar>
   );

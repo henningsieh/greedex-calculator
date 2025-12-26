@@ -375,6 +375,106 @@ export const deleteProject = authorized
   });
 
 /**
+ * Archive a project
+ *
+ * Requires:
+ * - Authentication
+ * - Owner role OR Employee role AND is the responsible user of the project
+ * - Project must belong to user's active organization
+ */
+export const archiveProject = authorized
+  .route({
+    method: "PATCH",
+    path: "/projects/:id/archive",
+    summary: "Archive a project",
+    tags: ["project"],
+  })
+  .input(
+    z.object({
+      id: z.string().describe("Project ID"),
+      archived: z.boolean().describe("Archive status"),
+    }),
+  )
+  .output(
+    z.object({
+      success: z.boolean(),
+      project: ProjectWithRelationsSchema,
+    }),
+  )
+  .handler(async ({ input, context, errors }) => {
+    if (!context.session.activeOrganizationId) {
+      throw errors.BAD_REQUEST({
+        message: "No active organization. Please select an organization first.",
+      });
+    }
+
+    // Get current member role
+    const { role } = await auth.api.getActiveMemberRole({
+      headers: await headers(),
+    });
+
+    // Verify project exists and belongs to organization
+    const [existingProject] = await db
+      .select()
+      .from(projectsTable)
+      .where(
+        and(
+          eq(projectsTable.id, input.id),
+          eq(
+            projectsTable.organizationId,
+            context.session.activeOrganizationId,
+          ),
+        ),
+      )
+      .limit(1);
+
+    if (!existingProject) {
+      throw errors.NOT_FOUND({
+        message: "Project not found or you don't have access to it",
+      });
+    }
+
+    // Check permissions: Owner can archive any project, Employee can archive only their own projects
+    const isOwner = role === memberRoles.Owner;
+    const isResponsibleEmployee =
+      role === memberRoles.Employee &&
+      existingProject.responsibleUserId === context.user.id;
+
+    if (!isOwner && !isResponsibleEmployee) {
+      throw errors.FORBIDDEN({
+        message:
+          "You don't have permission to archive this project. Only the owner or the responsible employee can archive it.",
+      });
+    }
+
+    // Archive/unarchive the project
+    await db
+      .update(projectsTable)
+      .set({ archived: input.archived })
+      .where(eq(projectsTable.id, input.id));
+
+    // Fetch the updated project with relations
+    const project = await db.query.projectsTable.findFirst({
+      where: eq(projectsTable.id, input.id),
+      with: {
+        responsibleUser: true,
+        organization: true,
+      },
+    });
+
+    if (!project) {
+      throw errors.BAD_REQUEST({
+        message: "Failed to fetch archived project",
+      });
+    }
+
+    return {
+      success: true,
+      project,
+    };
+  });
+
+/**
  * Set active project for the session
  *
  * Requires:

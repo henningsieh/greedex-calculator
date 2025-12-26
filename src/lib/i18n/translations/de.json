@@ -376,6 +376,21 @@
           "toast-error": "Fehler beim Löschen der Projekte",
           "toast-error-generic": "Fehler beim Löschen der Projekte"
         },
+        "archive": {
+          "archive": "Archivieren",
+          "unarchive": "Wiederherstellen",
+          "confirm-title": "Projekt archivieren?",
+          "confirm-description": "Dies wird das Projekt \"{name}\" archivieren. Sie können es später aus dem Archiv wiederherstellen.",
+          "unarchive-title": "Projekt wiederherstellen?",
+          "unarchive-description": "Dies wird das Projekt \"{name}\" aus dem Archiv wiederherstellen.",
+          "confirm-button": "Projekt archivieren",
+          "unarchive-button": "Projekt wiederherstellen",
+          "cancel-button": "Abbrechen",
+          "toast-success": "Projekt erfolgreich archiviert",
+          "toast-unarchive-success": "Projekt erfolgreich wiederhergestellt",
+          "toast-error": "Fehler beim Archivieren des Projekts",
+          "toast-error-generic": "Fehler beim Archivieren des Projekts"
+        },
         "new": {
           "toast": {
             "success": "Projekt erfolgreich erstellt",
@@ -496,14 +511,14 @@
   "app": {
     "sidebar": {
       "projects": {
-        "groupLabel": "Projekte deiner Organisation",
-        "control": "Steuerung",
-        "liveView": "Live-Ansicht"
+        "groupLabel": "Projekte",
+        "projects": "Projekte",
+        "participants": "Teilnehmer",
+        "archive": "Archiv"
       },
       "organization": {
-        "groupLabel": "Organisationsbereich",
+        "groupLabel": "Organisation",
         "dashboard": "Dashboard",
-        "projects": "Projekte",
         "team": "Team",
         "settings": "Einstellungen",
         "createproject": "Projekt erstellen"

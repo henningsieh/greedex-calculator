@@ -90,7 +90,7 @@ export function useProjectPermissions() {
     canRead: checkProjectPermission(role, ["read"]),
     canUpdate: checkProjectPermission(role, ["update"]),
     canDelete: checkProjectPermission(role, ["delete"]),
-    canShare: checkProjectPermission(role, ["share"]),
+    canArchive: checkProjectPermission(role, ["archive"]),
   };
 }
 
@@ -109,10 +109,10 @@ export function canUpdateProjects(role: MemberRole): boolean {
 }
 
 /**
- * Check if a user's role can delete projects
+ * Check if a user's role can archive projects
  */
-export function canDeleteProjects(role: MemberRole): boolean {
-  return checkProjectPermission(role, ["delete"]);
+export function canArchiveProjects(role: MemberRole): boolean {
+  return checkProjectPermission(role, ["archive"]);
 }
 
 /**
