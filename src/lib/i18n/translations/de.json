@@ -499,6 +499,20 @@
         "successToast": "Teammitglied erfolgreich eingeladen."
       }
     },
+    "participants": {
+      "title": "Teilnehmer",
+      "description": "Liste aller Projektteilnehmer in deiner Organisation"
+    },
+    "projectsArchive": {
+      "title": "Archivierte Projekte",
+      "description": "Archivierte Projekte anzeigen und wiederherstellen",
+      "suspense-loading": "Archivierte Projekte werden geladen...",
+      "error-message": "Fehler beim Laden der archivierten Projekte.",
+      "no-archived-projects": {
+        "title": "Keine archivierten Projekte",
+        "description": "Du hast noch keine Projekte archiviert. Archivierte Projekte erscheinen hier und können jederzeit wiederhergestellt werden."
+      }
+    },
     "settings": {
       "title": "Einstellungen",
       "description": "Dies ist die Einstellungsseite. Einstellungsinhalte werden hier angezeigt."

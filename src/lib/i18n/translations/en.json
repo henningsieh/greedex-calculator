@@ -499,6 +499,20 @@
         "successToast": "Team member invited successfully."
       }
     },
+    "participants": {
+      "title": "Participants",
+      "description": "List of all project participants in your organization"
+    },
+    "projectsArchive": {
+      "title": "Archived Projects",
+      "description": "View and restore archived projects",
+      "suspense-loading": "Loading archived projects...",
+      "error-message": "Error loading archived projects.",
+      "no-archived-projects": {
+        "title": "No archived projects",
+        "description": "You haven't archived any projects yet. Archived projects appear here and can be restored anytime."
+      }
+    },
     "settings": {
       "title": "Settings",
       "description": "This is the settings page. Settings content will go here."

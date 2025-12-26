@@ -54,9 +54,10 @@ function _isValidSortField(value: string | undefined): value is SortField {
 interface TeamTableProps {
   organizationId: string;
   roles: MemberRole[];
+  showInviteButton?: boolean; // Optional prop to control invite button visibility
 }
 
-export function UsersTable({ organizationId, roles }: TeamTableProps) {
+export function UsersTable({ organizationId, roles, showInviteButton = true }: TeamTableProps) {
   const tRoles = useTranslations("organization.roles");
   const t = useTranslations("organization.userstable");
   const locale = useLocale();
@@ -232,13 +233,15 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
           </Button>
         </div>
         <div className="ml-auto">
-          <InviteEmployeeDialog
-            allowedRoles={roles}
-            onSuccess={() => {
-              setPageIndex(0);
-            }}
-            organizationId={organizationId}
-          />
+          {showInviteButton && (
+            <InviteEmployeeDialog
+              allowedRoles={roles}
+              onSuccess={() => {
+                setPageIndex(0);
+              }}
+              organizationId={organizationId}
+            />
+          )}
         </div>
       </div>
       <div className="relative rounded-md border">
