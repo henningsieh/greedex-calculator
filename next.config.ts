@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   devIndicators: {
     position: "bottom-right",
   },
+  output: "standalone",
 
   // allow image hosting from external domains
 

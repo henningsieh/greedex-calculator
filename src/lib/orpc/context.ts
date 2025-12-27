@@ -36,7 +36,7 @@ const rawBase = os
  */
 const ORPC_DELAY_IN_MS = Number(env.ORPC_DEV_DELAY_MS);
 const DEV_DELAY_ENABLED =
-  env.NODE_ENV === "development" && ORPC_DELAY_IN_MS > 0;
+  process.env.NODE_ENV === "development" && ORPC_DELAY_IN_MS > 0;
 const delayMiddleware = rawBase.middleware(async ({ next, path }) => {
   if (!DEV_DELAY_ENABLED) {
     return next();
