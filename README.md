@@ -164,13 +164,18 @@ src/
 
 ## Database & Migrations
 
-The project uses **Drizzle ORM** with **PostgreSQL**. Better Auth automatically manages organization and member tables.
+The project uses **Drizzle ORM** with **PostgreSQL**. Better Auth automatically manages its own tables (user, session, account, verification, organization, member, invitation) and generates the schema in `src/lib/drizzle/schemas/auth-schema.ts`.
+
+**Important:** Never edit `auth-schema.ts` manually. To add custom fields to Better Auth tables, use the `additionalFields` option in the Better Auth configuration (see `src/lib/better-auth/index.ts`). Custom database schema (e.g., projects, participants) are combined in `src/lib/drizzle/schema.ts`.
 
 ### Run migrations
 
 ```bash
-# Generate migration files
+# Generate Better Auth schema (auto-generates auth-schema.ts)
 bun run auth:generate
+
+# Generate migration files for custom schema
+bun run db:generate
 
 # Apply migrations
 bun run db:migrate
