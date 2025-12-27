@@ -5,13 +5,15 @@
 ## Overview
 
 Greendex v2 provides a modern, user-friendly portal where project organizers can:
-- **Create and manage organizations** for their Erasmus+ projects
-- **Invite participants** and track team members across mobility events
-- **Calculate CO₂ emissions** from participant journeys (transport modes, accommodation, energy)
-- **Visualize sustainability impact** with individual and group-level analytics
-- **Organize sustainability challenges** to reduce carbon footprint during projects
-- **Plant trees** to offset calculated emissions and join the Greendex movement
-- **Support workflows** including Green Moment (30 min), Green Deal (60 min), and Green Day (180 min) workshop formats
+- 🏢 **Create and manage organizations** for their Erasmus+ projects
+- 🧒 **Invite participants** and track team members across mobility events
+- 👥 **Team member invitations** (Organization Owners and Employees)
+- 🔐 **role-based access** (Owner / Employee / Participant)
+- 🌍 **Calculate CO₂ emissions** from participant journeys (transport modes, accommodation, energy)
+- 📊 **Visualize sustainability impact** with individual and group-level analytics
+- 🌱 **Organize sustainability challenges** to reduce carbon footprint during projects
+- 🌳 **Plant trees** to offset calculated emissions and join the Greendex movement
+- 🕒 **Support workflows** including Green Moment (30 min), Green Deal (60 min), and Green Day (180 min) workshop formats
 
 This next iteration (v2) redesigns the carbon calculator experience as a **multi-tenant SaaS portal** with:
 - Real-time organization and team management via Better Auth
@@ -143,8 +145,9 @@ src/
 - Unique slug validation with clear error handling
 
 ✅ **Dashboard Navigation** (US2)
-- Tabbed interface: Dashboard, Team, Projects
-- URL-based tab persistence (via `nuqs`)
+- Sidebar navigation separating organization and project concerns
+- Archive functionality for projects
+- URL-based persistence (via `nuqs`)
 - Responsive layout ready for mobile
 
 ✅ **Team Members Overview** (US3)
