@@ -1,10 +1,9 @@
 import "dotenv/config";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
-import { env } from "@/env";
 
-const socketPort = env.SOCKET_PORT;
-const corsOrigin = env.NEXT_PUBLIC_BASE_URL;
+const socketPort = process.env.SOCKET_PORT;
+const corsOrigin = process.env.NEXT_PUBLIC_BASE_URL;
 
 const httpServer = createServer();
 
@@ -41,7 +40,7 @@ io.on("connection", (socket) => {
     console.log(`Client disconnected: ${socket.id}, reason: ${reason}`);
   });
 });
-if (env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development") {
   const intervalId = setInterval(() => {
     const mem = process.memoryUsage();
     console.log(
