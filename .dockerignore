@@ -38,12 +38,9 @@ pids
 *.seed
 *.pid.lock
 
-# Environment variables - CRITICAL: .env is needed for build (NEXT_PUBLIC_*), but not others
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env*.local
+# Environment variables
+# CRITICAL: .env is needed for next build (NEXT_PUBLIC_*), but not others
+
 
 # Git
 .git
@@ -62,10 +59,6 @@ docker-compose*.yml
 
 # Biome cache
 .biome-cache
-
-# Drizzle
-drizzle.config.ts
-migrations/
 
 # Config files not needed in production
 biome.jsonc

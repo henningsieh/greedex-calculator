@@ -94,6 +94,7 @@ export async function HeroSection() {
                   alt="app screen"
                   className="relative hidden aspect-15/8 rounded-2xl bg-background object-cover dark:block"
                   fill
+                  loading="eager"
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
                   src="/Greendex-hero-banner.png"
                 />
@@ -101,6 +102,7 @@ export async function HeroSection() {
                   alt="app screen"
                   className="relative aspect-15/8 rounded-2xl bg-background object-cover dark:hidden"
                   fill
+                  loading="eager"
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
                   src="/Greendex-hero-banner.png"
                 />

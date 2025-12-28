@@ -102,6 +102,7 @@ export function RightSideImage({
             alt="Greendex hero banner showcasing environmental impact calculation platform with focus on eu earasmus projects"
             className="object-cover"
             fill
+            loading="eager"
             sizes="(max-width: 1024px) 100vw, 540px"
             src="/Greendex-hero-banner.png"
           />

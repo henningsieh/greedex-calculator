@@ -38,6 +38,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # 2. Build ARGs from Coolify (available as process.env during build)
 RUN bun run build
 
+# Copy drizzle config to standalone output before cleanup
+RUN cp drizzle.config.ts .next/standalone/
+
 # Remove standalone .env to prevent runtime override
 RUN rm -f .next/standalone/.env
 
@@ -72,11 +75,21 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # Copy production dependencies
 COPY --from=prod-deps /app/node_modules ./node_modules
 
-# Copy source files needed for runtime
+# Copy drizzle configuration and schema (needed for migrations)
+COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
+COPY --from=builder --chown=nextjs:nodejs /app/src/lib/drizzle ./src/lib/drizzle
+
+# Copy socket server files
 COPY --from=builder --chown=nextjs:nodejs /app/src/socket-server.ts ./src/socket-server.ts
 COPY --from=builder --chown=nextjs:nodejs /app/src/env.ts ./src/env.ts
+
+# Copy package.json and tsconfig (needed for runtime)
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
+
+# Copy startup script
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/start-production.sh ./scripts/start-production.sh
+RUN chmod +x ./scripts/start-production.sh
 
 USER nextjs
 
@@ -86,5 +99,5 @@ EXPOSE 4000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start both Next.js and Socket.IO server
-CMD ["bun", "run", "start"]
+# Start with migrations, then both Next.js and Socket.IO server
+CMD ["./scripts/start-production.sh"]
