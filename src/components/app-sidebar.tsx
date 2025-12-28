@@ -36,7 +36,7 @@ import {
   PROJECTS_PATH,
   SETTINGS_PATH,
   TEAM_PATH,
-} from "@/config/app-routes";
+} from "@/lib/i18n/routes";
 import { Link, usePathname } from "@/lib/i18n/routing";
 
 /**

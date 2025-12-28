@@ -1,5 +1,5 @@
 import type { ProjectActivityType } from "@/components/features/projects/types";
-import { type AppRoute, PROJECT_DETAIL_PATH } from "@/config/app-routes";
+import { type AppRoute, PROJECT_DETAIL_PATH } from "@/lib/i18n/routes";
 import { orpc } from "@/lib/orpc/orpc";
 
 /**

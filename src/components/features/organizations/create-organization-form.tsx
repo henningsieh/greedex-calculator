@@ -15,8 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { DASHBOARD_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
+import { DASHBOARD_PATH } from "@/lib/i18n/routes";
 import { useRouter } from "@/lib/i18n/routing";
 import { findAvailableSlug } from "@/lib/utils/organization-utils";
 

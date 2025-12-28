@@ -15,7 +15,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/config/app-routes";
+import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/lib/i18n/routes";
 import { redirect } from "@/lib/i18n/routing";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import {

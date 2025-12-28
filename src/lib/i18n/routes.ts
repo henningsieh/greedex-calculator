@@ -1,6 +1,3 @@
-// Centralized app configuration constants
-// This file consolidates various app-wide settings for better maintainability
-
 // Import Next.js generated route types
 // Path resolves to .next/dev/types/routes in dev, .next/types/routes in production
 // see "paths" field in tsconfig.json

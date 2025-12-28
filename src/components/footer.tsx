@@ -11,7 +11,7 @@ import {
   SIGNUP_PATH,
   TIPS_AND_TRICKS_PATH,
   WORKSHOPS_ANCHOR,
-} from "@/config/app-routes";
+} from "@/lib/i18n/routes";
 import { Link } from "@/lib/i18n/routing";
 
 export default async function FooterSection() {

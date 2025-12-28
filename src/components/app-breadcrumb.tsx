@@ -38,14 +38,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import {
   CREATE_PROJECT_PATH,
   DASHBOARD_PATH,
   PROJECTS_PATH,
   SETTINGS_PATH,
   TEAM_PATH,
-} from "@/config/app-routes";
-import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
+} from "@/lib/i18n/routes";
 import { Link, usePathname } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
 import { cn } from "@/lib/utils";

@@ -27,14 +27,14 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { env } from "@/env";
+import { authClient } from "@/lib/better-auth/auth-client";
 import {
   DASHBOARD_PATH,
   FORGOT_PASSWORD_PATH,
   SIGNUP_PATH,
   VERIFY_EMAIL_PATH,
-} from "@/config/app-routes";
-import { env } from "@/env";
-import { authClient } from "@/lib/better-auth/auth-client";
+} from "@/lib/i18n/routes";
 import { Link, useRouter } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
 

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { DASHBOARD_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
+import { DASHBOARD_PATH } from "@/lib/i18n/routes";
 import { useRouter } from "@/lib/i18n/routing";
 
 interface Props {

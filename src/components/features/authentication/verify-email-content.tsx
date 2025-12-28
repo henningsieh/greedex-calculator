@@ -15,8 +15,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
-import { LOGIN_PATH, SIGNUP_PATH } from "@/config/app-routes";
 import { authClient } from "@/lib/better-auth/auth-client";
+import { LOGIN_PATH, SIGNUP_PATH } from "@/lib/i18n/routes";
 import { Link } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
 
