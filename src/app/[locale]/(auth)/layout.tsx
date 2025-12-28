@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
 import { getLocale } from "next-intl/server";
 import { auth } from "@/lib/better-auth";
-import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/lib/i18n/routes";
 import { redirect } from "@/lib/i18n/routing";
+import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/lib/utils/app-routes";
 
 export default async function AuthLayout({
   children,

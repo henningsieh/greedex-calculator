@@ -27,9 +27,9 @@ import {
 } from "@/components/ui/field";
 import { env } from "@/env";
 import { authClient } from "@/lib/better-auth/auth-client";
-import { DASHBOARD_PATH, LOGIN_PATH } from "@/lib/i18n/routes";
 import { Link, useRouter } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
+import { DASHBOARD_PATH, LOGIN_PATH } from "@/lib/utils/app-routes";
 
 export function SignupForm({
   className,

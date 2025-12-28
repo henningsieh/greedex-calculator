@@ -16,9 +16,9 @@ import {
 } from "@/components/ui/card";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import { authClient } from "@/lib/better-auth/auth-client";
-import { LOGIN_PATH, SIGNUP_PATH } from "@/lib/i18n/routes";
 import { Link } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
+import { LOGIN_PATH, SIGNUP_PATH } from "@/lib/utils/app-routes";
 
 export function VerifyEmailContent({
   className,

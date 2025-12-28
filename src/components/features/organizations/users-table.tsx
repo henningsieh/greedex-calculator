@@ -17,17 +17,16 @@ import { useEffect, useMemo, useState } from "react";
 import type z from "zod";
 import type {
   MemberRole,
-  SortField,
+  MemberSortField,
 } from "@/components/features/organizations/types";
-import { validSortFields } from "@/components/features/organizations/types";
 import type { MemberWithUserSchema } from "@/components/features/organizations/validation-schemas";
 import { SortableHeader } from "@/components/features/projects/sortable-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -43,28 +42,35 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { MEMBER_SORT_FIELDS } from "@/config/organizations";
+import { DEFAULT_PAGE_SIZE } from "@/config/pagination";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { InviteEmployeeDialog } from "./invite-employee-dialog";
-
-// Helper function with type predicate for sort field validation
-function _isValidSortField(value: string | undefined): value is SortField {
-  return value !== undefined && validSortFields.includes(value as SortField);
-}
 
 interface TeamTableProps {
   organizationId: string;
   roles: MemberRole[];
+  showInviteButton?: boolean; // Optional prop to control invite button visibility
+  emptyTitle: string;
+  emptyDescription: string;
 }
 
-export function UsersTable({ organizationId, roles }: TeamTableProps) {
+export function UsersTable({
+  organizationId,
+  roles,
+  showInviteButton = true,
+  emptyTitle,
+  emptyDescription,
+}: TeamTableProps) {
   const tRoles = useTranslations("organization.roles");
   const t = useTranslations("organization.userstable");
   const locale = useLocale();
   const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState({});
 
   useEffect(() => {
     const timeout = setTimeout(() => setDebouncedSearch(search), 400);
@@ -75,11 +81,11 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
   const sortDirection = sorting?.[0]?.desc ? "desc" : "asc";
 
   // Map table column IDs to procedure sort fields
-  let procedureSortBy: SortField | undefined;
+  let procedureSortBy: MemberSortField | undefined;
   if (sortBy === "member") {
     procedureSortBy = "user.name";
-  } else if (validSortFields.includes(sortBy as SortField)) {
-    procedureSortBy = sortBy as SortField;
+  } else if (MEMBER_SORT_FIELDS.includes(sortBy as MemberSortField)) {
+    procedureSortBy = sortBy as MemberSortField;
   } else {
     procedureSortBy = undefined;
   }
@@ -112,6 +118,31 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
   >(
     () => [
       {
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            aria-label="Select all"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            aria-label="Select row"
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+        size: 50,
+      },
+      {
         id: "member",
         header: t("name"),
         accessorFn: (row: MemberWithUser) => row.user?.name ?? undefined,
@@ -119,7 +150,7 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
         size: 250,
         cell: (info) => (
           <div className="flex items-center gap-3">
-            <Avatar>
+            <Avatar className="size-5">
               <AvatarImage src={info.row.original.user.image || undefined} />
               <AvatarFallback>
                 {info.row.original.user.name?.charAt(0).toUpperCase()}
@@ -185,6 +216,7 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
         pageIndex,
         pageSize,
       },
+      rowSelection,
     },
     manualPagination: true,
     pageCount: Math.ceil(total / pageSize) || 0,
@@ -194,6 +226,7 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
+    onRowSelectionChange: setRowSelection,
     onPaginationChange: (updater) => {
       const next =
         typeof updater === "function"
@@ -207,10 +240,26 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
     },
   });
 
+  const getColumnWidth = (id: string, isHeader: boolean) => {
+    if (id === "select") {
+      return "w-12";
+    }
+    if (id === "member") {
+      return isHeader ? "pl-[42px]" : "";
+    }
+    if (id === "email") {
+      return "";
+    }
+    if (id === "role") {
+      return "w-32";
+    }
+    return "w-36";
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-6 py-4 sm:flex-row sm:items-center">
-        <div className="flex w-full items-center gap-2">
+        <div className="flex w-full items-center gap-3">
           <Input
             disabled={isFetching}
             onChange={(e) => setSearch(e.target.value)}
@@ -231,7 +280,7 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
             {/* {t("control.clear")} */}
           </Button>
         </div>
-        <div className="ml-auto">
+        {showInviteButton && (
           <InviteEmployeeDialog
             allowedRoles={roles}
             onSuccess={() => {
@@ -239,13 +288,13 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
             }}
             organizationId={organizationId}
           />
-        </div>
+        )}
       </div>
-      <div className="relative rounded-md border">
-        <Table>
+      <div className="rounded-md border">
+        <Table className="mb-4 w-full sm:mb-0">
           <TableHeader className="border-b bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="border-b" key={headerGroup.id}>
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   const sortState = header.column.getIsSorted();
                   let ariaSort: "ascending" | "descending" | "none" = "none";
@@ -255,25 +304,12 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
                     ariaSort = "descending";
                   }
 
-                  const getWidth = (id: string) => {
-                    if (id === "member") {
-                      return "w-[250px]";
-                    }
-                    if (id === "email") {
-                      return "w-[300px]";
-                    }
-                    if (id === "role") {
-                      return "w-[120px]";
-                    }
-                    return "w-[150px]";
-                  };
-
                   return (
                     <TableHead
                       aria-sort={
                         header.column.getCanSort() ? ariaSort : undefined
                       }
-                      className={getWidth(header.id)}
+                      className={getColumnWidth(header.id, true)}
                       key={header.id}
                     >
                       {(() => {
@@ -311,19 +347,22 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
               if (isFetching) {
                 return Array.from({ length: pageSize }, (_, i) => (
                   <TableRow key={`skeleton-${i}`}>
-                    <TableCell className="w-[250px]">
+                    <TableCell className="w-12">
+                      <Skeleton className="h-4 w-4" />
+                    </TableCell>
+                    <TableCell>
                       <div className="flex items-center gap-3">
                         <Skeleton className="size-10 shrink-0 rounded-full" />
                         <Skeleton className="h-4 w-32" />
                       </div>
                     </TableCell>
-                    <TableCell className="w-[300px]">
+                    <TableCell>
                       <Skeleton className="h-4 w-48" />
                     </TableCell>
-                    <TableCell className="w-[120px]">
+                    <TableCell className="w-32">
                       <Skeleton className="h-6 w-20 rounded-full" />
                     </TableCell>
-                    <TableCell className="w-[150px]">
+                    <TableCell className="w-36">
                       <Skeleton className="h-4 w-24" />
                     </TableCell>
                   </TableRow>
@@ -334,21 +373,9 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
                 return table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => {
-                      const getWidth = (id: string) => {
-                        if (id === "member") {
-                          return "w-[250px]";
-                        }
-                        if (id === "email") {
-                          return "w-[300px]";
-                        }
-                        if (id === "role") {
-                          return "w-[120px]";
-                        }
-                        return "w-[150px]";
-                      };
                       return (
                         <TableCell
-                          className={getWidth(cell.column.id)}
+                          className={getColumnWidth(cell.column.id, false)}
                           key={cell.id}
                         >
                           {flexRender(
@@ -363,27 +390,18 @@ export function UsersTable({ organizationId, roles }: TeamTableProps) {
               }
 
               return (
-                <TableRow>
+                <TableRow className="hover:bg-transparent">
                   <TableCell colSpan={columns.length}>
-                    <Empty className="border-0 py-8">
+                    <Empty>
                       <EmptyHeader>
                         <EmptyMedia variant="icon">
-                          <FilterXIcon className="size-6" />
+                          <FilterXIcon className="size-9 text-destructive" />
                         </EmptyMedia>
-                        <EmptyTitle>{t("emptyState.title")}</EmptyTitle>
-                        <EmptyDescription>
-                          {t("emptyState.description")}
-                        </EmptyDescription>
+                        <EmptyTitle className="text-destructive">
+                          {emptyTitle}
+                        </EmptyTitle>
+                        <EmptyDescription>{emptyDescription}</EmptyDescription>
                       </EmptyHeader>
-                      <EmptyContent>
-                        {/* <InviteMemberDialog
-                          allowedRoles={roles}
-                          onSuccess={() => {
-                            setPageIndex(0);
-                          }}
-                          organizationId={organizationId}
-                        /> */}
-                      </EmptyContent>
                     </Empty>
                   </TableCell>
                 </TableRow>
@@ -437,6 +455,9 @@ export function TeamTableSkeleton() {
         <TableHeader>
           <TableRow>
             <TableHead>
+              <Skeleton className="h-4 w-4" />
+            </TableHead>
+            <TableHead>
               <Skeleton className="h-4 w-24" />
             </TableHead>
             <TableHead>
@@ -453,6 +474,9 @@ export function TeamTableSkeleton() {
         <TableBody>
           {SKELETON_ROWS.map((key) => (
             <TableRow key={key}>
+              <TableCell>
+                <Skeleton className="h-4 w-4" />
+              </TableCell>
               <TableCell>
                 <Skeleton className="h-8 w-32" />
               </TableCell>

@@ -19,9 +19,9 @@ import {
 } from "@/components/ui/card";
 import { FieldGroup } from "@/components/ui/field";
 import { authClient } from "@/lib/better-auth/auth-client";
-import { LOGIN_PATH, RESET_PASSWORD_PATH } from "@/lib/i18n/routes";
 import { Link } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
+import { LOGIN_PATH, RESET_PASSWORD_PATH } from "@/lib/utils/app-routes";
 
 export function ForgotPasswordForm({
   className,
