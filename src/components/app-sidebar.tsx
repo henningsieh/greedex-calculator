@@ -28,7 +28,6 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Link, usePathname } from "@/lib/i18n/routing";
 import {
   DASHBOARD_PATH,
   PARTICIPANTS_PATH,
@@ -36,7 +35,8 @@ import {
   PROJECTS_PATH,
   SETTINGS_PATH,
   TEAM_PATH,
-} from "@/lib/utils/app-routes";
+} from "@/lib/i18n/routes";
+import { Link, usePathname } from "@/lib/i18n/routing";
 
 /**
  * Renders the application sidebar containing organization and project navigation.

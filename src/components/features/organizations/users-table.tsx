@@ -27,7 +27,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -241,6 +240,22 @@ export function UsersTable({
     },
   });
 
+  const getColumnWidth = (id: string, isHeader: boolean) => {
+    if (id === "select") {
+      return "w-12";
+    }
+    if (id === "member") {
+      return isHeader ? "pl-[42px]" : "";
+    }
+    if (id === "email") {
+      return "";
+    }
+    if (id === "role") {
+      return "w-32";
+    }
+    return "w-36";
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-6 py-4 sm:flex-row sm:items-center">
@@ -289,28 +304,12 @@ export function UsersTable({
                     ariaSort = "descending";
                   }
 
-                  const getWidth = (id: string) => {
-                    if (id === "select") {
-                      return "w-12";
-                    }
-                    if (id === "member") {
-                      return "pl-[42px]";
-                    }
-                    if (id === "email") {
-                      return "";
-                    }
-                    if (id === "role") {
-                      return "w-32";
-                    }
-                    return "w-36";
-                  };
-
                   return (
                     <TableHead
                       aria-sort={
                         header.column.getCanSort() ? ariaSort : undefined
                       }
-                      className={getWidth(header.id)}
+                      className={getColumnWidth(header.id, true)}
                       key={header.id}
                     >
                       {(() => {
@@ -374,24 +373,9 @@ export function UsersTable({
                 return table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => {
-                      const getWidth = (id: string) => {
-                        if (id === "select") {
-                          return "w-12";
-                        }
-                        if (id === "member") {
-                          return "";
-                        }
-                        if (id === "email") {
-                          return "";
-                        }
-                        if (id === "role") {
-                          return "w-32";
-                        }
-                        return "w-36";
-                      };
                       return (
                         <TableCell
-                          className={getWidth(cell.column.id)}
+                          className={getColumnWidth(cell.column.id, false)}
                           key={cell.id}
                         >
                           {flexRender(
@@ -406,25 +390,18 @@ export function UsersTable({
               }
 
               return (
-                <TableRow>
+                <TableRow className="hover:bg-transparent">
                   <TableCell colSpan={columns.length}>
-                    <Empty className="border-0 py-8">
+                    <Empty>
                       <EmptyHeader>
                         <EmptyMedia variant="icon">
-                          <FilterXIcon className="size-6" />
+                          <FilterXIcon className="size-9 text-destructive" />
                         </EmptyMedia>
-                        <EmptyTitle>{emptyTitle}</EmptyTitle>
+                        <EmptyTitle className="text-destructive">
+                          {emptyTitle}
+                        </EmptyTitle>
                         <EmptyDescription>{emptyDescription}</EmptyDescription>
                       </EmptyHeader>
-                      <EmptyContent>
-                        {/* <InviteMemberDialog
-                          allowedRoles={roles}
-                          onSuccess={() => {
-                            setPageIndex(0);
-                          }}
-                          organizationId={organizationId}
-                        /> */}
-                      </EmptyContent>
                     </Empty>
                   </TableCell>
                 </TableRow>

@@ -504,8 +504,8 @@
       "title": "All Participants",
       "description": "List of all project participants in your organization",
       "emptyState": {
-        "description": "No project's participants found",
-        "title": "No project's participants match your search criteria. Try adjusting your filters or send the \"participation link\" to the desired participant."
+        "description": "Try adjusting your filters or send the project's \"participation link\" to further participants.",
+        "title": "No project's participants found"
       }
     },
     "projectsArchive": {

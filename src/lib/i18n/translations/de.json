@@ -502,10 +502,10 @@
     },
     "participants": {
       "title": "Alle Teilnehmende",
-      "description": "Liste aller Projektteilnehmenden in deiner Organisation",
+      "description": "Liste aller Teilnehmenden in deiner Organisation",
       "emptyState": {
-        "description": "Keine Projektteilnehmende gefunden",
-        "title": "Keine Projektteilnehmenden entsprechen deinen Suchkriterien. \nVersuche, deine Filter anzupassen oder sende den „Teilnahmelink“ an die teilnehmende Person."
+        "description": "Versuche, deine Filter anzupassen oder sende den \"Teilnahme-Link\" des Projekts an weitere Teilnehmende.",
+        "title": "Keine Teilnehmenden gefunden"
       }
     },
     "projectsArchive": {
