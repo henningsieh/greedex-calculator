@@ -1,6 +1,6 @@
 "use client";
 
-import { Factory, Leaf } from "lucide-react";
+import { Factory, LeafIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { Project } from "@/components/participate/questionnaire-types";
 import { Card } from "@/components/ui/card";
@@ -25,7 +25,7 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
       {/* Header */}
       <div className="text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-500/20 to-emerald-500/20 px-6 py-2">
-          <Leaf className="h-5 w-5 text-teal-400" />
+          <LeafIcon className="h-5 w-5 text-teal-400" />
           <span className="font-semibold text-sm text-teal-400">
             {t("header.badge")}
           </span>
@@ -44,7 +44,7 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
         )}
       </div>
 
-      {/* Project Activities Baseline Info */}
+      {/* Project Activities CO2 Emission Baseline */}
       {projectActivitiesCO2 > 0 && (
         <Card className="mx-auto max-w-2xl border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-4">
           <div className="space-y-2 text-center">

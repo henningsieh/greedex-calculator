@@ -9,7 +9,7 @@ import {
   TreePine,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatedGroup } from "@/components/animated-group";
 import { CountrySelect } from "@/components/country-select";
 import { ImpactModal } from "@/components/participate/impact-modal";
@@ -41,6 +41,7 @@ import {
   isPositiveNumber,
   isTruthy,
 } from "@/lib/utils/form-validation-utils";
+import { calculateProjectDuration } from "@/lib/utils/project-utils";
 
 interface QuestionnaireFormProps {
   project: Project;
@@ -49,20 +50,71 @@ interface QuestionnaireFormProps {
 export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   const t = useTranslations("participation.questionnaire");
 
-  const [currentStep, setCurrentStep] = useState<number>(0);
-  const [answers, setAnswers] = useState<Partial<ParticipantAnswers>>({
-    firstName: "",
-    country: "",
-    email: "",
-    days: 0,
-    flightKm: 0,
-    boatKm: 0,
-    trainKm: 0,
-    busKm: 0,
-    carKm: 0,
-    carPassengers: 1,
-    age: 0,
+  const [answers, setAnswers] = useState<Partial<ParticipantAnswers>>(() => {
+    if (typeof window === "undefined") {
+      // Server-side rendering, return default values
+      return {
+        firstName: "",
+        country: "",
+        email: "",
+        days: calculateProjectDuration(project.startDate, project.endDate),
+        flightKm: 0,
+        boatKm: 0,
+        trainKm: 0,
+        busKm: 0,
+        carKm: 0,
+        carPassengers: 1,
+        age: 0,
+      };
+    }
+
+    const key = `questionnaire-${project.id}`;
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (!parsed.days) {
+        parsed.days = calculateProjectDuration(
+          project.startDate,
+          project.endDate,
+        );
+      }
+      return parsed;
+    }
+    return {
+      firstName: "",
+      country: "",
+      email: "",
+      days: calculateProjectDuration(project.startDate, project.endDate),
+      flightKm: 0,
+      boatKm: 0,
+      trainKm: 0,
+      busKm: 0,
+      carKm: 0,
+      carPassengers: 1,
+      age: 0,
+    };
   });
+
+  const [currentStep, setCurrentStep] = useState<number>(() => {
+    if (typeof window === "undefined") {
+      return 0;
+    }
+
+    const key = `questionnaire-${project.id}`;
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored).currentStep || 0 : 0;
+  });
+
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    const key = `questionnaire-${project.id}`;
+    localStorage.setItem(key, JSON.stringify({ answers, currentStep }));
+  }, [answers, currentStep, project.id]);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   // Impact modal state
   const [showImpactModal, setShowImpactModal] = useState(false);
@@ -248,6 +300,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
     console.log("Emissions Calculation:", emissions);
     console.log("Complete Data:", completeData);
     console.log("==========================================");
+
+    // Clear persisted data after submission
+    localStorage.removeItem(`questionnaire-${project.id}`);
   };
 
   const canProceed = (): boolean => {
@@ -308,7 +363,7 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   return (
     <div className="space-y-6">
       {/* Compact Stats Bar - shown from step 2 onwards */}
-      {currentStep >= 2 && (
+      {isHydrated && currentStep >= 2 && (
         <motion.div
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-2 gap-3 sm:gap-4"
@@ -340,15 +395,17 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       )}
 
       {/* Progress Bar */}
-      <div className="space-y-2">
-        <Progress className="h-2" value={progress} />
-        <div className="text-right text-muted-foreground text-xs">
-          {t("header.step-counter", {
-            current: currentStepDisplay + 1,
-            total: totalSteps,
-          })}
+      {isHydrated && (
+        <div className="space-y-2">
+          <Progress className="h-2" value={progress} />
+          <div className="text-right text-muted-foreground text-xs">
+            {t("header.step-counter", {
+              current: currentStepDisplay + 1,
+              total: totalSteps,
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Impact Modal */}
       {showImpactModal && impactData && (

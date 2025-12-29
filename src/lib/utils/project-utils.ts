@@ -27,6 +27,21 @@ export async function getProjectData(projectId: string) {
 
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
+/**
+ *
+ * @param startDate The start date of the project
+ * @param endDate The end date of the project
+ * @returns The duration of the project in days
+ */
+export const calculateProjectDuration = (
+  startDate: string | Date,
+  endDate: string | Date,
+) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  return Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+};
+
 // CO₂ emission factors (kg CO₂ per km per person)
 export const CO2_FACTORS = {
   car: 0.192,
