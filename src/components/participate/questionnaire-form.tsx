@@ -56,7 +56,13 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
     firstName: "",
     country: "",
     email: "",
-    days: calculateProjectDuration(project.startDate, project.endDate),
+    days: (() => {
+      try {
+        return calculateProjectDuration(project.startDate, project.endDate);
+      } catch {
+        return 1; // Fallback to 1 day if dates are invalid
+      }
+    })(),
     flightKm: 0,
     boatKm: 0,
     trainKm: 0,
