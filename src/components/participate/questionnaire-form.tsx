@@ -72,8 +72,12 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
     days: (() => {
       try {
         return calculateProjectDuration(project.startDate, project.endDate);
-      } catch {
-        return 1; // Fallback to 1 day if dates are invalid
+      } catch (error) {
+        console.error(
+          `Error calculating project duration for project ${project.id}:`,
+          error,
+        );
+        return 0; // Fallback to 0 days if dates are invalid
       }
     })(),
     flightKm: 0,
