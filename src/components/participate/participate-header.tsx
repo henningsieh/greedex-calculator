@@ -56,7 +56,18 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
       <Card className="flex w-full flex-col gap-0 overflow-hidden py-0 md:flex-row md:py-6">
         {/* Left Side: Project Name */}
         <div className="flex flex-1 items-center justify-start p-6">
-            <h1 className="text-center font-bold text-2xl text-foreground leading-tight tracking-tight sm:text-3xl md:text-4xl">              {project.name}              {project.location && (                <ProjectLocation                  className="ml-2 md:hidden"                  locale={locale}                  project={project}                  showFlag                  variant="inline"                />              )}            </h1> 
+          <h1 className="text-center font-bold text-2xl text-foreground leading-tight tracking-tight sm:text-3xl md:text-4xl">
+            {project.name}
+            {project.location && (
+              <ProjectLocation
+                className="ml-2 md:hidden"
+                locale={locale}
+                project={project}
+                showFlag
+                variant="inline"
+              />
+            )}{" "}
+          </h1>
         </div>
 
         {/* Right Side: Location & Emissions */}

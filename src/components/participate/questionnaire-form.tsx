@@ -904,7 +904,7 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                   onClick={handleNext}
                   type="button"
                 >
-                  {renderedStep === 14 ? (
+                  {renderedStep === 15 ? (
                     <>
                       <CheckCircle2 className="mr-2 h-5 w-5" />
                       {t("navigation.complete")}
