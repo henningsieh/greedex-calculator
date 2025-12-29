@@ -46,10 +46,10 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
               {t("header.badge")}
             </span>
           </div>
-          <h2 className="font-medium text-lg text-muted-foreground">
+          <p className="font-medium text-lg text-muted-foreground">
             {t("header.title")} <span className="mx-1 opacity-30">|</span>{" "}
             {t("header.subtitle")}
-          </h2>
+          </p>
         </div>
       </div>
 
