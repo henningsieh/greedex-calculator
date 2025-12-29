@@ -27,6 +27,31 @@ export async function getProjectData(projectId: string) {
 
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
+/**
+ * @param startDate The start date of the project
+ * @param endDate The end date of the project
+ * @returns The duration of the project in days
+ */
+export const calculateProjectDuration = (
+  startDate: string | Date,
+  endDate: string | Date,
+) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  if (Number.isNaN(start.getTime())) {
+    throw new Error("Invalid start date provided");
+  }
+  if (Number.isNaN(end.getTime())) {
+    throw new Error("Invalid end date provided");
+  }
+  if (end.getTime() < start.getTime()) {
+    throw new Error("End date must be after or equal to start date");
+  }
+
+  return Math.floor((end.getTime() - start.getTime()) / MILLISECONDS_PER_DAY);
+};
+
 // CO₂ emission factors (kg CO₂ per km per person)
 export const CO2_FACTORS = {
   car: 0.192,
