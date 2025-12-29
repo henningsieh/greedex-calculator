@@ -14,19 +14,22 @@ description: Shadcn UI components - forms, tables, empty states, and accessible 
 All shadcn components are installed and set up in this codebase at `src/components/ui`.
 
 - **Field Component**: Combine labels, controls, and help text to compose accessible form fields and grouped inputs.
-  - See: [docs/shadcn/shadcn-ui.new-field.documentation.md](../../docs/shadcn/shadcn-ui.new-field.documentation.md)
+  - See: [docs/shadcn/shadcn-ui.new-field.documentation.md](/docs/shadcn/shadcn-ui.new-field.documentation.md)
   
 - **Empty Component**: Use the Empty component to display an empty state.
-  - See: [docs/shadcn/shadcn.empty.component.md](../../docs/shadcn/shadcn.empty.component.md)
+  - See: [docs/shadcn/shadcn.empty.component.md](/docs/shadcn/shadcn.empty.component.md)
   
 - **Data Table Component**: Implement data tables with sorting, filtering, and pagination using TanStack Table.
-  - See: [docs/shadcn/shadcn-ui.data-table.md](../../docs/shadcn/shadcn-ui.data-table.md)
+  - See: [docs/shadcn/shadcn-ui.data-table.md](/docs/shadcn/shadcn-ui.data-table.md)
+
+- **Card Component**: Displays a card with header, content, and footer.
+  - See: [docs/shadcn/shadcn-ui.card.md](/docs/shadcn/shadcn-ui.card.md)
 
 ## Installation
 
 To add a new shadcn component:
 ```bash
-npx shadcn@latest add <component-name>
+bunx shadcn@latest add <component-name>
 ```
 
 ## Best Practices
