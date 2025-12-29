@@ -20,6 +20,6 @@ export const MEMBER_ROLES = {
 export type MemberRole = (typeof MEMBER_ROLES)[keyof typeof MEMBER_ROLES];
 
 /**
- * Type for member sort field values
+ * Type for member sort field values - inferred from database schema
  */
 export type MemberSortField = (typeof MEMBER_SORT_FIELDS)[number];

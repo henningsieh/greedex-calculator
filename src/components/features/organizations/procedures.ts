@@ -24,10 +24,15 @@ function getSortKey(
     const time = new Date(member.createdAt).getTime();
     return Number.isNaN(time) ? 0 : time;
   }
+  if (sortBy === "role") {
+    // Sort order: owner < admin < member
+    const roleOrder = { owner: 0, admin: 1, member: 2 };
+    return roleOrder[member.role as keyof typeof roleOrder] ?? 999;
+  }
   if (sortBy === "user.name") {
     return (member.user?.name || "").toLowerCase();
   }
-  if (sortBy === "email") {
+  if (sortBy === "user.email") {
     return (member.user?.email || "").toLowerCase();
   }
   // This should never happen due to the enum constraint, but TypeScript requires it

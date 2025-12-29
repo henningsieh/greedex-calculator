@@ -84,6 +84,8 @@ export function UsersTable({
   let procedureSortBy: MemberSortField | undefined;
   if (sortBy === "member") {
     procedureSortBy = "user.name";
+  } else if (sortBy === "email") {
+    procedureSortBy = "user.email";
   } else if (MEMBER_SORT_FIELDS.includes(sortBy as MemberSortField)) {
     procedureSortBy = sortBy as MemberSortField;
   } else {
@@ -172,7 +174,7 @@ export function UsersTable({
         id: "role",
         header: t("role"),
         accessorFn: (row: MemberWithUser) => row.role ?? undefined,
-        enableSorting: false,
+        enableSorting: true,
         size: 120,
         cell: (info) => (
           <Badge
