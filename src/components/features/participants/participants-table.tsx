@@ -1,8 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Suspense } from "react";
 import { MEMBER_ROLES } from "@/components/features/organizations/types";
-import { UsersTable } from "@/components/features/organizations/users-table";
+import {
+  TeamTableSkeleton,
+  UsersTable,
+} from "@/components/features/organizations/users-table";
 
 interface ParticipantsTableProps {
   organizationId: string;
@@ -16,12 +20,14 @@ interface ParticipantsTableProps {
 export function ParticipantsTable({ organizationId }: ParticipantsTableProps) {
   const t = useTranslations("organization.participants");
   return (
-    <UsersTable
-      emptyDescription={t("emptyState.description")}
-      emptyTitle={t("emptyState.title")}
-      organizationId={organizationId}
-      roles={[MEMBER_ROLES.Participant]}
-      showInviteButton={false}
-    />
+    <Suspense fallback={<TeamTableSkeleton />}>
+      <UsersTable
+        emptyDescription={t("emptyState.description")}
+        emptyTitle={t("emptyState.title")}
+        organizationId={organizationId}
+        roles={[MEMBER_ROLES.Participant]}
+        showInviteButton={false}
+      />
+    </Suspense>
   );
 }

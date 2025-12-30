@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   type ColumnDef,
   flexRender,
@@ -92,7 +92,7 @@ export function UsersTable({
     procedureSortBy = undefined;
   }
 
-  const { data: membersResult, isFetching } = useQuery(
+  const { data: membersResult } = useSuspenseQuery(
     orpcQuery.members.search.queryOptions({
       input: {
         organizationId,
@@ -263,13 +263,11 @@ export function UsersTable({
       <div className="flex flex-col gap-6 py-4 sm:flex-row sm:items-center">
         <div className="flex w-full items-center gap-3">
           <Input
-            disabled={isFetching}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("control.filter")}
             value={search}
           />
           <Button
-            disabled={isFetching}
             onClick={() => {
               setSearch("");
               setDebouncedSearch("");
@@ -346,31 +344,6 @@ export function UsersTable({
           </TableHeader>
           <TableBody>
             {(() => {
-              if (isFetching) {
-                return Array.from({ length: pageSize }, (_, i) => (
-                  <TableRow key={`skeleton-${i}`}>
-                    <TableCell className="w-12">
-                      <Skeleton className="h-4 w-4" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Skeleton className="size-10 shrink-0 rounded-full" />
-                        <Skeleton className="h-4 w-32" />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-4 w-48" />
-                    </TableCell>
-                    <TableCell className="w-32">
-                      <Skeleton className="h-6 w-20 rounded-full" />
-                    </TableCell>
-                    <TableCell className="w-36">
-                      <Skeleton className="h-4 w-24" />
-                    </TableCell>
-                  </TableRow>
-                ));
-              }
-
               if (table.getRowModel().rows?.length > 0) {
                 return table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>

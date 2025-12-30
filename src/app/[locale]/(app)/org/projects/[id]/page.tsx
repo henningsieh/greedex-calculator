@@ -1,12 +1,10 @@
-// src/app/(app)/projects/[id]/page.tsx:
-
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/components/features/projects/error-fallback";
 import {
+  ProjectDetails,
   ProjectDetailsSkeleton,
-  ProjectTabs,
-} from "@/components/features/projects/project-tabs";
+} from "@/components/features/projects/project-details";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
 
@@ -49,7 +47,7 @@ export default async function ProjectsDetailsPage({
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Suspense fallback={<ProjectDetailsSkeleton />}>
-        <ProjectTabs id={id} />
+        <ProjectDetails id={id} />
       </Suspense>
     </ErrorBoundary>
   );

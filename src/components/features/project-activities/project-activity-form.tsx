@@ -34,6 +34,7 @@ import {
   MIN_DISTANCE_KM,
 } from "@/config/activities";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
+import { PROJECT_ACTIVITIES_ICONS } from "./activities-icons";
 
 interface ProjectActivityFormProps {
   projectId: string;
@@ -178,11 +179,17 @@ export function ProjectActivityForm({
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    {ACTIVITY_VALUES.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {t(`types.${type}`)}
-                      </SelectItem>
-                    ))}
+                    {ACTIVITY_VALUES.map((type) => {
+                      const Icon = PROJECT_ACTIVITIES_ICONS[type];
+                      return (
+                        <SelectItem key={type} value={type}>
+                          <div className="flex items-center gap-2">
+                            <Icon className="h-4 w-4" />
+                            {t(`types.${type}`)}
+                          </div>
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               )}
@@ -242,19 +249,26 @@ export function ProjectActivityForm({
         </Field>
 
         <div className="flex gap-2">
-          <Button disabled={isPending} size="sm" type="submit">
-            {buttonText}
-          </Button>
           {onCancel && (
             <Button
+              className="flex-1"
               onClick={onCancel}
               size="sm"
               type="button"
-              variant="outline"
+              variant="secondaryoutline"
             >
               {t("form.cancel")}
             </Button>
           )}
+          <Button
+            className="flex-1"
+            disabled={isPending}
+            size="sm"
+            type="submit"
+            variant="secondary"
+          >
+            {buttonText}
+          </Button>
         </div>
       </FieldGroup>
     </form>

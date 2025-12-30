@@ -321,7 +321,6 @@
     "projects": {
       "title": "All Projects",
       "description": "List of projects of your organization.",
-      "suspense-loading": "Suspense Loading...",
       "error-message": "Something went wrong.",
       "table": {
         "columns": "Column Selection",
@@ -413,7 +412,7 @@
           "creating": "Creating...",
           "create-project": "Create Project",
           "title": "Create a new Project",
-          "legend": "Empower your team with a sustainable Erasmus+ project",
+          "legend": "Create a new Erasmus+ project to track your participants' activities and calculate their CO₂ footprint.",
           "description": "Fill in the details to create a new project.",
           "name-description": "Enter the name of your project.",
           "start-date-description": "Select the start date for the project.",
@@ -511,7 +510,6 @@
     "projectsArchive": {
       "title": "Archived Projects",
       "description": "View and restore all archived projects",
-      "suspense-loading": "Loading archived projects...",
       "error-message": "Error loading archived projects.",
       "no-archived-projects": {
         "title": "No archived projects",

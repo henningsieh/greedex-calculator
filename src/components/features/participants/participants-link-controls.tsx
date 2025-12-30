@@ -123,7 +123,6 @@ export function ParticipantsLinkControls({
           <Dialog onOpenChange={setIsQrModalOpen} open={isQrModalOpen}>
             <DialogTrigger asChild>
               <Button
-                className="size-10 border-secondary/40 text-secondary hover:bg-secondary/10 hover:text-secondary sm:size-fit dark:border-secondary/40"
                 onClick={() => setIsQrModalOpen(true)}
                 variant="secondaryoutline"
               >

@@ -3,6 +3,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Users2Icon, UsersIcon } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
+import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
@@ -46,7 +47,7 @@ export function ParticipantsList({ activeProjectId }: ParticipantsListProps) {
     <Card className="border border-border/60 bg-card/80 shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <UsersIcon className="h-5 w-5 text-secondary" />
+          <PROJECT_ICONS.participants className="h-5 w-5 text-secondary" />
           {t("participants")}
         </CardTitle>
         <CardDescription>

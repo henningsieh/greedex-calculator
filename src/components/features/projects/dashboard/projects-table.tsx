@@ -133,7 +133,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
 
   return (
     <>
-      <div className="w-full">
+      <div className="min-w-0">
         <div className="my-auto flex h-14 items-center gap-2">
           <Input
             className="h-8 max-w-sm"
@@ -189,7 +189,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
           </DropdownMenu>
         </div>
         <div className="overflow-x-auto rounded-md border">
-          <Table>
+          <Table className="mb-4 w-full sm:mb-0">
             <TableHeader className="border-b bg-muted/50">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow

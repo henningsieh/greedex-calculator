@@ -228,7 +228,7 @@ export function CreateProjectForm({
       <FieldSet className="mx-auto max-w-3xl p-2 sm:p-6">
         <FieldContent>
           <FieldLegend>{t("legend")}</FieldLegend>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-right text-muted-foreground text-sm">
             Step {currentStep} of {totalSteps}
           </p>
         </FieldContent>
@@ -281,30 +281,32 @@ export function CreateProjectForm({
               </Field>
             </div>
 
-            <Field data-invalid={!!errors.country}>
-              <FieldLabel htmlFor="country">{t("country")}</FieldLabel>
-              <Controller
-                control={control}
-                name="country"
-                render={({ field }) => (
-                  <CountrySelect
-                    euOnly={true}
-                    onValueChange={field.onChange}
-                    placeholder={t("country-placeholder")}
-                    value={field.value}
-                  />
-                )}
-              />
-              <FieldDescription>{t("country-description")}</FieldDescription>
-              <FieldError errors={[errors.country]} />
-            </Field>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field data-invalid={!!errors.country}>
+                <FieldLabel htmlFor="country">{t("country")}</FieldLabel>
+                <Controller
+                  control={control}
+                  name="country"
+                  render={({ field }) => (
+                    <CountrySelect
+                      euOnly={true}
+                      onValueChange={field.onChange}
+                      placeholder={t("country-placeholder")}
+                      value={field.value}
+                    />
+                  )}
+                />
+                <FieldDescription>{t("country-description")}</FieldDescription>
+                <FieldError errors={[errors.country]} />
+              </Field>
 
-            <FormField
-              control={control}
-              description={t("location-description")}
-              label={t("location")}
-              name="location"
-            />
+              <FormField
+                control={control}
+                description={t("location-description")}
+                label={t("location")}
+                name="location"
+              />
+            </div>
 
             <Field>
               <FieldLabel htmlFor="welcomeMessage">

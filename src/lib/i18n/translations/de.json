@@ -321,7 +321,6 @@
     "projects": {
       "title": "Alle Projekte",
       "description": "Liste der Projekte Ihrer Organisation.",
-      "suspense-loading": "Wird geladen...",
       "error-message": "Es ist ein Fehler aufgetreten.",
       "table": {
         "columns": "Spalten",
@@ -413,7 +412,7 @@
           "creating": "Wird erstellt...",
           "create-project": "Projekt erstellen",
           "title": "Neues Projekt erstellen",
-          "legend": "Ermögliche deinem Team ein nachhaltiges Erasmus+ Projekt",
+          "legend": "Erstelle ein neues Erasmus+ Projekt, um die Aktivitäten deiner Teilnehmenden zu verfolgen und ihren CO₂-Fußabdruck zu berechnen.",
           "description": "Fülle die Details aus, um ein neues Projekt zu erstellen.",
           "name-description": "Gib den Namen deines Projekts ein.",
           "start-date-description": "Wähle das Startdatum für das Projekt.",
@@ -511,7 +510,6 @@
     "projectsArchive": {
       "title": "Archivierte Projekte",
       "description": "Alle archivierte Projekte anzeigen und wiederherstellen",
-      "suspense-loading": "Archivierte Projekte werden geladen...",
       "error-message": "Fehler beim Laden der archivierten Projekte.",
       "no-archived-projects": {
         "title": "Keine archivierten Projekte",

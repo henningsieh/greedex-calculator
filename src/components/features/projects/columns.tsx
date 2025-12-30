@@ -10,9 +10,12 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { toast } from "sonner";
-import { EditProjectForm } from "@/components/features/projects/edit-project-form";
+import {
+  EditProjectForm,
+  EditProjectFormSkeleton,
+} from "@/components/features/projects/edit-project-form";
 import { SortableHeader } from "@/components/features/projects/sortable-header";
 import type { ProjectType } from "@/components/features/projects/types";
 import { Button } from "@/components/ui/button";
@@ -354,10 +357,12 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
             <DialogHeader>
               <DialogTitle>{t("form.edit.title")}</DialogTitle>
             </DialogHeader>
-            <EditProjectForm
-              onSuccess={() => setIsEditModalOpen(false)}
-              project={project}
-            />
+            <Suspense fallback={<EditProjectFormSkeleton />}>
+              <EditProjectForm
+                onSuccess={() => setIsEditModalOpen(false)}
+                project={project}
+              />
+            </Suspense>
           </DialogContent>
         </Dialog>
       )}

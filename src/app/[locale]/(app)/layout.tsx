@@ -80,26 +80,18 @@ export default async function AppLayout({
               </Suspense>
             </ErrorBoundary>
             <SidebarInset>
-              <main className="flex-1 flex-col">
-                <div className="flex h-16 items-center gap-4 border-b py-2 pr-4 pl-2 md:pl-4 lg:pl-6 xl:pl-8">
-                  {/* <SidebarTrigger
-                    className={cn(
-                      "size-11 border border-secondary/50 ring-secondary transition-colors duration-200",
-                      "hover:bg-secondary hover:text-secondary-foreground dark:hover:bg-secondary/50",
-                    )}
-                  /> */}
-                  <ErrorBoundary
-                    fallback={<div>Unable to load project breadcrumb</div>}
-                  >
-                    <Suspense fallback={<AppBreadcrumbSkeleton />}>
-                      <AppBreadcrumb />
-                    </Suspense>
-                  </ErrorBoundary>
-                </div>
-                <div className="space-y-8 p-2 md:p-4 lg:p-6 xl:p-8">
-                  {children}
-                </div>
-              </main>
+              <div className="flex h-16 items-center gap-4 border-b py-2 pr-4 pl-2 md:pl-4 lg:pl-6 xl:pl-8">
+                <ErrorBoundary
+                  fallback={<div>Unable to load project breadcrumb</div>}
+                >
+                  <Suspense fallback={<AppBreadcrumbSkeleton />}>
+                    <AppBreadcrumb />
+                  </Suspense>
+                </ErrorBoundary>
+              </div>
+              <div className="space-y-8 p-2 md:p-4 lg:p-6 xl:p-8">
+                {children}
+              </div>
             </SidebarInset>
           </SidebarProvider>
         </LoadingProvider>

@@ -1,10 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { ArrowLeft, ArrowRight, Check, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -22,6 +26,13 @@ import {
 import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import {
   Field,
   FieldError,
@@ -71,7 +82,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
   const totalSteps = PROJECT_FORM_TOTAL_STEPS;
 
   // Fetch existing activities
-  const { data: existingActivities, isLoading: activitiesLoading } = useQuery(
+  const { data: existingActivities } = useSuspenseQuery(
     orpcQuery.projectActivities.list.queryOptions({
       input: { projectId: project.id },
     }),
@@ -314,111 +325,6 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
   // Filter out deleted activities for display
   const visibleActivities = fields.filter((field) => !field.isDeleted);
 
-  // Prepare activities rendering to avoid nested ternary
-  let activitiesContent: ReactNode;
-  if (activitiesLoading) {
-    activitiesContent = (
-      <div className="space-y-4">
-        <Skeleton className="h-20 w-full" />
-        <Skeleton className="h-20 w-full" />
-      </div>
-    );
-  } else if (visibleActivities.length === 0) {
-    activitiesContent = (
-      <p className="text-center text-muted-foreground text-sm">
-        {tActivities("empty.description")}
-      </p>
-    );
-  } else {
-    activitiesContent = fields.map((field, index) => {
-      if (field.isDeleted) {
-        return null;
-      }
-      return (
-        <div className="relative rounded-lg border p-4" key={field.id}>
-          <Button
-            className="absolute top-2 right-2"
-            onClick={() => markActivityDeleted(index)}
-            size="icon"
-            type="button"
-            variant="ghost"
-          >
-            <Trash2 className="h-4 w-4 text-destructive" />
-          </Button>
-
-          <div className="grid gap-4 pr-8 sm:grid-cols-2">
-            <Field data-invalid={!!errors.activities?.[index]?.activityType}>
-              <FieldLabel htmlFor={`activities.${index}.type`}>
-                {tActivities("form.activity-type")}
-              </FieldLabel>
-              <Controller
-                control={control}
-                name={`activities.${index}.activityType`}
-                render={({ field: selectField }) => (
-                  <Select
-                    onValueChange={selectField.onChange}
-                    value={selectField.value}
-                  >
-                    <SelectTrigger id={`activities.${index}.type`}>
-                      <SelectValue
-                        placeholder={tActivities(
-                          "form.activity-type-placeholder",
-                        )}
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ACTIVITY_VALUES.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {tActivities(`types.${type}`)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </Field>
-
-            <Field data-invalid={!!errors.activities?.[index]?.distanceKm}>
-              <FieldLabel htmlFor={`activities.${index}.distance`}>
-                {tActivities("form.distance")}
-              </FieldLabel>
-              <Controller
-                control={control}
-                name={`activities.${index}.distanceKm`}
-                render={({ field }) => (
-                  <Input
-                    id={`activities.${index}.distance`}
-                    min={MIN_DISTANCE_KM}
-                    onChange={(e) =>
-                      field.onChange(
-                        Number.parseFloat(e.target.value) || MIN_DISTANCE_KM,
-                      )
-                    }
-                    placeholder={tActivities("form.distance-placeholder")}
-                    step={DISTANCE_KM_STEP}
-                    type="number"
-                    value={field.value ?? ""}
-                  />
-                )}
-              />
-            </Field>
-          </div>
-
-          <Field className="mt-4">
-            <FieldLabel htmlFor={`activities.${index}.description`}>
-              {tActivities("form.description")}
-            </FieldLabel>
-            <Textarea
-              id={`activities.${index}.description`}
-              placeholder={tActivities("form.description-placeholder")}
-              {...register(`activities.${index}.description`)}
-            />
-          </Field>
-        </div>
-      );
-    });
-  }
-
   return (
     <div>
       <Toaster />
@@ -507,15 +413,25 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
               <Textarea id="welcomeMessage" {...register("welcomeMessage")} />
             </Field>
 
-            <Button
-              className="w-fit"
-              onClick={handleNextStep}
-              type="button"
-              variant="secondary"
-            >
-              {tActivities("title")}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                className="w-1/2"
+                onClick={() => onSuccess?.()}
+                type="button"
+                variant="secondaryoutline"
+              >
+                Cancel
+              </Button>
+              <Button
+                className="w-1/2"
+                onClick={handleNextStep}
+                type="button"
+                variant="secondary"
+              >
+                {tActivities("title")}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           </FieldGroup>
         )}
 
@@ -532,7 +448,129 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
-                {activitiesContent}
+                {visibleActivities.length === 0 ? (
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyMedia variant="icon">
+                        <Plus className="size-9 text-muted-foreground" />
+                      </EmptyMedia>
+                      <EmptyTitle>{tActivities("empty.title")}</EmptyTitle>
+                      <EmptyDescription>
+                        {tActivities("empty.description")}
+                      </EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
+                ) : (
+                  fields.map((field, index) => {
+                    if (field.isDeleted) {
+                      return null;
+                    }
+                    return (
+                      <div
+                        className="relative rounded-lg border p-4"
+                        key={field.id}
+                      >
+                        <Button
+                          className="absolute top-2 right-2"
+                          onClick={() => markActivityDeleted(index)}
+                          size="icon"
+                          type="button"
+                          variant="ghost"
+                        >
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+
+                        <div className="grid gap-4 pr-8 sm:grid-cols-2">
+                          <Field
+                            data-invalid={
+                              !!errors.activities?.[index]?.activityType
+                            }
+                          >
+                            <FieldLabel htmlFor={`activities.${index}.type`}>
+                              {tActivities("form.activity-type")}
+                            </FieldLabel>
+                            <Controller
+                              control={control}
+                              name={`activities.${index}.activityType`}
+                              render={({ field: selectField }) => (
+                                <Select
+                                  onValueChange={selectField.onChange}
+                                  value={selectField.value}
+                                >
+                                  <SelectTrigger
+                                    id={`activities.${index}.type`}
+                                  >
+                                    <SelectValue
+                                      placeholder={tActivities(
+                                        "form.activity-type-placeholder",
+                                      )}
+                                    />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {ACTIVITY_VALUES.map((type) => (
+                                      <SelectItem key={type} value={type}>
+                                        {tActivities(`types.${type}`)}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              )}
+                            />
+                          </Field>
+
+                          <Field
+                            data-invalid={
+                              !!errors.activities?.[index]?.distanceKm
+                            }
+                          >
+                            <FieldLabel
+                              htmlFor={`activities.${index}.distance`}
+                            >
+                              {tActivities("form.distance")}
+                            </FieldLabel>
+                            <Controller
+                              control={control}
+                              name={`activities.${index}.distanceKm`}
+                              render={({ field }) => (
+                                <Input
+                                  id={`activities.${index}.distance`}
+                                  min={MIN_DISTANCE_KM}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      Number.parseFloat(e.target.value) ||
+                                        MIN_DISTANCE_KM,
+                                    )
+                                  }
+                                  placeholder={tActivities(
+                                    "form.distance-placeholder",
+                                  )}
+                                  step={DISTANCE_KM_STEP}
+                                  type="number"
+                                  value={field.value ?? ""}
+                                />
+                              )}
+                            />
+                          </Field>
+                        </div>
+
+                        <Field className="mt-4">
+                          <FieldLabel
+                            htmlFor={`activities.${index}.description`}
+                          >
+                            {tActivities("form.description")}
+                          </FieldLabel>
+                          <Textarea
+                            id={`activities.${index}.description`}
+                            placeholder={tActivities(
+                              "form.description-placeholder",
+                            )}
+                            {...register(`activities.${index}.description`)}
+                          />
+                        </Field>
+                      </div>
+                    );
+                  })
+                )}
 
                 <Button
                   className="w-full"
@@ -574,6 +612,60 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
           </FieldGroup>
         )}
       </form>
+    </div>
+  );
+}
+
+/**
+ * Skeleton component for EditProjectForm loading state
+ */
+export function EditProjectFormSkeleton() {
+  return (
+    <div className="space-y-6">
+      {/* Step indicator skeleton */}
+      <Skeleton className="h-4 w-24" />
+
+      {/* Form fields skeleton */}
+      <div className="space-y-4">
+        {/* Name field */}
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+
+        {/* Date fields */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        </div>
+
+        {/* Country field */}
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+
+        {/* Location field */}
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+
+        {/* Welcome message field */}
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+
+        {/* Button */}
+        <Skeleton className="h-10 w-32" />
+      </div>
     </div>
   );
 }

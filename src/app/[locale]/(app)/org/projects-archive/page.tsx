@@ -1,7 +1,10 @@
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { ArchivedProjectsTab } from "@/components/features/projects/dashboard/archived-projects-tab";
+import {
+  ArchivedProjectsTab,
+  ArchivedProjectsTabSkeleton,
+} from "@/components/features/projects/dashboard/archived-projects-tab";
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
@@ -29,7 +32,7 @@ export default async function ProjectsArchivePage() {
         </div>
         <p className="text-muted-foreground">{t("description")}</p>
       </div>
-      <Suspense fallback={<div>{t("suspense-loading")}</div>}>
+      <Suspense fallback={<ArchivedProjectsTabSkeleton />}>
         <ErrorBoundary fallback={<div>{t("error-message")}</div>}>
           <ArchivedProjectsTab />
         </ErrorBoundary>
