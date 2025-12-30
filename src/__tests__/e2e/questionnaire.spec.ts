@@ -210,7 +210,9 @@ test.describe("Questionnaire Form E2E Tests", () => {
     await page.getByRole("button", { name: BUTTON_REGEX.continue }).click();
 
     // Step 12: Car Type (conditional - only shown if carKm > 0) - Select Electric
-    await expect(page.locator("text=type of car").first()).toBeVisible();
+    await expect(
+      page.locator("text=What type of car did you use?").first(),
+    ).toBeVisible();
     // Wait for the electric button to be stable/clickable
     await expect(
       page.getByRole("button", { name: OPTION_REGEX.electric }),
@@ -245,14 +247,19 @@ test.describe("Questionnaire Form E2E Tests", () => {
     await ageInput.click();
     await ageInput.clear();
     await ageInput.pressSequentially("28", { delay: 50 });
+    await page.getByRole("button", { name: BUTTON_REGEX.continue }).click();
+
+    // Step 15: Gender - Final step
+    await expect(page.locator("text=gender").first()).toBeVisible();
+
+    // Select gender to enable Complete button
+    await page.getByRole("button", { name: "Male", exact: true }).click();
+
     const completeBtn = page.getByRole("button", {
       name: BUTTON_REGEX.complete,
     });
     await expect(completeBtn).toBeEnabled({ timeout: 5000 });
     await completeBtn.click();
-
-    // Step 15: Gender - Final step
-    await expect(page.locator("text=gender").first()).toBeVisible();
 
     // Verify final results are displayed with emissions breakdown
     await expect(page.locator("text=summary").first()).toBeVisible({
@@ -667,14 +674,22 @@ test.describe("Questionnaire Form E2E Tests", () => {
     await ageInput.click();
     await ageInput.clear();
     await ageInput.pressSequentially("30", { delay: 50 });
+
+    // Click continue to proceed to gender step
+    await page.getByRole("button", { name: BUTTON_REGEX.continue }).click();
+
+    // Gender step - select gender
+    await expect(page.locator("text=gender").first()).toBeVisible({
+      timeout: 3000,
+    });
+    await page.getByRole("button", { name: "Male", exact: true }).click();
+
+    // Now expect and click the complete button to submit and show summary
     const completeBtn = page.getByRole("button", {
       name: BUTTON_REGEX.complete,
     });
     await expect(completeBtn).toBeEnabled({ timeout: 5000 });
     await completeBtn.click();
-
-    // Gender - selecting gender shows the final summary
-    await page.getByRole("button", { name: "Male", exact: true }).click();
 
     // Should show breakdown labels
     await expect(page.locator("text=Transport").first()).toBeVisible();
