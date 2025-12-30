@@ -61,22 +61,24 @@ export function getProjectColumns(
     {
       id: "select",
       header: ({ table }) => (
-        <Checkbox
-          aria-label="Select all"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          // onClick={(e) => e.stopPropagation()}
-        />
+        <div className="pl-1">
+          <Checkbox
+            aria-label="Select all"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+          />
+        </div>
       ),
       cell: ({ row }) => (
         <Checkbox
           aria-label="Select row"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
-          // onClick={(e) => e.stopPropagation()}
         />
       ),
       enableSorting: false,
