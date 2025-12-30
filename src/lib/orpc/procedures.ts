@@ -1,6 +1,5 @@
 import { ORPCError } from "@orpc/server";
 import { z } from "zod";
-import { env } from "@/env";
 import { auth } from "@/lib/better-auth";
 import { SessionSchema } from "@/lib/better-auth/validation-schemas";
 import { base } from "@/lib/orpc/context";
@@ -33,7 +32,7 @@ export const getHealth = base.route({ method: "GET" }).handler(() => {
     status: "ok",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: env.NODE_ENV,
+    environment: process.env.NODE_ENV,
   };
 });
 

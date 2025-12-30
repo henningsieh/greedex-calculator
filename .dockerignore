@@ -1,0 +1,72 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+
+# Testing
+coverage
+.nyc_output
+*.lcov
+src/__tests__/e2e/.playwright
+playwright-report
+test-results
+
+# Next.js
+.next/
+out/
+.next-inspect/
+next-env.d.ts
+
+# Production
+build
+dist
+
+# Misc
+.DS_Store
+*.pem
+.vscode
+.idea
+
+# Debug
+*.log
+logs
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+# CRITICAL: .env is needed for next build (NEXT_PUBLIC_*), but not others
+
+
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+docs/
+specs/
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Biome cache
+.biome-cache
+
+# Config files not needed in production
+biome.jsonc
+components.json
+playwright.config.ts
+vitest.config.ts
+
+# Public files (we copy selectively)
+public/about
+public/e+forest
+public/workshops

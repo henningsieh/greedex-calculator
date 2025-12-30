@@ -1,28 +1,27 @@
 // src/lib/drizzle/db.ts
-import type { NodePgDatabase } from "drizzle-orm/node-postgres";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { env } from "@/env";
 // biome-ignore lint/performance/noNamespaceImport: <import all schemes from a single entry point>
 import * as schema from "@/lib/drizzle/schema";
 
-// Global variable to store the pool across hot reloads
+// Global variable to store the client across hot reloads
 declare global {
-  var __pool: Pool | undefined;
+  var __db: PostgresJsDatabase<typeof schema> | undefined;
 }
 
-// Reuse existing pool in development to prevent memory leaks
-// SSL Configuration: DATABASE_URL must include ?sslmode=require&uselibpqcompat=true
-// for Coolify's "require (secure)" SSL mode. See docs/database/coolify-ssl-connection.md
-if (!global.__pool) {
-  global.__pool = new Pool({
-    connectionString: env.DATABASE_URL,
+// Reuse existing client in development to prevent memory leaks
+if (!global.__db) {
+  const client = postgres(env.DATABASE_URL, {
     max: 10,
+    // ssl: env.DATABASE_URL.includes("sslmode=require")
+    //   ? { rejectUnauthorized: false }
+    //   : false,
+  });
+  global.__db = drizzle(client, {
+    schema,
   });
 }
 
-const pool = global.__pool;
-
-export const db: NodePgDatabase<typeof schema> = drizzle(pool, {
-  schema,
-});
+export const db = global.__db;

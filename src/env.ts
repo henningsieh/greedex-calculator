@@ -2,8 +2,8 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 export const env = createEnv({
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   server: {
-    NODE_ENV: z.enum(["development", "production", "test"]),
     PORT: z.preprocess(
       (val) => (typeof val === "string" ? Number(val) : val),
       z.number().int().min(1).max(65_535),
@@ -12,7 +12,7 @@ export const env = createEnv({
       (val) => (typeof val === "string" ? Number(val) : val),
       z.number().int().min(0),
     ),
-    DATABASE_URL: z.url(),
+    DATABASE_URL: z.string().min(1),
     BETTER_AUTH_SECRET: z.string().min(1),
     GOOGLE_CLIENT_ID: z
       .string()
@@ -84,7 +84,6 @@ export const env = createEnv({
     SMTP_USERNAME: process.env.SMTP_USERNAME,
     SMTP_PASSWORD: process.env.SMTP_PASSWORD,
     SMTP_SECURE: process.env.SMTP_SECURE,
-    NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
     ORPC_DEV_DELAY_MS: process.env.ORPC_DEV_DELAY_MS,
     SOCKET_PORT: process.env.SOCKET_PORT,
