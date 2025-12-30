@@ -5,7 +5,7 @@ import { config } from "dotenv";
 import { vi } from "vitest";
 
 // Load .env into process.env (prefer existing ENV values if present)
-config();
+config({ path: [".env"], quiet: true });
 
 // Mock the auth client to avoid environment variable validation during tests
 vi.mock("@/lib/better-auth/auth-client", () => ({
