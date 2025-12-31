@@ -101,13 +101,13 @@ export function LoginForm({
       {
         onError: (c) => {
           if (c.error.code === "EMAIL_NOT_VERIFIED") {
-            toast.error("messages.verifyEmail");
+            toast.error(t("login.verifyEmail"));
             router.push(
               `${VERIFY_EMAIL_PATH}?email=${encodeURIComponent(data.email)}`,
             );
             return;
           }
-          toast.error(c.error.message || t("login.messages.failedSignIn"));
+          toast.error(c.error.message || t("common.failedSignIn"));
         },
       },
     );
@@ -121,10 +121,10 @@ export function LoginForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("login.messages.magicLinkSent"));
+          toast.success(t("login.magicLinkSent"));
         },
         onError: (c) => {
-          toast.error(c.error.message || t("login.messages.failedMagicLink"));
+          toast.error(c.error.message || t("login.failedMagicLink"));
         },
       },
     );
@@ -153,12 +153,14 @@ export function LoginForm({
                 {t("login.tabs.password")}
                 {(lastLoginMethod === "email" ||
                   lastLoginMethod === "credential") && (
-                  <LastUsedBadge className="-left-8" />
+                  <LastUsedBadge className="-bottom-7.5 left-1" />
                 )}
               </TabsTrigger>
               <TabsTrigger className="relative" value="magic-link">
                 {t("login.tabs.magicLink")}
-                {lastLoginMethod === "magic-link" && <LastUsedBadge />}
+                {lastLoginMethod === "magic-link" && (
+                  <LastUsedBadge className="-bottom-7.5 left-1" />
+                )}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="password">
@@ -170,9 +172,9 @@ export function LoginForm({
                     inputProps={{
                       disabled: form.formState.isSubmitting,
                     }}
-                    label={t("login.fields.email")}
+                    label={t("login.email")}
                     name="email"
-                    placeholder={t("login.fields.emailPlaceholder")}
+                    placeholder={t("common.emailPlaceholder")}
                     type="email"
                   />
                   <FormField
@@ -181,7 +183,7 @@ export function LoginForm({
                     inputProps={{
                       disabled: form.formState.isSubmitting,
                     }}
-                    label={t("login.fields.password")}
+                    label={t("login.password")}
                     name="password"
                     rightLabel={
                       <Button asChild className="px-0" variant="link">
@@ -189,7 +191,7 @@ export function LoginForm({
                           className="ml-auto text-sm underline-offset-4 hover:underline"
                           href={FORGOT_PASSWORD_PATH}
                         >
-                          {t("login.fields.forgotPassword")}
+                          {t("login.forgotPassword")}
                         </Link>
                       </Button>
                     }
@@ -203,8 +205,8 @@ export function LoginForm({
                     variant="default"
                   >
                     {form.formState.isSubmitting
-                      ? t("login.buttons.signingIn")
-                      : t("login.buttons.login")}
+                      ? t("login.signingIn")
+                      : t("login.loginButton")}
                   </Button>
                 </FieldGroup>
               </form>
@@ -218,9 +220,9 @@ export function LoginForm({
                     inputProps={{
                       disabled: magicLinkForm.formState.isSubmitting,
                     }}
-                    label={t("login.fields.email")}
+                    label={t("login.email")}
                     name="email"
-                    placeholder={t("login.fields.emailPlaceholder")}
+                    placeholder={t("common.emailPlaceholder")}
                     type="email"
                   />
 
@@ -231,8 +233,8 @@ export function LoginForm({
                     variant="default"
                   >
                     {magicLinkForm.formState.isSubmitting
-                      ? t("login.buttons.sending")
-                      : t("login.buttons.sendMagicLink")}
+                      ? t("login.sending")
+                      : t("login.sendMagicLink")}
                   </Button>
                 </FieldGroup>
               </form>
@@ -265,7 +267,7 @@ export function LoginForm({
               </FieldDescription>
 
               <FieldSeparator className="my-4 font-bold">
-                {t("login.footer.orContinueWith")}
+                {t("common.orContinueWith")}
               </FieldSeparator>
 
               <SocialButtons

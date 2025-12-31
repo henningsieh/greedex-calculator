@@ -788,101 +788,78 @@
     }
   },
   "authentication": {
+    "common": {
+      "emailPlaceholder": "m@example.com",
+      "fullNamePlaceholder": "John Doe",
+      "backToLogin": "Back to Login",
+      "orContinueWith": "Or continue with",
+      "signingUp": "Creating Account...",
+      "sending": "Sending...",
+      "failedSignIn": "Failed to sign in",
+      "failedCreate": "Failed to create account",
+      "failedSend": "Failed to send reset email"
+    },
     "login": {
-      "title": "Sign in to your account",
-      "description": "Enter your credentials below to sign in to your Greendex account",
-      "last-used": "Last Used",
+      "title": "Welcome back, Greendexer!",
+      "description": "Login to your account to continue your Greendex Erasmus+ Project Work",
+      "lastUsed": "Last Used",
       "tabs": {
         "password": "Password",
         "magicLink": "Magic Link"
       },
-      "fields": {
-        "email": "Email",
-        "emailPlaceholder": "m@example.com",
-        "password": "Password",
-        "forgotPassword": "Forgot your password?"
-      },
-      "buttons": {
-        "login": "Login",
-        "logOut": "Log out",
-        "signingIn": "Signing in...",
-        "sendMagicLink": "Send magic link",
-        "sending": "Sending..."
-      },
-      "messages": {
-        "verifyEmail": "Please verify your email address to continue",
-        "failedSignIn": "Failed to sign in",
-        "magicLinkSent": "Magic link sent! Check your email.",
-        "failedMagicLink": "Failed to send magic link"
-      },
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot your password?",
+      "loginButton": "Login",
+      "logOut": "Log out",
+      "signingIn": "Signing in...",
+      "sendMagicLink": "Send magic link",
+      "verifyEmail": "Please verify your email address to continue",
+      "magicLinkSent": "Magic link sent! Check your email.",
+      "failedMagicLink": "Failed to send magic link",
       "footer": {
         "noAccount": "Don't have an account?",
-        "signUp": "Sign up",
-        "orContinueWith": "Or continue with"
+        "signUp": "Sign up"
       }
+    },
+    "magicLink": {
+      "title": "Sign in with magic link",
+      "description": "Enter your email address and we'll send you a magic link to sign in."
     },
     "signup": {
       "title": "Create your account",
       "description": "Fill in the form below to create your account",
-      "fields": {
-        "fullName": "Full Name",
-        "fullNamePlaceholder": "John Doe",
-        "email": "Email",
-        "emailPlaceholder": "m@example.com",
-        "emailDescription": "We'll use this to contact you. We will not share your email with anyone else.",
-        "password": "Password",
-        "passwordDescription": "Must be at least 8 characters long.",
-        "confirmPassword": "Confirm Password",
-        "confirmPasswordDescription": "Please confirm your password."
-      },
-      "buttons": {
-        "signUp": "Create Account",
-        "signingUp": "Creating Account..."
-      },
-      "messages": {
-        "failedCreate": "Failed to create account"
-      },
+      "fullName": "Full Name",
+      "email": "Email",
+      "emailDescription": "We'll use this to contact you. We will not share your email with anyone else.",
+      "password": "Password",
+      "passwordDescription": "Must be at least 8 characters long.",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordDescription": "Please confirm your password.",
+      "signUpButton": "Create Account",
       "footer": {
         "haveAccount": "Already have an account?",
-        "signIn": "Sign in",
-        "orContinueWith": "Or continue with"
+        "signIn": "Sign in"
       }
     },
     "forgotPassword": {
       "title": "Forgot Password?",
       "description": "Enter your email address and we'll send you a link to reset your password.",
-      "fields": {
-        "email": "Email",
-        "emailPlaceholder": "m@example.com"
-      },
-      "buttons": {
-        "sendResetLink": "Send Reset Link",
-        "sending": "Sending...",
-        "backToLogin": "Back to Login"
-      },
-      "messages": {
-        "resetLinkSent": "Password reset link sent! Please check your email.",
-        "failedSend": "Failed to send reset email"
-      }
+      "email": "Email",
+      "sendResetLink": "Send Reset Link",
+      "resetLinkSent": "Password reset link sent! Please check your email."
     },
     "resetPassword": {
       "title": "Reset Your Password",
       "description": "Enter your new password below to reset your account password.",
-      "fields": {
-        "newPassword": "New Password",
-        "newPasswordDescription": "Must be at least 8 characters long.",
-        "confirmPassword": "Confirm New Password",
-        "confirmPasswordDescription": "Please confirm your new password."
-      },
-      "buttons": {
-        "resetPassword": "Reset Password",
-        "resetting": "Resetting...",
-        "backToLogin": "Back to Login"
-      },
-      "messages": {
-        "resetSuccess": "Password reset successfully! Please sign in.",
-        "resetFailed": "Failed to reset password. The link may have expired."
-      }
+      "newPassword": "New Password",
+      "newPasswordDescription": "Must be at least 8 characters long.",
+      "confirmPassword": "Confirm New Password",
+      "confirmPasswordDescription": "Please confirm your new password.",
+      "resetPasswordButton": "Reset Password",
+      "resetting": "Resetting...",
+      "resetSuccess": "Password reset successfully! Please sign in.",
+      "resetFailed": "Failed to reset password. The link may have expired."
     },
     "validation": {
       "emailInvalid": "Please enter a valid email address.",
@@ -914,7 +891,6 @@
         "description": "No email address was provided. Please sign up or log in again.",
         "goToSignUp": "Go to Sign Up"
       },
-      "backToLogin": "Back to Login",
       "title": "Verify your email",
       "description": "We've sent a verification email to",
       "steps": {

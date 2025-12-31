@@ -52,13 +52,11 @@ export function ForgotPasswordForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("forgotPassword.messages.resetLinkSent"));
+          toast.success(t("forgotPassword.resetLinkSent"));
           form.reset();
         },
         onError: (ctx) => {
-          toast.error(
-            ctx.error.message || t("forgotPassword.messages.failedSend"),
-          );
+          toast.error(ctx.error.message || t("common.failedSend"));
         },
       },
     );
@@ -86,9 +84,9 @@ export function ForgotPasswordForm({
                 inputProps={{
                   disabled: form.formState.isSubmitting,
                 }}
-                label={t("forgotPassword.fields.email")}
+                label={t("forgotPassword.email")}
                 name="email"
-                placeholder={t("forgotPassword.fields.emailPlaceholder")}
+                placeholder={t("common.emailPlaceholder")}
                 type="email"
               />
 
@@ -99,8 +97,8 @@ export function ForgotPasswordForm({
                 variant="default"
               >
                 {form.formState.isSubmitting
-                  ? t("forgotPassword.buttons.sending")
-                  : t("forgotPassword.buttons.sendResetLink")}
+                  ? t("common.sending")
+                  : t("forgotPassword.sendResetLink")}
               </Button>
             </FieldGroup>
           </form>
@@ -109,9 +107,7 @@ export function ForgotPasswordForm({
         <CardFooter className="px-0">
           <div className="w-full text-center">
             <Button asChild className="px-0" variant="link">
-              <Link href={LOGIN_PATH}>
-                {t("forgotPassword.buttons.backToLogin")}
-              </Link>
+              <Link href={LOGIN_PATH}>{t("common.backToLogin")}</Link>
             </Button>
           </div>
         </CardFooter>

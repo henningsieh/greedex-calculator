@@ -30,15 +30,12 @@ export function SocialButtons({
 
   return (
     <Field>
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex flex-col gap-2 pb-2 sm:flex-row">
         {SUPPORTED_OAUTH_PROVIDERS.map((provider) => {
           const { name, Icon } = SUPPORTED_OAUTH_PROVIDER_DETAILS[provider];
 
           return (
             <div className="relative grow" key={provider}>
-              {lastLoginMethod && lastLoginMethod === provider && (
-                <LastUsedBadge className="-top-7" />
-              )}
               <Button
                 className="w-full"
                 disabled={disabled}
@@ -48,6 +45,9 @@ export function SocialButtons({
               >
                 <Icon />
                 {name}
+                {lastLoginMethod === provider && (
+                  <LastUsedBadge className="-bottom-6.5 left-1" />
+                )}
               </Button>
             </div>
           );

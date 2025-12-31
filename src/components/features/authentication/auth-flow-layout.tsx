@@ -51,12 +51,7 @@ export default async function AuthFlowLayout({
     <div className="relative min-h-svh overflow-hidden bg-background">
       <BackgroundAnimations />
 
-      <div className="relative z-10 mx-auto flex min-h-svh max-w-7xl flex-col justify-center gap-6 p-4 sm:px-6 sm:py-8 md:px-8">
-        {/* Back to Home button positioned outside cards */}
-        <div className="mx-auto w-full max-w-7xl">
-          <BackToHome href={backHref} label={backLabel ?? "Back to Home"} />
-        </div>
-
+      <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col gap-6 p-4 sm:px-6 sm:py-8 md:px-8">
         {/* Cards container with equal heights */}
         <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-6">
           {/* Left card - Form content */}
@@ -92,8 +87,15 @@ export default async function AuthFlowLayout({
                 },
               }}
             >
-              <div className="flex items-center justify-end">
-                <span className="rounded-full border border-primary/50 bg-primary/10 px-4 py-1 font-semibold text-primary text-xs uppercase tracking-[0.4em]">
+              <div className="flex items-center justify-between">
+                {/* Back to Home button positioned outside cards */}
+                <div className="mx-auto w-full max-w-7xl">
+                  <BackToHome
+                    href={backHref}
+                    label={backLabel ?? "Back to Home"}
+                  />
+                </div>
+                <span className="text-nowrap rounded-full border border-primary/50 bg-primary/10 px-4 py-1 font-semibold text-primary text-xs uppercase tracking-[0.4em]">
                   {t("badge")}
                 </span>
               </div>

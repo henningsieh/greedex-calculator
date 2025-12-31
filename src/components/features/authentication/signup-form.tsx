@@ -85,7 +85,7 @@ export function SignupForm({
       },
       {
         onError: (c) => {
-          toast.error(c.error.message || t("signup.messages.failedCreate"));
+          toast.error(c.error.message || t("common.failedCreate"));
         },
         onSuccess: () => {
           toast.success("Please check your email to verify your account.");
@@ -123,42 +123,42 @@ export function SignupForm({
               inputProps={{
                 disabled: form.formState.isSubmitting,
               }}
-              label={t("signup.fields.fullName")}
+              label={t("signup.fullName")}
               name="name"
-              placeholder={t("signup.fields.fullNamePlaceholder")}
+              placeholder={t("common.fullNamePlaceholder")}
               type="text"
             />
             <FormField
               control={form.control}
-              description={t("signup.fields.emailDescription")}
+              description={t("signup.emailDescription")}
               id="email"
               inputProps={{
                 disabled: form.formState.isSubmitting,
               }}
-              label={t("signup.fields.email")}
+              label={t("signup.email")}
               name="email"
-              placeholder={t("signup.fields.emailPlaceholder")}
+              placeholder={t("common.emailPlaceholder")}
               type="email"
             />
             <FormField
               control={form.control}
-              description={t("signup.fields.passwordDescription")}
+              description={t("signup.passwordDescription")}
               id="password"
               inputProps={{
                 disabled: form.formState.isSubmitting,
               }}
-              label={t("signup.fields.password")}
+              label={t("signup.password")}
               name="password"
               type="password"
             />
             <FormField
               control={form.control}
-              description={t("signup.fields.confirmPasswordDescription")}
+              description={t("signup.confirmPasswordDescription")}
               id="confirm-password"
               inputProps={{
                 disabled: form.formState.isSubmitting,
               }}
-              label={t("signup.fields.confirmPassword")}
+              label={t("signup.confirmPassword")}
               name="confirmPassword"
               type="password"
             />
@@ -169,8 +169,8 @@ export function SignupForm({
               type="submit"
             >
               {form.formState.isSubmitting
-                ? t("signup.buttons.signingUp")
-                : t("signup.buttons.signUp")}
+                ? t("common.signingUp")
+                : t("signup.signUpButton")}
             </Button>
           </FieldGroup>
         </CardContent>
@@ -186,7 +186,7 @@ export function SignupForm({
               </FieldDescription>
 
               <FieldSeparator className="my-4 font-bold">
-                {t("signup.footer.orContinueWith")}
+                {t("common.orContinueWith")}
               </FieldSeparator>
 
               <SocialButtons disabled={form.formState.isSubmitting} />

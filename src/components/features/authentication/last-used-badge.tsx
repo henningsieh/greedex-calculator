@@ -17,14 +17,14 @@ export function LastUsedBadge({
   const t = useTranslations("authentication.login");
 
   if (props.label === undefined) {
-    props.label = t("last-used");
+    props.label = t("lastUsed");
   }
   const label = props.label;
 
   return (
     <Badge
       className={cn(
-        "absolute -top-7.5 self-center border border-secondary bg-secondary/50 text-secondary-foreground",
+        "absolute self-center border border-secondary bg-secondary/50 text-secondary-foreground",
         className,
       )}
       variant={variant}

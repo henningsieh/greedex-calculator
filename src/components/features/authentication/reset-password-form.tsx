@@ -67,13 +67,11 @@ export function ResetPasswordForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("resetPassword.messages.resetSuccess"));
+          toast.success(t("resetPassword.resetSuccess"));
           router.push(LOGIN_PATH);
         },
         onError: (ctx) => {
-          toast.error(
-            ctx.error.message || t("resetPassword.messages.resetFailed"),
-          );
+          toast.error(ctx.error.message || t("resetPassword.resetFailed"));
         },
       },
     );
@@ -97,25 +95,23 @@ export function ResetPasswordForm({
             <FieldGroup className="gap-4">
               <FormField
                 control={form.control}
-                description={t("resetPassword.fields.newPasswordDescription")}
+                description={t("resetPassword.newPasswordDescription")}
                 id="password"
                 inputProps={{
                   disabled: form.formState.isSubmitting,
                 }}
-                label={t("resetPassword.fields.newPassword")}
+                label={t("resetPassword.newPassword")}
                 name="password"
                 type="password"
               />
               <FormField
                 control={form.control}
-                description={t(
-                  "resetPassword.fields.confirmPasswordDescription",
-                )}
+                description={t("resetPassword.confirmPasswordDescription")}
                 id="confirm-password"
                 inputProps={{
                   disabled: form.formState.isSubmitting,
                 }}
-                label={t("resetPassword.fields.confirmPassword")}
+                label={t("resetPassword.confirmPassword")}
                 name="confirmPassword"
                 type="password"
               />
@@ -127,8 +123,8 @@ export function ResetPasswordForm({
                 variant="default"
               >
                 {form.formState.isSubmitting
-                  ? t("resetPassword.buttons.resetting")
-                  : t("resetPassword.buttons.resetPassword")}
+                  ? t("resetPassword.resetting")
+                  : t("resetPassword.resetPasswordButton")}
               </Button>
             </FieldGroup>
           </form>
@@ -137,9 +133,7 @@ export function ResetPasswordForm({
         <CardFooter className="px-0">
           <div className="w-full text-center">
             <Button asChild className="px-0" variant="link">
-              <Link href={LOGIN_PATH}>
-                {t("resetPassword.buttons.backToLogin")}
-              </Link>
+              <Link href={LOGIN_PATH}>{t("common.backToLogin")}</Link>
             </Button>
           </div>
         </CardFooter>

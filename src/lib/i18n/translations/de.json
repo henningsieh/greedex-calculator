@@ -4,7 +4,7 @@
     "launchButtonAria": "Erasmus+ CO₂-Rechner öffnen — Login erforderlich",
     "hero": {
       "missionTitle": "Unsere Mission",
-      "missionText": "Das Erasmus+ Programm ermöglicht uns fantastische Lernabenteuer mit inspirierenden Menschen aus verschiedenen Ländern. Jedoch trägt jede unserer persönlichen Begegnungen zu einem erheblichen CO₂-Fußabdruck bei – durch unsere Reise- und Lebensgewohnheiten. Ziel dieses Projekts ist es, unseren CO₂-Fußabdruck in den Projekten, die wir durchführen, auszugleichen, indem wir mehr Bewusstsein schaffen und aktiv unsere Gewohnheiten ändern. Aus diesem Grund haben wir einen CO₂-Rechner entwickelt, der speziell auf Erasmus+ Projekte wie Jugendbegegnungen, Trainingskurse, Meetings etc. zugeschnitten ist. Dieser Rechner zeigt die finale CO₂-Menge, die jeder Teilnehmende verursacht, und rechnet diese in die durchschnittliche Anzahl von Bäumen um, die unser CO₂ in ihrer Lebenszeit absorbieren werden. Unsere Berechnungen basieren auf wissenschaftlicher Forschung verschiedener Fachleute. Wir haben keine eigenen Berechnungen angestellt.",
+      "missionText": "Das Erasmus+ Programm ermöglicht uns fantastische Lernabenteuer mit inspirierenden Menschen aus verschiedenen Ländern. Jedoch trägt jede unserer persönlichen Begegnungen zu einem erheblichen CO₂-Fußabdruck bei – durch unsere Reise- und Lebensgewohnheiten. Ziel dieses Projekts ist es, unseren CO₂-Fußabdruck in den Projekten, die wir durchführen, auszugleichen, indem wir mehr Bewusstsein schaffen und aktiv unsere Gewohnheiten ändern. Aus diesem Grund haben wir einen CO₂-Rechner entwickelt, der speziell auf Erasmus+ Projekte wie Jugendbegegnungen, Trainingskurse, Meetings etc. zugeschnitten ist. Dieser Rechner zeigt die finale CO₂-Menge, die jede*r Teilnehmende verursacht, und rechnet diese in die durchschnittliche Anzahl von Bäumen um, die unser CO₂ in ihrer Lebenszeit absorbieren werden. Unsere Berechnungen basieren auf wissenschaftlicher Forschung verschiedener Fachleute. Wir haben keine eigenen Berechnungen angestellt.",
       "visionTitle": "Unsere Vision",
       "visionText": "Wir möchten eine Bewegung schaffen, bei der jedes Erasmus+ Projekt seinen CO₂-Fußabdruck berechnet und Bäume pflanzt, um ihn auszugleichen. Wir sehen mehrere Erasmus+ Wälder in Europa entstehen, die zu sauberer Luft in Europa beitragen. Wir sehen junge Menschen, die weiterhin gemeinsam in einer nachhaltigeren Umgebung lernen, dabei grün reisen und die Schönheit der Natur genießen. Diese Website hat so viel Wissen für dich gesammelt – nimm dir etwas Zeit und schau dich ein bisschen um.",
       "scrollDown": "Nach unten scrollen",
@@ -66,7 +66,7 @@
                 },
                 "fill": {
                   "title": "Lade die Teilnehmenden ein, die Fragen des Rechners auszufüllen",
-                  "content": "Jeder Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
+                  "content": "Jede*r Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
                 },
                 "reflect": {
                   "title": "Stelle sicher, dass alle Teilnehmenden das Formular abgeschickt haben, und gib Raum für Reflexion",
@@ -107,7 +107,7 @@
                 },
                 "fill": {
                   "title": "Lade die Teilnehmenden ein, die Fragen des Rechners auszufüllen",
-                  "content": "Jeder Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
+                  "content": "Jede*r Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
                 },
                 "reflect": {
                   "title": "Stelle sicher, dass alle Teilnehmenden das Formular abgeschickt haben, und gib Raum für Reflexion",
@@ -124,11 +124,11 @@
               "steps": {
                 "read": {
                   "title": "Lies mehr über die Herausforderungen",
-                  "content": "Mache dich als Teil der Vorbereitung für diesen Workshop mit den verfügbaren Herausforderungen vertraut."
+                  "content": "Mach dich als Teil der Vorbereitung für diesen Workshop mit den verfügbaren Herausforderungen vertraut."
                 },
                 "present": {
                   "title": "Präsentiere Herausforderungen, um das freigesetzte CO₂ während des Projekts zu reduzieren",
-                  "content": "Lade die Teilnehmenden ein, mindestens eine Herausforderung zu wählen, die sie während des Projekts ausprobieren möchten. Bilde kleinere Unterstützungsgruppen, um sich gegenseitig während des Projekts zu motivieren."
+                  "content": "Lade die Teilnehmenden ein, mindestens eine Herausforderung zu wählen, die sie während des Projekts ausprobieren möchten. Bilde kleinere Unterstützungsgruppen, um euch gegenseitig während des Projekts zu motivieren."
                 },
                 "plant": {
                   "title": "Pflanze Bäume, um den CO₂-Fußabdruck deines Projekts auszugleichen",
@@ -162,7 +162,7 @@
                 },
                 "bring_items": {
                   "title": "Lade die Teilnehmenden ein, alle Plastik- und nicht recycelbaren Gegenstände mitzubringen",
-                  "content": "Bitte sie, ihr Gepäck durchzugehen und alles in den Raum zu bringen, was aus Plastik ist oder nicht recycelt werden kann. Sie sollten sehr gründlich sein. Wenn sie ihre persönlichen Gegenstände nicht in den Raum bringen möchten, sollten sie diese zählen. Sie sollten jede Kreditkarte, Schuhe, Zahnbürste, Kabel, Shampooflaschen usw. zählen."
+                  "content": "Bitte die Teilnehmenden, ihr Gepäck durchzugehen und alles in den Raum zu bringen, was aus Plastik ist oder nicht recycelt werden kann. Seid sehr gründlich. Wenn ihr eure persönlichen Gegenstände nicht in den Raum bringen möchtet, zählt sie. Zählt jede Kreditkarte, jedes Paar Schuhe, eure Zahnbürste, Kabel, Shampooflaschen usw."
                 },
                 "calculate": {
                   "title": "Lasst uns einige Zahlen berechnen",
@@ -245,7 +245,7 @@
                 },
                 "fill": {
                   "title": "Lade die Teilnehmenden ein, die Fragen des Rechners auszufüllen",
-                  "content": "Jeder Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
+                  "content": "Jede*r Teilnehmende sollte das Formular individuell ausfüllen. Der Gastgeber sollte folgende Informationen für die Teilnehmenden bereitstellen:\n\n• Art der Unterkunft (Camping, Hostel, privat, 1-3★ Hotel, 4-5★ Hotel)\n• Art der Energie, die diese Unterkunft verwendet (konventionelle Energie, grüne Energie)"
                 },
                 "reflect": {
                   "title": "Stelle sicher, dass alle Teilnehmenden das Formular abgeschickt haben, und gib Raum für Reflexion",
@@ -262,11 +262,11 @@
               "steps": {
                 "read": {
                   "title": "Lies mehr über die Herausforderungen",
-                  "content": "Mache dich als Teil der Vorbereitung für diesen Workshop mit den verfügbaren Herausforderungen vertraut."
+                  "content": "Mach dich als Teil der Vorbereitung für diesen Workshop mit den verfügbaren Herausforderungen vertraut."
                 },
                 "present": {
                   "title": "Präsentiere Herausforderungen, um das freigesetzte CO₂ während des Projekts zu reduzieren",
-                  "content": "Lade die Teilnehmenden ein, mindestens eine Herausforderung zu wählen, die sie während des Projekts ausprobieren möchten. Bilde kleinere Unterstützungsgruppen, um sich gegenseitig während des Projekts zu motivieren."
+                  "content": "Lade die Teilnehmenden ein, mindestens eine Herausforderung zu wählen, die sie während des Projekts ausprobieren möchten. Bilde kleinere Unterstützungsgruppen, um euch gegenseitig während des Projekts zu motivieren."
                 },
                 "plant": {
                   "title": "Pflanze Bäume, um den CO₂-Fußabdruck deines Projekts auszugleichen",
@@ -304,7 +304,7 @@
   "organization": {
     "dashboard": {
       "title": "Dashboard",
-      "description": "Überblick über die Statistiken, Projekte und Teilnehmenden Ihrer Organisation.",
+      "description": "Überblick über die Statistiken, Projekte und Teilnehmenden deiner Organisation.",
       "welcome-to-your-organizations-dashboard": "Organisationsmanagement",
       "total-projects": "Gesamtanzahl der Projekte",
       "total-participants": "Gesamtzahl der Teilnehmenden",
@@ -320,7 +320,7 @@
     },
     "projects": {
       "title": "Alle Projekte",
-      "description": "Liste der Projekte Ihrer Organisation.",
+      "description": "Liste der Projekte deiner Organisation.",
       "error-message": "Es ist ein Fehler aufgetreten.",
       "table": {
         "columns": "Spalten",
@@ -345,7 +345,7 @@
       "sort-projects": "Projekte sortieren",
       "no-projects-yet": {
         "title": "Noch keine Projekte",
-        "description": "Mithilfe von Projekten können Sie Ihre Arbeit organisieren und Aktivitäten verfolgen. \nBeginnen Sie mit der Erstellung Ihres ersten Projekts!"
+        "description": "Mithilfe von Projekten kannst du deine Arbeit organisieren und Aktivitäten verfolgen. \nBeginne mit der Erstellung deines ersten Projekts!"
       },
       "form": {
         "edit": {
@@ -359,7 +359,7 @@
           "back": "Zurück"
         },
         "delete": {
-          "confirm-title": "Sind Sie sicher?",
+          "confirm-title": "Bist du sicher?",
           "confirm-description": "Dies wird das Projekt \"{name}\" dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
           "confirm-button": "Löschen",
           "cancel-button": "Abbrechen",
@@ -380,7 +380,7 @@
           "archive": "Archivieren",
           "unarchive": "Wiederherstellen",
           "confirm-title": "Projekt archivieren?",
-          "confirm-description": "Dies wird das Projekt \"{name}\" archivieren. Sie können es später aus dem Archiv wiederherstellen.",
+          "confirm-description": "Dies wird das Projekt \"{name}\" archivieren. Du kannst es später aus dem Archiv wiederherstellen.",
           "unarchive-title": "Projekt wiederherstellen?",
           "unarchive-description": "Dies wird das Projekt \"{name}\" aus dem Archiv wiederherstellen.",
           "confirm-button": "Projekt archivieren",
@@ -469,7 +469,7 @@
       "joined": "Beigetreten",
       "control": {
         "filter": "Liste filtern",
-        "clear": "Löschen Sie alle Filter"
+        "clear": "Alle Filter löschen"
       },
       "loading": "Teammitglieder werden geladen...",
       "noResults": "Keine Ergebnisse.",
@@ -640,7 +640,7 @@
         "km": "km"
       },
       "error": {
-        "load-failed": "Aktivitäten konnten nicht geladen werden. \nBitte versuchen Sie es erneut."
+        "load-failed": "Aktivitäten konnten nicht geladen werden. \nBitte probiere es noch einmal."
       }
     }
   },
@@ -788,101 +788,78 @@
     }
   },
   "authentication": {
+    "common": {
+      "emailPlaceholder": "m@beispiel.de",
+      "fullNamePlaceholder": "Max Mustermann",
+      "backToLogin": "Zurück zur Anmeldung",
+      "orContinueWith": "Oder fortfahren mit",
+      "signingUp": "Konto wird erstellt...",
+      "sending": "Wird gesendet...",
+      "failedSignIn": "Anmeldung fehlgeschlagen",
+      "failedCreate": "Konto konnte nicht erstellt werden",
+      "failedSend": "Zurücksetzungs-E-Mail konnte nicht gesendet werden"
+    },
     "login": {
-      "title": "Bei deinem Konto anmelden",
-      "description": "Gib deine Anmeldedaten ein, um dich bei deinem Greendex-Konto anzumelden",
-      "last-used": "Zuletzt verwendet",
+      "title": "Willkommen zurück, Greendexer!",
+      "description": "Log dich jetzt ein und setze deine Greendex Erasmus+ Projektarbeit fort.",
+      "lastUsed": "Zuletzt verwendet",
       "tabs": {
         "password": "Passwort",
         "magicLink": "Magic Link"
       },
-      "fields": {
-        "email": "E-Mail",
-        "emailPlaceholder": "m@beispiel.de",
-        "password": "Passwort",
-        "forgotPassword": "Passwort vergessen?"
-      },
-      "buttons": {
-        "login": "Anmelden",
-        "logOut": "Abmelden",
-        "signingIn": "Wird angemeldet...",
-        "sendMagicLink": "Magic Link senden",
-        "sending": "Wird gesendet..."
-      },
-      "messages": {
-        "verifyEmail": "Bitte verifiziere deine E-Mail-Adresse, um fortzufahren",
-        "failedSignIn": "Anmeldung fehlgeschlagen",
-        "magicLinkSent": "Magic Link gesendet! Überprüfe dein E-Mail-Postfach.",
-        "failedMagicLink": "Magic Link konnte nicht gesendet werden"
-      },
+      "email": "E-Mail",
+      "password": "Passwort",
+      "forgotPassword": "Passwort vergessen?",
+      "loginButton": "Anmelden",
+      "logOut": "Abmelden",
+      "signingIn": "Wird angemeldet...",
+      "sendMagicLink": "Magic Link senden",
+      "verifyEmail": "Bitte verifiziere deine E-Mail-Adresse, um fortzufahren",
+      "magicLinkSent": "Magic Link gesendet! Überprüfe dein E-Mail-Postfach.",
+      "failedMagicLink": "Magic Link konnte nicht gesendet werden",
       "footer": {
         "noAccount": "Noch kein Konto?",
-        "signUp": "Registrieren",
-        "orContinueWith": "Oder fortfahren mit"
+        "signUp": "Registrieren"
       }
+    },
+    "magicLink": {
+      "title": "Mit Magic Link anmelden",
+      "description": "Gib deine E-Mail-Adresse ein und wir senden dir einen Magic Link zum Anmelden."
     },
     "signup": {
       "title": "Konto erstellen",
       "description": "Fülle das Formular aus, um dein Konto zu erstellen",
-      "fields": {
-        "fullName": "Vollständiger Name",
-        "fullNamePlaceholder": "Max Mustermann",
-        "email": "E-Mail",
-        "emailPlaceholder": "m@beispiel.de",
-        "emailDescription": "Wir nutzen diese, um dich zu kontaktieren. Wir geben deine E-Mail nicht an Dritte weiter.",
-        "password": "Passwort",
-        "passwordDescription": "Muss mindestens 8 Zeichen lang sein.",
-        "confirmPassword": "Passwort bestätigen",
-        "confirmPasswordDescription": "Bitte bestätige dein Passwort."
-      },
-      "buttons": {
-        "signUp": "Konto erstellen",
-        "signingUp": "Konto wird erstellt..."
-      },
-      "messages": {
-        "failedCreate": "Konto konnte nicht erstellt werden"
-      },
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "emailDescription": "Wir nutzen diese, um dich zu kontaktieren. Wir geben deine E-Mail nicht an Dritte weiter.",
+      "password": "Passwort",
+      "passwordDescription": "Muss mindestens 8 Zeichen lang sein.",
+      "confirmPassword": "Passwort bestätigen",
+      "confirmPasswordDescription": "Bitte bestätige dein Passwort.",
+      "signUpButton": "Konto erstellen",
       "footer": {
         "haveAccount": "Hast du bereits ein Konto?",
-        "signIn": "Anmelden",
-        "orContinueWith": "Oder fortfahren mit"
+        "signIn": "Anmelden"
       }
     },
     "forgotPassword": {
       "title": "Passwort vergessen?",
       "description": "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines Passworts.",
-      "fields": {
-        "email": "E-Mail",
-        "emailPlaceholder": "m@beispiel.de"
-      },
-      "buttons": {
-        "sendResetLink": "Zurücksetzungs-Link senden",
-        "sending": "Wird gesendet...",
-        "backToLogin": "Zurück zur Anmeldung"
-      },
-      "messages": {
-        "resetLinkSent": "Link zum Zurücksetzen des Passworts gesendet! Überprüfe dein E-Mail-Postfach.",
-        "failedSend": "Zurücksetzungs-E-Mail konnte nicht gesendet werden"
-      }
+      "email": "E-Mail",
+      "sendResetLink": "Zurücksetzungs-Link senden",
+      "resetLinkSent": "Link zum Zurücksetzen des Passworts gesendet! Überprüfe dein E-Mail-Postfach."
     },
     "resetPassword": {
       "title": "Passwort zurücksetzen",
       "description": "Gib dein neues Passwort ein, um dein Konto-Passwort zurückzusetzen.",
-      "fields": {
-        "newPassword": "Neues Passwort",
-        "newPasswordDescription": "Muss mindestens 8 Zeichen lang sein.",
-        "confirmPassword": "Neues Passwort bestätigen",
-        "confirmPasswordDescription": "Bitte bestätige dein neues Passwort."
-      },
-      "buttons": {
-        "resetPassword": "Passwort zurücksetzen",
-        "resetting": "Wird zurückgesetzt...",
-        "backToLogin": "Zurück zur Anmeldung"
-      },
-      "messages": {
-        "resetSuccess": "Passwort erfolgreich zurückgesetzt! Bitte melde dich an.",
-        "resetFailed": "Passwort konnte nicht zurückgesetzt werden. Der Link ist möglicherweise abgelaufen."
-      }
+      "newPassword": "Neues Passwort",
+      "newPasswordDescription": "Muss mindestens 8 Zeichen lang sein.",
+      "confirmPassword": "Neues Passwort bestätigen",
+      "confirmPasswordDescription": "Bitte bestätige dein neues Passwort.",
+      "resetPasswordButton": "Passwort zurücksetzen",
+      "resetting": "Wird zurückgesetzt...",
+      "resetSuccess": "Passwort erfolgreich zurückgesetzt! Bitte melde dich an.",
+      "resetFailed": "Passwort konnte nicht zurückgesetzt werden. Der Link ist möglicherweise abgelaufen."
     },
     "validation": {
       "emailInvalid": "Bitte gib eine gültige E-Mail-Adresse ein.",
@@ -895,7 +872,7 @@
     "brand": {
       "badge": "Greendex Klima-Rechner",
       "tagline": "Greendex · Klima-Rechner",
-      "headline": "Bringen Sie Transparenz in Ihre Erasmus-Projektreisen",
+      "headline": "Bringe Transparenz in deine Erasmus-Projektreisen",
       "description": "Koordiniere Teams, feiere Erfolge und halte den Fußabdruck klein ohne Tabellen.",
       "values": {
         "one": "Live-Dashboards mit grünen Kennzahlen",
@@ -914,7 +891,6 @@
         "description": "Keine E-Mail-Adresse wurde angegeben. Bitte melde dich an oder registriere dich erneut.",
         "goToSignUp": "Zur Registrierung"
       },
-      "backToLogin": "Zurück zur Anmeldung",
       "title": "E-Mail verifizieren",
       "description": "Wir haben eine Bestätigungs-E-Mail gesendet an",
       "steps": {

@@ -25,6 +25,7 @@ export function MagicLinkForm({
   ...props
 }: React.ComponentProps<"form">) {
   const tValidation = useTranslations("authentication.validation");
+  const t = useTranslations("authentication");
   const magicLinkSchema = z.object({
     email: z.email(tValidation("emailInvalid")),
   });
@@ -44,10 +45,10 @@ export function MagicLinkForm({
       },
       {
         onSuccess: () => {
-          toast.success("Magic link sent! Check your email.");
+          toast.success(t("login.magicLinkSent"));
         },
         onError: (c) => {
-          toast.error(c.error.message || "Failed to send magic link");
+          toast.error(c.error.message || t("login.failedMagicLink"));
         },
       },
     );
@@ -65,11 +66,9 @@ export function MagicLinkForm({
             <MailIcon className="size-8 text-primary" />
           </div>
           <CardTitle className="space-y-2">
-            <h1 className="font-bold text-2xl">Sign in with magic link</h1>
+            <h1 className="font-bold text-2xl">{t("magicLink.title")}</h1>
           </CardTitle>
-          <CardDescription>
-            Enter your email address and we'll send you a magic link to sign in.
-          </CardDescription>
+          <CardDescription>{t("magicLink.description")}</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -79,9 +78,9 @@ export function MagicLinkForm({
             inputProps={{
               disabled: form.formState.isSubmitting,
             }}
-            label="Email"
+            label={t("login.email")}
             name="email"
-            placeholder="m@example.com"
+            placeholder={t("common.emailPlaceholder")}
             type="email"
           />
         </CardContent>
@@ -94,7 +93,9 @@ export function MagicLinkForm({
               type="submit"
               variant="default"
             >
-              {form.formState.isSubmitting ? "Sending..." : "Send magic link"}
+              {form.formState.isSubmitting
+                ? t("common.sending")
+                : t("login.sendMagicLink")}
             </Button>
           </div>
         </CardFooter>
