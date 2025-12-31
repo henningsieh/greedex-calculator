@@ -2,7 +2,7 @@
 
 import { Factory, LeafIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import type { Project } from "@/components/participate/questionnaire-types";
+import type { Project } from "@/components/participate/types";
 import { ProjectLocation } from "@/components/project-location";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import {

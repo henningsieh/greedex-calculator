@@ -1,8 +1,150 @@
 import type { z } from "zod";
 import type { ParticipantSchema } from "@/components/features/participants/validation-schemas";
+import type { ProjectWithActivitiesType } from "@/components/features/projects/types";
 import { ACTIVITY_VALUES } from "@/config/activities";
+import {
+  ACCOMMODATION_DATA,
+  type ACCOMMODATION_VALUES,
+  type CAR_TYPE_VALUES,
+  type ELECTRICITY_VALUES,
+  FOOD_DATA,
+  type FOOD_VALUES,
+  type GENDER_VALUES,
+  type ROOM_OCCUPANCY_VALUES,
+} from "@/config/questionnaire";
 
-// Participant activities extend project activities with plane and electric car
+// ============================================================================
+// QUESTIONNAIRE ANSWER TYPES
+// ============================================================================
+
+/**
+ * Accommodation category types inferred from configuration
+ */
+export type AccommodationCategory = (typeof ACCOMMODATION_VALUES)[number];
+
+/**
+ * Room occupancy types
+ */
+export type RoomOccupancy = (typeof ROOM_OCCUPANCY_VALUES)[number];
+
+/**
+ * Electricity type used in accommodation
+ */
+export type ElectricityType = (typeof ELECTRICITY_VALUES)[number];
+
+/**
+ * Food frequency (meat consumption)
+ */
+export type FoodFrequency = (typeof FOOD_VALUES)[number];
+
+/**
+ * Car type for transportation
+ */
+export type CarType = (typeof CAR_TYPE_VALUES)[number];
+
+/**
+ * Gender options for participant demographics
+ */
+export type Gender = (typeof GENDER_VALUES)[number];
+
+/**
+ * Complete participant answers interface for questionnaire
+ */
+export interface ParticipantAnswers {
+  // Step 0: Participant Info
+  firstName: string;
+  country: string;
+  email: string;
+
+  // Step 1: Days
+  days: number;
+
+  // Step 2: Accommodation category
+  accommodationCategory: AccommodationCategory;
+
+  // Step 3: Room occupancy
+  roomOccupancy: RoomOccupancy;
+
+  // Step 4: Electricity
+  electricity: ElectricityType;
+
+  // Step 5: Food
+  food: FoodFrequency;
+
+  // Step 6: Flight km TO project
+  flightKm: number;
+
+  // Step 7: Boat km TO project
+  boatKm: number;
+
+  // Step 8: Train km TO project
+  trainKm: number;
+
+  // Step 9: Bus km TO project
+  busKm: number;
+
+  // Step 10: Car km TO project
+  carKm: number;
+
+  // Step 11: Car type (conditional on carKm > 0)
+  carType?: CarType;
+
+  // Step 12: Car passengers (conditional on carKm > 0)
+  carPassengers?: number;
+
+  // Step 13: Age
+  age: number;
+
+  // Step 14: Gender
+  gender: Gender;
+}
+
+// ============================================================================
+// EMISSION CALCULATION TYPES
+// ============================================================================
+
+/**
+ * Emission calculation result with breakdown by category
+ */
+export interface EmissionCalculation {
+  transportCO2: number;
+  accommodationCO2: number;
+  foodCO2: number;
+  projectActivitiesCO2: number;
+  totalCO2: number;
+  treesNeeded: number;
+}
+
+/**
+ * Accommodation CO₂ factors (kg CO₂ per night per person)
+ * Inferred from configuration data
+ */
+export const ACCOMMODATION_FACTORS: Record<AccommodationCategory, number> =
+  Object.fromEntries(ACCOMMODATION_DATA) as Record<
+    AccommodationCategory,
+    number
+  >;
+
+/**
+ * Food CO₂ factors (kg CO₂ per day)
+ * Inferred from configuration data
+ */
+export const FOOD_FACTORS: Record<FoodFrequency, number> = Object.fromEntries(
+  FOOD_DATA,
+) as Record<FoodFrequency, number>;
+
+/**
+ * Re-export Project type for use in questionnaire components
+ */
+export type Project = ProjectWithActivitiesType;
+
+// ============================================================================
+// PARTICIPANT ACTIVITY TYPES
+// ============================================================================
+
+/**
+ * Participant activities extend project activities with plane and electric car
+ */
 const participantActivityValues = [
   ...ACTIVITY_VALUES,
   "plane",

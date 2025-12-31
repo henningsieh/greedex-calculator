@@ -18,22 +18,24 @@ import {
   QUESTIONNAIRE_STEPS,
   QUESTIONNAIRE_TOTAL_STEPS,
 } from "@/components/participate/questionnaire-constants";
-import {
-  ACCOMMODATION_OPTIONS,
-  CAR_TYPE_OPTIONS,
-  calculateEmissions,
-  ELECTRICITY_OPTIONS,
-  FOOD_OPTIONS,
-  GENDER_OPTIONS,
-  type ParticipantAnswers,
-  type Project,
-  ROOM_OCCUPANCY_OPTIONS,
-} from "@/components/participate/questionnaire-types";
+import { calculateEmissions } from "@/components/participate/questionnaire-utils";
+import type {
+  ParticipantAnswers,
+  Project,
+} from "@/components/participate/types";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import {
+  ACCOMMODATION_OPTIONS,
+  CAR_TYPE_OPTIONS,
+  ELECTRICITY_OPTIONS,
+  FOOD_OPTIONS,
+  GENDER_OPTIONS,
+  ROOM_OCCUPANCY_OPTIONS,
+} from "@/config/questionnaire";
 import {
   areAllNonEmpty,
   isNonNegativeNumber,

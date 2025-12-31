@@ -18,10 +18,14 @@ src/app/[locale]/(app)/(public participation)/project/[id]/participate/
 ## Components Structure
 ```
 src/components/participate/
-├── questionnaire-form.tsx      - Main 14-step questionnaire
-├── questionnaire-types.ts      - Type definitions & calculations
+├── questionnaire-form.tsx       - Main 14-step questionnaire
+├── questionnaire-utils.ts       - Emission calculation functions
+├── types.ts                     - Type definitions
 └── __tests__/
-    └── questionnaire.test.tsx  - Unit tests for calculations
+    └── questionnaire.test.tsx   - Unit tests for calculations
+
+src/config/
+└── questionnaire.ts             - Configuration & real-world emission factors
 ```
 
 ## 14-Step Questionnaire Flow

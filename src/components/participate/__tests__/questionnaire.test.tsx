@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { ProjectActivityType } from "@/components/features/projects/types";
+import { calculateEmissions } from "@/components/participate/questionnaire-utils";
 import {
   ACCOMMODATION_FACTORS,
-  calculateEmissions,
   type ParticipantAnswers,
-} from "@/components/participate/questionnaire-types";
+} from "@/components/participate/types";
 import { CO2_FACTORS, calculateActivitiesCO2 } from "@/lib/utils/project-utils";
 
 describe("Questionnaire Types and Calculations", () => {
