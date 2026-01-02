@@ -1,10 +1,9 @@
-import { LayoutDashboardIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { OrganizationDashboard } from "@/components/features/organizations/organization-dashboard";
+import { ORGANIZATION_ICONS } from "@/components/features/organizations/organization-icons";
 import { MEMBER_ROLES } from "@/components/features/organizations/types";
 import { DEFAULT_PAGE_SIZE } from "@/config/pagination";
-import { DEFAULT_PROJECT_SORTING_FIELD } from "@/config/projects";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
@@ -28,7 +27,7 @@ export default async function DashboardPage() {
     queryClient.prefetchQuery(
       orpcQuery.projects.list.queryOptions({
         input: {
-          sort_by: DEFAULT_PROJECT_SORTING_FIELD,
+          sort_by: "startDate",
         },
       }),
     ),
@@ -62,7 +61,7 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       <div className="space-y-4">
         <div className="flex items-center justify-start gap-3">
-          <LayoutDashboardIcon className="mb-1.5 size-9" />
+          <ORGANIZATION_ICONS.dashboard className="mb-1.5 size-9" />
           <h2 className="font-bold font-sans text-4xl">{t("title")}</h2>
         </div>
         <p className="text-muted-foreground">{t("description")}</p>

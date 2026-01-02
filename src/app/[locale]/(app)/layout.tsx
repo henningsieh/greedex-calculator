@@ -7,7 +7,6 @@ import {
   AppBreadcrumbSkeleton,
 } from "@/components/app-breadcrumb";
 import { AppSidebar, AppSidebarSkeleton } from "@/components/app-sidebar";
-import { Navbar } from "@/components/navbar";
 import { LoadingProvider } from "@/components/providers/loading-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
@@ -67,37 +66,34 @@ export default async function AppLayout({
   // Authenticated and has orgs -> allow rendering of the protected app
   return (
     <HydrateClient client={queryClient}>
-      <div className="mx-auto max-w-7xl">
-        <Navbar />
-        <LoadingProvider>
-          <SidebarProvider
-            className="min-h-[calc(svh-4rem)]"
-            defaultOpen={sidebarStateIsOpen}
-          >
-            <ErrorBoundary fallback={<div>Failed to load sidebar.</div>}>
-              <Suspense fallback={<AppSidebarSkeleton />}>
-                <AppSidebar />
-              </Suspense>
-            </ErrorBoundary>
-            <SidebarInset>
-              <div className="flex h-16 items-center gap-4 border-b py-2 pr-4 pl-2 md:pl-4 lg:pl-6 xl:pl-8">
-                <ErrorBoundary
-                  fallback={<div>Unable to load project breadcrumb</div>}
-                >
-                  <Suspense fallback={<AppBreadcrumbSkeleton />}>
-                    <AppBreadcrumb />
-                  </Suspense>
-                </ErrorBoundary>
-              </div>
-              <div className="space-y-8 p-2 md:p-4 lg:p-6 xl:p-8">
-                {children}
-              </div>
-            </SidebarInset>
-          </SidebarProvider>
-        </LoadingProvider>
+      <LoadingProvider>
+        <SidebarProvider
+          className="flex h-screen"
+          defaultOpen={sidebarStateIsOpen}
+        >
+          <ErrorBoundary fallback={<div>Failed to load sidebar.</div>}>
+            <Suspense fallback={<AppSidebarSkeleton />}>
+              <AppSidebar />
+            </Suspense>
+          </ErrorBoundary>
+          <SidebarInset className="flex flex-col overflow-hidden">
+            <div className="flex h-16 shrink-0 items-center gap-4 border-b px-4">
+              <ErrorBoundary
+                fallback={<div>Unable to load project breadcrumb</div>}
+              >
+                <Suspense fallback={<AppBreadcrumbSkeleton />}>
+                  <AppBreadcrumb />
+                </Suspense>
+              </ErrorBoundary>
+            </div>
+            <div className="flex flex-1 flex-col gap-4 overflow-auto p-4">
+              {children}
+            </div>
+          </SidebarInset>
+        </SidebarProvider>
+      </LoadingProvider>
 
-        <Toaster position="top-right" richColors />
-      </div>
+      <Toaster position="top-right" richColors />
     </HydrateClient>
   );
 }

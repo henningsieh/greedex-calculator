@@ -1,7 +1,6 @@
 import type { InferSelectModel } from "drizzle-orm";
 import type { z } from "zod";
 import type { ACTIVITY_VALUES } from "@/config/activities";
-import type { PROJECT_SORT_FIELDS } from "@/config/projects";
 import type {
   projectActivitiesTable,
   projectsTable,
@@ -14,8 +13,7 @@ import type {
 /**
  * Type for project sort field values
  */
-export type ProjectSortField =
-  (typeof PROJECT_SORT_FIELDS)[keyof typeof PROJECT_SORT_FIELDS];
+export type ProjectSortField = "name" | "startDate" | "createdAt" | "updatedAt";
 
 // ============================================================================
 // PROJECT TYPES

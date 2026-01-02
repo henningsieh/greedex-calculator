@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "config": {
+    "scalarVersion": "1.25.0"
+  },
   "scripts": {
     "predev": "bunx kill-port 3000 4000 || true",
     "dev": "concurrently --kill-others \"bun run dev:next\" \"bun run dev:socket\"",
@@ -11,11 +14,13 @@
     "dev:inspect": "PORT=3001 NEXT_DIST_DIR=.next-inspect NEXT_PUBLIC_BASE_URL=http://localhost:3001 concurrently --kill-others \"SOCKET_PORT=4001 next dev -p 3001\" \"SOCKET_PORT=4001 bun --watch src/socket-server.ts\"",
     "dev:inspect-brk": "PORT=3001 NEXT_DIST_DIR=.next-inspect NEXT_PUBLIC_BASE_URL=http://localhost:3001 SOCKET_PORT=4001 concurrently --kill-others \"next dev -p 3001\" \"SOCKET_PORT=4001 bun --watch src/socket-server.ts\"",
     "dev:clickdummy": "bunx http-server docs/greendex-clickdummy/build -p 5000",
-    "prebuild": "bun run db:migrate",
+    "prebuild": "bun run generate:sri && bun run db:migrate",
     "build": "next build",
-    "start": "concurrently \"next start\" \"cross-env NODE_ENV=production bun src/socket-server.ts\"",
+    "prestart": "bunx kill-port 3000 4000 || true && sleep 1",
+    "start": "concurrently --kill-others \"next start\" \"cross-env NODE_ENV=production bun src/socket-server.ts\"",
     "format": "bunx ultracite fix --unsafe",
     "lint": "bunx ultracite check && bunx tsc --noEmit",
+    "generate:sri": "node scripts/generate-sri.js",
     "test": "bun run test:run",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -29,7 +34,7 @@
     "db:pull": "drizzle-kit pull",
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "TERM=dumb NO_COLOR=1 FORCE_COLOR=0 drizzle-kit migrate",
+    "db:migrate": "TERM=dumb NO_COLOR=1 FORCE_COLOR=0 drizzle-kit migrate --config ./drizzle.config.ts",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx scripts/seed.ts",
     "auth:generate": "bunx @better-auth/cli generate --config src/lib/better-auth/index.ts --output ./src/lib/drizzle/schemas/auth-schema.ts --yes"

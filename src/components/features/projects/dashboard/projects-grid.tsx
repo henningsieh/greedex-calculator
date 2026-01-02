@@ -19,10 +19,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Empty, EmptyDescription } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
-import {
-  DEFAULT_PROJECT_SORTING_FIELD,
-  PROJECT_SORT_FIELDS,
-} from "@/config/projects";
 
 interface ProjectsGridProps {
   projects: Array<ProjectType>;
@@ -36,16 +32,16 @@ export function ProjectsGrid({
   const t = useTranslations("organization.projects");
 
   const [sortBy, setSortBy] = useState<ProjectSortField>(
-    initialSortBy ?? DEFAULT_PROJECT_SORTING_FIELD,
+    initialSortBy ?? "startDate",
   );
   const [sortDesc, setSortDesc] = useState(false);
   const [filter, setFilter] = useState("");
 
   const sortOptions = [
-    { value: PROJECT_SORT_FIELDS.name, label: t("table.name") },
-    { value: PROJECT_SORT_FIELDS.startDate, label: t("table.start-date") },
-    { value: PROJECT_SORT_FIELDS.createdAt, label: t("table.created") },
-    { value: PROJECT_SORT_FIELDS.updatedAt, label: t("table.updated") },
+    { value: "name", label: t("table.name") },
+    { value: "startDate", label: t("table.start-date") },
+    { value: "createdAt", label: t("table.created") },
+    { value: "updatedAt", label: t("table.updated") },
   ];
 
   const sortedProjects = useMemo(() => {

@@ -1,4 +1,3 @@
-import { ORPCError } from "@orpc/server";
 import { z } from "zod";
 import { env } from "@/env";
 import { auth } from "@/lib/better-auth";
@@ -110,6 +109,21 @@ export const signIn = base
       });
       return result;
     } catch (error) {
+      // Check if this is an authentication failure (invalid credentials)
+      const isAuthError =
+        error &&
+        typeof error === "object" &&
+        "statusCode" in error &&
+        error.statusCode === 401;
+
+      if (isAuthError) {
+        throw errors.UNAUTHORIZED({
+          message: "Invalid email or password",
+          cause: error,
+        });
+      }
+
+      // Other errors (server issues, rate limiting, etc.) are server errors
       throw errors.INTERNAL_SERVER_ERROR({
         message: "Failed to sign in",
         cause: error,
@@ -143,7 +157,8 @@ export const signUp = base
       });
       return result;
     } catch (error) {
-      throw errors.INTERNAL_SERVER_ERROR({
+      // Better Auth throws errors for validation failures, which are client errors
+      throw errors.BAD_REQUEST({
         message: "Failed to sign up",
         cause: error,
       });
@@ -171,51 +186,6 @@ export const signOut = base
       throw errors.INTERNAL_SERVER_ERROR({
         message: "Failed to sign out",
         cause: error,
-      });
-    }
-  });
-
-/**
- * Get full organization details using Better Auth
- * Uses Better Auth's implicit getFullOrganization endpoint
- */
-export const getFullOrganization = authorized
-  .route({
-    method: "GET",
-    path: "/organizations/active",
-    summary: "Get active organization details",
-  })
-  .handler(async ({ context, errors }) => {
-    // Validate active organization first (no try-catch needed for our own throws)
-    if (!context.session.activeOrganizationId) {
-      throw errors.FORBIDDEN({
-        message: "No active organization. Please select an organization first.",
-      });
-    }
-
-    // Handle Better Auth API call with proper error handling
-    try {
-      const organization = await auth.api.getFullOrganization({
-        headers: context.headers,
-      });
-
-      if (!organization) {
-        throw errors.NOT_FOUND({
-          message: "Organization not found",
-        });
-      }
-
-      return organization;
-    } catch (error) {
-      // If it's already an ORPC error, re-throw it
-      if (error instanceof ORPCError) {
-        throw error;
-      }
-
-      // Handle Better Auth specific errors
-      console.error("Failed to fetch organization:", error);
-      throw errors.INTERNAL_SERVER_ERROR({
-        message: "Failed to retrieve organization details",
       });
     }
   });

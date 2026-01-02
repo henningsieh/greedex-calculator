@@ -70,17 +70,76 @@ The server-side oRPC client is initialized in `src/instrumentation.ts` and attac
 
 ### Documentation Structure
 
-- `/docs/orpc/` — oRPC procedures, routers, SSR optimization, TanStack Query
-- `/docs/better-auth/` — Authentication, organizations, SSR patterns
-- `/docs/i18n/` — next-intl, country selection, localization
-- `/docs/shadcn/` — UI components, forms, tables, empty states
-- `/docs/tanstack-react-query/` — SSR, hydration, prefetching patterns
-- `/docs/react-email/` — Email templates, Nodemailer, Tailwind
-- `/docs/permissions/` — Authorization and permission patterns
-- `/docs/participate/` — Questionnaire flows, calculations, testing
-- `/docs/ultracite/` — Biome linting configuration and standards
+- `docs/orpc/` — oRPC procedures, routers, SSR optimization, TanStack Query
+- `docs/better-auth/` — Authentication, organizations, SSR patterns
+- `docs/i18n/` — next-intl, country selection, localization
+- `docs/shadcn/` — UI components, forms, tables, empty states
+- `docs/tanstack-react-query/` — SSR, hydration, prefetching patterns
+- `docs/react-email/` — Email templates, Nodemailer, Tailwind
+- `docs/permissions/` — Authorization and permission patterns
+- `docs/participate/` — Questionnaire flows, calculations, testing
+- `docs/ultracite/` — Biome linting configuration and standards
 
 Use `read_file` or `semantic_search` tools to access specific documentation when needed.
+
+---
+
+## 🚀 Learning Paths for AI Agents
+
+### Quick Onboarding (5-15 minutes)
+
+When joining the project, follow this sequence based on your task:
+
+**For oRPC/API features:**
+1. Read `docs/orpc/QUICKSTART.md` (5 min) — quick overview & decision tree
+2. Read `docs/orpc/DUAL-SETUP.md` (10 min) — full architecture & patterns
+3. Reference `src/lib/orpc/README.md` — implementation patterns & code examples
+4. Navigate with `docs/orpc/README.md` — file locations & FAQ
+
+**For authentication/organizations:**
+1. Check `.github/instructions/better-auth.instructions.md` — canonical entry point
+2. Read `docs/better-auth/` for detailed patterns
+3. Reference `src/lib/better-auth/` for implementation
+
+**For UI components:**
+1. Check `.github/instructions/shadcn.instructions.md` — quick reference
+2. Read `docs/shadcn/` for component-specific guidance
+3. Use `src/components/ui/` as code examples
+
+**For internationalization:**
+1. Check `.github/instructions/i18n.instructions.md` — i18n patterns
+2. Read `docs/i18n/` for detailed configuration
+3. Reference `src/lib/i18n/` for implementation
+
+### Documentation Map by Task Type
+
+| Task | Entry Point | Deep Dive | Implementation |
+|------|------|---------|---|
+| Create API endpoint | `docs/orpc/QUICKSTART.md` | `docs/orpc/DUAL-SETUP.md` | `src/lib/orpc/README.md` |
+| Add protected procedure | `docs/orpc/QUICKSTART.md` (cheat sheet) | `docs/orpc/DUAL-SETUP.md` | `src/lib/orpc/middleware.ts` |
+| SSR optimization | `docs/orpc/DUAL-SETUP.md` | `docs/orpc/Optimize-Server-Side-Rendering.SSR.md` | `src/instrumentation.ts` |
+| Auth/user setup | `docs/better-auth/` | Better Auth docs | `src/lib/better-auth/` |
+| UI feature | `docs/shadcn/` | shadcn-ui docs | `src/components/ui/` |
+| i18n support | `.github/instructions/i18n.instructions.md` | `docs/i18n/` | `src/lib/i18n/` |
+| Email template | `docs/react-email/` | React Email docs | `src/lib/email/` |
+
+### Key Navigation Cross-References
+
+**Architecture & File Locations:**
+- `docs/orpc/README.md` — Complete file reference, FAQ, learning paths
+- `src/lib/orpc/README.md` — Implementation patterns with code examples
+- `.github/copilot-instructions.md` — This file (mandatory requirements)
+
+**Common Questions:**
+- "Which endpoint should I use?" → `docs/orpc/QUICKSTART.md` (decision tree)
+- "How do I add a protected procedure?" → `docs/orpc/DUAL-SETUP.md` (best practices)
+- "Where are the files located?" → `docs/orpc/README.md` (file reference)
+- "How do I test this?" → `docs/participate/testing.md`
+
+**Always consult these first:**
+1. **Quick answer** → Relevant `.github/instructions/<topic>.instructions.md`
+2. **Need context** → Specific `docs/<topic>/README.md` or QUICKSTART.md
+3. **Implementing code** → `src/lib/<topic>/README.md` or relevant source files
 
 ---
 

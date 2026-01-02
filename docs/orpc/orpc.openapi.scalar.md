@@ -1,108 +1,87 @@
 ---
 url: https://orpc.dev/docs/openapi/scalar.md
-description: Create a beautiful API client for your oRPC effortlessly.
+description: Create a beautiful API documentation UI using Scalar
 ---
 
-# Scalar (Swagger)
+# Scalar API Documentation UI
 
-Leverage the [OpenAPI Specification](orpc.openapi-specification.md) to generate a stunning API client for your oRPC using [Scalar](https://github.com/scalar/scalar).
+[Scalar](https://github.com/scalar/scalar) is a modern alternative to Swagger UI for browsing OpenAPI specifications.
 
-::: info
-This guide covers the basics. For a simpler setup, consider using the [OpenAPI Reference Plugin](orpc.openapi-reference.md), which serves both the API reference UI and the OpenAPI specification.
-:::
+**⚠️ For Greedex**: Use the [`OpenAPIReferencePlugin`](./orpc.openapi-reference.md) instead of this manual setup. The plugin is simpler and handles SRI security automatically.
 
-## Basic Example
+---
 
-```ts
-import { createServer } from 'node:http'
-import { OpenAPIGenerator } from '@orpc/openapi'
-import { OpenAPIHandler } from '@orpc/openapi/node'
-import { CORSPlugin } from '@orpc/server/plugins'
-import { ZodSmartCoercionPlugin, ZodToJsonSchemaConverter } from '@orpc/zod'
+## Why Scalar Over Swagger?
 
-const openAPIHandler = new OpenAPIHandler(router, {
-  plugins: [
-    new CORSPlugin(),
-    new ZodSmartCoercionPlugin(),
-  ],
-})
+| Feature | Swagger UI | Scalar |
+|---------|-----------|--------|
+| Dark mode | ❌ Plugin needed | ✅ Built-in |
+| Modern UI | ⚠️ Dated | ✅ Fresh & polished |
+| Mobile responsive | ⚠️ Limited | ✅ Excellent |
+| Bundle size | 300KB+ | ⚡ ~200KB |
+| Performance | ⚠️ Slower | ✅ Fast |
+| Active maintenance | ⚠️ Limited | ✅ Actively maintained |
 
-const openAPIGenerator = new OpenAPIGenerator({
-  schemaConverters: [
-    new ZodToJsonSchemaConverter(),
-  ],
-})
+**Recommendation**: Use Scalar for new projects.
 
-const server = createServer(async (req, res) => {
-  const { matched } = await openAPIHandler.handle(req, res, {
-    prefix: '/api',
-  })
+## Manual Setup (Custom HTML)
 
-  if (matched) {
-    return
-  }
+If you need full control, you can serve Scalar with custom HTML (not recommended for production):
 
-  if (req.url === '/spec.json') {
-    const spec = await openAPIGenerator.generate(router, {
-      info: {
-        title: 'My Playground',
-        version: '1.0.0',
-      },
-      servers: [
-        { url: '/api' }, /** Should use absolute URLs in production */
-      ],
-      security: [{ bearerAuth: [] }],
-      components: {
-        securitySchemes: {
-          bearerAuth: {
-            type: 'http',
-            scheme: 'bearer',
-          },
-        },
-      },
-    })
-
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify(spec))
-    return
-  }
-
-  const html = `
-    <!doctype html>
+```typescript
+// src/app/api/docs/custom/route.ts
+export function GET() {
+  return new Response(`
+    <!DOCTYPE html>
     <html>
       <head>
-        <title>My Client</title>
+        <title>API Documentation</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/svg+xml" href="https://orpc.dev/icon.svg" />
       </head>
       <body>
-        <div id="app"></div>
-
-        <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+        <div id="scalar-api-reference"></div>
+        <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference/dist/browser/standalone.js"></script>
         <script>
-          Scalar.createApiReference('#app', {
-            url: '/spec.json',
+          Scalar.createApiReference('#scalar-api-reference', {
+            url: '/api/openapi-spec',
             authentication: {
+              preferredSecurityScheme: 'bearerAuth',
               securitySchemes: {
                 bearerAuth: {
-                  token: 'default-token',
+                  token: localStorage.getItem('auth_token') || '',
                 },
               },
             },
-          })
+          });
         </script>
       </body>
     </html>
-  `
+  `, {
+    headers: { 'Content-Type': 'text/html' },
+  });
+}
+```
 
-  res.writeHead(200, { 'Content-Type': 'text/html' })
-  res.end(html)
-})
+---
 
-server.listen(3000, () => {
-  console.log('Playground is available at http://localhost:3000')
+## Greedex Approach (Recommended)
+
+Greedex uses the `OpenAPIReferencePlugin` to avoid manual setup:
+
+```typescript
+// src/lib/orpc/openapi-handler.ts
+new OpenAPIReferencePlugin({
+  docsProvider: "scalar",  ← This value matters
+  docsPath: "/api/docs",
+  specPath: "/api/openapi-spec",
 })
 ```
 
-Access the playground at `http://localhost:3000` to view your API client.
+**Benefits over manual approach:**
+- ✅ Automatic SRI generation for bundle integrity
+- ✅ Single configuration point
+- ✅ Handles versioning automatically
+- ✅ No custom HTML to maintain
+
+See [OpenAPI Reference Plugin](./orpc.openapi-reference.md) for details.

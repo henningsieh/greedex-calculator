@@ -36,7 +36,7 @@ export function ConfirmDialog({
   onCancel,
 }: ConfirmDialogProps) {
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog onOpenChange={onOpenChange} open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
@@ -45,15 +45,15 @@ export function ConfirmDialog({
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel}>{cancelText}</AlertDialogCancel>
           <AlertDialogAction
-            onClick={(e) => {
-              e.preventDefault();
-              onConfirm();
-            }}
             className={
               isDestructive
                 ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 : undefined
             }
+            onClick={(e) => {
+              e.preventDefault();
+              onConfirm();
+            }}
           >
             {confirmText}
           </AlertDialogAction>
@@ -79,12 +79,12 @@ interface ConfirmDialogState {
 
 /**
  * Hook to use a promise-based confirm dialog
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { confirm, ConfirmDialogComponent } = useConfirmDialog();
- *   
+ *
  *   const handleDelete = async () => {
  *     const confirmed = await confirm({
  *       title: "Delete item?",
@@ -92,12 +92,12 @@ interface ConfirmDialogState {
  *       confirmText: "Delete",
  *       isDestructive: true,
  *     });
- *     
+ *
  *     if (confirmed) {
  *       // Perform delete
  *     }
  *   };
- *   
+ *
  *   return (
  *     <>
  *       <button onClick={handleDelete}>Delete</button>
@@ -141,19 +141,21 @@ export function useConfirmDialog() {
   };
 
   const ConfirmDialogComponent = () => {
-    if (!state.options) return null;
+    if (!state.options) {
+      return null;
+    }
 
     return (
       <ConfirmDialog
-        open={state.isOpen}
-        onOpenChange={handleOpenChange}
-        title={state.options.title}
-        description={state.options.description}
-        confirmText={state.options.confirmText}
         cancelText={state.options.cancelText}
+        confirmText={state.options.confirmText}
+        description={state.options.description}
         isDestructive={state.options.isDestructive}
-        onConfirm={handleConfirm}
         onCancel={handleCancel}
+        onConfirm={handleConfirm}
+        onOpenChange={handleOpenChange}
+        open={state.isOpen}
+        title={state.options.title}
       />
     );
   };

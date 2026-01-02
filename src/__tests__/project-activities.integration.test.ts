@@ -16,7 +16,7 @@ import type { ProjectActivityType } from "../components/features/projects/types"
 // Test data constants
 const TEST_USER = {
   id: randomUUID(),
-  email: `test-user-${Date.now()}@example.com`,
+  email: `test-user-${Date.now()}@sieh.org`,
   name: "Test User",
   password: "testpassword123",
 };
@@ -60,7 +60,7 @@ describe("Project Activities Integration Tests", () => {
     );
 
     await db.delete(organization).where(like(organization.slug, "test-org-%"));
-    await db.delete(user).where(like(user.email, "test-user-%@example.com"));
+    await db.delete(user).where(like(user.email, "test-user-%@sieh.org"));
   });
 
   afterAll(async () => {

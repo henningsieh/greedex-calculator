@@ -1,14 +1,13 @@
 "use client";
 
-import {
-  LayoutDashboardIcon,
-  PanelRightCloseIcon,
-  PanelRightOpenIcon,
-  SettingsIcon,
-  UsersIcon,
-} from "lucide-react";
+import { PanelRightCloseIcon, PanelRightOpenIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
+import {
+  UserMenu,
+  UserMenuSkeleton,
+} from "@/components/features/authentication/user-menu";
+import { ORGANIZATION_ICONS } from "@/components/features/organizations/organization-icons";
 import {
   OrganizationSwitcher,
   OrganizationSwitcherSkeleton,
@@ -54,24 +53,6 @@ export function AppSidebar() {
   const { state, setOpen } = useSidebar();
   const t = useTranslations("app.sidebar");
 
-  const organizationMenuItems = [
-    {
-      title: t("organization.dashboard"),
-      icon: LayoutDashboardIcon,
-      url: DASHBOARD_PATH,
-    },
-    {
-      title: t("organization.team"),
-      icon: UsersIcon,
-      url: TEAM_PATH,
-    },
-    {
-      title: t("organization.settings"),
-      icon: SettingsIcon,
-      url: SETTINGS_PATH,
-    },
-  ] as const;
-
   const projectsMenuItems = [
     {
       title: t("projects.projects"),
@@ -83,6 +64,14 @@ export function AppSidebar() {
       icon: PROJECT_ICONS.participants,
       url: PARTICIPANTS_PATH,
     },
+    // {
+    //   title: t("projects.archive"),
+    //   icon: PROJECT_ICONS.archive,
+    //   url: PROJECTS_ARCHIVE_PATH,
+    // },
+  ] as const;
+
+  const projectsArchiveItem = [
     {
       title: t("projects.archive"),
       icon: PROJECT_ICONS.archive,
@@ -90,19 +79,79 @@ export function AppSidebar() {
     },
   ] as const;
 
+  const organizationMenuItems = [
+    {
+      title: t("organization.dashboard"),
+      icon: ORGANIZATION_ICONS.dashboard,
+      url: DASHBOARD_PATH,
+    },
+    {
+      title: t("organization.team"),
+      icon: ORGANIZATION_ICONS.team,
+      url: TEAM_PATH,
+    },
+    {
+      title: t("organization.settings"),
+      icon: ORGANIZATION_ICONS.settings,
+      url: SETTINGS_PATH,
+    },
+  ] as const;
+
+  const sidebarGroups = [
+    {
+      items: projectsMenuItems,
+      label: t("projects.groupLabel"),
+    },
+    {
+      items: projectsArchiveItem,
+      label: t("projects.archiveLabel"),
+    },
+    {
+      items: organizationMenuItems,
+      label: t("organization.groupLabel"),
+    },
+  ];
+
   return (
-    <Sidebar
-      className="h-[calc(svh-4rem)] overflow-x-hidden"
-      collapsible="icon"
-      variant="sidebar"
-    >
+    <Sidebar collapsible="icon" variant="sidebar">
       <SidebarHeader>
         <Suspense fallback={<OrganizationSwitcherSkeleton />}>
           <OrganizationSwitcher />
         </Suspense>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup className="overflow-x-hidden">
+        {sidebarGroups.map((group) => (
+          <div key={group.label}>
+            <SidebarGroup className="overflow-x-hidden">
+              <SidebarGroupLabel className="text-nowrap">
+                {group.label}
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {group.items.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        asChild
+                        className="hover:bg-secondary hover:text-secondary-foreground active:bg-secondary active:text-secondary-foreground data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground data-[state=open]:hover:bg-secondary data-[state=open]:hover:text-secondary-foreground"
+                      >
+                        <Link
+                          data-active={pathname === item.url}
+                          href={item.url}
+                        >
+                          <item.icon className="size-4" />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+            <SidebarSeparator className="mx-0" />
+          </div>
+        ))}
+
+        {/* <SidebarGroup className="overflow-x-hidden">
           <SidebarGroupLabel className="text-nowrap">
             {t("projects.groupLabel")}
           </SidebarGroupLabel>
@@ -143,7 +192,7 @@ export function AppSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
       <SidebarFooter>
         <SidebarSeparator className="mx-0" />
@@ -161,6 +210,10 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
+        <SidebarSeparator className="mx-0" />
+        <Suspense fallback={<UserMenuSkeleton />}>
+          <UserMenu />
+        </Suspense>
       </SidebarFooter>
     </Sidebar>
   );
@@ -168,11 +221,7 @@ export function AppSidebar() {
 
 export function AppSidebarSkeleton() {
   return (
-    <Sidebar
-      className="h-[calc(svh-4rem)]"
-      collapsible="icon"
-      variant="sidebar"
-    >
+    <Sidebar collapsible="icon" variant="sidebar">
       <SidebarHeader>
         <div className="h-12 w-full animate-pulse rounded-md bg-muted" />
       </SidebarHeader>

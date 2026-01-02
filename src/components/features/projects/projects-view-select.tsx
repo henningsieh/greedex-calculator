@@ -22,7 +22,7 @@ export function ProjectsViewSelect({ view, setView }: ProjectsControlsProps) {
         <Button
           onClick={() => setView("table")}
           size="sm"
-          variant={view === "table" ? "default" : "outline"}
+          variant={view === "table" ? "secondary" : "secondaryoutline"}
         >
           <TablePropertiesIcon className="size-4" />
           <p className="hidden sm:inline">{t("views.table")}</p>
@@ -30,7 +30,7 @@ export function ProjectsViewSelect({ view, setView }: ProjectsControlsProps) {
         <Button
           onClick={() => setView("grid")}
           size="sm"
-          variant={view === "grid" ? "default" : "outline"}
+          variant={view === "grid" ? "secondary" : "secondaryoutline"}
         >
           <Grid2X2Icon className="size-4" />
           <p className="hidden sm:inline">{t("views.grid")}</p>

@@ -16,6 +16,13 @@
 # playwright
 src/__tests__/e2e/.playwright/
 
+# Generated SRI for Scalar API Reference (do not commit)
+src/lib/orpc/scalar-sri.ts
+
+# foreign repo
+docs/greendex-clickdummy/
+
+
 # next.js
 /.next/
 /out/
@@ -45,6 +52,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# foreign repo
-docs/greendex-clickdummy/

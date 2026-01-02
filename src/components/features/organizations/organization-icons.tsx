@@ -4,13 +4,25 @@
  */
 
 import {
+  Building2Icon,
   ChartColumnBigIcon,
   LayoutDashboardIcon,
   SettingsIcon,
+  ShieldUserIcon,
+  UserIcon,
   UsersIcon,
 } from "lucide-react";
 
 export const ORGANIZATION_ICONS = {
+  /** Icon for Organization */
+  organization: Building2Icon,
+
+  /** Icon for Organization role */
+  role: ShieldUserIcon,
+
+  /** Icon for User/Person */
+  person: UserIcon,
+
   /** Icon for Organization Dashboard */
   dashboard: LayoutDashboardIcon,
 

@@ -1,45 +1,118 @@
 ---
 url: https://orpc.dev/docs/openapi/plugins/openapi-reference.md
 description: >-
-  A plugin that serves API reference documentation and the OpenAPI specification
-  for your API.
+  OpenAPI Reference Plugin - serves interactive API documentation and the OpenAPI 
+  specification for your API
 ---
 
-# OpenAPI Reference Plugin (Swagger/Scalar)
+# OpenAPI Reference Plugin: Scalar UI & Spec
 
-This plugin provides API reference documentation powered by [Scalar](https://github.com/scalar/scalar) or [Swagger UI](https://swagger.io/tools/swagger-ui/), along with the OpenAPI specification in JSON format.
+This plugin serves both an **interactive API documentation UI** and the **OpenAPI 3.x JSON specification** from a single handler.
 
-::: info
-This plugin relies on the [OpenAPI Generator](orpc.openapi-specification.md). Please review its documentation before using this plugin.
-:::
+**For architecture overview**, see [DUAL-SETUP.md](./DUAL-SETUP.md) — this document covers plugin-specific details.
 
-## Setup
+## Usage in Greedex
 
-```ts
-import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4'
-import { OpenAPIReferencePlugin } from '@orpc/openapi/plugins'
+This is the standard approach used by Greedex Calculator for API documentation.
 
-const handler = new OpenAPIHandler(router, {
+**File**: [`src/lib/orpc/openapi-handler.ts`](../../src/lib/orpc/openapi-handler.ts)
+
+**Endpoints served:**
+- 📖 `/api/docs` — Interactive Scalar UI
+- 📝 `/api/openapi-spec` — OpenAPI 3.x JSON specification
+- 📡 `/api/openapi/*` — REST API endpoints (via same handler)
+
+**Configuration**:
+```typescript
+export const openapiHandler = new OpenAPIHandler(router, {
   plugins: [
+    new CORSPlugin({
+      allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+      allowHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
+    }),
     new OpenAPIReferencePlugin({
-      docsProvider: 'swagger', // default: 'scalar'
-      schemaConverters: [
-        new ZodToJsonSchemaConverter(),
-      ],
+      docsProvider: "scalar",        // Use Scalar UI (modern alternative to Swagger)
+      docsPath: "/api/docs",         // Where UI is served
+      specPath: "/api/openapi-spec", // Where OpenAPI spec JSON is served
       specGenerateOptions: {
         info: {
-          title: 'ORPC Playground',
-          version: '1.0.0',
+          title: "Greedex Calculator API",
+          version: "1.0.0",
         },
-        servers: [ // or let the plugin auto-infer from the request
-          { url: 'https://api.example.com/v1', },
-        ],
       },
     }),
-  ]
-})
+  ],
+  interceptors: [
+    onError((error) => {
+      // Minimal logging for expected errors (unauthorized, bad request, etc.)
+      // Verbose logging for unexpected server errors
+      const isExpectedClientError = ...
+      if (isExpectedClientError) return;
+      console.error("[OpenAPI Error]", error);
+    }),
+  ],
+});
 ```
 
-::: info
-By default, the API reference client is served at the root path (`/`), and the OpenAPI specification is available at `/spec.json`. You can customize these paths by providing the `docsPath` and `specPath` options.
-:::
+### Access the UI
+
+```
+http://localhost:3000/api/docs
+```
+
+### Scalar UI Features
+
+✨ **Modern, fast, and feature-rich**
+- 🧪 **Test endpoints** directly in the browser
+- 🔐 **Authenticate** with bearer tokens or session cookies
+- 📋 **View request/response schemas** with validation
+- 🌙 **Dark mode** built-in
+- 💾 **Export OpenAPI spec** for code generation
+- 📱 **Mobile-friendly** responsive design
+
+---
+
+## Project notes (Greedex)
+
+### SRI Security for Scalar Bundle
+
+Greedex uses **Subresource Integrity (SRI)** to ensure the Scalar bundle loaded from CDN matches the expected version.
+
+**How it works:**
+1. Version defined in [`package.json`](../../package.json):
+   ```json
+   {
+     "config": {
+       "scalarVersion": "1.25.0"
+     }
+   }
+   ```
+
+2. Build time: `scripts/generate-sri.js` computes hash
+   ```bash
+   bun run generate:sri
+   # → Fetches exact bundle from CDN
+   # → Computes SHA-384 hash
+   # → Writes to src/lib/orpc/scalar-sri.ts
+   ```
+
+3. Runtime: Scalar UI uses SRI when loading from CDN
+   ```html
+   <script 
+     src="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.25.0/.../standalone.js"
+     integrity="sha384-xxxxx..." 
+     crossorigin="anonymous">
+   </script>
+   ```
+
+**Benefits:**
+- ✅ Ensures exact version is loaded
+- ✅ Prevents tampering (man-in-the-middle attacks)
+- ✅ Single source of truth (package.json)
+- ✅ Automatic on every build (prebuild hook)
+
+**Files involved:**
+- [`package.json`](../../package.json) — Version source
+- [`scripts/generate-sri.js`](../../scripts/generate-sri.js) — SRI generator
+- [`src/lib/orpc/scalar-sri.ts`](../../src/lib/orpc/scalar-sri.ts) — Generated (git-ignored)

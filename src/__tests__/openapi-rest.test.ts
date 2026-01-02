@@ -184,7 +184,7 @@ describe("OpenAPI REST Endpoint", () => {
   describe("Authentication Endpoints", () => {
     const SEED_USER = {
       name: "Seed Owner",
-      email: "owner@seed.local",
+      email: "owner@sieh.org",
       password: "SecurePassword123!",
     };
 
@@ -203,6 +203,15 @@ describe("OpenAPI REST Endpoint", () => {
           password: SEED_USER.password,
         }),
       });
+
+      // Debug: Log error response if not 200
+      if (response.status !== 200) {
+        const errorBody = await response.text();
+        console.error(
+          `Sign-in failed with status ${response.status}:`,
+          errorBody,
+        );
+      }
 
       expect(response.status).toBe(200);
       const data = await response.json();
@@ -229,7 +238,7 @@ describe("OpenAPI REST Endpoint", () => {
 
       const newUser = {
         name: "Test User",
-        email: `test-${Date.now()}@example.com`,
+        email: `test-${Date.now()}@sieh.org`,
         password: "TestPassword123!",
       };
 
@@ -268,7 +277,7 @@ describe("OpenAPI REST Endpoint", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "invalid@example.com",
+          email: "invalid@sieh.org",
           password: "wrongpassword",
         }),
       });
@@ -503,6 +512,29 @@ describe("OpenAPI REST Endpoint", () => {
         "Content-Disposition",
       );
     });
+  });
+});
+
+describe("API Documentation UI", () => {
+  const docsUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/docs`;
+
+  it("should serve the Scalar API documentation UI", async () => {
+    if (!serverAvailable) {
+      throw new Error("Server not available");
+    }
+
+    const response = await fetch(docsUrl);
+    expect(response.status).toBe(200);
+
+    const contentType = response.headers.get("Content-Type") || "";
+    expect(contentType).toContain("text/html");
+
+    const html = await response.text();
+
+    // Embedded configuration script should exist
+    expect(html).toContain('id="api-reference"');
+    // Should reference Scalar script or docs path
+    expect(html).toContain("/api/openapi-spec");
   });
 });
 

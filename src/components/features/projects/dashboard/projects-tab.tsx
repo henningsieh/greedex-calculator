@@ -17,7 +17,6 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEFAULT_PROJECT_SORTING_FIELD } from "@/config/projects";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
 export function ProjectsTab() {
@@ -28,13 +27,18 @@ export function ProjectsTab() {
   const { data: allProjects, error } = useSuspenseQuery(
     orpcQuery.projects.list.queryOptions({
       input: {
-        sort_by: DEFAULT_PROJECT_SORTING_FIELD,
+        sort_by: "startDate",
       },
     }),
   );
 
   // Filter out archived projects - show only active projects
   const projects = allProjects?.filter((project) => !project.archived) || [];
+
+  // Get active organization to use as key for resetting table state on org switch
+  const { data: activeOrg } = useSuspenseQuery(
+    orpcQuery.organizations.getActive.queryOptions(),
+  );
 
   // Grid sorting is handled inside ProjectsGrid to keep sorting logic
   // consistent with the table view and avoid duplicating `sortedProjects`.
@@ -69,7 +73,7 @@ export function ProjectsTab() {
       {view === "grid" ? (
         <ProjectsGrid projects={projects} />
       ) : (
-        <ProjectsTable projects={projects} />
+        <ProjectsTable key={activeOrg.id} projects={projects} />
       )}
     </div>
   );

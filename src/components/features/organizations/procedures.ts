@@ -1,10 +1,14 @@
+import { ORPCError } from "@orpc/server";
 import { and, count, countDistinct, eq } from "drizzle-orm";
 import { z } from "zod";
 import {
   MEMBER_ROLES,
   type MemberSortField,
 } from "@/components/features/organizations/types";
-import { MemberWithUserSchema } from "@/components/features/organizations/validation-schemas";
+import {
+  MemberRoleSchema,
+  MemberWithUserSchema,
+} from "@/components/features/organizations/validation-schemas";
 import { MEMBER_SORT_FIELDS } from "@/config/organizations";
 import { auth } from "@/lib/better-auth";
 import { db } from "@/lib/drizzle/db";
@@ -38,6 +42,99 @@ function getSortKey(
   // This should never happen due to the enum constraint, but TypeScript requires it
   throw new Error(`Invalid sortBy field: ${sortBy}`);
 }
+
+/**
+ * Get full organization details using Better Auth
+ * Uses Better Auth's implicit getFullOrganization endpoint
+ */
+export const getFullOrganization = authorized
+  .route({
+    method: "GET",
+    path: "/organizations/active",
+    summary: "Get active organization details",
+  })
+  .handler(async ({ context, errors }) => {
+    // Validate active organization first (no try-catch needed for our own throws)
+    if (!context.session.activeOrganizationId) {
+      throw errors.FORBIDDEN({
+        message: "No active organization. Please select an organization first.",
+      });
+    }
+
+    // Handle Better Auth API call with proper error handling
+    try {
+      const organization = await auth.api.getFullOrganization({
+        headers: context.headers,
+      });
+
+      if (!organization) {
+        throw errors.NOT_FOUND({
+          message: "Organization not found",
+        });
+      }
+
+      return organization;
+    } catch (error) {
+      // If it's already an ORPC error, re-throw it
+      if (error instanceof ORPCError) {
+        throw error;
+      }
+
+      // Handle Better Auth specific errors
+      console.error("Failed to fetch organization:", error);
+      throw errors.INTERNAL_SERVER_ERROR({
+        message: "Failed to retrieve organization details",
+      });
+    }
+  });
+
+export const getOrganizationRole = authorized
+  .route({
+    method: "GET",
+    path: "/organizations/role",
+    summary: "Get user's role in the active organization",
+  })
+  .output(MemberRoleSchema)
+  .handler(async ({ context, errors }) => {
+    if (!context.session.activeOrganizationId) {
+      throw errors.FORBIDDEN({
+        message: "No active organization. Please select an organization first.",
+      });
+    }
+
+    try {
+      const organization = await auth.api.getFullOrganization({
+        headers: context.headers,
+      });
+
+      if (!organization) {
+        throw errors.NOT_FOUND({
+          message: "Organization not found",
+        });
+      }
+
+      const currentMember = organization.members.find(
+        (member) => member.userId === context.user.id,
+      );
+
+      if (!currentMember?.role) {
+        throw errors.NOT_FOUND({
+          message: "Organization role not found",
+        });
+      }
+
+      return currentMember.role;
+    } catch (error) {
+      if (error instanceof ORPCError) {
+        throw error;
+      }
+
+      console.error("Failed to fetch organization role:", error);
+      throw errors.INTERNAL_SERVER_ERROR({
+        message: "Failed to retrieve organization role",
+      });
+    }
+  });
 
 /**
  * List user's organizations using Better Auth

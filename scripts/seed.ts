@@ -11,7 +11,6 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import type { ActivityValueType } from "@/components/features/projects/types";
-import type { EUCountryCode } from "@/config/eu-countries";
 // biome-ignore lint/performance/noNamespaceImport: <import all schemes from a single entry point>
 import * as schema from "@/lib/drizzle/schema";
 import {
@@ -45,7 +44,7 @@ const db = drizzle(seedPool, { schema });
 
 const SEED_USER = {
   name: "Seed Owner",
-  email: "owner@seed.local",
+  email: "owner@sieh.org",
   password: "SecurePassword123!",
 } as const;
 
@@ -55,31 +54,32 @@ const SEED_ORGANIZATION = {
 } as const;
 
 const PROJECT_NAMES = [
-  "Carbon Footprint Workshop Berlin",
-  "Sustainability Conference Munich",
-  "Green Energy Symposium Hamburg",
-  "Climate Action Workshop Frankfurt",
-  "Eco-Innovation Summit Stuttgart",
-  "Renewable Energy Conference Cologne",
-  "Environmental Protection Workshop Dresden",
-  "Sustainable Development Forum Leipzig",
-  "Climate Solutions Workshop Dortmund",
-  "Green Technology Conference Bremen",
+  "Carbon Footprint Workshop",
+  "Sustainability Conference",
+  "Green Energy Symposium",
+  "Climate Action Workshop",
+  "Eco-Innovation Summit",
+  "Renewable Energy Conference",
+  "Environmental Protection Workshop",
+  "Sustainable Development Forum",
+  "Climate Solutions Workshop",
+  "Green Technology Conference",
 ] as const;
 
 const ACTIVITY_TYPES: ActivityValueType[] = ["boat", "bus", "train", "car"];
-const EU_COUNTRIES: EUCountryCode[] = [
-  "DE",
-  "FR",
-  "IT",
-  "ES",
-  "NL",
-  "BE",
-  "AT",
-  "PL",
-  "SE",
-  "DK",
-];
+
+const LOCATIONS = [
+  { city: "Berlin", country: "DE" as const },
+  { city: "Munich", country: "DE" as const },
+  { city: "Paris", country: "FR" as const },
+  { city: "Rome", country: "IT" as const },
+  { city: "Madrid", country: "ES" as const },
+  { city: "Amsterdam", country: "NL" as const },
+  { city: "Brussels", country: "BE" as const },
+  { city: "Vienna", country: "AT" as const },
+  { city: "Warsaw", country: "PL" as const },
+  { city: "Stockholm", country: "SE" as const },
+] as const;
 
 async function hashPassword(password: string): Promise<string> {
   const salt = hex.encode(crypto.getRandomValues(new Uint8Array(16)));
@@ -222,15 +222,15 @@ async function seed() {
     for (let i = 0; i < PROJECT_NAMES.length; i++) {
       const projectId = createId();
       const { startDate, endDate } = generateProjectDates();
-      const country = getRandomElement(EU_COUNTRIES);
+      const location = LOCATIONS[i];
 
       await db.insert(projectsTable).values({
         id: projectId,
         name: PROJECT_NAMES[i],
         startDate,
         endDate,
-        location: `${PROJECT_NAMES[i].split(" ").pop()}`,
-        country,
+        location: location.city,
+        country: location.country,
         welcomeMessage: `Welcome to ${PROJECT_NAMES[i]}! We're excited to have you join us for this important sustainability initiative.`,
         responsibleUserId: userId,
         organizationId: orgId,
@@ -240,7 +240,9 @@ async function seed() {
       });
 
       projectIds.push(projectId);
-      console.log(`  ✅ Project ${i + 1}/10: ${PROJECT_NAMES[i]}`);
+      console.log(
+        `  ✅ Project ${i + 1}/10: ${PROJECT_NAMES[i]} in ${location.city}, ${location.country}`,
+      );
     }
 
     // Step 5: Create project activities
