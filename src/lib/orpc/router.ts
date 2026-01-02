@@ -7,6 +7,11 @@ import {
 	searchMembers,
 } from "@/components/features/organizations/procedures";
 import {
+	createProjectActivity,
+	deleteProjectActivity,
+	updateProjectActivity,
+} from "@/features/project-activities";
+import {
 	archiveProject,
 	batchDeleteProjects,
 	createProject,
@@ -18,12 +23,7 @@ import {
 	listProjects,
 	setActiveProject,
 	updateProject,
-} from "@/components/features/projects/procedures";
-import {
-	createProjectActivity,
-	deleteProjectActivity,
-	updateProjectActivity,
-} from "@/features/project-activities";
+} from "@/features/projects";
 import {
 	getHealth,
 	getProfile,
