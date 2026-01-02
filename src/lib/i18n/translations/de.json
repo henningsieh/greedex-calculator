@@ -325,7 +325,7 @@
       "table": {
         "columns": "Spalten",
         "name": "Name",
-        "country": "Land",
+        "country": "Land (Ort)",
         "start-date": "Startdatum",
         "created": "Erstellt am",
         "updated": "Aktualisiert am",
@@ -338,6 +338,7 @@
         "filter-projects": "Projekte filtern...",
         "active-filters": "Aktive Filter",
         "search-by-name": "Nach Projektname suchen",
+        "filter-all-countries": "Alle Länder",
         "previous": "Vorherige",
         "next": "Nächste"
       },
@@ -479,10 +480,10 @@
         "clear": "Alle Filter löschen"
       },
       "loading": "Teammitglieder werden geladen...",
-      "noResults": "No results.",
+      "noResults": "Keine Ergebnisse.",
       "rowsSelected": "{selected} von {total} Zeile(n) ausgewählt.",
-      "previous": "Previous",
-      "next": "Next"
+      "previous": "Vorherige",
+      "next": "Nächste"
     },
     "team": {
       "title": "Teammitglieder",

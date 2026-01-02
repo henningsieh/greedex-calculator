@@ -16,7 +16,7 @@ This index helps you find the right documentation for your task.
 - Quick reference guide
 
 ### I'm implementing a feature
-👉 **Read**: [src/lib/orpc/README.md](../src/lib/orpc/README.md)
+👉 **Read**: [src/lib/orpc/README.md](../../src/lib/orpc/README.md)
 - Creating procedures
 - Using the `orpc` client
 - Testing & validation

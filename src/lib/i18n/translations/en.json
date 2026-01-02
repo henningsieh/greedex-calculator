@@ -325,7 +325,7 @@
       "table": {
         "columns": "Columns",
         "name": "Name",
-        "country": "Country",
+        "country": "Country (Location)",
         "start-date": "Start Date",
         "created": "Created at",
         "updated": "Updated^at",
@@ -338,6 +338,7 @@
         "filter-projects": "Filter projects...",
         "active-filters": "Active filters",
         "search-by-name": "Search by project name",
+        "filter-all-countries": "All countries",
         "previous": "Previous",
         "next": "Next"
       },

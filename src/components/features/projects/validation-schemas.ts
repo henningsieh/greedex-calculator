@@ -13,6 +13,7 @@ import {
   user,
 } from "@/lib/drizzle/schema";
 import { validateDistanceStep } from "@/lib/utils/distance-utils";
+import { PROJECT_SORT_FIELDS } from "./types";
 
 // Common form field extensions with custom error messages
 const projectFormExtensions = {
@@ -23,6 +24,8 @@ const projectFormExtensions = {
   startDate: z.date({ message: "Please select a valid start date" }),
   endDate: z.date({ message: "Please select a valid end date" }),
 };
+
+export const ProjectSortFieldSchema = z.enum(PROJECT_SORT_FIELDS);
 
 // Form schema (only user-provided fields)
 export const ProjectCreateFormSchema = createInsertSchema(projectsTable)

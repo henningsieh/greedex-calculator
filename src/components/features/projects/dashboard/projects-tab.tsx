@@ -71,7 +71,7 @@ export function ProjectsTab() {
       <div className="flex items-center" />
       <ProjectsViewSelect setView={setView} view={view} />
       {view === "grid" ? (
-        <ProjectsGrid projects={projects} />
+        <ProjectsGrid key={activeOrg.id} projects={projects} />
       ) : (
         <ProjectsTable key={activeOrg.id} projects={projects} />
       )}

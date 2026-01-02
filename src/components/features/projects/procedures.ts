@@ -7,6 +7,7 @@ import {
   CreateActivityInputSchema,
   ProjectActivityWithRelationsSchema,
   ProjectCreateFormSchema,
+  ProjectSortFieldSchema,
   ProjectUpdateFormSchema,
   ProjectWithActivitiesSchema,
   ProjectWithRelationsSchema,
@@ -106,10 +107,7 @@ export const listProjects = authorized
   .input(
     z
       .object({
-        sort_by: z
-          .enum(["name", "startDate", "createdAt", "updatedAt"])
-          .default("startDate")
-          .optional(),
+        sort_by: ProjectSortFieldSchema.default("startDate").optional(),
         archived: z.boolean().optional(),
       })
       .optional(),
@@ -138,7 +136,7 @@ export const listProjects = authorized
         orderByClause = asc(projectsTable.updatedAt);
         break;
       default:
-        orderByClause = asc(projectsTable.createdAt);
+        orderByClause = asc(projectsTable.startDate);
     }
 
     // Get all projects that belong to the user's active organization

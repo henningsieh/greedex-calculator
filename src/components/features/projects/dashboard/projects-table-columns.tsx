@@ -19,6 +19,7 @@ import {
 } from "@/components/features/projects/edit-project-form";
 import { SortableHeader } from "@/components/features/projects/sortable-header";
 import type { ProjectType } from "@/components/features/projects/types";
+
 import { ProjectLocation } from "@/components/project-location";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -39,7 +40,10 @@ import {
 import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import { Link } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
-import { getProjectDetailPath } from "@/lib/utils/project-utils";
+import {
+  getColumnDisplayName,
+  getProjectDetailPath,
+} from "@/lib/utils/project-utils";
 
 function DateCell({ date }: { date: Date }) {
   const format = useFormatter();
@@ -59,6 +63,7 @@ function CountryCell({ project }: { project: ProjectType }) {
   return (
     <Link className="block" href={getProjectDetailPath(project.id)}>
       <ProjectLocation
+        countryFormat="code"
         layout="unified"
         locale={locale}
         project={{ location: project.location, country: project.country }}
@@ -102,7 +107,11 @@ export function ProjectTableColumns(
     {
       accessorKey: "name",
       header: ({ column, table }) => (
-        <SortableHeader column={column} table={table} title={t("table.name")} />
+        <SortableHeader
+          column={column}
+          table={table}
+          title={getColumnDisplayName(column.id, t)}
+        />
       ),
       cell: ({ row }) => (
         <Link
@@ -115,7 +124,13 @@ export function ProjectTableColumns(
     },
     {
       accessorKey: "country",
-      header: t("table.country"),
+      header: ({ column, table }) => (
+        <SortableHeader
+          column={column}
+          table={table}
+          title={getColumnDisplayName(column.id, t)}
+        />
+      ),
       cell: ({ row }) => <CountryCell project={row.original} />,
     },
     {
@@ -125,7 +140,7 @@ export function ProjectTableColumns(
           column={column}
           isNumeric
           table={table}
-          title={t("table.start-date")}
+          title={getColumnDisplayName(column.id, t)}
         />
       ),
       cell: ({ row }) => {
@@ -149,7 +164,7 @@ export function ProjectTableColumns(
           column={column}
           isNumeric
           table={table}
-          title={t("table.created")}
+          title={getColumnDisplayName(column.id, t)}
         />
       ),
       cell: ({ row }) => {
@@ -173,7 +188,7 @@ export function ProjectTableColumns(
           column={column}
           isNumeric
           table={table}
-          title={t("table.updated")}
+          title={getColumnDisplayName(column.id, t)}
         />
       ),
       cell: ({ row }) => {

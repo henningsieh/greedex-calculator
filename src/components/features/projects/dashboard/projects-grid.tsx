@@ -4,9 +4,10 @@ import { ArrowUpDown, ChevronDownIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { ProjectCard } from "@/components/features/projects/project-card";
-import type {
-  ProjectSortField,
-  ProjectType,
+import {
+  PROJECT_SORT_FIELDS,
+  type ProjectSortField,
+  type ProjectType,
 } from "@/components/features/projects/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,12 +38,27 @@ export function ProjectsGrid({
   const [sortDesc, setSortDesc] = useState(false);
   const [filter, setFilter] = useState("");
 
-  const sortOptions = [
-    { value: "name", label: t("table.name") },
-    { value: "startDate", label: t("table.start-date") },
-    { value: "createdAt", label: t("table.created") },
-    { value: "updatedAt", label: t("table.updated") },
-  ];
+  const getSortLabel = (field: ProjectSortField) => {
+    switch (field) {
+      case "name":
+        return t("table.name");
+      case "country":
+        return t("table.country");
+      case "startDate":
+        return t("table.start-date");
+      case "createdAt":
+        return t("table.created");
+      case "updatedAt":
+        return t("table.updated");
+      default:
+        return field;
+    }
+  };
+
+  const sortOptions = PROJECT_SORT_FIELDS.map((field) => ({
+    value: field,
+    label: getSortLabel(field),
+  }));
 
   const sortedProjects = useMemo(() => {
     const filtered = projects.filter((p) =>

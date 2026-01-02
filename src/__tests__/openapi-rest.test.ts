@@ -1,6 +1,3 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { env } from "@/env";
-
 /**
  * REST API Integration Tests for OpenAPI Endpoint
  *
@@ -12,6 +9,10 @@ import { env } from "@/env";
  *
  * Note: These tests require a running server and are skipped in CI if the server is not available.
  */
+import { chromium } from "playwright";
+import { beforeAll, describe, expect, it } from "vitest";
+import { env } from "@/env";
+
 const OPENAPI_VERSION_REGEX = /^3\.\d+\.\d+$/;
 const baseUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/openapi`;
 let serverAvailable = false;
@@ -532,9 +533,24 @@ describe("API Documentation UI", () => {
     const html = await response.text();
 
     // Embedded configuration script should exist
-    expect(html).toContain('id="api-reference"');
-    // Should reference Scalar script or docs path
-    expect(html).toContain("/api/openapi-spec");
+    expect(html).toContain('id="app"');
+    // Should reference Scalar script
+    expect(html).toContain(
+      "https://cdn.jsdelivr.net/npm/@scalar/api-reference",
+    );
+
+    // Check that the aria-label is added after JavaScript loads
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto(docsUrl);
+    await page.waitForSelector(
+      'main[aria-label="Open API Documentation for Greedex Calculator API"]',
+    );
+    const element = page.locator(
+      'main[aria-label="Open API Documentation for Greedex Calculator API"]',
+    );
+    expect(await element.isVisible()).toBe(true);
+    await browser.close();
   });
 });
 

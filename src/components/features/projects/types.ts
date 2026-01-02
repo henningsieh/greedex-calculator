@@ -11,9 +11,27 @@ import type {
 } from "./validation-schemas";
 
 /**
+ * Project sort field values
+ */
+export const PROJECT_SORT_FIELDS = [
+  "name",
+  "country",
+  "startDate",
+  "createdAt",
+  "updatedAt",
+] as const;
+
+/**
  * Type for project sort field values
  */
-export type ProjectSortField = "name" | "startDate" | "createdAt" | "updatedAt";
+export type ProjectSortField = (typeof PROJECT_SORT_FIELDS)[number];
+
+/**
+ * Default sorting configuration for projects table
+ */
+export const DEFAULT_PROJECT_SORTING = [
+  { id: "startDate" as ProjectSortField, desc: false },
+];
 
 // ============================================================================
 // PROJECT TYPES

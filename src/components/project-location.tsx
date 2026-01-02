@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { getCountryData } from "@/lib/i18n/countries";
 import { cn } from "@/lib/utils";
 
-type ProjectLocationProps = {
+interface BaseProjectLocationProps {
   /** Object containing `location` (city/area) and `country` (country code or name). */
   project: {
     location?: string;
@@ -19,12 +19,27 @@ type ProjectLocationProps = {
   layout?: "unified" | "split";
   /** If true, renders only the flag icon with the location details as a tooltip. */
   flagOnly?: boolean;
+  /** Format for displaying country: 'name' for full country name, 'code' for country code. */
+  countryFormat?: "name" | "code";
   /** Optional CSS classes for custom container styling. */
   className?: string;
-} /** Whether to render the country flag icon. Requires 'locale'. */ & (
-  | { showFlag: true; locale: string }
-  | { showFlag?: false; locale?: string }
-);
+}
+
+interface ProjectLocationPropsWithFlag extends BaseProjectLocationProps {
+  /** Whether to render the country flag icon. Requires 'locale'. */
+  showFlag: true;
+  locale: string;
+}
+
+interface ProjectLocationPropsWithoutFlag extends BaseProjectLocationProps {
+  /** Whether to render the country flag icon. Does not require 'locale'. */
+  showFlag?: false;
+  locale?: string;
+}
+
+type ProjectLocationProps =
+  | ProjectLocationPropsWithFlag
+  | ProjectLocationPropsWithoutFlag;
 
 /**
  * Reusable component to display project location with optional flag and different variants.
@@ -32,7 +47,7 @@ type ProjectLocationProps = {
  * @param variant - The visual style of the component.
  * @param layout - The arrangement of text and flag.
  * @param showFlag - Toggle for showing the country flag.
- * @param flagOnly - Toggle for showing only the flag.
+ * @param countryFormat - Format for displaying country: 'name' for full country name, 'code' for country code.
  * @param locale - Locale used for fetching flag and country names.
  * @param className - Additional tailwind classes.
  * @returns A JSX element representing the project location.
@@ -41,6 +56,7 @@ export function ProjectLocation({
   layout = "unified",
   variant = "inline",
   flagOnly = false,
+  countryFormat = "name",
   locale,
   project,
   showFlag = false,
@@ -48,14 +64,17 @@ export function ProjectLocation({
 }: ProjectLocationProps) {
   const countryData = locale ? getCountryData(project.country, locale) : null;
   const ProjectCountryFlag = countryData?.Flag;
-  const countryName = countryData?.name ?? project.country;
+  const countryDisplay =
+    countryFormat === "code"
+      ? project.country
+      : (countryData?.name ?? project.country);
 
   let flagElement: React.ReactNode = null;
   if (showFlag) {
     if (ProjectCountryFlag) {
       flagElement = (
         <ProjectCountryFlag
-          aria-label={countryName}
+          aria-label={countryDisplay}
           className="h-[1em] w-auto rounded-[2px] object-cover shadow-sm"
         />
       );
@@ -73,7 +92,7 @@ export function ProjectLocation({
           "inline-flex items-center justify-center align-middle",
           className,
         )}
-        title={`${project.location ? `${project.location}, ` : ""}${countryName}`}
+        title={`${project.location ? `${project.location}, ` : ""}${countryDisplay}`}
       >
         {flagElement || (
           <GlobeIcon className="h-[1em] w-[1em] text-muted-foreground" />
@@ -111,7 +130,7 @@ export function ProjectLocation({
                   : "font-medium text-foreground",
               )}
             >
-              {countryName}
+              {countryDisplay}
             </span>
           </span>
         </span>
@@ -134,7 +153,7 @@ export function ProjectLocation({
           )}
           <span className="flex items-center gap-1.5 text-muted-foreground">
             {flagElement}
-            <span className="font-medium">{countryName}</span>
+            <span className="font-medium">{countryDisplay}</span>
           </span>
         </span>
       )}

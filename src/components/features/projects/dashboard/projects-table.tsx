@@ -24,6 +24,7 @@ import { useConfirmDialog } from "@/components/confirm-dialog";
 import { MEMBER_ROLES } from "@/components/features/organizations/types";
 import { ProjectTableColumns } from "@/components/features/projects/dashboard/projects-table-columns";
 import type { ProjectType } from "@/components/features/projects/types";
+import { DEFAULT_PROJECT_SORTING } from "@/components/features/projects/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +51,7 @@ import {
 } from "@/components/ui/table";
 import { getCountryData } from "@/lib/i18n/countries";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
+import { getColumnDisplayName } from "@/lib/utils/project-utils";
 
 export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
   const t = useTranslations("organization.projects");
@@ -62,8 +64,6 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
     orpcQuery.organizations.getRole.queryOptions(),
   );
 
-  console.debug("Member role:", memberRole);
-
   // Get unique countries from projects
   const uniqueCountries = useMemo(
     () => [...new Set(projects.map((p) => p.country))],
@@ -73,15 +73,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
   // Get columns with translations
   const projectTableColumns = useMemo(() => ProjectTableColumns(t), [t]);
 
-  // Map the default sort to TanStack format
-  const defaultSorting = [
-    {
-      id: "startDate",
-      desc: false,
-    },
-  ];
-
-  const [sorting, setSorting] = useState<SortingState>(defaultSorting);
+  const [sorting, setSorting] = useState<SortingState>(DEFAULT_PROJECT_SORTING);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     name: true,
@@ -89,7 +81,6 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
     startDate: true,
     createdAt: true,
     updatedAt: false,
-    endDate: false,
   });
   const [rowSelection, setRowSelection] = useState({});
 
@@ -183,14 +174,15 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                 onValueChange={(value) =>
                   setColumnFilters((prev) => {
                     const filtered = prev.filter((f) => f.id !== "country");
-                    if (value) {
+                    if (value && value !== "all") {
                       filtered.push({ id: "country", value });
                     }
                     return filtered;
                   })
                 }
                 value={
-                  columnFilters.find((f) => f.id === "country")?.value as string
+                  (columnFilters.find((f) => f.id === "country")
+                    ?.value as string) || "all"
                 }
               >
                 <SelectTrigger
@@ -200,6 +192,12 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                   <SelectValue placeholder={t("filter-by-country")} />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem
+                    className="focus:bg-secondary focus:text-secondary-foreground"
+                    value="all"
+                  >
+                    {t("table.filter-all-countries")}
+                  </SelectItem>
                   {uniqueCountries.map((code) => {
                     const data = getCountryData(code, locale);
                     if (!data) {
@@ -257,7 +255,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                           column.toggleVisibility(!!value)
                         }
                       >
-                        {column.id}
+                        {getColumnDisplayName(column.id, t)}
                       </DropdownMenuCheckboxItem>
                     );
                   })}
@@ -284,10 +282,11 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                 const data = getCountryData(filter.value as string, locale);
                 return (
                   <Badge
-                    className="text-xs"
+                    className="px-2 text-xs"
                     key={filter.id}
-                    variant="secondary"
+                    variant="secondaryoutline"
                   >
+                    {t("table.country")}:{" "}
                     {data?.name || (filter.value as string)}
                   </Badge>
                 );
@@ -295,16 +294,20 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
               if (filter.id === "name") {
                 return (
                   <Badge
-                    className="text-xs"
+                    className="px-2 text-xs"
                     key={filter.id}
-                    variant="secondary"
+                    variant="secondaryoutline"
                   >
                     {t("table.name")}: {filter.value as string}
                   </Badge>
                 );
               }
               return (
-                <Badge className="text-xs" key={filter.id} variant="secondary">
+                <Badge
+                  className="px-2 text-xs"
+                  key={filter.id}
+                  variant="secondaryoutline"
+                >
                   {filter.id}: {filter.value as string}
                 </Badge>
               );
