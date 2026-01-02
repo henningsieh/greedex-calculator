@@ -8,6 +8,7 @@ import { CreateProjectButton } from "@/components/features/projects/create-proje
 import { ProjectsGrid } from "@/components/features/projects/dashboard/projects-grid";
 import { ProjectsTable } from "@/components/features/projects/dashboard/projects-table";
 import { ProjectsViewSelect } from "@/components/features/projects/projects-view-select";
+import { DEFAULT_PROJECT_SORTING } from "@/components/features/projects/types";
 import {
   Empty,
   EmptyContent,
@@ -27,7 +28,7 @@ export function ProjectsTab() {
   const { data: allProjects, error } = useSuspenseQuery(
     orpcQuery.projects.list.queryOptions({
       input: {
-        sort_by: "startDate",
+        sort_by: DEFAULT_PROJECT_SORTING[0].id,
       },
     }),
   );

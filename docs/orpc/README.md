@@ -35,6 +35,7 @@ This index helps you find the right documentation for your task.
 ## 📚 Complete Documentation Map
 
 ### Foundation & Architecture
+
 | Document | Purpose | Audience |
 |----------|---------|----------|
 | [QUICKSTART.md](./QUICKSTART.md) | 5-min intro + decision tree | Everyone (start here) |
@@ -42,6 +43,7 @@ This index helps you find the right documentation for your task.
 | [src/lib/orpc/README.md](../src/lib/orpc/README.md) | Implementation patterns | Developers |
 
 ### Advanced Topics
+
 | Document | Purpose | Audience |
 |----------|---------|----------|
 | [orpc.openapi-reference.md](./orpc.openapi-reference.md) | Plugin details + SRI security | DevOps, security engineers |
@@ -81,7 +83,7 @@ This index helps you find the right documentation for your task.
 ## 🔑 Key Concepts Quick Reference
 
 ### The Two Endpoints
-```
+```text
 ┌─ From Next.js app? → Use /api/rpc (orpc client)
 │  Faster, type-safe, no HTTP overhead
 │

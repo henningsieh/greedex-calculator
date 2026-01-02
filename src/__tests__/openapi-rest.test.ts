@@ -519,7 +519,7 @@ describe("OpenAPI REST Endpoint", () => {
 describe("API Documentation UI", () => {
   const docsUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/docs`;
 
-  it("should serve the Scalar API documentation UI", async () => {
+  it("should serve HTML with Scalar API reference script", async () => {
     if (!serverAvailable) {
       throw new Error("Server not available");
     }
@@ -538,19 +538,28 @@ describe("API Documentation UI", () => {
     expect(html).toContain(
       "https://cdn.jsdelivr.net/npm/@scalar/api-reference",
     );
+  });
+
+  it("should render accessible API documentation UI", async () => {
+    if (!serverAvailable) {
+      throw new Error("Server not available");
+    }
 
     // Check that the aria-label is added after JavaScript loads
     const browser = await chromium.launch();
-    const page = await browser.newPage();
-    await page.goto(docsUrl);
-    await page.waitForSelector(
-      'main[aria-label="Open API Documentation for Greedex Calculator API"]',
-    );
-    const element = page.locator(
-      'main[aria-label="Open API Documentation for Greedex Calculator API"]',
-    );
-    expect(await element.isVisible()).toBe(true);
-    await browser.close();
+    try {
+      const page = await browser.newPage();
+      await page.goto(docsUrl);
+      await page.waitForSelector(
+        'main[aria-label="Open API Documentation for Greedex Calculator API"]',
+      );
+      const element = page.locator(
+        'main[aria-label="Open API Documentation for Greedex Calculator API"]',
+      );
+      expect(await element.isVisible()).toBe(true);
+    } finally {
+      await browser.close();
+    }
   });
 });
 

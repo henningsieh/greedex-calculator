@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { OrganizationDashboard } from "@/components/features/organizations/organization-dashboard";
 import { ORGANIZATION_ICONS } from "@/components/features/organizations/organization-icons";
 import { MEMBER_ROLES } from "@/components/features/organizations/types";
+import { DEFAULT_PROJECT_SORTING } from "@/components/features/projects/types";
 import { DEFAULT_PAGE_SIZE } from "@/config/pagination";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
@@ -27,7 +28,7 @@ export default async function DashboardPage() {
     queryClient.prefetchQuery(
       orpcQuery.projects.list.queryOptions({
         input: {
-          sort_by: "startDate",
+          sort_by: DEFAULT_PROJECT_SORTING[0].id,
         },
       }),
     ),

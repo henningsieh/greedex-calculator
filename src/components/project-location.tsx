@@ -106,7 +106,7 @@ export function ProjectLocation({
       {layout === "unified" && (
         <span
           className={cn(
-            "items-centerleading-none inline-flex items-center gap-1.5",
+            "inline-flex items-center gap-1.5 leading-none",
             className,
           )}
         >

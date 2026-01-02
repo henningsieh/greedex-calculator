@@ -29,9 +29,10 @@ export type ProjectSortField = (typeof PROJECT_SORT_FIELDS)[number];
 /**
  * Default sorting configuration for projects table
  */
-export const DEFAULT_PROJECT_SORTING = [
-  { id: "startDate" as ProjectSortField, desc: false },
-];
+export const DEFAULT_PROJECT_SORTING: {
+  id: ProjectSortField;
+  desc: boolean;
+}[] = [{ id: "startDate", desc: false }];
 
 // ============================================================================
 // PROJECT TYPES
