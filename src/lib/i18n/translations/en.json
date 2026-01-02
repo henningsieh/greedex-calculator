@@ -323,9 +323,9 @@
       "description": "List of projects of your organization.",
       "error-message": "Something went wrong.",
       "table": {
-        "columns": "Column Selection",
+        "columns": "Columns",
         "name": "Name",
-        "country": "Country",
+        "country": "Country (Location)",
         "start-date": "Start Date",
         "created": "Created at",
         "updated": "Updated^at",
@@ -335,7 +335,12 @@
         "edit-project": "Edit Project",
         "delete-project": "Delete Project",
         "batch-delete": "Delete Selected ({count})",
-        "filter-projects": "Filter projects..."
+        "filter-projects": "Filter projects...",
+        "active-filters": "Active filters",
+        "search-by-name": "Search by project name",
+        "filter-all-countries": "All countries",
+        "previous": "Previous",
+        "next": "Next"
       },
       "views": {
         "table": "Table",
@@ -460,7 +465,10 @@
           "copySuccess": "Participation link copied to clipboard!",
           "copyFailure": "Failed to copy to clipboard"
         }
-      }
+      },
+      "filter-by-country": "Filter by country",
+      "row-s-selected": "Row(s) selected",
+      "noResults": "No projects found"
     },
     "userstable": {
       "name": "Name",
@@ -522,7 +530,21 @@
     },
     "roles": {
       "owner": "Owner",
-      "admin": "Employee"
+      "admin": "Employee",
+      "member": "Participant"
+    },
+    "invitation": {
+      "title": "Accept Invitation",
+      "description": "You've been invited to join an organization.",
+      "organization": "Organization",
+      "role": "Role",
+      "invitedBy": "Invited by",
+      "cancel": {
+        "confirm-title": "Cancel Invitation?",
+        "confirm-description": "Are you sure you want to cancel this invitation? This action cannot be undone.",
+        "confirm-button": "Cancel Invitation",
+        "cancel-button": "Keep Invitation"
+      }
     }
   },
   "app": {
@@ -531,7 +553,8 @@
         "groupLabel": "Projects Area",
         "projects": "Projects",
         "participants": "Participants",
-        "archive": "Archive"
+        "archive": "Archive",
+        "archiveLabel": "Project archive"
       },
       "organization": {
         "groupLabel": "Organization Area",

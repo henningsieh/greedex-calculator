@@ -75,7 +75,7 @@ export function useProjectPermissions() {
       (member) => member.userId === session.user.id,
     );
     if (currentMember?.role) {
-      role = currentMember.role as MemberRole;
+      role = currentMember.role;
     }
   }
 

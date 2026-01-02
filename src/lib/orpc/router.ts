@@ -1,5 +1,7 @@
 import type { InferRouterOutputs } from "@orpc/server";
 import {
+  getFullOrganization,
+  getOrganizationRole,
   getOrganizationStats,
   listOrganizations,
   searchMembers,
@@ -21,7 +23,6 @@ import {
   updateProjectActivity,
 } from "@/components/features/projects/procedures";
 import {
-  getFullOrganization,
   getHealth,
   getProfile,
   getSession,
@@ -57,6 +58,7 @@ export const router = {
   organizations: {
     list: listOrganizations,
     getActive: getFullOrganization,
+    getRole: getOrganizationRole,
     getStats: getOrganizationStats,
   },
 

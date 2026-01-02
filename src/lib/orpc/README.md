@@ -2,19 +2,32 @@
 
 This document describes the end-to-end type-safe API layer implementation using oRPC in this Next.js application.
 
+## 🚀 Quick Start
+
+**New to the codebase?** Start here:
+- **[QUICKSTART.md](../../docs/orpc/QUICKSTART.md)** — 5-minute guide for AI agents
+- **[DUAL-SETUP.md](../../docs/orpc/DUAL-SETUP.md)** — Full architecture explanation
+- **[Interactive API Docs](http://localhost:3000/api/docs)** — Test endpoints live
+
+## 📚 Documentation Structure
+
+| Document | Purpose |
+|----------|---------|
+| [QUICKSTART.md](../../docs/orpc/QUICKSTART.md) | Quick mental model + decision tree |
+| [DUAL-SETUP.md](../../docs/orpc/DUAL-SETUP.md) | Full architecture + best practices |
+| [orpc.openapi-reference.md](../../docs/orpc/orpc.openapi-reference.md) | Plugin details + SRI security |
+| [orpc.openapi.scalar.md](../../docs/orpc/orpc.openapi.scalar.md) | Scalar UI + alternatives |
+| [README.md](./README.md) | This file — implementation guide |
+
+---
+
 ## Overview
 
 oRPC (OpenAPI Remote Procedure Call) provides a type-safe way to define and call remote procedures between the client and server. This implementation integrates seamlessly with Better Auth for authentication and includes SSR optimization.
 
-**New**: This application uses a **dual setup** with both RPC and OpenAPI endpoints. See [DUAL-SETUP.md](./DUAL-SETUP.md) for complete details.
-
-## Quick Links
-
-- **[SSR Client Split docs](/docs/orpc/orpc.Optimize-Server-Side-Rendering.SSR.md)** - How server-side clients and client-side RPC link split are implemented to avoid server-side HTTP calls.
-
-- **[Dual Setup Documentation](./DUAL-SETUP.md)** - Understanding the RPC and OpenAPI architecture
-- **[Interactive API Docs]({NEXT_PUBLIC_BASE_URL}/api/docs)** - Swagger-like UI (when server is running)
-- **[OpenAPI Specification]({NEXT_PUBLIC_BASE_URL}/api/openapi-spec)** - JSON spec (when server is running)
+**The dual-endpoint approach:**
+- **`/api/rpc`** — Binary RPC for internal app (fast, type-safe)
+- **`/api/openapi`** — REST API for external tools (standard HTTP)
 
 ## Architecture
 
@@ -22,37 +35,32 @@ oRPC (OpenAPI Remote Procedure Call) provides a type-safe way to define and call
 
 ```
 src/lib/orpc/
-├── context.ts           # Base context definition with headers
-├── middleware.ts        # Better Auth authentication middleware
-├── procedures.ts        # Example procedures (hello world, health, profile)
-├── router.ts           # Main router definition
-├── orpc.ts             # Unified client (server-side during SSR, client-side in browser)
-├── client.server.ts    # Server-side client initialization
-└── README.md           # This file
+├── context.ts              # Base context definition with headers
+├── middleware.ts           # Better Auth authentication middleware
+├── procedures.ts           # Individual procedure definitions
+├── router.ts              # Main router definition
+├── orpc.ts                # Unified client (auto-switches server/client)
+├── client.server.ts       # Server-side client initialization
+├── openapi-handler.ts     # OpenAPI handler + Scalar UI config
+└── README.md              # This file
 
 src/app/api/
-├── rpc/[[...rest]]/route.ts       # RPC endpoint (for application use)
-├── openapi/[[...rest]]/route.ts   # REST API endpoint (for external use)
-├── openapi-spec/route.ts          # OpenAPI specification generator
-└── docs/route.ts                  # Interactive API documentation (Scalar UI)
+├── rpc/[[...rest]]/route.ts       # RPC endpoint (application use)
+├── openapi/[[...rest]]/route.ts   # REST API endpoint (external use)
+├── openapi-spec/route.ts          # OpenAPI spec JSON
+└── docs/route.ts                  # Scalar UI endpoint
 ```
 
-## Two Endpoints for Two Purposes
+### Two Endpoints for Different Purposes
 
-### 1. `/api/rpc` - For Application Code (RPC Protocol)
-```typescript
-// Client components and server components use this
-import { orpc } from "@/lib/orpc/orpc";
-const health = await orpc.health();
-```
+| Endpoint | Protocol | Use Case | Client Type |
+|----------|----------|----------|-------------|
+| `/api/rpc` | Binary RPC | Next.js app (React, Server Components) | `orpc` client |
+| `/api/openapi` | HTTP REST | External tools (curl, Postman, webhooks) | Standard HTTP |
+| `/api/docs` | HTML + JS | Manual API testing | Browser |
+| `/api/openapi-spec` | JSON | OpenAPI schema | Code generators |
 
-### 2. `/api/openapi` - For External Integrations (REST API)
-```bash
-# Standard HTTP REST calls
-curl {NEXT_PUBLIC_BASE_URL}/api/openapi/health
-```
-
-See [DUAL-SETUP.md](./DUAL-SETUP.md) for why we have this architecture.
+**See [DUAL-SETUP.md](../../docs/orpc/DUAL-SETUP.md) for detailed architecture.**
 
 ### Key Components
 

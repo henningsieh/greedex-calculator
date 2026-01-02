@@ -16,6 +16,7 @@ import {
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
+import { useConfirmDialog } from "@/components/confirm-dialog";
 import { ParticipantsLinkControls } from "@/components/features/participants/participants-link-controls";
 import { ParticipantsList } from "@/components/features/participants/participants-list";
 import {
@@ -36,7 +37,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
   Dialog,
   DialogContent,

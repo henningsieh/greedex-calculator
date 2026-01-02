@@ -113,6 +113,16 @@ export function OrganizationSwitcher() {
                       queryClient.invalidateQueries(
                         orpcQuery.organizations.getActive.queryOptions(),
                       ),
+                      queryClient.invalidateQueries(
+                        orpcQuery.organizations.getRole.queryOptions(),
+                      ),
+                      queryClient.invalidateQueries(
+                        orpcQuery.organizations.getStats.queryOptions({
+                          input: {
+                            organizationId: org.id,
+                          },
+                        }),
+                      ),
                     ]);
                     router.refresh(); // Force immediate refresh to ensure navigation completes
                   } catch (error) {

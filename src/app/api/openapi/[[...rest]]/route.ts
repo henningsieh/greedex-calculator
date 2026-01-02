@@ -1,7 +1,4 @@
-import { OpenAPIHandler } from "@orpc/openapi/fetch";
-import { onError } from "@orpc/server";
-import { CORSPlugin } from "@orpc/server/plugins";
-import { router } from "@/lib/orpc/router";
+import { openapiHandler } from "@/lib/orpc/openapi-handler";
 
 /**
  * oRPC OpenAPI handler for Next.js route handlers
@@ -11,49 +8,44 @@ import { router } from "@/lib/orpc/router";
  * - OpenAPI documentation generation
  * - Third-party integrations
  */
-const handler = new OpenAPIHandler(router, {
-  plugins: [
-    new CORSPlugin({
-      allowMethods: [
-        "GET",
-        "POST",
-        "PUT",
-        "PATCH",
-        "DELETE",
-        "HEAD",
-        "OPTIONS",
-      ],
-      allowHeaders: ["Content-Type", "Authorization"],
-      exposeHeaders: ["Content-Disposition"], // Required for OpenAPILink file detection
-      credentials: true,
-    }),
-  ],
-  interceptors: [
-    onError((error) => {
-      console.error("[OpenAPI Error]", error);
-    }),
-  ],
-});
 
 /**
  * Universal request handler for all HTTP methods
  * Handles REST requests following OpenAPI specification
  */
 async function handleRequest(request: Request) {
-  const { matched, response } = await handler.handle(request, {
-    prefix: "/api/openapi",
-    context: {
-      headers: request.headers,
-    },
-  });
+  try {
+    const { matched, response } = await openapiHandler.handle(request, {
+      prefix: "/api/openapi",
+      context: {
+        headers: request.headers,
+      },
+    });
 
-  if (matched) {
-    return response;
+    if (matched) {
+      return response;
+    }
+
+    return new Response("Not found", {
+      status: 404,
+    });
+  } catch (error) {
+    // Catch parsing errors (invalid JSON, etc.) and return 400
+    if (error instanceof SyntaxError) {
+      return new Response(
+        JSON.stringify({
+          error: "Invalid request format",
+          message: error.message,
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
+    // Re-throw unexpected errors
+    throw error;
   }
-
-  return new Response("Not found", {
-    status: 404,
-  });
 }
 
 // Export all HTTP method handlers required by Next.js

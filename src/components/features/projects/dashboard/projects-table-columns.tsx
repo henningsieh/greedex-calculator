@@ -9,18 +9,20 @@ import {
   MoreHorizontalIcon,
   Trash2Icon,
 } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
+import { useConfirmDialog } from "@/components/confirm-dialog";
 import {
   EditProjectForm,
   EditProjectFormSkeleton,
 } from "@/components/features/projects/edit-project-form";
 import { SortableHeader } from "@/components/features/projects/sortable-header";
 import type { ProjectType } from "@/components/features/projects/types";
+
+import { ProjectLocation } from "@/components/project-location";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
   Dialog,
   DialogContent,
@@ -35,11 +37,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PROJECT_SORT_FIELDS } from "@/config/projects";
 import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import { Link } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
-import { getProjectDetailPath } from "@/lib/utils/project-utils";
+import {
+  getColumnDisplayName,
+  getProjectDetailPath,
+} from "@/lib/utils/project-utils";
 
 function DateCell({ date }: { date: Date }) {
   const format = useFormatter();
@@ -54,7 +58,23 @@ function DateCell({ date }: { date: Date }) {
   );
 }
 
-export function getProjectColumns(
+function CountryCell({ project }: { project: ProjectType }) {
+  const locale = useLocale();
+  return (
+    <Link className="block" href={getProjectDetailPath(project.id)}>
+      <ProjectLocation
+        countryFormat="code"
+        layout="unified"
+        locale={locale}
+        project={{ location: project.location, country: project.country }}
+        showFlag={true}
+        variant="inline"
+      />
+    </Link>
+  );
+}
+
+export function ProjectTableColumns(
   t: (key: string) => string,
 ): ColumnDef<ProjectType>[] {
   return [
@@ -85,40 +105,46 @@ export function getProjectColumns(
       enableHiding: false,
     },
     {
-      accessorKey: PROJECT_SORT_FIELDS.name,
+      accessorKey: "name",
       header: ({ column, table }) => (
-        <SortableHeader column={column} table={table} title={t("table.name")} />
+        <SortableHeader
+          column={column}
+          table={table}
+          title={getColumnDisplayName(column.id, t)}
+        />
       ),
       cell: ({ row }) => (
         <Link
           className="block font-medium"
           href={getProjectDetailPath(row.original.id)}
         >
-          {row.getValue(PROJECT_SORT_FIELDS.name)}
+          {row.getValue("name")}
         </Link>
       ),
     },
     {
       accessorKey: "country",
-      header: t("table.country"),
-      cell: ({ row }) => (
-        <Link className="block" href={getProjectDetailPath(row.original.id)}>
-          {row.getValue("country")}
-        </Link>
+      header: ({ column, table }) => (
+        <SortableHeader
+          column={column}
+          table={table}
+          title={getColumnDisplayName(column.id, t)}
+        />
       ),
+      cell: ({ row }) => <CountryCell project={row.original} />,
     },
     {
-      accessorKey: PROJECT_SORT_FIELDS.startDate,
+      accessorKey: "startDate",
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
           isNumeric
           table={table}
-          title={t("table.start-date")}
+          title={getColumnDisplayName(column.id, t)}
         />
       ),
       cell: ({ row }) => {
-        const date = row.getValue(PROJECT_SORT_FIELDS.startDate) as Date;
+        const date = row.getValue("startDate") as Date;
         return (
           <Link className="block" href={getProjectDetailPath(row.original.id)}>
             <DateCell date={date} />
@@ -132,17 +158,17 @@ export function getProjectColumns(
       },
     },
     {
-      accessorKey: PROJECT_SORT_FIELDS.createdAt,
+      accessorKey: "createdAt",
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
           isNumeric
           table={table}
-          title={t("table.created")}
+          title={getColumnDisplayName(column.id, t)}
         />
       ),
       cell: ({ row }) => {
-        const date = row.getValue(PROJECT_SORT_FIELDS.createdAt) as Date;
+        const date = row.getValue("createdAt") as Date;
         return (
           <Link className="block" href={getProjectDetailPath(row.original.id)}>
             <DateCell date={date} />
@@ -156,17 +182,17 @@ export function getProjectColumns(
       },
     },
     {
-      accessorKey: PROJECT_SORT_FIELDS.updatedAt,
+      accessorKey: "updatedAt",
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
           isNumeric
           table={table}
-          title={t("table.updated")}
+          title={getColumnDisplayName(column.id, t)}
         />
       ),
       cell: ({ row }) => {
-        const date = row.getValue(PROJECT_SORT_FIELDS.updatedAt) as Date;
+        const date = row.getValue("updatedAt") as Date;
         return (
           <Link className="block" href={getProjectDetailPath(row.original.id)}>
             <DateCell date={date} />

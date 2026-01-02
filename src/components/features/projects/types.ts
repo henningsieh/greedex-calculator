@@ -1,7 +1,6 @@
 import type { InferSelectModel } from "drizzle-orm";
 import type { z } from "zod";
 import type { ACTIVITY_VALUES } from "@/config/activities";
-import type { PROJECT_SORT_FIELDS } from "@/config/projects";
 import type {
   projectActivitiesTable,
   projectsTable,
@@ -12,10 +11,28 @@ import type {
 } from "./validation-schemas";
 
 /**
+ * Project sort field values
+ */
+export const PROJECT_SORT_FIELDS = [
+  "name",
+  "country",
+  "startDate",
+  "createdAt",
+  "updatedAt",
+] as const;
+
+/**
  * Type for project sort field values
  */
-export type ProjectSortField =
-  (typeof PROJECT_SORT_FIELDS)[keyof typeof PROJECT_SORT_FIELDS];
+export type ProjectSortField = (typeof PROJECT_SORT_FIELDS)[number];
+
+/**
+ * Default sorting configuration for projects table
+ */
+export const DEFAULT_PROJECT_SORTING: {
+  id: ProjectSortField;
+  desc: boolean;
+}[] = [{ id: "startDate", desc: false }];
 
 // ============================================================================
 // PROJECT TYPES

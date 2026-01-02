@@ -1,4 +1,9 @@
-import type { ProjectActivityType } from "@/components/features/projects/types";
+import React from "react";
+import { PROJECT_ACTIVITIES_ICONS } from "@/components/features/project-activities/activities-icons";
+import type {
+  ProjectActivityType,
+  ProjectSortField,
+} from "@/components/features/projects/types";
 import { orpc } from "@/lib/orpc/orpc";
 import { type AppRoute, PROJECT_DETAIL_PATH } from "@/lib/utils/app-routes";
 
@@ -25,7 +30,47 @@ export async function getProjectData(projectId: string) {
   }
 }
 
+/**
+ * Render a consistent activity icon for any activity type.
+ *
+ * @param type - The activity type
+ * @returns The JSX element for the activity icon.
+ */
+export function getProjectActivityIcon(
+  type: keyof typeof PROJECT_ACTIVITIES_ICONS,
+): React.ReactElement {
+  const Icon = PROJECT_ACTIVITIES_ICONS[type];
+  return React.createElement(Icon, { className: "h-4 w-4" });
+}
+
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+
+/**
+ * Get the display name for a project sort field/column
+ *
+ * @param columnId The project sort field/column ID
+ * @param t Translation function
+ * @returns The display name for the column
+ */
+export function getColumnDisplayName(
+  columnId: ProjectSortField | string,
+  t: (key: string) => string,
+): string {
+  switch (columnId) {
+    case "name":
+      return t("table.name");
+    case "country":
+      return t("table.country");
+    case "startDate":
+      return t("table.start-date");
+    case "createdAt":
+      return t("table.created");
+    case "updatedAt":
+      return t("table.updated");
+    default:
+      return columnId;
+  }
+}
 
 /**
  * @param startDate The start date of the project
@@ -52,7 +97,9 @@ export const calculateProjectDuration = (
   return Math.floor((end.getTime() - start.getTime()) / MILLISECONDS_PER_DAY);
 };
 
-// CO₂ emission factors (kg CO₂ per km per person)
+/**
+ * CO₂ emission factors in kilograms per kilometer for various transport modes.
+ */
 export const CO2_FACTORS = {
   car: 0.192,
   boat: 0.115,

@@ -8,6 +8,7 @@ import { CreateProjectButton } from "@/components/features/projects/create-proje
 import { ProjectsGrid } from "@/components/features/projects/dashboard/projects-grid";
 import { ProjectsTable } from "@/components/features/projects/dashboard/projects-table";
 import { ProjectsViewSelect } from "@/components/features/projects/projects-view-select";
+import { DEFAULT_PROJECT_SORTING } from "@/components/features/projects/types";
 import {
   Empty,
   EmptyContent,
@@ -17,7 +18,6 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEFAULT_PROJECT_SORTING_FIELD } from "@/config/projects";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
 export function ProjectsTab() {
@@ -28,13 +28,18 @@ export function ProjectsTab() {
   const { data: allProjects, error } = useSuspenseQuery(
     orpcQuery.projects.list.queryOptions({
       input: {
-        sort_by: DEFAULT_PROJECT_SORTING_FIELD,
+        sort_by: DEFAULT_PROJECT_SORTING[0].id,
       },
     }),
   );
 
   // Filter out archived projects - show only active projects
   const projects = allProjects?.filter((project) => !project.archived) || [];
+
+  // Get active organization to use as key for resetting table state on org switch
+  const { data: activeOrg } = useSuspenseQuery(
+    orpcQuery.organizations.getActive.queryOptions(),
+  );
 
   // Grid sorting is handled inside ProjectsGrid to keep sorting logic
   // consistent with the table view and avoid duplicating `sortedProjects`.
@@ -67,9 +72,9 @@ export function ProjectsTab() {
       <div className="flex items-center" />
       <ProjectsViewSelect setView={setView} view={view} />
       {view === "grid" ? (
-        <ProjectsGrid projects={projects} />
+        <ProjectsGrid key={activeOrg.id} projects={projects} />
       ) : (
-        <ProjectsTable projects={projects} />
+        <ProjectsTable key={activeOrg.id} projects={projects} />
       )}
     </div>
   );

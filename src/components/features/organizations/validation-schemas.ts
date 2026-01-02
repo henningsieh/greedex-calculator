@@ -13,6 +13,11 @@ import {
 // ============================================================================
 
 /**
+ * Schema for member role values
+ */
+export const MemberRoleSchema = z.enum(Object.values(MEMBER_ROLES));
+
+/**
  * Extended member insert schema with associated user data
  * Omits sensitive and unnecessary fields from user object
  */

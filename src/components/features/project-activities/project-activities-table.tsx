@@ -48,25 +48,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
-import { PROJECT_ACTIVITIES_ICONS } from "./activities-icons";
+import { getProjectActivityIcon } from "@/lib/utils/project-utils";
 import { ProjectActivityDialog } from "./project-activity-dialog";
 
-interface ProjectActivitiesListProps {
+interface ProjectActivitiesTableProps {
   projectId: string;
   canEdit?: boolean;
 }
-
-/**
- * Render a consistent activity icon for any activity type.
- *
- * @param type - The activity type
- * @returns The JSX element for the activity icon.
- */
-function getActivityIcon(type: keyof typeof PROJECT_ACTIVITIES_ICONS) {
-  const Icon = PROJECT_ACTIVITIES_ICONS[type];
-  return <Icon className="h-4 w-4" />;
-}
-
 /**
  * Render a card showing a project's activities, with optional UI for adding, editing, and deleting items.
  *
@@ -82,7 +70,7 @@ function getActivityIcon(type: keyof typeof PROJECT_ACTIVITIES_ICONS) {
 export function ProjectActivitiesTable({
   projectId,
   canEdit = false,
-}: ProjectActivitiesListProps) {
+}: ProjectActivitiesTableProps) {
   const t = useTranslations("project.activities");
   const format = useFormatter();
   const queryClient = useQueryClient();
@@ -172,7 +160,7 @@ export function ProjectActivitiesTable({
                   <TableRow key={activity.id}>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        {getActivityIcon(activity.activityType)}
+                        {getProjectActivityIcon(activity.activityType)}
                         <span>{t(`types.${activity.activityType}`)}</span>
                       </div>
                     </TableCell>

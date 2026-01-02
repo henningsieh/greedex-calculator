@@ -10,6 +10,7 @@ import {
 import { useFormatter } from "next-intl";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
+import { useConfirmDialog } from "@/components/confirm-dialog";
 import {
   EditProjectForm,
   EditProjectFormSkeleton,
@@ -24,7 +25,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
   Dialog,
   DialogContent,

@@ -325,7 +325,7 @@
       "table": {
         "columns": "Spalten",
         "name": "Name",
-        "country": "Land",
+        "country": "Land (Ort)",
         "start-date": "Startdatum",
         "created": "Erstellt am",
         "updated": "Aktualisiert am",
@@ -335,7 +335,12 @@
         "edit-project": "Projekt bearbeiten",
         "delete-project": "Projekt löschen",
         "batch-delete": "Ausgewählte löschen ({count})",
-        "filter-projects": "Projekte filtern..."
+        "filter-projects": "Projekte filtern...",
+        "active-filters": "Aktive Filter",
+        "search-by-name": "Nach Projektname suchen",
+        "filter-all-countries": "Alle Länder",
+        "previous": "Vorherige",
+        "next": "Nächste"
       },
       "views": {
         "table": "Tabellenansicht",
@@ -460,7 +465,10 @@
           "copySuccess": "Teilnahmelink wurde in die Zwischenablage kopiert!",
           "copyFailure": "Fehler beim Kopieren in die Zwischenablage"
         }
-      }
+      },
+      "filter-by-country": "Nach Land filtern",
+      "row-s-selected": "Zeile(n) ausgewählt",
+      "noResults": "Keine Projekte gefunden"
     },
     "userstable": {
       "name": "Name",
@@ -474,8 +482,8 @@
       "loading": "Teammitglieder werden geladen...",
       "noResults": "Keine Ergebnisse.",
       "rowsSelected": "{selected} von {total} Zeile(n) ausgewählt.",
-      "previous": "Zurück",
-      "next": "Weiter"
+      "previous": "Vorherige",
+      "next": "Nächste"
     },
     "team": {
       "title": "Teammitglieder",
@@ -522,7 +530,21 @@
     },
     "roles": {
       "owner": "Eigentümer",
-      "admin": "Mitarbeiter"
+      "admin": "Mitarbeiter",
+      "member": "Teilnehmer"
+    },
+    "invitation": {
+      "title": "Einladung annehmen",
+      "description": "Du wurdest eingeladen, einer Organisation beizutreten.",
+      "organization": "Organisation",
+      "role": "Rolle",
+      "invitedBy": "Eingeladen von",
+      "cancel": {
+        "confirm-title": "Einladung stornieren?",
+        "confirm-description": "Bist du sicher, dass du diese Einladung stornieren möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "confirm-button": "Einladung stornieren",
+        "cancel-button": "Einladung behalten"
+      }
     }
   },
   "app": {
@@ -531,7 +553,8 @@
         "groupLabel": "Projektbereich",
         "projects": "Projekte",
         "participants": "Teilnehmende",
-        "archive": "Archiv"
+        "archive": "Archiv",
+        "archiveLabel": "Projektarchiv"
       },
       "organization": {
         "groupLabel": "Organisationsbereich",

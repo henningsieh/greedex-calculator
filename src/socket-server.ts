@@ -72,3 +72,37 @@ httpServer
     }
     process.exit(1);
   });
+
+// Graceful shutdown: close the socket server and HTTP server on signals
+const shutdown = (signal?: string) => {
+  console.log(`Received ${signal ?? "shutdown"}. Closing Socket.IO server...`);
+  try {
+    io.close();
+  } catch (e) {
+    console.warn("Error while closing io:", e);
+  }
+
+  try {
+    httpServer.close(() => {
+      console.log("HTTP server closed. Exiting.");
+      process.exit(0);
+    });
+  } catch (e) {
+    console.warn("Error while closing httpServer:", e);
+    process.exit(0);
+  }
+
+  // Fallback exit if close callbacks do not fire
+  setTimeout(() => process.exit(0), 5000);
+};
+
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught exception, shutting down:", err);
+  shutdown("uncaughtException");
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled promise rejection, shutting down:", reason);
+  shutdown("unhandledRejection");
+});

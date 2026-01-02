@@ -5,12 +5,27 @@ import { base, rootBase } from "@/lib/orpc/context";
 
 /**
  * Middleware that logs errors with full context for debugging
- * Captures procedure path and error details
+ * Uses minimal logging for expected client errors (UNAUTHORIZED, FORBIDDEN, etc.)
+ * and verbose logging for unexpected server errors
  */
 const loggingMiddleware = rootBase.middleware(async ({ next, path }) => {
   try {
     return await next();
   } catch (error) {
+    const isExpectedClientError =
+      error instanceof ORPCError &&
+      ["UNAUTHORIZED", "FORBIDDEN", "BAD_REQUEST", "NOT_FOUND"].includes(
+        error.code,
+      );
+
+    if (isExpectedClientError) {
+      // Minimal logging for expected client errors - these are normal during operation
+      // (e.g., unauthorized access, validation failures, missing resources)
+      // Full details are still returned to the client
+      throw error;
+    }
+
+    // Verbose logging for unexpected errors (server errors, unhandled cases)
     console.error("=== oRPC Error ===");
     console.error("Procedure:", path);
     console.error("Error:", error);

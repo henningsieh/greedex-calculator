@@ -4,9 +4,10 @@ import { ArrowUpDown, ChevronDownIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { ProjectCard } from "@/components/features/projects/project-card";
-import type {
-  ProjectSortField,
-  ProjectType,
+import {
+  PROJECT_SORT_FIELDS,
+  type ProjectSortField,
+  type ProjectType,
 } from "@/components/features/projects/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +20,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Empty, EmptyDescription } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
-import {
-  DEFAULT_PROJECT_SORTING_FIELD,
-  PROJECT_SORT_FIELDS,
-} from "@/config/projects";
 
 interface ProjectsGridProps {
   projects: Array<ProjectType>;
@@ -36,17 +33,32 @@ export function ProjectsGrid({
   const t = useTranslations("organization.projects");
 
   const [sortBy, setSortBy] = useState<ProjectSortField>(
-    initialSortBy ?? DEFAULT_PROJECT_SORTING_FIELD,
+    initialSortBy ?? "startDate",
   );
   const [sortDesc, setSortDesc] = useState(false);
   const [filter, setFilter] = useState("");
 
-  const sortOptions = [
-    { value: PROJECT_SORT_FIELDS.name, label: t("table.name") },
-    { value: PROJECT_SORT_FIELDS.startDate, label: t("table.start-date") },
-    { value: PROJECT_SORT_FIELDS.createdAt, label: t("table.created") },
-    { value: PROJECT_SORT_FIELDS.updatedAt, label: t("table.updated") },
-  ];
+  const getSortLabel = (field: ProjectSortField) => {
+    switch (field) {
+      case "name":
+        return t("table.name");
+      case "country":
+        return t("table.country");
+      case "startDate":
+        return t("table.start-date");
+      case "createdAt":
+        return t("table.created");
+      case "updatedAt":
+        return t("table.updated");
+      default:
+        return field;
+    }
+  };
+
+  const sortOptions = PROJECT_SORT_FIELDS.map((field) => ({
+    value: field,
+    label: getSortLabel(field),
+  }));
 
   const sortedProjects = useMemo(() => {
     const filtered = projects.filter((p) =>

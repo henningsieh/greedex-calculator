@@ -7,15 +7,12 @@ import {
   CreateActivityInputSchema,
   ProjectActivityWithRelationsSchema,
   ProjectCreateFormSchema,
+  ProjectSortFieldSchema,
   ProjectUpdateFormSchema,
   ProjectWithActivitiesSchema,
   ProjectWithRelationsSchema,
   UpdateActivityInputSchema,
 } from "@/components/features/projects/validation-schemas";
-import {
-  DEFAULT_PROJECT_SORTING_FIELD,
-  PROJECT_SORT_FIELDS,
-} from "@/config/projects";
 import { auth } from "@/lib/better-auth";
 import { db } from "@/lib/drizzle/db";
 import {
@@ -110,10 +107,7 @@ export const listProjects = authorized
   .input(
     z
       .object({
-        sort_by: z
-          .enum(Object.values(PROJECT_SORT_FIELDS))
-          .default(DEFAULT_PROJECT_SORTING_FIELD)
-          .optional(),
+        sort_by: ProjectSortFieldSchema.default("startDate").optional(),
         archived: z.boolean().optional(),
       })
       .optional(),
@@ -129,20 +123,20 @@ export const listProjects = authorized
     // Determine sort order
     let orderByClause: SQL<unknown>;
     switch (input?.sort_by) {
-      case PROJECT_SORT_FIELDS.name:
+      case "name":
         orderByClause = asc(sql`lower(${projectsTable.name})`);
         break;
-      case PROJECT_SORT_FIELDS.startDate:
+      case "startDate":
         orderByClause = asc(projectsTable.startDate);
         break;
-      case PROJECT_SORT_FIELDS.createdAt:
+      case "createdAt":
         orderByClause = asc(projectsTable.createdAt);
         break;
-      case PROJECT_SORT_FIELDS.updatedAt:
+      case "updatedAt":
         orderByClause = asc(projectsTable.updatedAt);
         break;
       default:
-        orderByClause = asc(projectsTable.createdAt);
+        orderByClause = asc(projectsTable.startDate);
     }
 
     // Get all projects that belong to the user's active organization
@@ -323,7 +317,7 @@ export const updateProject = authorized
  *
  * Requires:
  * - Authentication
- * - "delete" permission on project resource (owner only)
+ * - Owner role OR Employee role AND is the responsible user of the project
  * - Project must belong to user's active organization
  */
 export const deleteProject = authorized
@@ -369,6 +363,24 @@ export const deleteProject = authorized
     if (!existingProject) {
       throw errors.NOT_FOUND({
         message: "Project not found or you don't have access to it",
+      });
+    }
+
+    // Get current member role
+    const { role } = await auth.api.getActiveMemberRole({
+      headers: await headers(),
+    });
+
+    // Check permissions: Owner can delete any project, Employee can delete only their own projects
+    const isOwner = role === MEMBER_ROLES.Owner;
+    const isResponsibleEmployee =
+      role === MEMBER_ROLES.Employee &&
+      existingProject.responsibleUserId === context.user.id;
+
+    if (!(isOwner || isResponsibleEmployee)) {
+      throw errors.FORBIDDEN({
+        message:
+          "You don't have permission to delete this project. Only the owner or the responsible employee can delete it.",
       });
     }
 
@@ -643,7 +655,7 @@ export const getProjectParticipants = authorized
  *
  * Requires:
  * - Authentication
- * - "delete" permission on project resource (owner only)
+ * - Owner role OR Employee role AND is the responsible user of each project
  * - All projects must belong to user's active organization
  */
 export const batchDeleteProjects = authorized
@@ -672,10 +684,16 @@ export const batchDeleteProjects = authorized
       });
     }
 
-    // Verify all projects belong to user's organization
+    // Get current member role
+    const { role } = await auth.api.getActiveMemberRole({
+      headers: await headers(),
+    });
+
+    // Verify all projects belong to user's organization and check permissions
     const projectsToDelete = await db
       .select({
         id: projectsTable.id,
+        responsibleUserId: projectsTable.responsibleUserId,
       })
       .from(projectsTable)
       .where(
@@ -693,6 +711,21 @@ export const batchDeleteProjects = authorized
         message:
           "Some projects don't exist or you don't have permission to delete them",
       });
+    }
+
+    // Check permissions for each project: Owner can delete any, Employee only their own
+    const isOwner = role === MEMBER_ROLES.Owner;
+    for (const project of projectsToDelete) {
+      const isResponsibleEmployee =
+        role === MEMBER_ROLES.Employee &&
+        project.responsibleUserId === context.user.id;
+
+      if (!(isOwner || isResponsibleEmployee)) {
+        throw errors.FORBIDDEN({
+          message:
+            "You don't have permission to delete one or more of these projects. Only the owner or the responsible employee can delete projects.",
+        });
+      }
     }
 
     // Delete the projects

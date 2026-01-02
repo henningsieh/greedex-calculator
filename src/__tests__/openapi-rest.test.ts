@@ -1,6 +1,3 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { env } from "@/env";
-
 /**
  * REST API Integration Tests for OpenAPI Endpoint
  *
@@ -12,6 +9,10 @@ import { env } from "@/env";
  *
  * Note: These tests require a running server and are skipped in CI if the server is not available.
  */
+import { chromium } from "playwright";
+import { beforeAll, describe, expect, it } from "vitest";
+import { env } from "@/env";
+
 const OPENAPI_VERSION_REGEX = /^3\.\d+\.\d+$/;
 const baseUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/openapi`;
 let serverAvailable = false;
@@ -184,7 +185,7 @@ describe("OpenAPI REST Endpoint", () => {
   describe("Authentication Endpoints", () => {
     const SEED_USER = {
       name: "Seed Owner",
-      email: "owner@seed.local",
+      email: "owner@sieh.org",
       password: "SecurePassword123!",
     };
 
@@ -203,6 +204,15 @@ describe("OpenAPI REST Endpoint", () => {
           password: SEED_USER.password,
         }),
       });
+
+      // Debug: Log error response if not 200
+      if (response.status !== 200) {
+        const errorBody = await response.text();
+        console.error(
+          `Sign-in failed with status ${response.status}:`,
+          errorBody,
+        );
+      }
 
       expect(response.status).toBe(200);
       const data = await response.json();
@@ -229,7 +239,7 @@ describe("OpenAPI REST Endpoint", () => {
 
       const newUser = {
         name: "Test User",
-        email: `test-${Date.now()}@example.com`,
+        email: `test-${Date.now()}@sieh.org`,
         password: "TestPassword123!",
       };
 
@@ -268,7 +278,7 @@ describe("OpenAPI REST Endpoint", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "invalid@example.com",
+          email: "invalid@sieh.org",
           password: "wrongpassword",
         }),
       });
@@ -503,6 +513,57 @@ describe("OpenAPI REST Endpoint", () => {
         "Content-Disposition",
       );
     });
+  });
+});
+
+describe("API Documentation UI", () => {
+  const docsUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/docs`;
+
+  it("should serve HTML with Scalar API reference script", async () => {
+    if (!serverAvailable) {
+      throw new Error("Server not available");
+    }
+
+    const response = await fetch(docsUrl);
+    expect(response.status).toBe(200);
+
+    const contentType = response.headers.get("Content-Type") || "";
+    expect(contentType).toContain("text/html");
+
+    const html = await response.text();
+
+    // Embedded configuration script should exist
+    expect(html).toContain('id="app"');
+    // Should reference Scalar script
+    expect(html).toContain(
+      "https://cdn.jsdelivr.net/npm/@scalar/api-reference",
+    );
+  });
+
+  it("should render accessible API documentation UI", async () => {
+    if (!serverAvailable) {
+      throw new Error("Server not available");
+    }
+
+    // Check that the aria-label is added after JavaScript loads
+    const browser = await chromium.launch({
+      headless: process.env.HEADED !== "true",
+    });
+    try {
+      const page = await browser.newPage();
+      const OpenAPIDocumentationString =
+        "Open API Documentation for Greedex Calculator API";
+      await page.goto(docsUrl);
+      await page.waitForSelector(
+        `main[aria-label="${OpenAPIDocumentationString}"]`,
+      );
+      const element = page.locator(
+        `main[aria-label="${OpenAPIDocumentationString}"]`,
+      );
+      expect(await element.isVisible()).toBe(true);
+    } finally {
+      await browser.close();
+    }
   });
 });
 
