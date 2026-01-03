@@ -18,6 +18,7 @@ import {
 } from "@tanstack/react-table";
 import {
   FunnelXIcon,
+  SearchIcon,
   SheetIcon,
   TablePropertiesIcon,
   Trash2Icon,
@@ -29,6 +30,13 @@ import { useConfirmDialog } from "@/components/confirm-dialog";
 import { ProjectTableColumns } from "@/components/features/projects/dashboard/projects-table-columns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -49,6 +57,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/config/pagination";
 import { MEMBER_ROLES } from "@/features/organizations";
 import type { ProjectType } from "@/features/projects";
@@ -169,18 +182,21 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
       <div className="min-w-0">
         <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
-            <Input
-              className="h-8 w-full border-secondary placeholder:text-sm focus-visible:border-secondary focus-visible:ring-2 focus-visible:ring-secondary sm:w-[250px] lg:w-[300px]"
-              id="project-name-filter"
-              onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
-              }
-              placeholder={t("table.search-by-name")}
-              value={
-                (table.getColumn("name")?.getFilterValue() as string) ?? ""
-              }
-            />
-            <div className="flex items-center">
+            <div className="relative w-full sm:w-[250px] lg:w-[300px]">
+              <SearchIcon className="absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                className="h-8 w-full border-secondary pl-9 placeholder:text-sm focus-visible:border-secondary focus-visible:ring-2 focus-visible:ring-secondary"
+                id="project-name-filter"
+                onChange={(event) =>
+                  table.getColumn("name")?.setFilterValue(event.target.value)
+                }
+                placeholder={t("table.search-by-name")}
+                value={
+                  (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                }
+              />
+            </div>
+            <div className="flex items-center gap-2">
               <Select
                 key={`country-filter-${columnFilters.find((f) => f.id === "country")?.value || "none"}`}
                 onValueChange={(value) =>
@@ -229,6 +245,22 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                   })}
                 </SelectContent>
               </Select>
+              <Badge
+                className="hidden h-8 gap-1 px-2.5 font-normal text-sm lg:flex"
+                variant="outline"
+              >
+                <span className="font-medium">
+                  {table.getFilteredRowModel().rows.length}
+                </span>
+                <span className="text-muted-foreground">
+                  {table.getFilteredRowModel().rows.length !== projects.length
+                    ? `/ ${projects.length}`
+                    : ""}
+                </span>
+                <span className="text-muted-foreground">
+                  {t("table.projects-count", { defaultValue: "Projects" })}
+                </span>
+              </Badge>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -249,15 +281,20 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
         </div>
         {columnFilters.length > 0 && (
           <div className="mb-2 flex flex-wrap items-center gap-2">
-            <Button
-              className="h-8 px-2 lg:px-3"
-              disabled={columnFilters.length === 0}
-              onClick={() => setColumnFilters([])}
-              size="sm"
-              variant="destructive"
-            >
-              <FunnelXIcon />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className="size-7"
+                  disabled={columnFilters.length === 0}
+                  onClick={() => setColumnFilters([])}
+                  // size="icon-sm"
+                  variant="destructive"
+                >
+                  <FunnelXIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t("table.clear-filters")}</TooltipContent>
+            </Tooltip>
             <span className="text-muted-foreground text-sm">
               {t("table.active-filters")}:
             </span>
@@ -357,10 +394,40 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
               ) : (
                 <TableRow>
                   <TableCell
-                    className="h-24 text-center"
+                    className="h-96 text-center"
                     colSpan={projectTableColumns.length}
                   >
-                    {t("noResults")}
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <SearchIcon className="size-6 text-muted-foreground" />
+                        </EmptyMedia>
+                        <EmptyTitle>
+                          {t("table.no-results.title", {
+                            defaultValue: "No projects found",
+                          })}
+                        </EmptyTitle>
+                        <EmptyDescription>
+                          {t("table.no-results.description", {
+                            defaultValue:
+                              "Try adjusting your filters or search query.",
+                          })}
+                        </EmptyDescription>
+                      </EmptyHeader>
+                      <div className="mt-6">
+                        <Button
+                          onClick={() => {
+                            setColumnFilters([]);
+                            table.getColumn("name")?.setFilterValue("");
+                          }}
+                          variant="outline"
+                        >
+                          {t("table.clear-filters", {
+                            defaultValue: "Clear filters",
+                          })}
+                        </Button>
+                      </div>
+                    </Empty>
                   </TableCell>
                 </TableRow>
               )}
@@ -369,8 +436,30 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
         </div>
         <div className="flex items-center justify-between gap-3 py-4">
           <div className="min-w-0 flex-1 truncate text-muted-foreground text-sm">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} {t("rows-selected")}
+            {(() => {
+              const selectedCount =
+                table.getFilteredSelectedRowModel().rows.length;
+              const totalCount = table.getFilteredRowModel().rows.length;
+              const { pageIndex, pageSize } = table.getState().pagination;
+
+              if (selectedCount > 0) {
+                return (
+                  <span>
+                    {selectedCount} of {totalCount} {t("rows-selected")}
+                  </span>
+                );
+              }
+              if (totalCount === 0) {
+                return <span>0 projects</span>;
+              }
+              return (
+                <span>
+                  Showing {pageIndex * pageSize + 1}-
+                  {Math.min((pageIndex + 1) * pageSize, totalCount)} of{" "}
+                  {totalCount} projects
+                </span>
+              );
+            })()}
           </div>
 
           <div className="flex flex-shrink-0 items-center gap-2">

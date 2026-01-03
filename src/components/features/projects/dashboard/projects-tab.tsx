@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { FolderOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { CreateProjectButton } from "@/components/features/projects/create-project-button";
 import { ProjectsGrid } from "@/components/features/projects/dashboard/projects-grid";
 import { ProjectsTable } from "@/components/features/projects/dashboard/projects-table";
@@ -21,7 +21,10 @@ import { orpcQuery } from "@/lib/orpc/orpc";
 
 export function ProjectsTab() {
   const t = useTranslations("organization.projects");
-  const [view, setView] = useState<"grid" | "table">("table");
+  const [view, setView] = useQueryState(
+    "view",
+    parseAsStringLiteral(["table", "grid"] as const).withDefault("table"),
+  );
   // Grid sorting is handled within ProjectsGrid; table keeps its own internal sorting.
 
   const { data: allProjects, error } = useSuspenseQuery(

@@ -341,7 +341,13 @@
         "filter-all-countries": "Alle Länder",
         "previous": "Vorherige",
         "next": "Nächste",
-        "rows-per-page": "Zeilen pro Seite"
+        "rows-per-page": "Zeilen pro Seite",
+        "projects-count": "Projekte",
+        "no-results": {
+          "title": "Keine Projekte gefunden",
+          "description": "Keine Projekte entsprechen deinen Suchkriterien. Versuche, deine Filter anzupassen."
+        },
+        "clear-filters": "Filter zurücksetzen"
       },
       "views": {
         "table": "Tabellenansicht",
