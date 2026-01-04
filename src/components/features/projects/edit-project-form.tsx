@@ -18,11 +18,6 @@ import {
   PROJECT_FORM_STEPS,
   PROJECT_FORM_TOTAL_STEPS,
 } from "@/components/features/projects/form-constants";
-import type { ProjectType } from "@/components/features/projects/types";
-import {
-  EditActivityFormItemSchema,
-  EditProjectWithActivitiesSchema,
-} from "@/components/features/projects/validation-schemas";
 import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -55,6 +50,9 @@ import {
   DISTANCE_KM_STEP,
   MIN_DISTANCE_KM,
 } from "@/config/activities";
+import { EditActivityFormItemSchema } from "@/features/project-activities/validation-schemas";
+import type { ProjectType } from "@/features/projects/types";
+import { EditProjectWithActivitiesSchema } from "@/features/projects/validation-schemas";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
 
 interface EditProjectFormProps {
@@ -63,14 +61,10 @@ interface EditProjectFormProps {
 }
 
 /**
- * Render an editable two-step form for updating a project and its related activities.
+ * Render a two-step form that edits a project's details and manages its activities, then persists changes.
  *
- * The form lets the user edit project details (step 1) and manage activity entries (step 2),
- * then persists changes to the server (update project; create, update, or delete activities).
- * On successful save, related queries are invalidated and `onSuccess` is invoked if provided.
- *
- * @param project - The project object to edit; used to populate initial form values.
- * @param onSuccess - Optional callback invoked after a successful update and activity processing.
+ * @param project - Project used to populate initial form values.
+ * @param onSuccess - Optional callback invoked after a successful project update and activity processing.
  * @returns The rendered edit project form UI.
  */
 export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
@@ -221,6 +215,13 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
     }
   }
 
+  /**
+   * Submits the edited project and its activities to the server, notifies the user of the outcome, and refreshes related queries.
+   *
+   * Processes the main project update first, then creates, updates, or deletes activities from the provided `values.activities` array. Shows success or error toasts based on results, invalidates cached project queries for the given project, and invokes the optional `onSuccess` callback when complete.
+   *
+   * @param values - Form values validated against `EditProjectWithActivitiesSchema`, including project fields and an `activities` array describing new, updated, or deleted activities
+   */
   async function onSubmit(
     values: z.infer<typeof EditProjectWithActivitiesSchema>,
   ) {
@@ -233,37 +234,10 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
         return;
       }
 
-      // Handle activities
-      if (values.activities) {
-        const failedActivities: string[] = [];
-        for (const activity of values.activities) {
-          try {
-            if (
-              activity.isDeleted === true &&
-              activity.isNew === false &&
-              activity.id
-            ) {
-              await deleteActivityMutation(activity.id);
-            } else if (activity.isNew === true && activity.isDeleted !== true) {
-              await createActivityMutation({
-                projectId: project.id,
-                activity,
-              });
-            } else if (
-              activity.isNew === false &&
-              activity.isDeleted !== true &&
-              activity.id
-            ) {
-              await updateActivityMutation({
-                activityId: activity.id,
-                activity,
-              });
-            }
-          } catch (err) {
-            console.error("Failed to process activity:", err);
-            failedActivities.push(activity.activityType || "unknown");
-          }
-        }
+      // Process activities in a helper to keep this function simple
+      if (values.activities && values.activities.length > 0) {
+        const failedActivities = await processActivities(values.activities);
+
         if (failedActivities.length > 0) {
           toast.error(
             t("edit.toast.failed-activities", {
@@ -275,24 +249,93 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       }
 
       toast.success(t("edit.toast.success") || "Project updated successfully");
-      queryClient.invalidateQueries({
-        queryKey: orpcQuery.projects.list.queryKey(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: orpcQuery.projects.getById.queryOptions({
-          input: { id: project.id },
-        }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: orpcQuery.projectActivities.list.queryKey({
-          input: { projectId: project.id },
-        }),
-      });
+      invalidateProjectQueries(project.id);
       onSuccess?.();
     } catch (err) {
       console.error(err);
       toast.error("An error occurred");
     }
+  }
+
+  /**
+   * Processes a list of activity form items, performing the appropriate create/update/delete action for each.
+   *
+   * @param activities - Array of activity form items to process; each item may represent a new, existing, or deleted activity.
+   * @returns An array of activity type identifiers for activities that failed to process (uses `"unknown"` when the activity type is not available).
+   */
+  async function processActivities(
+    activities: z.infer<typeof EditActivityFormItemSchema>[],
+  ) {
+    const failedActivities: string[] = [];
+
+    for (const activity of activities) {
+      try {
+        await handleSingleActivity(activity);
+      } catch (err) {
+        console.error("Failed to process activity:", err);
+        failedActivities.push(activity.activityType || "unknown");
+      }
+    }
+
+    return failedActivities;
+  }
+
+  /**
+   * Apply the appropriate create, update, or delete operation for a single activity based on its form flags.
+   *
+   * @param activity - An activity form item (matches `EditActivityFormItemSchema`). If `isDeleted` is true for an existing activity, it will be deleted; if `isNew` is true and not deleted, it will be created; if not new and not deleted, it will be updated. Other flag combinations are treated as no-ops.
+   */
+  async function handleSingleActivity(
+    activity: z.infer<typeof EditActivityFormItemSchema>,
+  ) {
+    // Deleted existing activity
+    if (
+      activity.isDeleted === true &&
+      activity.isNew === false &&
+      activity.id
+    ) {
+      await deleteActivityMutation(activity.id);
+      return;
+    }
+
+    // New activity to create
+    if (activity.isNew === true && activity.isDeleted !== true) {
+      await createActivityMutation({ projectId: project.id, activity });
+      return;
+    }
+
+    // Existing activity to update
+    if (
+      activity.isNew === false &&
+      activity.isDeleted !== true &&
+      activity.id
+    ) {
+      await updateActivityMutation({ activityId: activity.id, activity });
+      return;
+    }
+
+    // Nothing to do for other combinations (e.g., marked deleted while new)
+  }
+
+  /**
+   * Invalidates cached queries related to a project so they will be refetched.
+   *
+   * @param projectId - The ID of the project whose list, details, and activities caches should be invalidated
+   */
+  function invalidateProjectQueries(projectId: string) {
+    queryClient.invalidateQueries({
+      queryKey: orpcQuery.projects.list.queryKey(),
+    });
+    queryClient.invalidateQueries({
+      queryKey: orpcQuery.projects.getById.queryOptions({
+        input: { id: projectId },
+      }).queryKey,
+    });
+    queryClient.invalidateQueries({
+      queryKey: orpcQuery.projectActivities.list.queryKey({
+        input: { projectId },
+      }),
+    });
   }
 
   const addActivity = () => {

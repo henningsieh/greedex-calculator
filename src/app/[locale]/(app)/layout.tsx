@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/app/routes";
 import {
   AppBreadcrumb,
   AppBreadcrumbSkeleton,
@@ -10,18 +11,29 @@ import { AppSidebar, AppSidebarSkeleton } from "@/components/app-sidebar";
 import { LoadingProvider } from "@/components/providers/loading-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  checkAuthAndOrgs,
+  handleUnauthenticatedRedirect,
+} from "@/features/authentication/utils";
 import { redirect } from "@/lib/i18n/routing";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import {
   getQueryClient,
   HydrateClient,
 } from "@/lib/tanstack-react-query/hydration";
-import { CREATE_ORG_PATH, DASHBOARD_PATH } from "@/lib/utils/app-routes";
-import {
-  checkAuthAndOrgs,
-  handleUnauthenticatedRedirect,
-} from "@/lib/utils/auth-utils";
 
+/**
+ * App root layout that enforces authentication and organization presence, prefetches client data, and renders the main application shell.
+ *
+ * This layout:
+ * - Redirects unauthenticated users to an appropriate unauthenticated route.
+ * - Redirects users without organizations to the create-organization route.
+ * - Reads the persisted sidebar state from cookies.
+ * - Prefetches queries required by client components to avoid hydration mismatches.
+ *
+ * @param children - Content rendered inside the main application area beneath the header and alongside the sidebar.
+ * @returns The application layout element containing the sidebar, header (breadcrumb), main content area, and global UI providers (hydration, loading, error boundaries, toaster).
+ */
 export default async function AppLayout({
   children,
 }: Readonly<{

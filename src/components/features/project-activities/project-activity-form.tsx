@@ -7,11 +7,6 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
 import { DatePickerWithInput } from "@/components/date-picker-with-input";
-import type { ProjectActivityType } from "@/components/features/projects/types";
-import {
-  CreateActivityInputSchema,
-  type UpdateActivityInputSchema,
-} from "@/components/features/projects/validation-schemas";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -33,6 +28,11 @@ import {
   DISTANCE_KM_STEP,
   MIN_DISTANCE_KM,
 } from "@/config/activities";
+import type { ProjectActivityType } from "@/features/project-activities/types";
+import {
+  CreateActivityInputSchema,
+  type UpdateActivityInputSchema,
+} from "@/features/project-activities/validation-schemas";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
 import { PROJECT_ACTIVITIES_ICONS } from "./activities-icons";
 
@@ -44,16 +44,16 @@ interface ProjectActivityFormProps {
 }
 
 /**
- * Render a form for creating a new project activity or editing an existing one.
+ * Render a form that creates a new project activity or edits an existing one.
  *
- * Prefills fields when an existing activity is provided, performs create or update
- * operations on submit, invokes optional callbacks, and disables submission while a mutation is pending.
+ * The form is prefilled when `activity` is provided, validates input against the activity schema,
+ * and triggers create or update mutations with UI feedback and cache invalidation.
  *
  * @param projectId - ID of the project the activity belongs to
- * @param activity - Optional existing activity to prefill the form for editing
+ * @param activity - Optional activity to prefill the form for editing; when present the form updates that activity
  * @param onSuccess - Optional callback invoked after a successful create or update
  * @param onCancel - Optional callback invoked when the cancel action is triggered
- * @returns The component's rendered form element
+ * @returns The form element used to create or edit a project activity
  */
 export function ProjectActivityForm({
   projectId,
@@ -157,6 +157,7 @@ export function ProjectActivityForm({
     if (isPending) {
       return isEditing ? t("form.updating") : t("form.adding");
     }
+
     return isEditing ? t("form.update") : t("form.submit");
   })();
 

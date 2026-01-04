@@ -5,7 +5,6 @@ import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { EditOrganizationFormSchema } from "@/components/features/organizations/validation-schemas";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,10 +23,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { findAvailableSlug } from "@/features/organizations/utils";
+import { EditOrganizationFormSchema } from "@/features/organizations/validation-schemas";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { findAvailableSlug } from "@/lib/utils/organization-utils";
 
+/**
+ * Renders a form to edit the active organization's name and applies updates (adjusting the slug when the name changes).
+ *
+ * The component loads the active organization, populates the form, submits updated name and slug to the backend, shows success or error toasts, and invalidates related queries to refresh data after a successful update.
+ *
+ * @returns The React element for the edit organization form, or a skeleton placeholder while the organization data is loading.
+ */
 export function EditOrganizationForm() {
   const queryClient = useQueryClient();
   const { data: organization } = useSuspenseQuery(

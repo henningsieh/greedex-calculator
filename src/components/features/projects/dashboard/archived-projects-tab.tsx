@@ -7,7 +7,6 @@ import { useState } from "react";
 import { ProjectsGrid } from "@/components/features/projects/dashboard/projects-grid";
 import { ProjectsTable } from "@/components/features/projects/dashboard/projects-table";
 import { ProjectsViewSelect } from "@/components/features/projects/projects-view-select";
-import { DEFAULT_PROJECT_SORTING } from "@/components/features/projects/types";
 import {
   Empty,
   EmptyContent,
@@ -17,8 +16,18 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DEFAULT_PROJECT_SORT } from "@/config/projects";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
+/**
+ * Render a view of archived projects with a selectable grid or table presentation.
+ *
+ * Fetches archived projects (sorted by the default project sort) and:
+ * - shows an empty state with icon, title, and description when no archived projects exist;
+ * - otherwise renders a view selector and either a grid or table of the archived projects.
+ *
+ * @returns A React element that displays the empty archived-projects state or the view selector with the archived projects rendered in the selected layout.
+ */
 export function ArchivedProjectsTab() {
   const t = useTranslations("organization.projectsArchive");
   const [view, setView] = useState<"grid" | "table">("table");
@@ -26,7 +35,7 @@ export function ArchivedProjectsTab() {
   const { data: projects } = useSuspenseQuery(
     orpcQuery.projects.list.queryOptions({
       input: {
-        sort_by: DEFAULT_PROJECT_SORTING[0].id,
+        sort_by: DEFAULT_PROJECT_SORT.column,
         archived: true,
       },
     }),
