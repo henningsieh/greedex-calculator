@@ -235,7 +235,7 @@ import { DEFAULT_PROJECT_SORT } from "@/config/projects";  // ✅ correct source
 
 ## File Locations
 
-```
+```text
 src/
   config/
     projects.ts              ← DEFAULT_PROJECT_SORT defined here
@@ -483,7 +483,7 @@ const [sorting, setSorting] = useState<SortingState>(() =>
 
 ## Architecture Diagram
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │         src/config/projects.ts                  │
 │  DEFAULT_PROJECT_SORT = {column, order}         │
@@ -549,5 +549,5 @@ const [sorting, setSorting] = useState<SortingState>(() =>
 
 ---
 
-**Last Updated**: January 4, 2026  
+**Last Updated**: January 4, 2026,  
 **Version**: 1.0 (Post-Refactoring)
