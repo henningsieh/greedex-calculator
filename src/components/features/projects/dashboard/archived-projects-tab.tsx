@@ -16,7 +16,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEFAULT_PROJECT_SORTING } from "@/features/projects";
+import { DEFAULT_PROJECT_SORT } from "@/config/projects";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
 export function ArchivedProjectsTab() {
@@ -26,7 +26,7 @@ export function ArchivedProjectsTab() {
   const { data: projects } = useSuspenseQuery(
     orpcQuery.projects.list.queryOptions({
       input: {
-        sort_by: DEFAULT_PROJECT_SORTING[0].id,
+        sort_by: DEFAULT_PROJECT_SORT.column,
         archived: true,
       },
     }),

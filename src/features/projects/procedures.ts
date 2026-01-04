@@ -1,6 +1,7 @@
 import { and, asc, desc, eq, inArray, type SQL, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { z } from "zod";
+import { DEFAULT_PROJECT_SORT } from "@/config/projects";
 import { MEMBER_ROLES } from "@/features/organizations";
 import { ProjectParticipantWithUserSchema } from "@/features/participants";
 import { ProjectActivityWithRelationsSchema } from "@/features/project-activities";
@@ -15,7 +16,6 @@ import {
 } from "@/lib/drizzle/schema";
 import { base } from "@/lib/orpc/context";
 import { authorized, requireProjectPermissions } from "@/lib/orpc/middleware";
-import { DEFAULT_PROJECT_SORTING } from "./types";
 import {
   ProjectCreateFormSchema,
   ProjectSortFieldSchema,
@@ -119,11 +119,20 @@ export const listProjects = authorized
       });
     }
 
-    // Determine sort order using DEFAULT_PROJECT_SORTING as source of truth
+    // Determine sort order using DEFAULT_PROJECT_SORT as source of truth
     let orderByClause: SQL<unknown>;
-    const sortField = input?.sort_by ?? DEFAULT_PROJECT_SORTING[0].id;
-    const sortConfig = DEFAULT_PROJECT_SORTING.find((s) => s.id === sortField);
-    const sortDesc = sortConfig?.desc ?? false;
+    const sortField = input?.sort_by ?? DEFAULT_PROJECT_SORT.column;
+    let sortDesc: boolean;
+    if (input?.sort_by === undefined) {
+      // no explicit sort requested - use default order
+      sortDesc = DEFAULT_PROJECT_SORT.order === "desc";
+    } else if (input.sort_by === DEFAULT_PROJECT_SORT.column) {
+      // requested the default column - apply default direction
+      sortDesc = DEFAULT_PROJECT_SORT.order === "desc";
+    } else {
+      // different column requested - default to ascending
+      sortDesc = false;
+    }
 
     switch (sortField) {
       case "name":
@@ -148,9 +157,10 @@ export const listProjects = authorized
         break;
       default:
         // fallback to configured default
-        orderByClause = DEFAULT_PROJECT_SORTING[0].desc
-          ? desc(projectsTable.startDate)
-          : asc(projectsTable.startDate);
+        orderByClause =
+          DEFAULT_PROJECT_SORT.order === "desc"
+            ? desc(projectsTable.startDate)
+            : asc(projectsTable.startDate);
     }
 
     // Get all projects that belong to the user's active organization

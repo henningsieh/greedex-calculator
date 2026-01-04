@@ -7,28 +7,19 @@ import type {
 } from "./validation-schemas";
 
 /**
- * Project sort field values
+ * Project sort field values (type-safe)
  */
+type ProjectColumns = keyof typeof projectsTable.$inferSelect;
+
+export type ProjectSortField = ProjectColumns;
+
 export const PROJECT_SORT_FIELDS = [
   "name",
-  "country",
+  "location",
   "startDate",
   "createdAt",
   "updatedAt",
-] as const;
-
-/**
- * Type for project sort field values
- */
-export type ProjectSortField = (typeof PROJECT_SORT_FIELDS)[number];
-
-/**
- * Default sorting configuration for projects table
- */
-export const DEFAULT_PROJECT_SORTING: {
-  id: ProjectSortField;
-  desc: boolean;
-}[] = [{ id: "startDate", desc: true }];
+] as const satisfies readonly ProjectSortField[];
 
 // ============================================================================
 // PROJECT TYPES

@@ -6,7 +6,7 @@ import { CreateProjectButton } from "@/components/features/projects/create-proje
 import { ProjectsTab } from "@/components/features/projects/dashboard/projects-tab";
 import { ProjectsTabSkeleton } from "@/components/features/projects/dashboard/projects-table";
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
-import { DEFAULT_PROJECT_SORTING } from "@/features/projects";
+import { DEFAULT_PROJECT_SORT } from "@/config/projects";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
@@ -24,7 +24,7 @@ export default async function ProjectsPage() {
     queryClient.prefetchQuery(
       orpcQuery.projects.list.queryOptions({
         input: {
-          sort_by: DEFAULT_PROJECT_SORTING[0].id,
+          sort_by: DEFAULT_PROJECT_SORT.column,
         },
       }),
     ),

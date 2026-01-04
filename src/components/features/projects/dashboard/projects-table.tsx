@@ -65,8 +65,10 @@ import {
 import { DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/config/pagination";
 import { MEMBER_ROLES } from "@/features/organizations";
 import type { ProjectType } from "@/features/projects";
-import { DEFAULT_PROJECT_SORTING } from "@/features/projects";
-import { getProjectDetailPath } from "@/features/projects/utils";
+import {
+  getProjectDetailPath,
+  getProjectsDefaultSorting,
+} from "@/features/projects/utils";
 import { getCountryData } from "@/lib/i18n/countries";
 import { useRouter } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
@@ -92,11 +94,13 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
   // Get columns with translations
   const projectTableColumns = useMemo(() => ProjectTableColumns(t), [t]);
 
-  const [sorting, setSorting] = useState<SortingState>(DEFAULT_PROJECT_SORTING);
+  const [sorting, setSorting] = useState<SortingState>(() =>
+    getProjectsDefaultSorting(),
+  );
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     name: true,
-    country: true,
+    location: true,
     startDate: true,
     createdAt: true,
     updatedAt: false,

@@ -1,7 +1,7 @@
 import React from "react";
 import { type AppRoute, PROJECT_DETAIL_PATH } from "@/app/routes";
 import { PROJECT_ACTIVITIES_ICONS } from "@/components/features/project-activities/activities-icons";
-import { MILLISECONDS_PER_DAY } from "@/config/projects";
+import { DEFAULT_PROJECT_SORT, MILLISECONDS_PER_DAY } from "@/config/projects";
 import type { ProjectActivityType } from "@/features/project-activities";
 import type { ProjectSortField } from "@/features/projects";
 import { orpc } from "@/lib/orpc/orpc";
@@ -13,6 +13,18 @@ import { orpc } from "@/lib/orpc/orpc";
  */
 export const getProjectDetailPath = (projectId: string): AppRoute =>
   PROJECT_DETAIL_PATH.replace("[id]", projectId) as AppRoute;
+
+/**
+ * Convert project default sort to TanStack SortingState
+ */
+export function getProjectsDefaultSorting() {
+  return [
+    {
+      id: DEFAULT_PROJECT_SORT.column as ProjectSortField,
+      desc: DEFAULT_PROJECT_SORT.order === "desc",
+    },
+  ];
+}
 
 /**
  * Retrieves project data and associated activities for the given project ID.
@@ -56,7 +68,7 @@ export function getColumnDisplayName(
   switch (columnId) {
     case "name":
       return t("table.name");
-    case "country":
+    case "location":
       return t("table.country");
     case "startDate":
       return t("table.start-date");

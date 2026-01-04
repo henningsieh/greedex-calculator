@@ -16,7 +16,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { DEFAULT_PROJECT_SORTING } from "@/features/projects";
+import { DEFAULT_PROJECT_SORT } from "@/config/projects";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
 export function ProjectsTab() {
@@ -30,7 +30,7 @@ export function ProjectsTab() {
   const { data: allProjects, error } = useSuspenseQuery(
     orpcQuery.projects.list.queryOptions({
       input: {
-        sort_by: DEFAULT_PROJECT_SORTING[0].id,
+        sort_by: DEFAULT_PROJECT_SORT.column,
       },
     }),
   );

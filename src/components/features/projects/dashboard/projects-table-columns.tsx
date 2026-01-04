@@ -118,7 +118,7 @@ export function ProjectTableColumns(
       ),
     },
     {
-      accessorKey: "country",
+      accessorKey: "location",
       header: ({ column, table }) => (
         <SortableHeader
           column={column}

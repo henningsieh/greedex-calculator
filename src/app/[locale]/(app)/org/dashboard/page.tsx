@@ -3,8 +3,8 @@ import { getTranslations } from "next-intl/server";
 import { OrganizationDashboard } from "@/components/features/organizations/organization-dashboard";
 import { ORGANIZATION_ICONS } from "@/components/features/organizations/organization-icons";
 import { DEFAULT_PAGE_SIZE } from "@/config/pagination";
+import { DEFAULT_PROJECT_SORT } from "@/config/projects";
 import { MEMBER_ROLES } from "@/features/organizations";
-import { DEFAULT_PROJECT_SORTING } from "@/features/projects";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
 import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
@@ -28,7 +28,7 @@ export default async function DashboardPage() {
     queryClient.prefetchQuery(
       orpcQuery.projects.list.queryOptions({
         input: {
-          sort_by: DEFAULT_PROJECT_SORTING[0].id,
+          sort_by: DEFAULT_PROJECT_SORT.column,
         },
       }),
     ),

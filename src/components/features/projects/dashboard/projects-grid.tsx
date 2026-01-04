@@ -15,11 +15,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Empty, EmptyDescription } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
+import { DEFAULT_PROJECT_SORT } from "@/config/projects";
 import {
   PROJECT_SORT_FIELDS,
   type ProjectSortField,
   type ProjectType,
 } from "@/features/projects";
+import { getColumnDisplayName } from "@/features/projects/utils";
 
 interface ProjectsGridProps {
   projects: Array<ProjectType>;
@@ -33,27 +35,15 @@ export function ProjectsGrid({
   const t = useTranslations("organization.projects");
 
   const [sortBy, setSortBy] = useState<ProjectSortField>(
-    initialSortBy ?? "startDate",
+    initialSortBy ?? DEFAULT_PROJECT_SORT.column,
   );
-  const [sortDesc, setSortDesc] = useState(false);
+  const [sortDesc, setSortDesc] = useState<boolean>(
+    DEFAULT_PROJECT_SORT.order === "desc",
+  );
   const [filter, setFilter] = useState("");
 
-  const getSortLabel = (field: ProjectSortField) => {
-    switch (field) {
-      case "name":
-        return t("table.name");
-      case "country":
-        return t("table.country");
-      case "startDate":
-        return t("table.start-date");
-      case "createdAt":
-        return t("table.created");
-      case "updatedAt":
-        return t("table.updated");
-      default:
-        return field;
-    }
-  };
+  const getSortLabel = (field: ProjectSortField) =>
+    getColumnDisplayName(field, t);
 
   const sortOptions = PROJECT_SORT_FIELDS.map((field) => ({
     value: field,
