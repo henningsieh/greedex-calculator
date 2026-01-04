@@ -32,7 +32,7 @@ export default async function AboutPage() {
                 className="absolute top-4 right-4 border border-secondary bg-secondary/25 pt-1 font-bold text-secondary text-sm"
                 variant="secondary"
               >
-                Partner
+                {t("partnerBadge")}
               </Badge>
               <CardHeader className="flex flex-row items-center gap-4 space-y-0">
                 <div className="relative h-24 w-24 flex-shrink-0 rounded-sm border border-border">
@@ -67,7 +67,7 @@ export default async function AboutPage() {
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    Visit website
+                    {t("visitWebsite")}
                   </a>
                 ) : null}
               </CardFooter>
@@ -76,7 +76,7 @@ export default async function AboutPage() {
         </section>
 
         <footer className="text-center text-muted-foreground text-sm">
-          <p>Co-funded by the Erasmus+ programme.</p>
+          <p>{t("erasmusFunding")}</p>
         </footer>
       </div>
     </main>

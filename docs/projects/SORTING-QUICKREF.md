@@ -443,10 +443,9 @@ type ProjectColumns = keyof typeof projectsTable.$inferSelect;
 
 ```typescript
 // ❌ Wrong
-import { DEFAULT_PROJECT_SORT } from "@/config/projects";
+import { DEFAULT_PROJECT_SORT } from "@/features/projects";
 
-// ✅ Correct: import DEFAULT_PROJECT_SORT from config
-import { DEFAULT_PROJECT_SORT } from "@/config/projects";
+// ✅ Correct
 import { DEFAULT_PROJECT_SORT } from "@/config/projects";
 ```
 

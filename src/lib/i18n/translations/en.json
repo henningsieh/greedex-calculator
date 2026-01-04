@@ -960,6 +960,9 @@
     }
   },
   "about": {
-    "partnersHeadline": "Project Greendex is a strategic partnership funded by Erasmus+ that researches sustainability, develops educational resources and runs hands-on activities to build environmental awareness and long-term impact."
+    "partnersHeadline": "Project Greendex is a strategic partnership funded by Erasmus+ that researches sustainability, develops educational resources and runs hands-on activities to build environmental awareness and long-term impact.",
+    "partnerBadge": "Partner",
+    "visitWebsite": "Visit website",
+    "erasmusFunding": "Co-funded by the Erasmus+ programme."
   }
 }

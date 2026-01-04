@@ -5,6 +5,9 @@ import type { ProjectSortField } from "@/features/projects/types";
  */
 export const DEFAULT_PROJECT_DURATION_DAYS = 5;
 
+/**
+ * Milliseconds in one day (used for date/time calculations).
+ */
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
 /**
