@@ -313,7 +313,7 @@
       "tabs": {
         "participants": "Teilnehmende",
         "projects": "Projekte",
-        "loading-projects": "Projekte werden geladen...",
+        "loading-projects": "Projekte werden geladen…",
         "statistics": "Statistiken",
         "loading-stats": "Die Statistiken werden gerade geladen."
       }
@@ -335,7 +335,7 @@
         "edit-project": "Projekt bearbeiten",
         "delete-project": "Projekt löschen",
         "batch-delete": "Ausgewählte löschen ({count})",
-        "filter-projects": "Projekte filtern...",
+        "filter-projects": "Projekte filtern…",
         "active-filters": "Aktive Filter",
         "search-by-name": "Nach Projektname suchen",
         "filter-all-countries": "Alle Länder",
@@ -421,7 +421,7 @@
           "welcome-message": "Willkommensnachricht (optional)",
           "organization": "Organisation",
           "select-organization": "Organisation auswählen",
-          "creating": "Wird erstellt...",
+          "creating": "Wird erstellt…",
           "create-project": "Projekt erstellen",
           "title": "Neues Projekt erstellen",
           "legend": "Erstelle ein neues Erasmus+ Projekt, um die Aktivitäten deiner Teilnehmenden zu verfolgen und ihren CO₂-Fußabdruck zu berechnen.",
@@ -486,7 +486,7 @@
         "filter": "Liste filtern",
         "clear": "Alle Filter löschen"
       },
-      "loading": "Teammitglieder werden geladen...",
+      "loading": "Teammitglieder werden geladen…",
       "noResults": "Keine Ergebnisse.",
       "rowsSelected": "{selected} von {total} Zeile(n) ausgewählt.",
       "previous": "Vorherige",
@@ -505,7 +505,7 @@
         "roleLabel": "Rolle",
         "rolePlaceholder": "Rolle auswählen",
         "cancelButton": "Abbrechen",
-        "sendingButton": "Wird gesendet...",
+        "sendingButton": "Wird gesendet…",
         "sendButton": "Einladung senden",
         "successToast": "Teammitglied erfolgreich eingeladen."
       },
@@ -574,9 +574,9 @@
       "collapse": "Seitenleiste einklappen"
     },
     "loading": {
-      "default": "Wird geladen...",
-      "switchingProject": "Projekt wird gewechselt...",
-      "switchingOrganization": "Organisation wird gewechselt..."
+      "default": "Wird geladen…",
+      "switchingProject": "Projekt wird gewechselt…",
+      "switchingOrganization": "Organisation wird gewechselt…"
     }
   },
   "project": {
@@ -591,7 +591,7 @@
       "participants-description": "Teilnehmende werden hier angezeigt.",
       "activities": "Aktivitäten",
       "activities-description": "Projektaktivitäten werden hier angezeigt.",
-      "loading": "Projektdetails werden geladen...",
+      "loading": "Projektdetails werden geladen…",
       "people-joined": "Leute sind bereits beigetreten",
       "no-participants-yet": "Noch keine Teilnehmenden",
       "share-the-participation-link": "Teile den Teilnahmelink, um Personen zu diesem Projekt einzuladen.",
@@ -642,8 +642,8 @@
         "submit": "Aktivität hinzufügen",
         "update": "Aktivität aktualisieren",
         "cancel": "Abbrechen",
-        "adding": "Wird hinzugefügt...",
-        "updating": "Wird aktualisiert..."
+        "adding": "Wird hinzugefügt…",
+        "updating": "Wird aktualisiert…"
       },
       "delete": {
         "confirm-title": "Aktivität löschen?",
@@ -823,8 +823,8 @@
       "fullNamePlaceholder": "Max Mustermann",
       "backToLogin": "Zurück zur Anmeldung",
       "orContinueWith": "Oder fortfahren mit",
-      "signingUp": "Konto wird erstellt...",
-      "sending": "Wird gesendet...",
+      "signingUp": "Konto wird erstellt…",
+      "sending": "Wird gesendet…",
       "failedSignIn": "Anmeldung fehlgeschlagen",
       "failedCreate": "Konto konnte nicht erstellt werden",
       "failedSend": "Zurücksetzungs-E-Mail konnte nicht gesendet werden"
@@ -842,7 +842,7 @@
       "forgotPassword": "Passwort vergessen?",
       "loginButton": "Anmelden",
       "logOut": "Abmelden",
-      "signingIn": "Wird angemeldet...",
+      "signingIn": "Wird angemeldet…",
       "sendMagicLink": "Magic Link senden",
       "verifyEmail": "Bitte verifiziere deine E-Mail-Adresse, um fortzufahren",
       "magicLinkSent": "Magic Link gesendet! Überprüfe dein E-Mail-Postfach.",
@@ -887,7 +887,7 @@
       "confirmPassword": "Neues Passwort bestätigen",
       "confirmPasswordDescription": "Bitte bestätige dein neues Passwort.",
       "resetPasswordButton": "Passwort zurücksetzen",
-      "resetting": "Wird zurückgesetzt...",
+      "resetting": "Wird zurückgesetzt…",
       "resetSuccess": "Passwort erfolgreich zurückgesetzt! Bitte melde dich an.",
       "resetFailed": "Passwort konnte nicht zurückgesetzt werden. Der Link ist möglicherweise abgelaufen."
     },
@@ -934,7 +934,7 @@
         "text": "Du musst deine E-Mail verifizieren, bevor du dich anmelden kannst."
       },
       "resend": {
-        "sending": "Wird gesendet...",
+        "sending": "Wird gesendet…",
         "button": "Bestätigungs-E-Mail erneut senden",
         "disabled": "Erneut senden in {countdown}s",
         "footer": "Hast du die E-Mail nicht erhalten? Überprüfe deinen Spam-Ordner oder versuche es erneut."

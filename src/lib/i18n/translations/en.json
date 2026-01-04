@@ -313,7 +313,7 @@
       "tabs": {
         "participants": "Participants",
         "projects": "Projects",
-        "loading-projects": "Loading projects...",
+        "loading-projects": "Loading projects…",
         "statistics": "Statistics",
         "loading-stats": "The statistics are currently gettingloaded."
       }
@@ -335,7 +335,7 @@
         "edit-project": "Edit Project",
         "delete-project": "Delete Project",
         "batch-delete": "Delete Selected ({count})",
-        "filter-projects": "Filter projects...",
+        "filter-projects": "Filter projects…",
         "active-filters": "Active filters",
         "search-by-name": "Search by project name",
         "filter-all-countries": "All countries",
@@ -421,7 +421,7 @@
           "welcome-message": "Welcome Message (optional)",
           "organization": "Organization",
           "select-organization": "Select organization",
-          "creating": "Creating...",
+          "creating": "Creating…",
           "create-project": "Create Project",
           "title": "Create a new Project",
           "legend": "Create a new Erasmus+ project to track your participants' activities and calculate their CO₂ footprint.",
@@ -486,7 +486,7 @@
         "filter": "Filter list",
         "clear": "Clear all filters"
       },
-      "loading": "Loading team members...",
+      "loading": "Loading team members…",
       "noResults": "No results.",
       "rowsSelected": "{selected} of {total} row(s) selected.",
       "previous": "Previous",
@@ -505,7 +505,7 @@
         "roleLabel": "Role",
         "rolePlaceholder": "Select role",
         "cancelButton": "Cancel",
-        "sendingButton": "Sending...",
+        "sendingButton": "Sending…",
         "sendButton": "Send Invite",
         "successToast": "Team member invited successfully."
       },
@@ -574,9 +574,9 @@
       "collapse": "Collapse Sidebar"
     },
     "loading": {
-      "default": "Loading...",
-      "switchingProject": "Switching project...",
-      "switchingOrganization": "Switching organization..."
+      "default": "Loading…",
+      "switchingProject": "Switching project…",
+      "switchingOrganization": "Switching organization…"
     }
   },
   "project": {
@@ -591,7 +591,7 @@
       "participants-description": "Participants will be displayed here.",
       "activities": "Activities",
       "activities-description": "Project activities will be displayed here.",
-      "loading": "loading project details...",
+      "loading": "loading project details…",
       "people-joined": "people have already joined",
       "no-participants-yet": "No participants yet",
       "share-the-participation-link": "Share the participation link to invite people to this project.",
@@ -642,8 +642,8 @@
         "submit": "Add Activity",
         "update": "Update Activity",
         "cancel": "Cancel",
-        "adding": "Adding...",
-        "updating": "Updating..."
+        "adding": "Adding…",
+        "updating": "Updating…"
       },
       "delete": {
         "confirm-title": "Delete Activity?",
@@ -823,8 +823,8 @@
       "fullNamePlaceholder": "John Doe",
       "backToLogin": "Back to Login",
       "orContinueWith": "Or continue with",
-      "signingUp": "Creating Account...",
-      "sending": "Sending...",
+      "signingUp": "Creating Account…",
+      "sending": "Sending…",
       "failedSignIn": "Failed to sign in",
       "failedCreate": "Failed to create account",
       "failedSend": "Failed to send reset email"
@@ -842,7 +842,7 @@
       "forgotPassword": "Forgot your password?",
       "loginButton": "Login",
       "logOut": "Log out",
-      "signingIn": "Signing in...",
+      "signingIn": "Signing in…",
       "sendMagicLink": "Send magic link",
       "verifyEmail": "Please verify your email address to continue",
       "magicLinkSent": "Magic link sent! Check your email.",
@@ -887,7 +887,7 @@
       "confirmPassword": "Confirm New Password",
       "confirmPasswordDescription": "Please confirm your new password.",
       "resetPasswordButton": "Reset Password",
-      "resetting": "Resetting...",
+      "resetting": "Resetting…",
       "resetSuccess": "Password reset successfully! Please sign in.",
       "resetFailed": "Failed to reset password. The link may have expired."
     },
@@ -934,7 +934,7 @@
         "text": "You must verify your email before you can log in."
       },
       "resend": {
-        "sending": "Sending...",
+        "sending": "Sending…",
         "button": "Resend verification email",
         "disabled": "Resend in {countdown}s",
         "footer": "Didn't receive the email? Check your spam folder or try resending."
