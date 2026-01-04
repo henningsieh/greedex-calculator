@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { LOGIN_PATH, SIGNUP_PATH } from "@/app/routes";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,8 +19,16 @@ import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import { authClient } from "@/lib/better-auth/auth-client";
 import { Link } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
-import { LOGIN_PATH, SIGNUP_PATH } from "@/lib/utils/app-routes";
 
+/**
+ * Render a verification-email UI and manage resend actions for the email address passed in the URL query.
+ *
+ * This component reads the "email" query parameter and displays instructions and a resend button.
+ * It enforces a 60-second cooldown between resend attempts, shows success and error toasts, and
+ * calls the authentication client to send verification emails with a callback to LOGIN_PATH.
+ *
+ * @param props - Standard div props spread onto the root Card element (accepts `className` and other div attributes)
+ */
 export function VerifyEmailContent({
   className,
   ...props

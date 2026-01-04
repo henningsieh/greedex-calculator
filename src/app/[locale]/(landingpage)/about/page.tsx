@@ -1,8 +1,5 @@
 import Image from "next/image";
-import {
-  PARTNERS,
-  PARTNERS_HEADLINE,
-} from "@/components/landingpage/about/about.configuration";
+import { getTranslations } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -12,15 +9,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { PARTNERS } from "@/config/about";
 
-export default function AboutPage() {
+/**
+ * Renders the About page with localized content and a list of partner cards.
+ *
+ * This server-rendered React component loads translations for the "about" namespace
+ * and displays an introduction, a responsive grid of partner cards (logo, name,
+ * optional country, description, and optional external website link), and a footer
+ * note about Erasmus funding.
+ *
+ * @returns The About page JSX element
+ */
+export default async function AboutPage() {
+  const t = await getTranslations("about");
+
   return (
     <main className="relative min-h-screen py-28">
       <div className="container relative z-10 mx-auto max-w-6xl space-y-12 px-6">
         <header className="space-y-5 text-center">
           <h1 className="font-semibold text-5xl">About Greendex</h1>
           <p className="mx-auto max-w-5xl text-lg text-muted-foreground">
-            {PARTNERS_HEADLINE}
+            {t("partnersHeadline")}
           </p>
         </header>
 
@@ -32,7 +42,7 @@ export default function AboutPage() {
                 className="absolute top-4 right-4 border border-secondary bg-secondary/25 pt-1 font-bold text-secondary text-sm"
                 variant="secondary"
               >
-                Partner
+                {t("partnerBadge")}
               </Badge>
               <CardHeader className="flex flex-row items-center gap-4 space-y-0">
                 <div className="relative h-24 w-24 flex-shrink-0 rounded-sm border border-border">
@@ -67,7 +77,7 @@ export default function AboutPage() {
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    Visit website
+                    {t("visitWebsite")}
                   </a>
                 ) : null}
               </CardFooter>
@@ -76,7 +86,7 @@ export default function AboutPage() {
         </section>
 
         <footer className="text-center text-muted-foreground text-sm">
-          <p>Co-funded by the Erasmus+ programme.</p>
+          <p>{t("erasmusFunding")}</p>
         </footer>
       </div>
     </main>

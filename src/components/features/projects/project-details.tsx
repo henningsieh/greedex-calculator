@@ -52,22 +52,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MILLISECONDS_PER_DAY } from "@/config/projects";
+import { calculateActivitiesCO2 } from "@/features/projects/utils";
 import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
-import {
-  calculateActivitiesCO2,
-  MILLISECONDS_PER_DAY,
-} from "@/lib/utils/project-utils";
 
 interface ProjectDetailsProps {
   id: string;
 }
 
 /**
- * Renders a tabbed project overview with header, statistics, participation controls, and three tabbed sections (details, activities, participants).
+ * Display a project's header, statistics, participation controls, and tabbed sections for details, activities, and participants.
  *
- * @param id - The project identifier used to fetch project details, participants, and activities
- * @returns The rendered project overview UI containing the header, statistics grid, participation controls, and tabs
+ * @param id - Project identifier used to fetch project details, participants, and activities
+ * @returns A React element containing the project's overview UI
  */
 export function ProjectDetails({ id }: ProjectDetailsProps) {
   const tProject = useTranslations("organization.projects");
@@ -124,6 +122,7 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
     ) {
       return 0;
     }
+
     const diffInMs = endDate.getTime() - startDate.getTime();
     return Math.max(0, Math.ceil(diffInMs / MILLISECONDS_PER_DAY));
   })();

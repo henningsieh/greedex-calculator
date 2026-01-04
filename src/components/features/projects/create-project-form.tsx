@@ -14,11 +14,6 @@ import {
   PROJECT_FORM_STEPS,
   PROJECT_FORM_TOTAL_STEPS,
 } from "@/components/features/projects/form-constants";
-import {
-  ActivityFormItemSchema,
-  type CreateProjectWithActivities,
-  CreateProjectWithActivitiesSchema,
-} from "@/components/features/projects/validation-schemas";
 import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,19 +41,16 @@ import {
   DISTANCE_KM_STEP,
   MIN_DISTANCE_KM,
 } from "@/config/activities";
+import {
+  DEFAULT_PROJECT_DURATION_DAYS,
+  MILLISECONDS_PER_DAY,
+} from "@/config/projects";
+import { ActivityFormItemSchema } from "@/features/project-activities/validation-schemas";
+import { getProjectDetailPath } from "@/features/projects/utils";
+import type { CreateProjectWithActivities } from "@/features/projects/validation-schemas";
+import { CreateProjectWithActivitiesSchema } from "@/features/projects/validation-schemas";
 import { useRouter } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
-import { getProjectDetailPath } from "@/lib/utils/project-utils";
-
-/**
- * Default project duration in days when creating a new project.
- */
-const DEFAULT_PROJECT_DURATION_DAYS = 30;
-
-/**
- * Milliseconds in one day, used for date calculations.
- */
-const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 interface CreateProjectFormProps {
   activeOrganizationId: string;
@@ -169,6 +161,43 @@ export function CreateProjectForm({
     }
   }
 
+  /**
+   * Attempt to create the given activities for a project and report any failures.
+   *
+   * Attempts to create each activity for the specified project; creation errors are collected but do not abort the whole process.
+   *
+   * @param projectId - The ID of the project to attach activities to.
+   * @param activities - Optional list of activity inputs to create; if `undefined` or empty no creations are attempted.
+   * @returns An array of `activityType` values for activities that failed to be created; returns an empty array if none failed or if no activities were provided.
+   */
+  async function createActivitiesForProject(
+    projectId: string,
+    activities?: CreateProjectWithActivities["activities"],
+  ) {
+    const failedActivities: string[] = [];
+    if (!activities || activities.length === 0) {
+      return failedActivities;
+    }
+
+    for (const activity of activities) {
+      try {
+        await createActivityMutation({ projectId, activity });
+      } catch (err) {
+        console.error("Failed to create activity:", err);
+        failedActivities.push(activity.activityType);
+      }
+    }
+
+    return failedActivities;
+  }
+
+  /**
+   * Create a project and its associated activities, show success or error toasts, navigate to the created project's detail page, and invalidate the projects list cache.
+   *
+   * Creates the project from `values`, attempts to create each activity, reports any activity-level failures, and handles navigation and cache invalidation on success; shows a generic error toast on unexpected failures.
+   *
+   * @param values - The project fields and an array of activity items to create
+   */
   async function onSubmit(values: CreateProjectWithActivities) {
     try {
       // Create the project first
@@ -179,28 +208,19 @@ export function CreateProjectForm({
         return;
       }
 
-      // If there are activities, create them
-      if (values.activities && values.activities.length > 0) {
-        const failedActivities: string[] = [];
-        for (const activity of values.activities) {
-          try {
-            await createActivityMutation({
-              projectId: result.project.id,
-              activity,
-            });
-          } catch (err) {
-            console.error("Failed to create activity:", err);
-            failedActivities.push(activity.activityType);
-          }
-        }
-        if (failedActivities.length > 0) {
-          toast.error(
-            t("toast.failed-activities", {
-              count: failedActivities.length,
-              activities: failedActivities.join(", "),
-            }),
-          );
-        }
+      // Create activities in a helper to keep this function simple
+      const failedActivities = await createActivitiesForProject(
+        result.project.id,
+        values.activities,
+      );
+
+      if (failedActivities.length > 0) {
+        toast.error(
+          t("toast.failed-activities", {
+            count: failedActivities.length,
+            activities: failedActivities.join(", "),
+          }),
+        );
       }
 
       toast.success(t("toast.success"));

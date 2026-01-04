@@ -4,11 +4,6 @@ import { ArrowUpDown, ChevronDownIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { ProjectCard } from "@/components/features/projects/project-card";
-import {
-  PROJECT_SORT_FIELDS,
-  type ProjectSortField,
-  type ProjectType,
-} from "@/components/features/projects/types";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -20,12 +15,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Empty, EmptyDescription } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
+import { DEFAULT_PROJECT_SORT } from "@/config/projects";
+import type { ProjectSortField, ProjectType } from "@/features/projects/types";
+import { PROJECT_SORT_FIELDS } from "@/features/projects/types";
+import {
+  createProjectComparator,
+  getColumnDisplayName,
+} from "@/features/projects/utils";
 
 interface ProjectsGridProps {
-  projects: Array<ProjectType>;
+  projects: ProjectType[];
   sortBy?: ProjectSortField;
 }
 
+/**
+ * Render a filterable, sortable grid of project cards.
+ *
+ * The grid includes a text filter, controls to toggle sort direction, and a dropdown to choose the sort field.
+ *
+ * @param projects - The list of projects to display and filter.
+ * @param sortBy - Optional initial sort field; when omitted the default sort from configuration is used.
+ * @returns The rendered grid of project cards; if no projects match the current filter, an empty state is rendered.
+ */
 export function ProjectsGrid({
   projects,
   sortBy: initialSortBy,
@@ -33,63 +44,33 @@ export function ProjectsGrid({
   const t = useTranslations("organization.projects");
 
   const [sortBy, setSortBy] = useState<ProjectSortField>(
-    initialSortBy ?? "startDate",
+    initialSortBy ?? DEFAULT_PROJECT_SORT.column,
   );
-  const [sortDesc, setSortDesc] = useState(false);
+  const [sortDesc, setSortDesc] = useState<boolean>(
+    DEFAULT_PROJECT_SORT.order === "desc",
+  );
   const [filter, setFilter] = useState("");
 
-  const getSortLabel = (field: ProjectSortField) => {
-    switch (field) {
-      case "name":
-        return t("table.name");
-      case "country":
-        return t("table.country");
-      case "startDate":
-        return t("table.start-date");
-      case "createdAt":
-        return t("table.created");
-      case "updatedAt":
-        return t("table.updated");
-      default:
-        return field;
-    }
-  };
+  const getSortLabel = (field: ProjectSortField) =>
+    getColumnDisplayName(field, t);
 
   const sortOptions = PROJECT_SORT_FIELDS.map((field) => ({
     value: field,
     label: getSortLabel(field),
   }));
 
+  const comparator = useMemo(
+    () => createProjectComparator(sortBy, sortDesc),
+    [sortBy, sortDesc],
+  );
+
   const sortedProjects = useMemo(() => {
     const filtered = projects.filter((p) =>
       (p.name || "").toLowerCase().includes(filter.toLowerCase()),
     );
 
-    return [...filtered].sort((a, b) => {
-      const aValue = a[sortBy as keyof ProjectType];
-      const bValue = b[sortBy as keyof ProjectType];
-
-      // Handle null/undefined - push them to the end
-      if (aValue == null && bValue == null) {
-        return 0;
-      }
-      if (aValue == null) {
-        return sortDesc ? -1 : 1;
-      }
-      if (bValue == null) {
-        return sortDesc ? 1 : -1;
-      }
-
-      let result = 0;
-      if (aValue instanceof Date && bValue instanceof Date) {
-        result = aValue.getTime() - bValue.getTime();
-      } else if (typeof aValue === "string" && typeof bValue === "string") {
-        result = aValue.localeCompare(bValue);
-      }
-
-      return sortDesc ? -result : result;
-    });
-  }, [projects, sortBy, sortDesc, filter]);
+    return [...filtered].sort(comparator);
+  }, [projects, comparator, filter]);
 
   return (
     <>
