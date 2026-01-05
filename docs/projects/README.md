@@ -4,47 +4,26 @@ Technical documentation for the projects feature, including sorting configuratio
 
 ## Documents
 
-### 1. [sorting-centralization-refactoring.md](./sorting-centralization-refactoring.md)
+### 1. [table-management.md](./table-management.md) ⭐ **START HERE**
 
-**Centralized Project Sorting Configuration** — Comprehensive technical guide for the unified project sorting system.
+**Complete TanStack React Table Management Guide** — Everything about the `useProjectsTable` hook and all table features.
 
 **Covers:**
-- Solution architecture and type-safe patterns
-- Grid and table implementation details
-- Backend integration (oRPC procedures)
-- Server-side prefetch (SSR) patterns
-- Type safety benefits and design rationale
+- Shared hook pattern for grid and table views
+- **Sorting** with centralized configuration
+- **Row selection** with batch actions
+- **Filtering** by name and location
+- **Pagination** with page size control
+- **Column visibility** toggling
+- Type safety, troubleshooting, performance
 
-**Contains code examples from:**
-- [src/config/projects.ts](../../src/config/projects.ts) — Configuration
-- [src/features/projects/types.ts](../../src/features/projects/types.ts) — Type definitions
-- [src/features/projects/utils.ts](../../src/features/projects/utils.ts) — Helper functions
-- [src/features/projects/procedures.ts](../../src/features/projects/procedures.ts) — Backend RPC
-- [src/components/features/projects/dashboard/projects-grid.tsx](../../src/components/features/projects/dashboard/projects-grid.tsx) — Grid component
-- [src/components/features/projects/dashboard/projects-table.tsx](../../src/components/features/projects/dashboard/projects-table.tsx) — Table component
+**Quick Reference:** Sorting, selection, filtering, pagination patterns with copy-paste examples.
 
-**When to read:** Implementing sorting features, understanding type-safety patterns, adding new sort fields.
+**When to read:** Working with tables, implementing table features, understanding the complete architecture.
 
 ---
 
-### 2. [SORTING-QUICKREF.md](./SORTING-QUICKREF.md)
-
-**Quick Reference & Copy-Paste Patterns** — Ready-to-use code examples and troubleshooting.
-
-**Sections:**
-- Configuration cheat sheet (DEFAULT_PROJECT_SORT structure)
-- 4 consumer patterns (grid, table, backend, prefetch)
-- Type safety patterns and pitfalls
-- Import paths and file locations
-- Common tasks and scenarios
-- Troubleshooting guide
-- Architecture diagram
-
-**When to read:** Implementing features, quick lookups, copying code patterns.
-
----
-
-### 3. [permissions.md](./permissions.md)
+### 2. [permissions.md](./permissions.md)
 
 **Better Auth Permissions Model** — Abstract permission system for project resources.
 
