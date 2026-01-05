@@ -151,19 +151,28 @@ export function ProjectCard({
                     ? "opacity-100"
                     : "opacity-0 group-hover:opacity-100",
                 )}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 <Checkbox
                   aria-label={`Select ${project.name}`}
                   checked={isSelected}
                   className="h-5 w-5 border-2 bg-background data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                   onCheckedChange={onSelectChange}
-                  onClick={(e) => e.stopPropagation()}
                 />
               </div>
             )}
 
             {/* Actions Menu - Absolute positioned */}
-            <div className="absolute top-2 right-2 z-20">
+            <div
+              className="absolute top-2 right-2 z-20"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -173,7 +182,6 @@ export function ProjectCard({
                       // Always show on mobile/touch if needed, but hover works for desktop
                       "focus:opacity-100",
                     )}
-                    onClick={(e) => e.stopPropagation()}
                     size="icon"
                     variant="ghost"
                   >
@@ -195,6 +203,7 @@ export function ProjectCard({
                   {canUpdate && (
                     <DropdownMenuItem
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         setIsEditModalOpen(true);
                       }}
@@ -210,6 +219,7 @@ export function ProjectCard({
                         className="text-destructive focus:text-destructive"
                         disabled={isDeleting || permissionsPending}
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           handleDelete();
                         }}

@@ -349,7 +349,7 @@ export function ProjectsTable({
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
-                    className="cursor-pointer transition-colors hover:bg-secondary/20"
+                    className="cursor-pointer transition-colors data-[state=selected]:bg-secondary/40 hover:bg-secondary/20"
                     data-state={row.getIsSelected() && "selected"}
                     key={row.id}
                     onClick={(e) => {
