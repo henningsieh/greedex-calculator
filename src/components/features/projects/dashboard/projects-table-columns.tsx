@@ -100,7 +100,7 @@ export function ProjectTableColumns(
     {
       id: "select",
       header: ({ table }) => (
-        <div className="pl-1">
+        <div className="pl-2">
           <Checkbox
             aria-label="Select all"
             checked={
@@ -114,12 +114,14 @@ export function ProjectTableColumns(
         </div>
       ),
       cell: ({ row }) => (
-        <Checkbox
-          aria-label="Select row"
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          onClick={(e) => e.stopPropagation()}
-        />
+        <div className="pl-2">
+          <Checkbox
+            aria-label="Select row"
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
       ),
       enableSorting: false,
       enableHiding: false,
@@ -173,6 +175,7 @@ export function ProjectTableColumns(
         return dateA.getTime() - dateB.getTime();
       },
     },
+
     {
       accessorKey: "createdAt",
       header: ({ column, table }) => (
@@ -193,10 +196,12 @@ export function ProjectTableColumns(
         return dateA.getTime() - dateB.getTime();
       },
     },
+
     {
       accessorKey: "updatedAt",
       header: ({ column, table }) => (
         <SortableHeader
+          // className="w-full justify-end bg-red-600 text-right"
           column={column}
           isNumeric
           table={table}

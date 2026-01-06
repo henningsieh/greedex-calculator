@@ -1,6 +1,5 @@
-"use client";
-
 import { GlobeIcon } from "lucide-react";
+import type { JSX } from "react";
 import { PROJECT_ICONS } from "@/components/features/projects/project-icons";
 import { Badge } from "@/components/ui/badge";
 import { getCountryData } from "@/lib/i18n/countries";
@@ -71,6 +70,72 @@ type ProjectLocationProps =
       className?: string;
     };
 
+interface ContentProps {
+  project: { location?: string; country: string };
+  countryDisplay: string;
+  renderFlag: () => JSX.Element | null;
+  className?: string;
+}
+
+const UnifiedContent = ({
+  project,
+  countryDisplay,
+  renderFlag,
+  className,
+}: ContentProps) => (
+  <span
+    className={cn("inline-flex items-center gap-1.5 leading-none", className)}
+  >
+    {renderFlag()}
+    <span className="flex items-baseline gap-1">
+      <div className="flex gap-0.5">
+        {project.location && (
+          <span className="font-medium text-foreground">
+            {project.location}
+          </span>
+        )}
+        {project.location && (
+          <span className="text-muted-foreground/60">,</span>
+        )}
+      </div>
+      <span
+        className={cn(
+          "truncate",
+          project.location
+            ? "text-muted-foreground"
+            : "font-medium text-foreground",
+        )}
+      >
+        {countryDisplay}
+      </span>
+    </span>
+  </span>
+);
+
+const SplitContent = ({
+  project,
+  countryDisplay,
+  renderFlag,
+  className,
+}: ContentProps) => (
+  <span
+    className={cn("inline-flex items-center gap-1.5 leading-none", className)}
+  >
+    {project.location && (
+      <>
+        <span className="font-semibold text-foreground">
+          {project.location}
+        </span>
+        <span className="mx-0.5 h-[1em] w-[px] bg-border" />
+      </>
+    )}
+    <span className="flex items-center gap-1.5 text-muted-foreground">
+      {renderFlag()}
+      <span className="font-medium">{countryDisplay}</span>
+    </span>
+  </span>
+);
+
 /**
  * Reusable component to display project location with optional flag and different variants.
  * @param project - Project data including location and country.
@@ -130,56 +195,22 @@ export function ProjectLocation({
     );
   }
 
-  const UnifiedContent = () => (
-    <span
-      className={cn("inline-flex items-center gap-1.5 leading-none", className)}
-    >
-      {renderFlag()}
-      <span className="flex items-baseline gap-1">
-        <div className="flex gap-0.5">
-          {project.location && (
-            <span className="font-medium text-foreground">
-              {project.location}
-            </span>
-          )}
-          {project.location && (
-            <span className="text-muted-foreground/60">,</span>
-          )}
-        </div>
-        <span
-          className={cn(
-            "truncate",
-            project.location
-              ? "text-muted-foreground"
-              : "font-medium text-foreground",
-          )}
-        >
-          {countryDisplay}
-        </span>
-      </span>
-    </span>
-  );
-
-  const SplitContent = () => (
-    <span
-      className={cn("inline-flex items-center gap-1.5 leading-none", className)}
-    >
-      {project.location && (
-        <>
-          <span className="font-semibold text-foreground">
-            {project.location}
-          </span>
-          <span className="mx-0.5 h-[1em] w-[px] bg-border" />
-        </>
-      )}
-      <span className="flex items-center gap-1.5 text-muted-foreground">
-        {renderFlag()}
-        <span className="font-medium">{countryDisplay}</span>
-      </span>
-    </span>
-  );
-
-  const content = layout === "unified" ? <UnifiedContent /> : <SplitContent />;
+  const content =
+    layout === "unified" ? (
+      <UnifiedContent
+        className={className}
+        countryDisplay={countryDisplay}
+        project={project}
+        renderFlag={renderFlag}
+      />
+    ) : (
+      <SplitContent
+        className={className}
+        countryDisplay={countryDisplay}
+        project={project}
+        renderFlag={renderFlag}
+      />
+    );
 
   if (variant === "badge") {
     return (

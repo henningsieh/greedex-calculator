@@ -64,6 +64,20 @@ export function ProjectsGrid({
     [sortBy, sortDesc],
   );
 
+  // Selection state for grid view
+  const [selectedProjectIds, setSelectedProjectIds] = useState<Set<string>>(
+    new Set(),
+  );
+
+  const toggleProjectSelection = (id: string, value: boolean) => {
+    setSelectedProjectIds((prev) => {
+      const next = new Set(prev);
+      if (value) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  };
+
   const sortedProjects = useMemo(() => {
     const filtered = projects.filter((p) =>
       (p.name || "").toLowerCase().includes(filter.toLowerCase()),
@@ -119,7 +133,14 @@ export function ProjectsGrid({
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {sortedProjects.length > 0 ? (
           sortedProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard
+              isSelected={selectedProjectIds.has(project.id)}
+              key={project.id}
+              onSelectChange={(value) =>
+                toggleProjectSelection(project.id, value)
+              }
+              project={project}
+            />
           ))
         ) : (
           <Empty className="col-span-full">

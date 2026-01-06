@@ -84,10 +84,10 @@ import { orpc, orpcQuery } from "@/lib/orpc/orpc";
  * @returns The JSX element for the projects table including its header controls, table body, pagination footer, and confirm dialog.
  */
 export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
-  const t = useTranslations("organization.projects");
   const locale = useLocale();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const t = useTranslations("organization.projects");
   const { confirm, ConfirmDialogComponent } = useConfirmDialog();
 
   // Fetch active organization
@@ -360,7 +360,9 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                   {headerGroup.headers.map((header) => {
                     return (
                       <TableHead
-                        className="h-12 px-3 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:px-2"
+                        className={
+                          "h-12 px-3 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:px-2"
+                        }
                         key={header.id}
                       >
                         {header.isPlaceholder
@@ -382,27 +384,29 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                     className="cursor-pointer transition-colors hover:bg-secondary/40"
                     data-state={row.getIsSelected() && "selected"}
                     key={row.id}
-                    onClick={(e) => {
-                      // Don't navigate if clicking on checkbox or action buttons
-                      const target = e.target as HTMLElement;
+                    onClick={(e: React.MouseEvent<HTMLTableRowElement>) => {
                       if (
-                        target.closest('[role="checkbox"]') ||
-                        target.closest("button") ||
-                        target.closest('[role="menuitem"]')
+                        !(
+                          e.target instanceof HTMLElement &&
+                          (e.target.closest("button") ||
+                            e.target.closest('[role="checkbox"]') ||
+                            e.target.closest('[role="menuitem"]'))
+                        )
                       ) {
-                        return;
+                        router.push(getProjectDetailPath(row.original.id));
                       }
-                      router.push(getProjectDetailPath(row.original.id));
                     }}
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell className="pl-3" key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      );
+                    })}
                   </TableRow>
                 ))
               ) : (
