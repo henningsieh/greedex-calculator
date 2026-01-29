@@ -162,3 +162,42 @@ Each documentation page should include:
 - Screenshots or diagrams (placeholder for now)
 - Related links and next steps
 - Code examples where relevant
+
+## Turborepo Integration
+
+The documentation app should leverage the monorepo structure and reuse existing packages to avoid redundancy:
+
+### Available Packages
+
+```
+packages/
+├── auth/           # Authentication types, schemas, and utilities
+├── config/         # Shared configuration (pagination, etc.)
+├── database/       # Database schemas and types
+├── email/          # Email templates and utilities
+└── i18n/           # Internationalization utilities and translations
+```
+
+### Reuse Guidelines
+
+1. **Types & Schemas**: Import from `@greendex/auth`, `@greendex/database` instead of redefining
+2. **Configuration**: Use `@greendex/config` for shared constants (pagination, validation rules)
+3. **Translations**: Leverage `@greendex/i18n` for consistent terminology across docs and app
+4. **Validation**: Reuse Zod schemas from feature validation files for API documentation
+5. **Components**: When documenting UI, reference actual component props/types from the calculator app
+
+### Example Imports for Documentation
+
+```typescript
+// Use shared types for API documentation
+import type { MemberRole } from "@greendex/auth";
+import { MEMBER_ROLES } from "@greendex/auth";
+
+// Use config for consistent values
+import { DEFAULT_PAGE_SIZE } from "@greendex/config/pagination";
+
+// Reference i18n keys for documentation
+import type { Translations } from "@greendex/i18n";
+```
+
+This ensures documentation stays in sync with the actual application implementation.
