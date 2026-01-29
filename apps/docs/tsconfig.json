@@ -18,8 +18,12 @@
         "name": "next"
       }
     ],
+    // Absolute paths mapping is needed since
+    // Typescript 6 deprecated relative paths
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "fumadocs-mdx:collections/*": ["./.source/*"],
+      "fumadocs-mdx:collections/server": ["./.source/index.ts"]
     }
   },
   "include": [

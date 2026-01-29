@@ -14,13 +14,15 @@
   },
   "dependencies": {
     "@greendex/i18n": "workspace:*",
-    "fumadocs-core": "^15.4.1",
-    "fumadocs-mdx": "^11.7.1",
-    "fumadocs-ui": "^15.4.1"
+    "@types/mdx": "^2.0.13",
+    "fumadocs-core": "^15.8.5",
+    "fumadocs-mdx": "^11.10.1",
+    "fumadocs-ui": "^15.8.5"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "oxfmt": "^0.26.0",
     "oxlint": "^1.41.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.0.0"
   }
 }
