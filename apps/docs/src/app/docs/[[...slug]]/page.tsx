@@ -4,8 +4,10 @@ import { createRelativeLink } from "fumadocs-ui/mdx";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
 
-import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
+// import { source } from "@/lib/source";
+
+import { source } from "../../../lib/source"; // const page: Page<PageData>
 
 export default async function Page({
   params,
