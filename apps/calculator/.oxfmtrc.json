@@ -2,6 +2,7 @@
   "$schema": "../../node_modules/oxfmt/configuration_schema.json",
   "extends": "../../.oxfmtrc.json",
   "printWidth": 82,
+  "ignorePatterns": ["node_modules/**", ".next/**"],
   "experimentalTailwindcss": {
     "stylesheet": "src/app/globals.css",
     "attributes": ["class", "className"],
