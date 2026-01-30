@@ -59,6 +59,10 @@
     },
     "test:e2e:report": {
       "cache": false
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
     }
   }
 }
