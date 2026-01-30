@@ -19,7 +19,7 @@ apps/calculator/src/__tests__/e2e/.playwright/
 apps/calculator/src/__tests__/e2e/.auth/
 
 # Generated SRI for Scalar API Reference (do not commit)
-src/lib/orpc/scalar-sri.ts
+apps/calculator/src/lib/orpc/scalar-sri.ts
 
 # foreign repo
 docs/greendex-clickdummy/
