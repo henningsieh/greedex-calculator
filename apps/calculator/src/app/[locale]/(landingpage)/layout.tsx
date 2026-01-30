@@ -1,6 +1,9 @@
-import FooterSection from "@/features/landingpage/components/footer";
+import { FooterSection } from "@/features/landingpage/components/footer";
 import { LandingHeader } from "@/features/landingpage/components/landing-header";
 import { LandingPageGradients } from "@/features/landingpage/components/landing-page-gradients";
+
+// Ensure the landing page uses static rendering for optimal SEO and performance
+export const dynamic = "force-static";
 
 /**
  * Layout wrapper that renders the landing page chrome and hosts page content.
