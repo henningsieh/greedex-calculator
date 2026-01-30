@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -13,18 +14,17 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "fumadocs-mdx:collections/*": [".source/*"]
+    },
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    // Absolute paths mapping is needed since
-    // Typescript 6 deprecated relative paths
-    "paths": {
-      "@/*": ["./src/*"]
-      // "fumadocs-mdx:collections/*": ["./.source/*"],
-      // "fumadocs-mdx:collections/server": ["./.source/index.ts"]
-    }
+    ]
   },
   "include": [
     "next-env.d.ts",
