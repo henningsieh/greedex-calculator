@@ -1,5 +1,4 @@
-import type { ReactNode } from "react";
-
+// apps/documentation/src/app/[lang]/docs/layout.tsx:
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 
 import { baseOptions } from "@/lib/layout.shared";
@@ -8,11 +7,7 @@ import { source } from "@/lib/source";
 export default async function Layout({
   params,
   children,
-}: // {
-//   params: Promise<{ lang: string }>;
-//   children: ReactNode;
-// }
-LayoutProps<"/[lang]/docs">) {
+}: LayoutProps<"/[lang]/docs">) {
   const { lang } = await params;
 
   return (
