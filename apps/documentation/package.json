@@ -13,6 +13,7 @@
     "clean": "rm -rf .next .turbo node_modules"
   },
   "dependencies": {
+    "@greendex/config": "workspace:*",
     "@greendex/i18n": "workspace:*",
     "fumadocs-core": "16.4.10",
     "fumadocs-mdx": "14.2.6",

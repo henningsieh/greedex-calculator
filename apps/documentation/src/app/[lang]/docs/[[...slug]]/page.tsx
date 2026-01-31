@@ -13,9 +13,13 @@ import { LLMCopyButton, ViewOptions } from "@/components/ai/page-actions";
 import { getPageImage, source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 
-export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+// export default async function Page(props: PageProps<"/[lang]/docs/[[...slug]]">) {
+
+export default async function Page(props: PageProps<"/[lang]/docs/[[...slug]]">) {
+  const { slug, lang } = await props.params;
+
+  const page = source.getPage(slug, lang);
+
   if (!page) notFound();
 
   const MDX = page.data.body;
@@ -50,11 +54,12 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 }
 
 export async function generateStaticParams() {
-  return source.generateParams();
+  // return source.generateParams();
+  return source.generateParams("slug", "locale");
 }
 
 export async function generateMetadata(
-  props: PageProps<"/docs/[[...slug]]">,
+  props: PageProps<"/[lang]/docs/[[...slug]]">,
 ): Promise<Metadata> {
   const params = await props.params;
   const page = source.getPage(params.slug);
