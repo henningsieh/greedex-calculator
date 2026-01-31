@@ -1,10 +1,7 @@
 // apps/documentation/src/app/[lang]/docs/layout.tsx
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 
-import {
-  LanguageToggle,
-  LanguageToggleInline,
-} from "@/components/language-toggle";
+import { LanguageToggleInline } from "@/components/language-toggle";
 import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
 
