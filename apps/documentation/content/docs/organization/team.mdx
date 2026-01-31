@@ -1,0 +1,217 @@
+---
+title: Team Management
+description: Manage your organization's team members and their roles
+---
+
+# Team Management
+
+The Team page allows you to view and manage your organization's team members - Owners and Employees who help manage the organization and its projects.
+
+## Understanding Team Roles
+
+### Owner
+
+**Full administrative control:**
+
+- Can invite members with any role
+- Can delete the organization
+- Can manage all projects and settings
+- Can remove any team member
+- Can transfer ownership
+
+**Best for:** Organization administrators, project coordinators
+
+### Employee
+
+**Project management access:**
+
+- Can create and manage projects
+- Can invite Participants
+- Can view team and participant lists
+- Cannot delete the organization
+- Cannot invite Owners or Employees
+
+**Best for:** Project managers, coordinators, support staff
+
+### Participant
+
+**Limited project access:**
+
+- Can participate in assigned projects
+- Can submit carbon footprint data
+- Cannot invite other members
+- Cannot access team management
+
+**Best for:** Project participants, volunteers
+
+## Viewing Your Team
+
+### Team List
+
+The Team page displays:
+
+- **Name** - Team member's full name
+- **Email** - Contact email address
+- **Role** - Current role in the organization
+- **Status** - Active or pending invitation
+- **Joined** - When they became a member
+
+### Filtering and Sorting
+
+Use the table controls to:
+
+- **Search** - Find members by name or email
+- **Filter by role** - Show only Owners, Employees, or all
+- **Sort** - Order by name, role, or join date
+- **Pagination** - Navigate through large teams
+
+## Managing Team Members
+
+### Inviting New Members
+
+See the [Invitations](/docs/organization/invitations) page for detailed instructions on inviting team members.
+
+Quick overview:
+
+1. Click **"Invite Member"**
+2. Enter email and name
+3. Select role
+4. Send invitation
+
+### Viewing Pending Invitations
+
+Pending invitations appear in the team list with:
+
+- "Pending" status badge
+- Invitation date
+- Role they were invited as
+
+### Canceling Invitations
+
+To cancel a pending invitation:
+
+1. Find the pending member in the list
+2. Click the **"Cancel"** button
+3. Confirm the cancellation
+
+The invitee will no longer be able to accept the invitation.
+
+## Role Management
+
+### Changing Roles
+
+Owners can change member roles:
+
+1. Find the team member in the list
+2. Click on their current role
+3. Select the new role from the dropdown
+4. Confirm the change
+
+### Role Change Permissions
+
+| Action                | Owner | Employee | Participant |
+| --------------------- | ----- | -------- | ----------- |
+| Promote to Owner      | ✅    | ❌       | ❌          |
+| Demote Owner          | ✅    | ❌       | ❌          |
+| Change to Employee    | ✅    | ❌       | ❌          |
+| Change to Participant | ✅    | ✅\*     | ❌          |
+
+\*Employees can only change Participants to other roles
+
+### Transferring Ownership
+
+To transfer organization ownership:
+
+1. Go to Team page
+2. Find the member to promote
+3. Change their role to **Owner**
+4. (Optional) Demote yourself to Employee
+
+**Note:** An organization must always have at least one Owner.
+
+## Removing Team Members
+
+### Removing a Member
+
+Owners can remove team members:
+
+1. Find the member in the team list
+2. Click the **"Remove"** button
+3. Confirm the removal
+
+**What happens when removed:**
+
+- Member loses access to the organization
+- Their participant data remains in projects
+- They can be re-invited later
+- Their account remains active for other organizations
+
+### Cannot Remove Yourself
+
+You cannot remove yourself from the organization:
+
+- Ask another Owner to remove you
+- Or delete your account entirely
+
+## Team Size Limits
+
+### Current Limits
+
+- **No hard limit** on team size
+- Practical limits based on your plan
+- Contact support for large organization needs
+
+### Best Practices
+
+- **Regular audits** - Review team membership quarterly
+- **Principle of least privilege** - Give minimum necessary access
+- **Remove inactive** - Clean up members who no longer participate
+- **Document roles** - Keep track of who does what
+
+## Troubleshooting
+
+### Member Not Showing
+
+If a team member doesn't appear:
+
+- Check if they're in the Participants list instead
+- Verify the invitation was accepted
+- Ensure you're viewing the correct organization
+- Check filters aren't hiding them
+
+### Can't Change Role
+
+If you can't change a member's role:
+
+- Verify you have Owner permissions
+- Check if they're the only Owner (must have at least one)
+- Ensure the member has accepted their invitation
+
+### Invitation Issues
+
+For invitation problems, see [Invitations Troubleshooting](/docs/organization/invitations#troubleshooting).
+
+## Security Best Practices
+
+### Access Control
+
+- **Limit Owners** - Only trusted administrators should be Owners
+- **Regular reviews** - Audit roles quarterly
+- **Offboarding** - Remove access when team members leave
+- **Monitor invites** - Track pending invitations
+
+### Sensitive Operations
+
+Only Owners can:
+
+- Delete the organization
+- Access billing information
+- Change critical settings
+- Remove other Owners
+
+## Related Topics
+
+- [Invitations](/docs/organization/invitations) - Send and manage invitations
+- [Organization Settings](/docs/organization/settings) - Configure organization
+- [Participants](/docs/participants) - Manage project participants
+- [Roles and Permissions](/docs/organization/roles) - Detailed role reference
