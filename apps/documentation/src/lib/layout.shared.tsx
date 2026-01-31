@@ -6,7 +6,7 @@ export function baseOptions(locale: string): BaseLayoutProps {
   return {
     i18n,
     nav: {
-      title: "My App",
+      title: "GREENDEX",
     },
   };
 }
