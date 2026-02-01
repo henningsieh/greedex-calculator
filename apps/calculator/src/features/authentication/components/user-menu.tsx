@@ -82,11 +82,10 @@ export function UserMenu() {
               )}
               size="lg"
             >
-              <Avatar className="size-8 ring-1 ring-border">
+              <Avatar className="size-8 rounded-md ring-1 ring-border">
                 {user.image ? (
                   <Image
                     alt={user.name}
-                    className="rounded-full"
                     height={32}
                     src={user.image}
                     width={32}
