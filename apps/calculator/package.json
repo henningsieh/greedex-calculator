@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./features/landingpage/types": "./src/features/landingpage/types.ts"
+  },
   "scripts": {
     "predev": "pnpx kill-port 3000 4000 || true",
     "dev": "concurrently --kill-others \"pnpm run dev:next\" \"pnpm run dev:socket\"",

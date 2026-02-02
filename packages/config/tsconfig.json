@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": ["ES2022"]
+    "lib": ["ES2022"],
+    "paths": {
+      "@greendex/calculator/*": ["../../apps/calculator/src/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules"]

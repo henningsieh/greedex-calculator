@@ -6,8 +6,10 @@
  */
 
 export * from "./activities";
+export * from "./e-forest";
 export * from "./eu-countries";
 export * from "./languages";
 export * from "./pagination";
+export * from "./partners";
 export * from "./participate";
 export * from "./workshops";
