@@ -168,7 +168,7 @@ Sidebar Items [#sidebar-items]
   Customise sidebar navigation links.
 </FeedbackBlock>
 
-<div className="flex justify-center items-center *:max-w-[200px] bg-gradient-to-br from-fd-primary/10 rounded-xl border">
+<div className="flex justify-center items-center *:max-w-[200px] bg-linear-to-br from-fd-primary/10 rounded-xl border">
     <img alt="Sidebar" src={__img1} placeholder="blur" />
 </div>
 

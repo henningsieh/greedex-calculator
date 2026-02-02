@@ -10,8 +10,8 @@ export function LandingPageGradients() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 hidden overflow-hidden sm:block"
-      // className="pointer-events-none fixed inset-0 overflow-hidden"
+      className="pointer-events-none fixed inset-0 overflow-hidden"
+      // className="overflow-hidden fixed inset-0 pointer-events-none"
     >
       {/* Primary gradient - top left */}
       <motion.div

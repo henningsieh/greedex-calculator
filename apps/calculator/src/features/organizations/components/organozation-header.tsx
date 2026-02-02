@@ -63,14 +63,14 @@ export function OrganizationHeader() {
 // UNUSED: DashboardHeaderSkeleton
 // export function DashboardHeaderSkeleton() {
 //   return (
-//     <Card className="border-primary/30 bg-primary/10 shadow-lg dark:border-primary/40 dark:bg-primary/10">
+//     <Card className="shadow-lg border-primary/30 bg-primary/10 dark:border-primary/40 dark:bg-primary/10">
 //       <CardHeader className="gap-6">
 //         <CardTitle className="text-sm text-primary/60">
-//           <Skeleton className="h-4 w-64" />
+//           <Skeleton className="w-64 h-4" />
 //         </CardTitle>
-//         <CardDescription className="flex items-center gap-3 text-3xl font-bold text-primary dark:text-primary-foreground">
-//           <Skeleton className="size-9 rounded-full" />
-//           <Skeleton className="h-8 w-48" />
+//         <CardDescription className="flex gap-3 items-center text-3xl font-bold text-primary dark:text-primary-foreground">
+//           <Skeleton className="rounded-full size-9" />
+//           <Skeleton className="w-48 h-8" />
 //         </CardDescription>
 //         <CardAction>
 //           <Skeleton className="h-10 w-42 bg-secondary" />

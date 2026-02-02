@@ -216,7 +216,7 @@ export function ProjectTableColumns(
       accessorKey: "updatedAt",
       header: ({ column, table }) => (
         <SortableHeader
-          // className="w-full justify-end bg-red-600 text-right"
+          // className="justify-end w-full text-right bg-red-600"
           column={column}
           isNumeric
           table={table}

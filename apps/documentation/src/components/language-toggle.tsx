@@ -53,9 +53,9 @@ export function LanguageToggleInline() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-2 px-2.5 py-1.5 rounded-md hover:bg-fd-accent transition-colors outline-none">
+      <DropdownMenuTrigger className="flex items-center gap-2 rounded-md px-2.5 py-1.5 transition-colors outline-none hover:bg-fd-accent">
         {currentHasCountryCode ? (
-          <CurrentFlag className="w-5 h-3.5 rounded-sm shadow-sm" />
+          <CurrentFlag className="h-3.5 w-5 rounded-sm shadow-sm" />
         ) : (
           <GlobeIcon className="size-4" />
         )}
@@ -88,14 +88,14 @@ export function LanguageToggleInline() {
             <DropdownMenuItem
               key={locale.code}
               onClick={() => handleLanguageChange(locale.code)}
-              className="flex items-center gap-3 cursor-pointer"
+              className="flex cursor-pointer items-center gap-3"
             >
               {hasCountryCode ? (
-                <FlagIcon className="w-5 h-3.5 rounded-sm shadow-sm" />
+                <FlagIcon className="h-3.5 w-5 rounded-sm shadow-sm" />
               ) : (
                 <GlobeIcon className="size-4" />
               )}
-              <div className="flex flex-col items-start flex-1">
+              <div className="flex flex-1 flex-col items-start">
                 <span className={isActive ? "font-medium" : ""}>
                   {locale.label}
                 </span>

@@ -13,9 +13,10 @@
     "header": {
       "navigation": {
         "workshops": "Workshops",
-        "eforest": "E+ Wald",
+        "resources": "Ressourcen",
         "tipsAndTricks": "Tipps & Tricks",
-        "library": "Ressourcen",
+        "library": "Bibliothek",
+        "eforest": "E+ Wald",
         "about": "Über uns",
         "login": "Anmelden",
         "signup": "Registrieren",
@@ -24,6 +25,9 @@
       }
     },
     "hero": {
+      "headline": "Berechnen. Ausgleichen. Lernen.",
+      "subtitle": "Der CO₂-Rechner für Erasmus+ Projekte. Miss deinen ökologischen Fußabdruck und pflanze Bäume für ein grüneres Europa.",
+      "imageCaption": "Greendex Dashboard mit CO₂-Emissions-Tracking und Baumpflanzungszielen",
       "missionTitle": "Unsere Mission",
       "missionText": "Das Erasmus+ Programm ermöglicht uns fantastische Lernabenteuer mit inspirierenden Menschen aus verschiedenen Ländern. Jedoch trägt jede unserer persönlichen Begegnungen zu einem erheblichen CO₂-Fußabdruck bei – durch unsere Reise- und Lebensgewohnheiten. Ziel dieses Projekts ist es, unseren CO₂-Fußabdruck in den Projekten, die wir durchführen, auszugleichen, indem wir mehr Bewusstsein schaffen und aktiv unsere Gewohnheiten ändern. Aus diesem Grund haben wir einen CO₂-Rechner entwickelt, der speziell auf Erasmus+ Projekte wie Jugendbegegnungen, Trainingskurse, Meetings etc. zugeschnitten ist. Dieser Rechner zeigt die finale CO₂-Menge, die jede*r Teilnehmende verursacht, und rechnet diese in die durchschnittliche Anzahl von Bäumen um, die unser CO₂ in ihrer Lebenszeit absorbieren werden. Unsere Berechnungen basieren auf wissenschaftlicher Forschung verschiedener Fachleute. Wir haben keine eigenen Berechnungen angestellt.",
       "visionTitle": "Unsere Vision",
@@ -87,10 +91,12 @@
       "copyright": "Alle Rechte vorbehalten."
     },
     "workshops": {
+      "badge": "Pädagogisch",
       "headingPrefix": "Hallo, liebe*r",
       "headingEmphasis": "Erdenwanderer*in",
       "intro1": "Wir freuen uns sehr, dass du den Weg zu unserer Greendex-Seite gefunden hast. Diese Seite wird dir helfen, Bewusstsein für nachhaltige und umweltfreundliche Gewohnheiten in deinem Erasmus+ Projekt zu schaffen.",
       "intro2": "In diesem Bereich bieten wir dir drei verschiedene Workshops für deine Lernmobilität an – je nach verfügbarer Zeit:",
+      "pageSubtitle": "Wähle einen Workshop basierend auf deiner verfügbaren Zeit und beginne, einen Unterschied zu machen",
       "card": {
         "learnMore": "Mehr erfahren →"
       },

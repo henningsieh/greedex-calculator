@@ -120,7 +120,7 @@
     "dotenv": "^17.2.3",
     "dotenv-cli": "^11.0.0",
     "jsdom": "^27.4.0",
-    "oxfmt": "^0.26.0",
+    "oxfmt": "^0.27.0",
     "oxlint": "^1.41.0",
     "playwright": "^1.58.0",
     "tailwindcss": "^4.1.18",

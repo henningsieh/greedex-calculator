@@ -1,6 +1,6 @@
 import { NextIntlClientProvider } from "@greendex/i18n/client";
 import { getMessages, setRequestLocale } from "@greendex/i18n/server";
-import { Comfortaa, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
+import { DM_Sans, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
 
 import { JsonLd } from "@/components/json-ld";
@@ -11,9 +11,16 @@ import { env } from "@/env";
 import { isSupportedLocale } from "@/lib/i18n/locales";
 import { routing } from "@/lib/i18n/routing";
 
-const comfortaa = Comfortaa({
-  variable: "--font-sans",
-  weight: ["300", "400", "500", "600", "700"],
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-heading",
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  preload: false,
+});
+const dmSans = DM_Sans({
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
   preload: false,
@@ -21,13 +28,6 @@ const comfortaa = Comfortaa({
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
-const sourceSerif4 = Source_Serif_4({
-  variable: "--font-serif",
-  weight: ["400", "600", "700"],
   subsets: ["latin"],
   display: "swap",
   preload: false,
@@ -62,7 +62,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html
-      className={`${comfortaa.variable} ${jetbrainsMono.variable} ${sourceSerif4.variable} scroll-smooth`}
+      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} scroll-smooth`}
       lang={locale}
       suppressHydrationWarning
     >

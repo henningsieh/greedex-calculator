@@ -1,3 +1,4 @@
+import { getTranslations } from "@greendex/i18n/server";
 import { createParser } from "nuqs/server";
 
 import { WorkshopContent } from "@/features/landingpage/components/workshops/workshop-tab-select";
@@ -32,6 +33,7 @@ export default async function WorkshopsPage({
         type?: string;
       };
 }) {
+  const t = await getTranslations("landingPage.workshops");
   const params = await searchParams;
   const type =
     (typeParser.parse((params?.type ?? "") as string) as
@@ -41,13 +43,31 @@ export default async function WorkshopsPage({
 
   return (
     <main className="relative min-h-screen py-28">
-      <div className="relative z-10 container mx-auto max-w-5xl px-6">
-        <div className="mb-8 text-center">
-          <h1 className="mb-4 text-4xl font-semibold lg:text-5xl">
-            Workshop Guide
+      {/* Background decorative elements */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-emerald-500/5 blur-3xl" />
+        <div className="absolute right-1/4 bottom-1/4 h-96 w-96 rounded-full bg-teal-500/5 blur-3xl" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-5xl px-6">
+        {/* Enhanced Header */}
+        <div className="mb-12 text-center">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 backdrop-blur-sm">
+            <span className="flex h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+            <span className="text-sm font-semibold tracking-wider text-primary uppercase">
+              {t("badge")}
+            </span>
+          </div>
+
+          <h1 className="mb-6 text-4xl font-semibold tracking-tight text-balance lg:text-5xl">
+            {t("headingPrefix")}{" "}
+            <span className="bg-linear-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400">
+              {t("headingEmphasis")}
+            </span>
           </h1>
-          <p className="text-muted-foreground">
-            Choose a workshop based on your available time
+
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+            {t("pageSubtitle")}
           </p>
         </div>
 

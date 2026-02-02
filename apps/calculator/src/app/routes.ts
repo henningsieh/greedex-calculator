@@ -161,7 +161,7 @@ export const VERIFY_EMAIL_PATH: AppRoute = "/verify-email";
  * User settings and preferences route.
  * Personal account configuration and profile management.
  */
-export const USER_SETTINGS_PATH: AppRoute = "/user/settings";
+export const USER_SETTINGS_PATH: AppRoute = "/org/user/settings";
 
 // ============================================================================
 // Public Landing and Content Routes

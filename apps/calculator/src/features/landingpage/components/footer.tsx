@@ -11,8 +11,8 @@ import {
   TIPS_AND_TRICKS_PATH,
   WORKSHOPS_ANCHOR,
 } from "@/app/routes";
-import { AnimatedGradientCTA } from "@/features/landingpage/components/animated-cta";
 import { Logo } from "@/features/landingpage/components/logo";
+import { PillCTALink } from "@/features/landingpage/components/pill-cta";
 import { Link } from "@/lib/i18n/routing";
 
 /**
@@ -64,8 +64,8 @@ export async function FooterSection() {
   ];
 
   return (
-    <footer className="border-t bg-background pt-20 pb-10">
-      <div className="mx-auto max-w-7xl px-6">
+    <footer className="border-t bg-background/50 pt-16 pb-10 backdrop-blur-sm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-5">
           <div className="md:col-span-2">
             <Link
@@ -75,17 +75,8 @@ export async function FooterSection() {
             >
               <Logo />
             </Link>
-            <div className="mt-8">
-              <Link
-                aria-label={t("launchButtonAria")}
-                className="inline-block"
-                href={DASHBOARD_PATH}
-                title={t("launchButtonAria")}
-              >
-                <AnimatedGradientCTA leftEmoji={"🌳"}>
-                  {t("launchButton")}
-                </AnimatedGradientCTA>
-              </Link>
+            <div className="mt-6">
+              <PillCTALink href={DASHBOARD_PATH}>{t("launchButton")}</PillCTALink>
             </div>
           </div>
 
@@ -97,7 +88,7 @@ export async function FooterSection() {
               <div className="flex flex-col space-y-3">
                 {navigationLinks.map((item, index) => (
                   <Link
-                    className="text-muted-foreground transition-colors hover:text-primary"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
                     href={item.href}
                     key={index}
                   >
@@ -114,7 +105,7 @@ export async function FooterSection() {
               <div className="flex flex-col space-y-3">
                 {companyLinks.map((item, index) => (
                   <Link
-                    className="text-muted-foreground transition-colors hover:text-primary"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
                     href={item.href}
                     key={index}
                   >
@@ -131,7 +122,7 @@ export async function FooterSection() {
               <div className="flex flex-col space-y-3">
                 {appLinks.map((item, index) => (
                   <Link
-                    className="text-muted-foreground transition-colors hover:text-primary"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
                     href={item.href}
                     key={index}
                   >
@@ -143,9 +134,9 @@ export async function FooterSection() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t pt-8 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 sm:flex-row">
           <span className="text-center text-sm text-muted-foreground sm:text-left">
-            © {new Date().getFullYear()} Greendex | {t("footer.copyright")}
+            &copy; {new Date().getFullYear()} Greendex | {t("footer.copyright")}
           </span>
         </div>
       </div>

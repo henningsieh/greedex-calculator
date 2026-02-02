@@ -1,87 +1,75 @@
+import { WORKSHOPS } from "@greendex/config/workshops";
 import { getTranslations } from "@greendex/i18n/server";
-import { ClockIcon } from "lucide-react";
+import { ArrowRight, ClockIcon } from "lucide-react";
 import Image from "next/image";
 
-import { AnimatedGroup } from "@/components/animated-group";
-import { BackgroundAnimations } from "@/components/background-animations";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { WORKSHOPS } from "@/config/workshops";
 import { Link } from "@/lib/i18n/routing";
 
+/**
+ * WorkshopsHeroSection - Most prominent section on the landing page
+ * Enhanced visual treatment with glassmorphism cards
+ */
 export async function WorkshopsHeroSection() {
   const t = await getTranslations("landingPage");
   const intro2 = t("workshops.intro2");
   const intro2Parts = intro2.split("workshops");
+
   return (
     <section
-      className="relative min-h-[calc(100vh-5rem)] overflow-hidden py-24 md:py-32"
+      className="relative overflow-hidden border-y border-border/30 bg-linear-to-b from-background via-muted/30 to-background py-32 md:py-40"
       id="workshops"
     >
-      <BackgroundAnimations />
+      {/* Background decorative elements */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 -left-1/4 h-96 w-96 rounded-full bg-emerald-500/5 blur-3xl" />
+        <div className="absolute -right-1/4 bottom-1/4 h-96 w-96 rounded-full bg-teal-500/5 blur-3xl" />
+      </div>
 
-      <div className="@container relative z-10 mx-auto max-w-6xl px-6 lg:px-0">
-        <div className="space-y-8 text-center">
-          <h2 className="text-3xl leading-12 font-semibold text-balance lg:text-5xl">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Section Header - Enhanced */}
+        <div className="mb-20 text-center">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 backdrop-blur-sm">
+            <span className="flex h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+            <span className="text-sm font-semibold tracking-wider text-primary uppercase">
+              {t("workshops.badge")}
+            </span>
+          </div>
+
+          <h2 className="mb-8 text-4xl font-semibold tracking-tight text-balance md:text-5xl lg:text-6xl">
             {t("workshops.headingPrefix")}{" "}
-            <span className="bg-linear-to-r from-primary/20 to-primary/60 text-primary-foreground">
+            <span className="bg-linear-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400">
               {t("workshops.headingEmphasis")}
             </span>
-            .
           </h2>
-          <p className="mx-auto max-w-4xl">{t("workshops.intro1")}</p>
-          <p className="mx-auto max-w-4xl">
-            {intro2Parts[0]}{" "}
-            <span className="bg-linear-to-r from-primary/80 to-primary/40 px-2 py-1 text-xl text-primary-foreground capitalize">
-              {t("workshops.keyword")}
-            </span>{" "}
-            {intro2Parts[1] ?? ""}
-          </p>
+
+          <div className="mx-auto max-w-3xl space-y-6">
+            <p className="text-xl leading-relaxed text-muted-foreground">
+              {t("workshops.intro1")}
+            </p>
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              {intro2Parts[0]}{" "}
+              <span className="rounded-lg bg-primary/10 px-3 py-1 font-semibold text-primary">
+                {t("workshops.keyword")}
+              </span>{" "}
+              {intro2Parts[1] ?? ""}
+            </p>
+          </div>
         </div>
 
-        <AnimatedGroup
-          className="mx-auto mt-8 grid max-w-6xl gap-6 px-4 md:mt-12 md:grid-cols-3"
-          triggerOnView
-          variants={{
-            container: {
-              visible: {
-                transition: {
-                  staggerChildren: 0.12,
-                  delayChildren: 0.08,
-                },
-              },
-            },
-            item: {
-              hidden: {
-                opacity: 0,
-                y: 18,
-              },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: {
-                  type: "spring",
-                  bounce: 0.22,
-                  duration: 0.6,
-                },
-              },
-            },
-          }}
-          viewport={{
-            once: true,
-            amount: 0.35,
-          }}
-        >
-          {WORKSHOPS.map((workshop) => {
+        {/* Workshop Cards - Enhanced with better glassmorphism */}
+        <div className="grid gap-8 md:grid-cols-3">
+          {WORKSHOPS.map((workshop, index) => {
             const workshopId = workshop.id;
             const title = t(`workshops.types.${workshopId}.title`);
             const duration = t(`workshops.types.${workshopId}.duration`);
             const description = t(`workshops.types.${workshopId}.description`);
+
+            // Gradient colors for each card
+            const gradients = [
+              "from-emerald-500/10 via-teal-500/5 to-transparent",
+              "from-teal-500/10 via-cyan-500/5 to-transparent",
+              "from-cyan-500/10 via-blue-500/5 to-transparent",
+            ];
 
             return (
               <Link
@@ -89,48 +77,76 @@ export async function WorkshopsHeroSection() {
                 href={`/workshops?type=${workshop.id}`}
                 key={workshop.id}
               >
-                <Card className="flex h-full flex-col overflow-hidden border-border/40 bg-card/40 backdrop-blur-sm transition-all duration-300 will-change-transform group-hover:-translate-y-1 group-hover:shadow-2xl group-hover:shadow-primary/10">
-                  <CardHeader className="p-0">
-                    <div className="relative h-44 w-full">
-                      <Image
-                        alt={title}
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        fill
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        src={workshop.image}
-                      />
-                    </div>
-                    <CardTitle className="space-y-3 p-6 text-center">
-                      <h3 className="text-2xl font-bold">{title}</h3>
-                      <p className="flex items-center justify-center gap-2 rounded-md bg-secondary/80 py-2 text-secondary-foreground">
-                        <ClockIcon className="inline size-5" />
+                <div
+                  className={`relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-linear-to-b ${gradients[index]} bg-card/40 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30 hover:bg-card/60 hover:shadow-2xl hover:shadow-primary/10`}
+                >
+                  {/* Image container */}
+                  <div className="relative h-56 w-full overflow-hidden">
+                    <Image
+                      alt={title}
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      fill
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      src={workshop.image}
+                    />
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-linear-to-t from-background via-background/20 to-transparent" />
+
+                    {/* Duration badge - positioned on image */}
+                    <div className="absolute bottom-4 left-4">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-sm font-semibold text-foreground shadow-lg backdrop-blur-sm">
+                        <ClockIcon className="size-4 text-primary" />
                         {duration}
-                      </p>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1">{description}</CardContent>
-                  <CardFooter className="justify-end">
-                    <span className="text-sm font-bold text-secondary-foreground underline underline-offset-4">
-                      {t("workshops.card.learnMore")}
-                    </span>
-                  </CardFooter>
-                </Card>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="mb-3 text-2xl font-bold tracking-tight">
+                      {title}
+                    </h3>
+                    <p className="mb-6 flex-1 leading-relaxed text-muted-foreground">
+                      {description}
+                    </p>
+
+                    {/* CTA */}
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <span>{t("workshops.card.learnMore")}</span>
+                      <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </div>
+                  </div>
+
+                  {/* Hover glow effect */}
+                  <div className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <div className="absolute inset-0 bg-linear-to-r from-emerald-500/5 via-teal-500/5 to-cyan-500/5" />
+                  </div>
+                </div>
               </Link>
             );
           })}
-        </AnimatedGroup>
+        </div>
 
-        <div className="mx-auto mt-16 max-w-6xl space-y-8 text-center">
-          <p>{t("workshops.bottomP1")}</p>
-
-          <p>
+        {/* Bottom Links - Enhanced */}
+        <div className="mx-auto mt-20 max-w-3xl space-y-6 text-center">
+          <div className="mx-auto h-px w-32 bg-linear-to-r from-transparent via-border to-transparent" />
+          <p className="text-lg text-muted-foreground">
+            {t("workshops.bottomP1")}
+          </p>
+          <p className="text-muted-foreground">
             {t("workshops.bottomP2Prefix")}{" "}
-            <Link className="text-primary underline" href="/library">
+            <Link
+              className="font-semibold text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
+              href="/library"
+            >
               {t("workshops.library")}
             </Link>{" "}
             {t("workshops.bottomP2Middle") ?? "and"}{" "}
-            <Link className="text-primary underline" href="/tips-and-tricks">
+            <Link
+              className="font-semibold text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
+              href="/tips-and-tricks"
+            >
               {t("workshops.tipsAndTricks")}
             </Link>
             .
