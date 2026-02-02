@@ -1,0 +1,13 @@
+{
+  "$schema": "../../node_modules/oxfmt/configuration_schema.json",
+  "extends": "../../.oxfmtrc.json",
+  "printWidth": 82,
+  "ignorePatterns": ["node_modules/**", ".next/**", "src/components/ui/**"],
+  "experimentalTailwindcss": {
+    "stylesheet": "src/app/globals.css",
+    "attributes": ["class", "className"],
+    "functions": ["clsx", "cn", "cva", "twMerge"],
+    "preserveDuplicates": false,
+    "preserveWhitespace": false
+  }
+}

@@ -2,7 +2,7 @@
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 
 import { LanguageToggleInline } from "@/components/language-toggle";
-import { baseOptions } from "@/lib/layout.shared";
+import { baseOptions } from "@/components/layout.shared";
 import { source } from "@/lib/source";
 
 export default async function Layout({

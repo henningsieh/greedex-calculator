@@ -1,8 +1,7 @@
 import { SUPPORTED_LOCALES } from "@greendex/config/languages";
 import { defineI18nUI } from "fumadocs-ui/i18n";
 import { RootProvider } from "fumadocs-ui/provider/next";
-
-import "./global.css";
+import "src/app/globals.css";
 import { Inter } from "next/font/google";
 
 import { i18n } from "@/lib/i18n";
@@ -35,7 +34,7 @@ export default async function RootLayout({
   const lang = (await params).lang;
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen">
+      <body className="flex min-h-screen flex-col">
         <RootProvider i18n={provider(lang)}>{children}</RootProvider>
       </body>
     </html>
