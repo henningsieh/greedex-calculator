@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "@greendex/i18n/client";
-import { Check, ChevronDown } from "lucide-react";
+import { CheckIcon, ChevronDownIcon } from "lucide-react";
 import { useTransition } from "react";
 
 import type { LanguageCode } from "@/lib/i18n/types";
@@ -55,7 +55,7 @@ export function LocaleSwitcher({ className }: { className?: string }) {
           {currentLocale?.Flag && (
             <currentLocale.Flag className="size-6 rounded-sm border-none" />
           )}
-          <ChevronDown
+          <ChevronDownIcon
             aria-hidden
             className={cn("size-4", isPending && "animate-pulse")}
           />
@@ -86,7 +86,7 @@ export function LocaleSwitcher({ className }: { className?: string }) {
               </span>
             </span>
             {locale === entry.code && (
-              <Check aria-hidden className="size-4 text-primary" />
+              <CheckIcon aria-hidden className="size-4 text-primary" />
             )}
           </DropdownMenuItem>
         ))}
