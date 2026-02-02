@@ -14,5 +14,12 @@
   "experimentalSortImports": {
     "ignoreCase": true,
     "newlinesBetween": true
+  },
+  "experimentalTailwindcss": {
+    "stylesheet": "apps/calculator/src/app/globals.css",
+    "attributes": ["class", "className"],
+    "functions": ["clsx", "cn", "cva", "twMerge"],
+    "preserveDuplicates": false,
+    "preserveWhitespace": false
   }
 }

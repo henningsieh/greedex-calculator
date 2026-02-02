@@ -2,10 +2,9 @@ import type { ReactNode } from "react";
 
 import { getTranslations } from "@greendex/i18n/server";
 
-import { AnimatedGroup } from "@/components/animated-group";
-import { BackgroundAnimations } from "@/components/background-animations";
 import { BackToHome } from "@/features/authentication/components/back-to-home";
 import { RightSideImage } from "@/features/authentication/components/right-side-image";
+import { LandingPageBackground } from "@/features/landingpage/components/landing-page-background";
 import { cn } from "@/lib/utils";
 
 const highlightKeys = ["one", "two", "three"] as const;
@@ -51,59 +50,32 @@ export default async function AuthFlowLayout({
 
   return (
     <div className="relative min-h-svh overflow-hidden bg-background">
-      <BackgroundAnimations />
+      <LandingPageBackground />
 
       <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col gap-6 p-4 sm:px-6 sm:py-8 md:px-8">
+        {/* Back to Home button positioned outside cards */}
+        <div className="w-full max-w-7xl">
+          <BackToHome href={backHref} label={backLabel ?? "Back to Home"} />
+        </div>
+
         {/* Cards container with equal heights */}
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-6">
+        <div className="flex flex-1 flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-6">
           {/* Left card - Form content */}
           <div
             className={cn(
               "mx-auto w-full max-w-xl",
-              "flex flex-col border border-border/40 bg-card/40 p-4 backdrop-blur-xl",
+              "flex flex-col rounded-xl border border-border/40 bg-card/60 p-6 backdrop-blur-xl",
               "lg:mx-0 lg:w-1/2 lg:max-w-none",
-              "lg:p-6",
+              "lg:p-8",
             )}
           >
-            <AnimatedGroup
-              className="flex flex-col gap-2"
-              variants={{
-                container: {
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.1,
-                    },
-                  },
-                },
-                item: {
-                  hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    filter: "blur(0px)",
-                    transition: {
-                      duration: 0.5,
-                      ease: "easeOut",
-                    },
-                  },
-                },
-              }}
-            >
-              <div className="flex items-center justify-between">
-                {/* Back to Home button positioned outside cards */}
-                <div className="mx-auto w-full max-w-7xl">
-                  <BackToHome
-                    href={backHref}
-                    label={backLabel ?? "Back to Home"}
-                  />
-                </div>
-                <span className="rounded-full border border-primary/50 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-[0.4em] text-nowrap text-primary uppercase">
-                  {t("badge")}
-                </span>
-              </div>
+            <div className="flex items-center justify-between">
+              <span className="rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wider text-primary uppercase">
+                {t("badge")}
+              </span>
+            </div>
 
-              <div className="space-y-4">{children}</div>
-            </AnimatedGroup>
+            <div className="mt-6 flex-1">{children}</div>
           </div>
 
           {/* Right card - Hero image with equal height */}

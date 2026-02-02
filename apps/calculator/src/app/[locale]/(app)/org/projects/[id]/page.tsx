@@ -1,7 +1,7 @@
 /**
  * @file Project details page
  *
- * Organization project details page with project details tabs
+ * Organization project's details page with details tabs
  */
 
 import { getLocale } from "@greendex/i18n/server";

@@ -4,6 +4,8 @@
  * Type definitions for landing page components and features
  */
 
+import { WORKSHOPS } from "@greendex/config/workshops";
+
 /**
  * Navigation item for header menu
  */
@@ -26,4 +28,4 @@ export interface LogoCustomer {
 /**
  * Greendex Workshop types
  */
-export type WorkshopType = "moment" | "deal" | "day";
+export type WorkshopType = (typeof WORKSHOPS)[number]["id"];

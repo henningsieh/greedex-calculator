@@ -213,19 +213,19 @@ export function ParticipantsLinkControls({
 // UNUSED: ParticipationControlsClientSkeleton
 // export function ParticipationControlsClientSkeleton() {
 //   return (
-//     <Card className="mb-8 space-y-4 border border-secondary/70 bg-secondary/10 p-4">
-//       <div className="flex items-center justify-between">
-//         <div className="mb-4 flex items-center gap-2">
-//           <div className="size-5 rounded bg-muted" />
-//           <div className="h-6 w-48 rounded bg-muted" />
+//     <Card className="p-4 mb-8 space-y-4 border border-secondary/70 bg-secondary/10">
+//       <div className="flex justify-between items-center">
+//         <div className="flex gap-2 items-center mb-4">
+//           <div className="rounded size-5 bg-muted" />
+//           <div className="w-48 h-6 rounded bg-muted" />
 //         </div>
-//         <div className="h-8 w-32 rounded bg-muted" />
+//         <div className="w-32 h-8 rounded bg-muted" />
 //       </div>
-//       <div className="h-4 w-full rounded bg-muted" />
-//       <div className="h-4 w-5/6 rounded bg-muted" />
-//       <div className="mt-6 flex flex-wrap gap-2">
-//         <div className="h-10 flex-1 rounded bg-muted" />
-//         <div className="h-10 w-32 rounded bg-muted" />
+//       <div className="w-full h-4 rounded bg-muted" />
+//       <div className="w-5/6 h-4 rounded bg-muted" />
+//       <div className="flex flex-wrap gap-2 mt-6">
+//         <div className="flex-1 h-10 rounded bg-muted" />
+//         <div className="w-32 h-10 rounded bg-muted" />
 //       </div>
 //     </Card>
 //   );

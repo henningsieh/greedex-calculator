@@ -2,7 +2,7 @@
  * Workshops Configuration
  *
  * Metadata configuration for workshops (static data only - no i18n content)
- * All translatable content is in messages/[locale].json under LandingPage.workshops
+ * All translatable content is in messages/[locale].json under landingPage.workshops
  */
 
 /**
@@ -23,8 +23,20 @@ export const WORKSHOP_LINKS = {
 /**
  * Workshop metadata (images and structure)
  */
+const WORKSHOP_CONFIGS = [
+  {
+    id: "moment",
+    name: "Greendex Moment",
+    image: "/workshops/workshop-moment.jpg",
+  },
+  { id: "deal", name: "Greendex Deal", image: "/workshops/workshop-deal.jpg" },
+  { id: "day", name: "Greendex Day", image: "/workshops/workshop-day.jpg" },
+] as const;
+
+type WorkshopId = (typeof WORKSHOP_CONFIGS)[number]["id"];
+
 interface Workshop {
-  id: string;
+  id: WorkshopId;
   name: string;
   image: string;
 }
@@ -36,21 +48,9 @@ class WorkshopArray extends Array<Workshop> {
 
   constructor() {
     super();
-    this.push({
-      id: "moment",
-      name: "Greendex Moment",
-      image: "/workshops/workshop-moment.jpg",
-    });
-    this.push({
-      id: "deal",
-      name: "Greendex Deal",
-      image: "/workshops/workshop-deal.jpg",
-    });
-    this.push({
-      id: "day",
-      name: "Greendex Day",
-      image: "/workshops/workshop-day.jpg",
-    });
+    for (const config of WORKSHOP_CONFIGS) {
+      this.push(config);
+    }
     this.MOMENT = this[0];
     this.DEAL = this[1];
     this.DAY = this[2];

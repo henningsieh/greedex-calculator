@@ -1,7 +1,7 @@
 import type { InferSelectModel } from "drizzle-orm";
 import type { z } from "zod";
 
-// import { ProjectSortField } from "@greendex/database/config/projects";
+import { PAGE_SIZE_OPTIONS } from "@greendex/config/pagination";
 import { projectsTable } from "@greendex/database";
 
 import type {
@@ -15,6 +15,12 @@ import type {
  * These correspond to the sortable columns in the projects table
  */
 export type ProjectSortField = keyof typeof projectsTable.$inferSelect;
+
+/**
+ * Type for available page size options
+ * Used in ProjectsTable and other paginated components for type safety
+ */
+export type PageSizeOption = (typeof PAGE_SIZE_OPTIONS)[number];
 
 export const PROJECT_SORT_FIELDS = [
   "name",

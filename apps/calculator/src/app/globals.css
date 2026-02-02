@@ -36,9 +36,12 @@
   --sidebar-accent-foreground: oklch(0.9702 0 0);
   --sidebar-border: oklch(0.8699 0 0);
   --sidebar-ring: oklch(0.7289 0.2119 147.8222);
-  --font-sans: Comfortaa, ui-serif, serif;
-  --font-serif: Source Serif 4, serif;
-  --font-mono: JetBrains Mono, monospace;
+  --font-heading:
+    Space Grotesk, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-body: DM Sans, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:
+    JetBrains Mono, ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
+    Consolas, monospace;
   --radius: 0.35rem;
   --shadow-x: 0;
   --shadow-y: 1px;
@@ -101,9 +104,12 @@
   --sidebar-accent-foreground: oklch(0.9258 0.0845 155.8579);
   --sidebar-border: oklch(0.3715 0 0);
   --sidebar-ring: oklch(0.7289 0.2119 147.8222);
-  --font-sans: Comfortaa, ui-serif, serif;
-  --font-serif: Source Serif 4, serif;
-  --font-mono: JetBrains Mono, monospace;
+  --font-heading:
+    Space Grotesk, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-body: DM Sans, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:
+    JetBrains Mono, ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
+    Consolas, monospace;
   --radius: 0.35rem;
   --shadow-x: 0;
   --shadow-y: 1px;
@@ -165,9 +171,9 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
   --font-mono: var(--font-mono);
-  --font-serif: var(--font-serif);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -191,7 +197,7 @@
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   letter-spacing: var(--tracking-normal);
 }
 
@@ -212,7 +218,7 @@ body {
   h4,
   h5,
   h6 {
-    font-family: var(--font-serif);
+    font-family: var(--font-heading);
   }
 
   .animate-gradient {

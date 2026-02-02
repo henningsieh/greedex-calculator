@@ -1,11 +1,11 @@
 "use client";
 
+import { WORKSHOPS } from "@greendex/config/workshops";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 
 import type { WorkshopType } from "@/features/landingpage/types";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { WORKSHOPS } from "@/config/workshops";
 import { WorkshopDetails } from "@/features/landingpage/components/workshops/workshop-details";
 
 /**

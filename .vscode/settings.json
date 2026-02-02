@@ -43,12 +43,7 @@
   "[yaml]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
-
-  // ============================================================================
-  // TYPESCRIPT/JAVASCRIPT SETTINGS
-  // ============================================================================
-  "javascript.format.enable": true,
-  "typescript.experimental.useTsgo": false,
+  // "typescript.experimental.useTsgo": false,
   "typescript.format.enable": true,
   "typescript.preferences.autoImportFileExcludePatterns": [
     "**/node_modules/@radix-ui/**",
@@ -121,5 +116,7 @@
   // Search
   "search.exclude": {
     "**/node_modules/@radix-ui": true
-  }
+  },
+  "typescript.tsserver.enableTracing": true,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }

@@ -13,9 +13,10 @@
     "header": {
       "navigation": {
         "workshops": "Workshops",
-        "eforest": "E+ Forest",
+        "resources": "Resources",
         "tipsAndTricks": "Tips & Tricks",
         "library": "Library",
+        "eforest": "E+ Forest",
         "about": "About",
         "login": "Login",
         "signup": "Sign Up",
@@ -24,6 +25,9 @@
       }
     },
     "hero": {
+      "headline": "Calculate. Offset. Learn.",
+      "subtitle": "The carbon footprint calculator designed for Erasmus+ projects. Measure your environmental impact and plant trees to create a greener Europe.",
+      "imageCaption": "Greendex dashboard showing CO₂ emissions tracking and tree planting goals",
       "missionTitle": "Our mission",
       "missionText": "Erasmus+ programme enables us to have amazing learning adventures with inspirational people from different countries. However, each of our personal gatherings contributes to a deep carbon footprint due to our travelling and living habits. The purpose of this project was to offset our carbon footprint on the projects we make by bringing more awareness and more action to change our habits. For this reason, we have created a carbon footprint calculator that is specialized for Erasmus+ projects such as youth exchanges, training courses, meetings etc. This calculator offers the final number of the CO₂ produced by each participant and transforms this number to the number of the average trees that will absorb our CO₂ in their lifetime. Our calculations are based on scientific research done by different professionals. We did not make our own calculations.",
       "visionTitle": "Our vision",
@@ -87,10 +91,12 @@
       "copyright": "All rights reserved."
     },
     "workshops": {
+      "badge": "Educational",
       "headingPrefix": "Hello, fellow",
       "headingEmphasis": "Earth walker",
       "intro1": "We are very happy you have found a way to our Greendex page. This page will help you bring awareness of sustainable and eco-friendly habits on the Erasmus+ project.",
       "intro2": "In this section we offer you three different workshops for you to use on your learning mobility, depending on your time:",
+      "pageSubtitle": "Choose a workshop based on your available time and start making a difference",
       "card": {
         "learnMore": "Learn More →"
       },
@@ -432,7 +438,7 @@
         "projects": "Projects",
         "loading-projects": "Loading projects…",
         "statistics": "Statistics",
-        "loading-stats": "The statistics are currently gettingloaded."
+        "loading-stats": "The statistics are currently getting loaded."
       }
     },
     "projects": {

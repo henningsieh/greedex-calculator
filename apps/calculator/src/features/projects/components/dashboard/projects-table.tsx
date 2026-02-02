@@ -3,7 +3,6 @@
 import {
   DEFAULT_PAGE_SIZE,
   PAGE_SIZE_OPTIONS,
-  type PageSizeOption,
 } from "@greendex/config/pagination";
 import { useLocale, useTranslations } from "@greendex/i18n/client";
 import {
@@ -34,7 +33,7 @@ import {
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import type { ProjectType } from "@/features/projects/types";
+import type { PageSizeOption, ProjectType } from "@/features/projects/types";
 
 import { useConfirmDialog } from "@/components/confirm-dialog";
 import { Location } from "@/components/location";
@@ -722,8 +721,8 @@ export function ProjectsTabSkeleton() {
           </div>
 
           {/* Right side action skeleton (Create button / batch delete) */}
-          {/* <div className="flex items-center gap-2">
-            <Skeleton className="h-8 w-20 rounded-md border-secondary/60 bg-secondary/40" />
+          {/* <div className="flex gap-2 items-center">
+            <Skeleton className="w-20 h-8 rounded-md border-secondary/60 bg-secondary/40" />
           </div> */}
         </div>
       </div>

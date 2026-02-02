@@ -80,7 +80,7 @@ Use the `border` utility class to create an outline empty state.
 
 ### Background
 
-Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty state.
+Use the `bg-*` and `bg-linear-*` utilities to add a background to the empty state.
 
 <ComponentPreview name="empty-background" className="[&_.preview]:p-0" />
 
