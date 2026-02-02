@@ -1,4 +1,9 @@
-import { APP_NAME, BASE_URL, DESCRIPTION, LOGO_PATH } from "@/config/metadata";
+import {
+  APP_NAME,
+  BASE_URL,
+  DESCRIPTION,
+  LOGO_PATH,
+} from "@greendex/config/metadata";
 
 // JSON-LD structured data for SEO
 const jsonLd = {

@@ -1,9 +1,10 @@
 "use client";
 
-import { LocaleCode } from "@greendex/config/languages";
 import { useLocale } from "@greendex/i18n/client";
 import { Check, ChevronDown } from "lucide-react";
 import { useTransition } from "react";
+
+import type { LanguageCode } from "@/lib/i18n/types";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +26,7 @@ export function LocaleSwitcher({ className }: { className?: string }) {
   const locales = getLocaleData();
   const currentLocale = locales.find((entry) => entry.code === locale);
 
-  function handleLocaleChange(newLocale: LocaleCode) {
+  function handleLocaleChange(newLocale: LanguageCode) {
     if (newLocale === locale || isPending) {
       return;
     }

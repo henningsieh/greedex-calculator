@@ -1,4 +1,4 @@
-import { SUPPORTED_LOCALES } from "@greendex/config/languages";
+import { SUPPORTED_LANGUAGES } from "@greendex/config/languages";
 import { defineI18nUI } from "fumadocs-ui/i18n";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import "src/app/globals.css";
@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 const { provider } = defineI18nUI(i18n, {
-  translations: SUPPORTED_LOCALES.reduce(
+  translations: SUPPORTED_LANGUAGES.reduce(
     (acc, locale) => {
       acc[locale.code] = {
         displayName: locale.label,

@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./features/landingpage/types": "./src/features/landingpage/types.ts"
+    "./env": "./src/env.ts",
+    "./features/landingpage/types": "./src/features/landingpage/types.ts",
+    "./lib/i18n/types": "./src/lib/i18n/types.ts"
   },
   "scripts": {
     "predev": "pnpx kill-port 3000 4000 || true",

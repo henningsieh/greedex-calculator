@@ -1,23 +1,16 @@
 import type { ComponentType, SVGProps } from "react";
 
-import {
-  LOCALE_CODES,
-  SUPPORTED_LOCALES,
-  type LocaleCode,
-  type SupportedLocale,
-} from "@greendex/config/languages";
+import { LANGUAGE_CODES, SUPPORTED_LANGUAGES } from "@greendex/config/languages";
 import * as Flags from "country-flag-icons/react/3x2";
 import countries from "i18n-iso-countries";
 import deCountries from "i18n-iso-countries/langs/de.json";
 import enCountries from "i18n-iso-countries/langs/en.json";
+
+import { LocaleData, type LanguageCode } from "@/lib/i18n/types";
+
+// Load and register locale data for country names
 countries.registerLocale(enCountries);
 countries.registerLocale(deCountries);
-
-export type LocaleData = SupportedLocale & {
-  nativeName: string;
-  englishName: string;
-  Flag?: ComponentType<SVGProps<SVGSVGElement>>;
-};
 
 const flagRegistry = Flags as Record<
   string,
@@ -25,7 +18,7 @@ const flagRegistry = Flags as Record<
 >;
 
 export const getLocaleData = (): LocaleData[] => {
-  return SUPPORTED_LOCALES.map((locale) => {
+  return SUPPORTED_LANGUAGES.map((locale) => {
     // Handle locales without a specific country code (e.g., International English)
     const countryCode = "countryCode" in locale ? locale.countryCode : undefined;
 
@@ -74,4 +67,5 @@ export const getLocaleData = (): LocaleData[] => {
 
 export const isSupportedLocale = (
   value: string | undefined,
-): value is LocaleCode => !!value && LOCALE_CODES.includes(value as LocaleCode);
+): value is LanguageCode =>
+  !!value && LANGUAGE_CODES.includes(value as LanguageCode);

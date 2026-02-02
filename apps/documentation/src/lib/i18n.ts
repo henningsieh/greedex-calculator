@@ -1,7 +1,7 @@
-import { DEFAULT_LOCALE, LOCALE_CODES } from "@greendex/config/languages";
+import { DEFAULT_LANGUAGE, LANGUAGE_CODES } from "@greendex/config/languages";
 import { defineI18n } from "fumadocs-core/i18n";
 
 export const i18n = defineI18n({
-  defaultLanguage: DEFAULT_LOCALE,
-  languages: LOCALE_CODES,
+  defaultLanguage: DEFAULT_LANGUAGE,
+  languages: LANGUAGE_CODES,
 });

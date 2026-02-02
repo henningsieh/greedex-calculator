@@ -1,10 +1,12 @@
 "use client";
 
-import { SUPPORTED_LOCALES, type LocaleCode } from "@greendex/config/languages";
+import { SUPPORTED_LANGUAGES } from "@greendex/config/languages";
 import * as Flags from "country-flag-icons/react/3x2";
 import { CheckIcon, GlobeIcon } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+
+import type { LanguageCode } from "@/lib/types";
 
 // shadcn DropdownMenu components
 import {
@@ -18,7 +20,7 @@ import {
  * Get the flag component for a given locale
  * Uses countryCode if available, otherwise falls back to Globe icon
  */
-function getFlagComponent(locale: (typeof SUPPORTED_LOCALES)[number]) {
+function getFlagComponent(locale: (typeof SUPPORTED_LANGUAGES)[number]) {
   const countryCode = "countryCode" in locale ? locale.countryCode : null;
 
   if (!countryCode) {
@@ -38,10 +40,10 @@ export function LanguageToggleInline() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const currentLang = (params?.lang as LocaleCode) || "en";
-  const currentLocale = SUPPORTED_LOCALES.find((l) => l.code === currentLang);
+  const currentLang = (params?.lang as LanguageCode) || "en";
+  const currentLocale = SUPPORTED_LANGUAGES.find((l) => l.code === currentLang);
 
-  const handleLanguageChange = (newLang: LocaleCode) => {
+  const handleLanguageChange = (newLang: LanguageCode) => {
     const segments = pathname.split("/").filter(Boolean);
     segments[0] = newLang;
     const newPath = `/${segments.join("/")}`;
@@ -79,7 +81,7 @@ export function LanguageToggleInline() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="min-w-50 bg-accent">
-        {SUPPORTED_LOCALES.map((locale) => {
+        {SUPPORTED_LANGUAGES.map((locale) => {
           const FlagIcon = getFlagComponent(locale);
           const isActive = locale.code === currentLang;
           const hasCountryCode = "countryCode" in locale;

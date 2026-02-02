@@ -458,6 +458,12 @@ importers:
 
   packages/config:
     devDependencies:
+      '@types/node':
+        specifier: 25.1.0
+        version: 25.1.0
+      next:
+        specifier: 16.1.6
+        version: 16.1.6(@babel/core@7.28.6)(@playwright/test@1.58.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       oxfmt:
         specifier: ^0.26.0
         version: 0.26.0

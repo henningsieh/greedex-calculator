@@ -1,12 +1,12 @@
-import { DEFAULT_LOCALE, LOCALE_CODES } from "@greendex/config/languages";
+import { DEFAULT_LANGUAGE, LANGUAGE_CODES } from "@greendex/config/languages";
 import { defineRouting, createNavigation } from "@greendex/i18n/server";
 
 export const routing = defineRouting({
   // All supported locales
-  locales: LOCALE_CODES,
+  locales: LANGUAGE_CODES,
 
   // Default locale when none is specified
-  defaultLocale: DEFAULT_LOCALE,
+  defaultLocale: DEFAULT_LANGUAGE,
 
   // Add locale prefix to all routes (e.g., /en/about, /de/about)
   localePrefix: "always",

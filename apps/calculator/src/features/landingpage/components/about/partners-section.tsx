@@ -1,4 +1,4 @@
-import { PARTNERS } from "@greendex/config";
+import { PARTNERS } from "@greendex/config/partners";
 import { getTranslations } from "@greendex/i18n/server";
 
 import { PartnerCard } from "@/features/landingpage/components/about/partner-card";
