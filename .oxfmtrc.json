@@ -9,16 +9,14 @@
     "docs/**",
     ".specify/**",
     "specs/**",
-    "src/components/ui/**",
-    "src/lib/drizzle/migrations/**",
-    "src/lib/drizzle/schemas/**"
+    "packages/**/dist/**"
   ],
   "experimentalSortImports": {
     "ignoreCase": true,
     "newlinesBetween": true
   },
   "experimentalTailwindcss": {
-    "stylesheet": "./src/app/globals.css",
+    "stylesheet": "apps/calculator/src/app/globals.css",
     "attributes": ["class", "className"],
     "functions": ["clsx", "cn", "cva", "twMerge"],
     "preserveDuplicates": false,
