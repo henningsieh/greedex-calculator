@@ -1,7 +1,6 @@
+import { eForestConfig } from "@greendex/config/e-forest";
 import { useTranslations } from "@greendex/i18n/client";
 import Image from "next/image";
-
-import { eForestConfig } from "@/config/e-forest";
 
 export function HeroSection() {
   const t = useTranslations("landingPage.EPlusForest.hero");

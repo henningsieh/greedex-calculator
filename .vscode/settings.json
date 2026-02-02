@@ -93,8 +93,8 @@
   },
 
   // GitLens
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "xai:grok-code-fast-1",
+  // "gitlens.ai.model": "vscode",
+  // "gitlens.ai.vscode.model": "xai:grok-code-fast-1",
 
   // i18n Ally
   "i18n-ally.displayLanguage": "de",

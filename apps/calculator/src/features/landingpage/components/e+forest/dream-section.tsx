@@ -1,3 +1,4 @@
+import { eForestConfig } from "@greendex/config/e-forest";
 import { useTranslations } from "@greendex/i18n/client";
 import { ExternalLink, MapPin, Trees } from "lucide-react";
 
@@ -12,7 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { eForestConfig } from "@/config/e-forest";
 import { Link } from "@/lib/i18n/routing";
 
 export function DreamSection() {

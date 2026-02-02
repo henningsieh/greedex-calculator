@@ -1,4 +1,4 @@
-import { Calculator, Mail, Trees } from "lucide-react";
+import { CalculatorIcon, MailIcon, TreesIcon } from "lucide-react";
 
 export const eForestConfig = {
   heroImage: "/e+forest/hero.jpg",
@@ -13,10 +13,10 @@ export const eForestConfig = {
   },
   icons: {
     /** Icon for how it works / calculator section */
-    howItWorks: Calculator,
+    howItWorks: CalculatorIcon,
     /** Icon for tree planting section */
-    planting: Trees,
+    planting: TreesIcon,
     /** Icon for contact/email */
-    contact: Mail,
+    contact: MailIcon,
   },
 } as const;
