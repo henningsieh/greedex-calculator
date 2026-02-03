@@ -26,6 +26,18 @@ export interface LogoCustomer {
 }
 
 /**
+ * Partner organization/institution
+ */
+export interface Partner {
+  id: string;
+  name: string;
+  countryCode?: string; // ISO 3166-1 alpha-2 country code (e.g., "SI", "CY")
+  website?: string;
+  logo: string; // path under /about
+  description?: string;
+}
+
+/**
  * Greendex Workshop types
  */
 export type WorkshopType = (typeof WORKSHOPS)[number]["id"];

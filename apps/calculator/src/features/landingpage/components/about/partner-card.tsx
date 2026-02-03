@@ -2,7 +2,7 @@ import { getLocale, getTranslations } from "@greendex/i18n/server";
 import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 
-import type { Partner } from "@/config/about";
+import type { Partner } from "@/features/landingpage/types";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

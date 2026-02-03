@@ -1,3 +1,4 @@
+import { eForestConfig } from "@greendex/config/e-forest";
 import { useTranslations } from "@greendex/i18n/client";
 import Image from "next/image";
 
@@ -9,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { eForestConfig } from "@/config/e-forest";
 import { Link } from "@/lib/i18n/routing";
 
 const HowItWorksIcon = eForestConfig.icons.howItWorks;

@@ -1,11 +1,4 @@
-export interface Partner {
-  id: string;
-  name: string;
-  countryCode?: string; // ISO 3166-1 alpha-2 country code (e.g., "SI", "CY")
-  website?: string;
-  logo: string; // path under /about
-  description?: string;
-}
+import type { Partner } from "@greendex/calculator/features/landingpage/types";
 
 export const PARTNERS: Partner[] = [
   {
@@ -24,7 +17,7 @@ export const PARTNERS: Partner[] = [
     website: "https://www.planbe-ngo.com/",
     logo: "/about/Plan-BE-Logo.png",
     description:
-      "PlanBe, Plan it Be it, is a NGO established in March 2014, aiming at the personal and professional development of young people. The organization is based in Nicosia, Cyprus, and acts at a national and European level. PlanBe forms a platform of communication for the exchange of ideas and the productive cooperation of young people in a variety of subjects of interest. It explores youth’s development through means of formal and non-formal education, while at the same time promotes European and International opportunities for active citizenship and cultural understanding. In the fast-changing societies we live in and the challenges we face today, it is important to be prepared with an alternative, backup plan. PlanBe contributes to young people’s exploration for finding their own Plan B(e) and making it happen.",
+      "PlanBe, Plan it Be it, is a NGO established in March 2014, aiming at the personal and professional development of young people. The organization is based in Nicosia, Cyprus, and acts at a national and European level. PlanBe forms a platform of communication for the exchange of ideas and the productive cooperation of young people in a variety of subjects of interest. It explores youth's development through means of formal and non-formal education, while at the same time promotes European and International opportunities for active citizenship and cultural understanding. In the fast-changing societies we live in and the challenges we face today, it is important to be prepared with an alternative, backup plan. PlanBe contributes to young people's exploration for finding their own Plan B(e) and making it happen.",
   },
   {
     id: "anatta",
@@ -33,7 +26,7 @@ export const PARTNERS: Partner[] = [
     website: "https://www.anattafoundation.org/",
     logo: "/about/Anatta-Logo.png",
     description:
-      "The Anatta Foundation is an organization, based in the Netherlands, but working EU-wide. It’s core team consists of psychologists, educators, trainers, social researchers, coaches, and entrepreneurs. The foundation focuses on three elements in its mission statement (1) Promotion of mental health; (2) Promotion of the flourishing of nature; and (3) Enhancing the nature connectedness of humans.",
+      "The Anatta Foundation is an organization, based in the Netherlands, but working EU-wide. It's core team consists of psychologists, educators, trainers, social researchers, coaches, and entrepreneurs. The foundation focuses on three elements in its mission statement (1) Promotion of mental health; (2) Promotion of the flourishing of nature; and (3) Enhancing the nature connectedness of humans.",
   },
   {
     id: "aventura",

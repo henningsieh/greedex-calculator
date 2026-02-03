@@ -2,8 +2,8 @@ import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 
-/** @type {import('next').NextConfig} */
-const config = {
+const nextConfig = {
+  typedRoutes: true,
   reactStrictMode: true,
   async rewrites() {
     return [
@@ -15,4 +15,4 @@ const config = {
   },
 };
 
-export default withMDX(config);
+export default withMDX(nextConfig);

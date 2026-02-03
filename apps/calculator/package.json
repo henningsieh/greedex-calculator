@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./env": "./src/env.ts",
+    "./features/landingpage/types": "./src/features/landingpage/types.ts",
+    "./lib/i18n/types": "./src/lib/i18n/types.ts"
+  },
   "scripts": {
     "predev": "pnpx kill-port 3000 4000 || true",
     "dev": "concurrently --kill-others \"pnpm run dev:next\" \"pnpm run dev:socket\"",
@@ -13,6 +18,7 @@
     "dev:inspect-brk": "PORT=3010 NEXT_DIST_DIR=.next-inspect NEXT_PUBLIC_BASE_URL=http://localhost:3010 SOCKET_PORT=4001 concurrently --kill-others \"next dev -p 3010\" \"SOCKET_PORT=4001 tsx --watch src/socket-server.ts\"",
     "prebuild": "pnpm run generate:sri && pnpm run check:sri && turbo run db:migrate",
     "build": "next build",
+    "build:cloudenv": "SKIP_ENV_VALIDATION=true next build",
     "prestart": "pnpx kill-port 3000 4000 || true && sleep 1",
     "start": "concurrently --kill-others \"next start\" \"cross-env NODE_ENV=production tsx src/socket-server.ts\"",
     "format": "oxfmt",
@@ -23,6 +29,7 @@
     "test": "pnpm run test:run",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
+    "test:cloudenv": "SKIP_ENV_VALIDATION=true vitest run --config vitest.config.cloudenv.ts",
     "test:interactive": "vitest",
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test",

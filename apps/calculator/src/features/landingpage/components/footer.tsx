@@ -12,7 +12,7 @@ import {
   WORKSHOPS_ANCHOR,
 } from "@/app/routes";
 import { Logo } from "@/features/landingpage/components/logo";
-import { PillCTALink } from "@/features/landingpage/components/pill-cta";
+import { PillCTA } from "@/features/landingpage/components/pill-cta";
 import { Link } from "@/lib/i18n/routing";
 
 /**
@@ -76,7 +76,7 @@ export async function FooterSection() {
               <Logo />
             </Link>
             <div className="mt-6">
-              <PillCTALink href={DASHBOARD_PATH}>{t("launchButton")}</PillCTALink>
+              <PillCTA href={DASHBOARD_PATH}>{t("launchButton")}</PillCTA>
             </div>
           </div>
 

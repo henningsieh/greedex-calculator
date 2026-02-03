@@ -4,12 +4,12 @@
  */
 
 /**
- * Supported locales configuration
+ * Supported languages configuration
  *
  * Note: "en" represents International English and is NOT tied to a specific EU country.
- * The countryCode is optional and only used when a locale directly represents an EU member state.
+ * The countryCode is optional and only used when a language directly represents an EU member state.
  */
-export const SUPPORTED_LOCALES = [
+export const SUPPORTED_LANGUAGES = [
   {
     code: "en",
     label: "English",
@@ -18,26 +18,18 @@ export const SUPPORTED_LOCALES = [
   },
   {
     code: "de",
-    label: "Deutsch",
-    displayRegion: "Deutschland",
+    label: "German",
+    displayRegion: "Germany",
     countryCode: "DE", // Germany is an EU member
   },
 ] as const;
 
 /**
- * Type definitions and constants derived from supported locales
+ * Array of supported language codes (derived constant, not a type)
  */
-export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
-export type LocaleCode = SupportedLocale["code"];
+export const LANGUAGE_CODES = SUPPORTED_LANGUAGES.map((l) => l.code);
 
 /**
- * Array of supported locale codes
+ * Default language code (derived constant, not a type)
  */
-export const LOCALE_CODES: LocaleCode[] = SUPPORTED_LOCALES.map(
-  (locale) => locale.code,
-);
-
-/**
- * Default locale code
- */
-export const DEFAULT_LOCALE: LocaleCode = LOCALE_CODES[0];
+export const DEFAULT_LANGUAGE = LANGUAGE_CODES[0];

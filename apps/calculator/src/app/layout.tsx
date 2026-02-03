@@ -12,7 +12,7 @@ import {
   KEYWORDS,
   LOGO_PATH,
   TITLE,
-} from "@/config/metadata";
+} from "@greendex/config/metadata";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,

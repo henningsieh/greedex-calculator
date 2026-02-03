@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "index",
+    "getting-started",
+    "authentication",
+    "user",
+    "organization",
+    "projects",
+    "participants",
+    "participation"
+  ]
+}

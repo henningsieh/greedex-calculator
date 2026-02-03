@@ -13,6 +13,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "@greendex/calculator/*": ["./src/*"],
       "#next-routes/*": ["./.next/dev/types/*", "./.next/types/*"]
     }
   },
@@ -20,9 +21,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.mts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts",
     ".next-inspect/types/**/*.ts",
     ".next-inspect/dev/types/**/*.ts"
   ],

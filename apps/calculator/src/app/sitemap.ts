@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
 
-import { LOCALE_CODES } from "@greendex/config/languages";
-
-import { BASE_URL } from "@/config/metadata";
+import { LANGUAGE_CODES } from "@greendex/config/languages";
+import { BASE_URL } from "@greendex/config/metadata";
 
 // Regex for removing trailing slash - moved to top level for performance
 const TRAILING_SLASH_REGEX = /\/$/;
@@ -29,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const sitemap: MetadataRoute.Sitemap = [];
 
   // Generate entries for each locale and page combination
-  for (const locale of LOCALE_CODES) {
+  for (const locale of LANGUAGE_CODES) {
     for (const page of publicPages) {
       sitemap.push({
         url: `${baseUrl}/${locale}${page}`,
@@ -38,7 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: page === "" ? 1.0 : 0.8,
         alternates: {
           languages: Object.fromEntries(
-            LOCALE_CODES.map((loc) => [loc, `${baseUrl}/${loc}${page}`]),
+            LANGUAGE_CODES.map((loc) => [loc, `${baseUrl}/${loc}${page}`]),
           ),
         },
       });

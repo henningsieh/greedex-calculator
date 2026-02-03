@@ -8,7 +8,7 @@ import { resolve } from "node:path";
 // This is needed in Turborepo monorepo where .env is at repo root, not in app folder
 config({ path: resolve(__dirname, "../../.env") });
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   typedRoutes: true,
   reactCompiler: true,
@@ -56,7 +56,7 @@ const nextConfig: NextConfig = {
     // Reduce initial memory footprint
     preloadEntriesOnStart: false,
   },
-};
+} satisfies NextConfig;
 
 const withNextIntl = createNextIntlPlugin("./src/lib/i18n/request.ts");
 

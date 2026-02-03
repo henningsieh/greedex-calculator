@@ -1,6 +1,6 @@
+import { LOGO_PATH } from "@greendex/config/metadata";
 import Image from "next/image";
 
-import { LOGO_PATH } from "@/config/metadata";
 import { cn } from "@/lib/utils";
 
 interface LogoProps {

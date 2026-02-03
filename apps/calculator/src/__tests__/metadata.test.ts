@@ -1,7 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
-import { describe, expect, it } from "vitest";
-
 import {
   APP_NAME,
   BASE_URL,
@@ -9,7 +5,10 @@ import {
   KEYWORDS,
   LOGO_PATH,
   TITLE,
-} from "@/config/metadata";
+} from "@greendex/config/metadata";
+import fs from "node:fs";
+import path from "node:path";
+import { describe, expect, it } from "vitest";
 
 describe("Metadata configuration", () => {
   describe("LOGO_PATH", () => {
