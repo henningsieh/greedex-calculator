@@ -5,6 +5,10 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
+    "build:cloudenv": {
+      "dependsOn": ["^build:cloudenv"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
