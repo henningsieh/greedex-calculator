@@ -1,7 +1,7 @@
 import { getTranslations } from "@greendex/i18n/server";
 
 import { DASHBOARD_PATH } from "@/app/routes";
-import { PillCTALink } from "@/features/landingpage/components/pill-cta";
+import { PillCTA } from "@/features/landingpage/components/pill-cta";
 
 /**
  * Hero Section - Clean centered layout (OpenClaw.ai style)
@@ -34,9 +34,9 @@ export async function HeroSection() {
         </p>
 
         {/* Pill CTA */}
-        <PillCTALink href={DASHBOARD_PATH} showNewBadge>
+        <PillCTA href={DASHBOARD_PATH} showNewBadge>
           {t("launchButton")}
-        </PillCTALink>
+        </PillCTA>
       </div>
     </section>
   );
