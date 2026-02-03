@@ -21,6 +21,10 @@
       "cache": false,
       "persistent": true
     },
+    "test:cloudenv": {
+      "cache": false,
+      "persistent": true
+    },
     "test:run": {
       "dependsOn": ["^build"]
     },
