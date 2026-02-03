@@ -12,11 +12,11 @@
     "format": "oxfmt",
     "lint": "oxlint --fix --fix-suggestions --fix-dangerously",
     "type-check": "tsc --noEmit",
-    "db:pull": "pnpm exec drizzle-kit pull",
-    "db:push": "pnpm exec drizzle-kit push",
-    "db:generate": "pnpm exec drizzle-kit generate",
-    "db:migrate": "TERM=dumb NO_COLOR=1 FORCE_COLOR=0 pnpm exec drizzle-kit migrate",
-    "db:studio": "pnpm exec drizzle-kit studio",
+    "db:pull": "bun exec drizzle-kit pull",
+    "db:push": "bun exec drizzle-kit push",
+    "db:generate": "bun exec drizzle-kit generate",
+    "db:migrate": "TERM=dumb NO_COLOR=1 FORCE_COLOR=0 bun exec drizzle-kit migrate",
+    "db:studio": "bun exec drizzle-kit studio",
     "clean": "rm -rf node_modules .turbo"
   },
   "dependencies": {

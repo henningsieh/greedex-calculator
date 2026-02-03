@@ -68,7 +68,7 @@ The server-side client must be imported **before** any code that uses it. If the
 | ----------------------- | ---------------------------- | ------------------------------------------------- |
 | Add API endpoint        | `src/lib/orpc/`              | Register in `router.ts`                           |
 | Add protected procedure | `src/lib/orpc/middleware.ts` | Use `requireAuth` middleware                      |
-| Database schema change  | `src/lib/drizzle/schema/`    | Run `pnpm run db:generate`, `pnpm run db:migrate` |
+| Database schema change  | `src/lib/drizzle/schema/`    | Run `bun run db:generate`, `bun run db:migrate` |
 | Add auth hook           | `src/lib/better-auth/`       | Configure in `auth.ts`                            |
 | Add socket event        | `src/socket-server.ts`       | Define handler + emit pattern                     |
 | Add UI component        | `src/components/ui/`         | Use `bunx shadcn@latest add <name>`               |

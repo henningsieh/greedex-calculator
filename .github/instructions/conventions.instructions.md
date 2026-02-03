@@ -34,7 +34,7 @@ import { Button, Card, Dialog } from "@/components/ui"; // Don't do this
 
 ---
 
-## Build & pnpmdler Configuration
+## Build & Handler Configuration
 
 ### Next.js Configuration
 
@@ -48,7 +48,7 @@ reactCompiler: true; // ⚠️ Do NOT disable or modify
 
 ### Package Optimization
 
-Check `next.config.ts` for `optimizePackageImports` — this pre-pnpmdles heavy packages to improve cold start time.
+Check `next.config.ts` for `optimizePackageImports` — this pre-bundles heavy packages to improve cold start time.
 
 See `docs/next/optimizePackageImports.md` for the list.
 
@@ -63,8 +63,8 @@ This project uses **Oxc** for extremely fast linting and formatting.
 **Commands**:
 
 ```bash
-pnpm run lint      # Check for issues
-pnpm run format    # Auto-fix formatting
+bun run lint      # Check for issues
+bun run format    # Auto-fix formatting
 ```
 
 **Configuration**: See `docs/oxc/` for:
@@ -85,9 +85,9 @@ pnpm run format    # Auto-fix formatting
 **Commands**:
 
 ```bash
-pnpm run test              # Interactive mode (watch)
-pnpm run test:run          # Run once
-pnpm run test:coverage     # Coverage report
+bun run test              # Interactive mode (watch)
+bun run test:run          # Run once
+bun run test:coverage     # Coverage report
 ```
 
 **Conventions**:
@@ -130,9 +130,9 @@ describe("myFunction", () => {
 
 ### Pre-Commit Checklist
 
-1. `pnpm run format` — Auto-fix formatting
-2. `pnpm run lint` — Check for errors
-3. `pnpm run test:run` — Ensure tests pass
+1. `bun run format` — Auto-fix formatting
+2. `bun run lint` — Check for errors
+3. `bun run test:run` — Ensure tests pass
 4. Review changes with `git diff`
 
 ---
@@ -148,10 +148,10 @@ describe("myFunction", () => {
 ```bash
 # 1. Edit schema in src/lib/drizzle/schema/
 # 2. Generate migration
-pnpm run db:generate
+bun run db:generate
 
 # 3. Apply migration
-pnpm run db:migrate
+bun run db:migrate
 ```
 
 **Connection**: See `docs/database/coolify-ssl-connection.md` for SSL setup.
@@ -179,26 +179,26 @@ pnpm run db:migrate
 
 ## Package Manager
 
-**Use `pnpm` exclusively** — Do not use `npm`, `yarn`, or `bun`.
+**Use `bun` exclusively** — Do not use `npm`, `yarn`, or `pnpm`.
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Add package
-pnpm add <package>
+bun add <package>
 
 # Add dev dependency
-pnpm add -d <package>
+bun add -d <package>
 
 # Remove package
-pnpm remove <package>
+bun remove <package>
 
 # Run scripts
-pnpm run <script>
+bun run <script>
 ```
 
-**Lockfile**: `pnpm.lockb` (binary format) — commit this to version control.
+**Lockfile**: `bun.lockb` (binary format) — commit this to version control.
 
 ---
 
@@ -209,7 +209,7 @@ pnpm run <script>
 **Installation**:
 
 ```bash
-pnpmx shadcn@latest add <component-name>
+bunx shadcn@latest add <component-name>
 ```
 
 **Location**: `src/components/ui/`

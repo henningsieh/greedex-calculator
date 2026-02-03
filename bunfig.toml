@@ -1,0 +1,15 @@
+# Bun workspace configuration
+# Converted from pnpm-workspace.yaml
+
+[install]
+# Use npm registry
+registry = "https://registry.npmjs.org/"
+
+[install.lockfile]
+# Save lockfile
+save = true
+print = "yarn"
+
+[install.cache]
+# Cache configuration
+disable = false

@@ -12,7 +12,7 @@ applyTo: "**/package.json,turbo.json"
 
 - **Root `package.json`**: Contains only shared utilities and build tools
 - **Framework dependencies**: Never declare React, Next.js, or other framework packages in root
-- **Version enforcement**: Use `pnpm.overrides` in root to enforce consistent versions across workspace
+- **Version enforcement**: Use `overrides` in root to enforce consistent versions across workspace
 
 ### App-Level Dependencies
 
@@ -22,7 +22,7 @@ applyTo: "**/package.json,turbo.json"
 
 ### Version Consistency
 
-- **Root overrides**: Enforce exact versions for critical dependencies via `pnpm.overrides`
+- **Root overrides**: Enforce exact versions for critical dependencies via `overrides`
 - **Semantic versioning**: Use exact versions for framework packages, caret ranges for utilities
 - **Regular updates**: Keep framework versions in sync across all apps
 
@@ -39,13 +39,11 @@ applyTo: "**/package.json,turbo.json"
     "zod": "^4.3.6"
     // NO: react, next, next-intl, etc.
   },
-  "pnpm": {
-    "overrides": {
-      // Enforce versions across workspace
-      "next": "16.1.6",
-      "react": "19.2.4",
-      "react-dom": "19.2.4"
-    }
+  "overrides": {
+    // Enforce versions across workspace
+    "next": "16.1.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   }
 }
 ```
@@ -89,7 +87,7 @@ applyTo: "**/package.json,turbo.json"
 When setting up new apps or packages:
 
 1. Add framework dependencies to the app/package that uses them
-2. Add critical versions to root `pnpm.overrides`
+2. Add critical versions to root `overrides`
 3. Remove framework dependencies from root if they exist
-4. Run `pnpm install` to verify resolution
-5. Run `pnpm run type-check` to ensure no type conflicts
+4. Run `bun install` to verify resolution
+5. Run `bun run type-check` to ensure no type conflicts

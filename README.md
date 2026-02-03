@@ -38,9 +38,9 @@ Learn more at [greendex.world](https://greendex.world) and [calculator.greendex.
 | **State Management** | nuqs                               | URL-based tab persistence (no extra backend state)  |
 | **Database**         | PostgreSQL + Drizzle ORM           | Type-safe migrations and queries                    |
 | **Server**           | Node.js + Socket.IO                | Custom server for WebSocket POC, real-time features |
-| **Monorepo**         | Turborepo + pnpm workspaces        | Build system, caching, task orchestration           |
+| **Monorepo**         | Turborepo + bun workspaces        | Build system, caching, task orchestration           |
 | **Code Quality**     | Oxc (oxlint + oxfmt)               | Rust-based linting & formatting                     |
-| **Package Manager**  | pnpm                               | Fast, efficient workspace management                |
+| **Package Manager**  | bun                               | Fast, efficient workspace management                |
 
 ---
 
@@ -48,7 +48,7 @@ Learn more at [greendex.world](https://greendex.world) and [calculator.greendex.
 
 ### Prerequisites
 
-- [Node.js 18+](https://nodejs.org/) and [pnpm](https://pnpm.io/)
+- [Node.js 18+](https://nodejs.org/) and [bun](https://bun.sh/)
 - PostgreSQL database
 - Environment variables (see `.env` setup below)
 
@@ -60,7 +60,7 @@ git clone https://github.com/henningsieh/greedex-calculator.git
 cd greedex-calculator
 
 # Install dependencies (Turborepo will install all workspace packages)
-pnpm install
+bun install
 ```
 
 ### Environment Setup
@@ -115,13 +115,13 @@ Run the development server with Socket.IO support (runs both Next.js and Socket.
 
 ```bash
 # Run dev server for calculator app
-pnpm run dev
+bun run dev
 
 # Run all workspace tasks (if you have multiple apps)
-pnpm turbo run dev
+bun turbo run dev
 
 # Run type checking across all packages
-pnpm turbo run type-check
+bun turbo run type-check
 ```
 
 Visit your configured `NEXT_PUBLIC_BASE_URL` in your browser (default: `http://localhost:3000`). The Socket.IO server runs separately on port 4000.
@@ -130,17 +130,17 @@ Visit your configured `NEXT_PUBLIC_BASE_URL` in your browser (default: `http://l
 
 ```bash
 # Build all packages and apps
-pnpm turbo run build
+bun turbo run build
 
 # Build only the calculator app
-pnpm --filter @greendex/calculator build
+bun --filter @greendex/calculator build
 
 # Start production server
-pnpm --filter @greendex/calculator start
+bun --filter @greendex/calculator start
 
 # Lint & format
-pnpm turbo run lint
-pnpm turbo run format
+bun turbo run lint
+bun turbo run format
 ```
 
 ---
@@ -182,7 +182,6 @@ pnpm turbo run format
 │   └── email/                        # React Email templates + Nodemailer
 ├── .env                              # ⚠️ Environment variables (root level, not in apps/calculator/)
 ├── turbo.json                        # Turborepo pipeline configuration
-├── pnpm-workspace.yaml               # pnpm workspace configuration
 └── package.json                      # Root package.json (delegates to turbo)
 ```
 
@@ -227,16 +226,16 @@ The project uses **Drizzle ORM** with **PostgreSQL**. Better Auth automatically 
 
 ```bash
 # Generate Better Auth schema (auto-generates auth-schema.ts)
-pnpm --filter @greendex/calculator auth:generate
+bun --filter @greendex/calculator auth:generate
 
 # Generate migration files for custom schema
-pnpm --filter @greendex/calculator db:generate
+bun --filter @greendex/calculator db:generate
 
 # Apply migrations
-pnpm --filter @greendex/calculator db:migrate
+bun --filter @greendex/calculator db:migrate
 
 # Open Drizzle Studio (database GUI)
-pnpm --filter @greendex/calculator db:studio
+bun --filter @greendex/calculator db:studio
 ```
 
 Migrations are stored in `apps/calculator/src/lib/drizzle/migrations/`.
@@ -261,9 +260,9 @@ Client: `apps/calculator/src/lib/better-auth/auth-client.ts`
 
 A POC for **Socket.IO** is implemented in `apps/calculator/src/socket-server.ts` (decoupled from the Next.js server):
 
-- Run both servers in dev with `pnpm run dev` from `apps/calculator/` (starts Next.js on 3000 and Socket.IO on 4000)
-- Use `pnpm run dev:inspect` to run an inspect/dev instance on `3001` and a socket server on `4001` (helps avoid port collisions while debugging)
-- Production requires `pnpm turbo run build` then `pnpm --filter @greendex/calculator start` (both Next.js and Socket.IO will be launched)
+- Run both servers in dev with `bun run dev` from `apps/calculator/` (starts Next.js on 3000 and Socket.IO on 4000)
+- Use `bun run dev:inspect` to run an inspect/dev instance on `3001` and a socket server on `4001` (helps avoid port collisions while debugging)
+- Production requires `bun turbo run build` then `bun --filter @greendex/calculator start` (both Next.js and Socket.IO will be launched)
 
 To add real-time features (e.g., live team updates), attach Socket.IO event handlers in `apps/calculator/src/socket-server.ts` and import the client in your React components.
 
@@ -275,16 +274,16 @@ This project uses **Oxc** for extremely fast linting and formatting (Rust-based)
 
 ```bash
 # Lint all packages
-pnpm turbo run lint
+bun turbo run lint
 
 # Format all packages
-pnpm turbo run format
+bun turbo run format
 
 # Lint only calculator app
-pnpm --filter @greendex/calculator lint
+bun --filter @greendex/calculator lint
 
 # Format only calculator app
-pnpm --filter @greendex/calculator format
+bun --filter @greendex/calculator format
 ```
 
 Configuration: `apps/calculator/.oxlintrc.json` and formatting rules in `docs/oxc/`
@@ -298,13 +297,13 @@ Configuration: `apps/calculator/.oxlintrc.json` and formatting rules in `docs/ox
 1. Push your code to GitHub
 2. Connect the repo to Vercel
 3. Set environment variables in Vercel dashboard
-4. Deploy (Vercel automatically runs `pnpm run build` and `pnpm run start`)
+4. Deploy (Vercel automatically runs `bun run build` and `bun run start`)
 
 ### Self-Hosted (Docker / VPS)
 
-1. Build locally or in CI/CD: `pnpm run build`
+1. Build locally or in CI/CD: `bun run build`
 2. Set production env vars
-3. Run: `pnpm run start` (expects `out/server.js` from build step)
+3. Run: `bun run start` (expects `out/server.js` from build step)
 4. Use a process manager (PM2, systemd) to keep the server running
 
 ---
@@ -312,8 +311,8 @@ Configuration: `apps/calculator/.oxlintrc.json` and formatting rules in `docs/ox
 ## Contributing
 
 1. Create a feature branch: `git checkout -b feature/my-feature`
-2. Make changes and test locally with `pnpm run dev`
-3. Lint & format: `pnpm run lint && pnpm run format`
+2. Make changes and test locally with `bun run dev`
+3. Lint & format: `bun run lint && bun run format`
 4. Commit with descriptive messages
 5. Push and open a PR
 
