@@ -208,6 +208,26 @@ Enforce boundaries?
 └─ Prevent cross-package file imports → references/boundaries/README.md
 ```
 
+### "I need to manage dependencies"
+
+```
+Manage dependencies?
+├─ Shared utilities (clsx, tailwind-merge, @paralleldrive/cuid2, zod) → Declare in root package.json only, enforce versions with pnpm.overrides
+├─ Framework packages (React, Next.js) → Declare in each app/package that uses them, enforce versions with pnpm.overrides
+├─ Version conflicts → Use pnpm.overrides in root to enforce consistent versions across workspace
+├─ Hoisting issues → Check pnpm-workspace.yaml hoistPattern and onlyBuiltDependencies
+├─ Internal packages → Use "workspace:*" versions for workspace dependencies
+├─ External dependencies → Install in packages that directly use them, not in root
+└─ Dependency deduplication → Root should contain only truly shared utilities, not app-specific packages
+```
+
+**Why not declare frameworks in root?** Framework packages like Next.js, React, and Next-intl should be declared in each app/package that uses them (not in root) because:
+
+- Different apps may use different versions or may not need the framework at all
+- Prevents unnecessary dependencies in packages that don't use the framework
+- Allows for gradual migration between framework versions
+- Root should only contain truly shared utilities used across the entire workspace
+
 ## Critical Anti-Patterns
 
 ### Using `turbo` Shorthand in Code
@@ -707,6 +727,45 @@ import { Button } from "@repo/ui/button";
     "turbo": "latest"
   }
 }
+```
+
+### Declaring Shared Utilities in Multiple Packages
+
+```json
+// WRONG: Shared utilities declared in multiple packages
+// Root package.json
+{
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.4"
+  }
+}
+// apps/web/package.json
+{
+  "dependencies": {
+    "tailwind-merge": "^2.6.1",  // Version conflict!
+    "zod": "^4.3.6"             // Should be in root
+  }
+}
+
+// CORRECT: Shared utilities in root only, versions enforced
+// Root package.json
+{
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.6.1",
+    "@paralleldrive/cuid2": "^3.0.6",
+    "zod": "^4.3.6"
+  },
+  "pnpm": {
+    "overrides": {
+      "tailwind-merge": "2.6.1",
+      "clsx": "2.1.1",
+      "zod": "4.3.6"
+    }
+  }
+}
+// apps/web/package.json - no shared utility declarations
 ```
 
 ## Common Task Configurations
