@@ -1,0 +1,9 @@
+{
+  "pages": [
+    "signup",
+    "login",
+    "verify-email",
+    "forgot-password",
+    "reset-password"
+  ]
+}

@@ -1,0 +1,3 @@
+{
+  "pages": ["create", "list", "dashboard", "details", "live-view", "archive"]
+}
