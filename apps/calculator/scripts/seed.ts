@@ -5,7 +5,7 @@
  *
  * - Purpose: Insert a seed user, organization, projects and activities for local development and tests.
  * - Warning: Stop the Next.js dev server (or any process using the database) before running to avoid connection conflicts.
- * - Run: pnpm run db:seed (uses tsx)
+ * - Run: bun run db:seed (uses tsx)
  *
  * Uses its own DB pool and will exit the process when finished. For local/dev use only — do not run in production.
  */

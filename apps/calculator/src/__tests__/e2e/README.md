@@ -8,7 +8,7 @@ E2E tests are located at `src/__tests__/e2e/` following the colocated testing pa
 
 ## Prerequisites
 
-- pnpm runtime installed
+- bun runtime installed
 - PostgreSQL database running and configured
 - Application dev server running on your configured `NEXT_PUBLIC_BASE_URL`
 
@@ -17,7 +17,7 @@ E2E tests are located at `src/__tests__/e2e/` following the colocated testing pa
 ### 1. Start the development server
 
 ```bash
-pnpm run dev
+bun run dev
 ```
 
 The dev server must be running before executing e2e tests.
@@ -26,16 +26,16 @@ The dev server must be running before executing e2e tests.
 
 ```bash
 # Run all e2e tests
-pnpm run test:e2e
+bun run test:e2e
 
 # Run with UI mode (interactive)
-pnpm run test:e2e:ui
+bun run test:e2e:ui
 
 # Debug mode
-pnpm run test:e2e:debug
+bun run test:e2e:debug
 
 # View test report
-pnpm run test:e2e:report
+bun run test:e2e:report
 ```
 
 ## Test Structure
