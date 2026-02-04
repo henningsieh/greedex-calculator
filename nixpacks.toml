@@ -2,10 +2,10 @@
 nixPkgs = ['bun']
 
 [phases.install]
-cmd = "bun install --frozen-lockfile"
+cmds = ['bun install --frozen-lockfile']
 
 [phases.build]
-cmd = "bun run prebuild && bun run build"
+cmds = ['bun run build']
 
 [start]
-cmd = "bun run prestart && bun run start"
+cmd = 'bun run prestart && bun run start'
