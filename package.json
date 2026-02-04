@@ -2,6 +2,10 @@
   "name": "greendex-monorepo",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "build:cloudenv": "turbo run build:cloudenv",
@@ -30,6 +34,7 @@
     "drizzle-orm": "^0.45.1",
     "lucide-react": "0.563.0",
     "pg": "8.17.2",
+    "tailwind-merge": "2.6.1",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -45,18 +50,14 @@
     "turbo": "^2.8.1",
     "typescript": "5.9.3"
   },
-  "packageManager": "bun@1.3.8",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "overrides": {
+    "@types/react": "19.2.10",
+    "@types/react-dom": "19.2.3",
     "next": "16.1.6",
     "next-intl": "4.8.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "@types/react": "19.2.10",
-    "@types/react-dom": "19.2.3",
     "tailwind-merge": "2.6.1"
-  }
+  },
+  "packageManager": "bun@1.3.8"
 }

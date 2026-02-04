@@ -44,6 +44,7 @@ Since bun install encountered network/registry issues in the CI environment, you
 ### Prerequisites
 
 1. Install bun (if not already installed):
+
    ```bash
    curl -fsSL https://bun.sh/install | bash
    ```
@@ -56,16 +57,18 @@ Since bun install encountered network/registry issues in the CI environment, you
 ### Installation Steps
 
 1. **Install dependencies**:
+
    ```bash
    bun install
    ```
-   
+
    This will:
    - Install all workspace dependencies
    - Generate `bun.lockb` (the bun lockfile)
    - Set up node_modules
 
 2. **Verify installation**:
+
    ```bash
    # Check that all packages are installed
    ls node_modules
@@ -80,29 +83,33 @@ Since bun install encountered network/registry issues in the CI environment, you
 Run these commands to verify everything works:
 
 1. **Type checking** (fastest validation):
+
    ```bash
    bun run type-check
    ```
 
 2. **Build all packages** (per requirements):
+
    ```bash
    bun turbo run build:cloudenv
    ```
-   
+
    Expected output: All packages should build successfully
 
 3. **Run tests** (per requirements):
+
    ```bash
    bun turbo run test:cloudenv
    ```
-   
+
    Expected output: All tests should pass
 
 4. **Additional validation**:
+
    ```bash
    # Lint
    bun run lint
-   
+
    # Format
    bun run format
    ```
@@ -124,16 +131,16 @@ git push
 
 ## Common Commands Reference
 
-| Task | Old (pnpm) | New (bun) |
-|------|------------|-----------|
-| Install dependencies | `pnpm install` | `bun install` |
-| Add package | `pnpm add <pkg>` | `bun add <pkg>` |
-| Add dev package | `pnpm add -d <pkg>` | `bun add -d <pkg>` |
-| Remove package | `pnpm remove <pkg>` | `bun remove <pkg>` |
-| Run script | `pnpm run <script>` | `bun run <script>` |
-| Execute binary | `pnpm exec <cmd>` | `bun exec <cmd>` or `bunx <cmd>` |
-| Filter workspace | `pnpm --filter <pkg>` | `bun --filter <pkg>` |
-| Run turbo task | `pnpm turbo run <task>` | `bun turbo run <task>` |
+| Task                 | Old (pnpm)              | New (bun)                        |
+| -------------------- | ----------------------- | -------------------------------- |
+| Install dependencies | `pnpm install`          | `bun install`                    |
+| Add package          | `pnpm add <pkg>`        | `bun add <pkg>`                  |
+| Add dev package      | `pnpm add -d <pkg>`     | `bun add -d <pkg>`               |
+| Remove package       | `pnpm remove <pkg>`     | `bun remove <pkg>`               |
+| Run script           | `pnpm run <script>`     | `bun run <script>`               |
+| Execute binary       | `pnpm exec <cmd>`       | `bun exec <cmd>` or `bunx <cmd>` |
+| Filter workspace     | `pnpm --filter <pkg>`   | `bun --filter <pkg>`             |
+| Run turbo task       | `pnpm turbo run <task>` | `bun turbo run <task>`           |
 
 ## Workspace Protocol
 
@@ -155,11 +162,13 @@ This ensures packages always use the local workspace version.
 ### If `bun install` fails:
 
 1. **Clear bun cache**:
+
    ```bash
    bun pm cache rm
    ```
 
 2. **Try again**:
+
    ```bash
    bun install
    ```
@@ -173,11 +182,13 @@ This ensures packages always use the local workspace version.
 ### If builds fail:
 
 1. **Clean build artifacts**:
+
    ```bash
    bun run clean
    ```
 
 2. **Reinstall**:
+
    ```bash
    rm -rf node_modules
    bun install
@@ -193,7 +204,7 @@ This ensures packages always use the local workspace version.
 - [ ] `bun install` completes successfully
 - [ ] `bun.lockb` is generated
 - [ ] `bun turbo run build:cloudenv` succeeds
-- [ ] `bun turbo run test:cloudenv` succeeds  
+- [ ] `bun turbo run test:cloudenv` succeeds
 - [ ] `bun run type-check` passes
 - [ ] `bun run lint` passes
 - [ ] `bun run format` runs without errors

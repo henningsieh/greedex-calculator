@@ -29,7 +29,7 @@ This guide provides 5-15 minute onboarding paths based on task type.
 | **Add protected procedure**  | `docs/orpc/QUICKSTART.md` (cheat sheet) | `docs/orpc/DUAL-SETUP.md`                         | `src/lib/orpc/middleware.ts`                                    |
 | **Optimize SSR performance** | `docs/orpc/DUAL-SETUP.md`               | `docs/orpc/Optimize-Server-Side-Rendering.SSR.md` | `src/instrumentation.ts`                                        |
 | **Integrate TanStack Query** | `docs/orpc/orpc.tanstack-query.md`      | `docs/tanstack-react-query/ssr.md`                | `.github/instructions/orpc.instructions.md`                     |
-| **Add database schema**      | `src/lib/drizzle/`                      | Run `bun run db:generate`                        | `.github/instructions/conventions.instructions.md` (migrations) |
+| **Add database schema**      | `src/lib/drizzle/`                      | Run `bun run db:generate`                         | `.github/instructions/conventions.instructions.md` (migrations) |
 
 ### 🔹 Authentication & Authorization
 
@@ -87,8 +87,8 @@ This guide provides 5-15 minute onboarding paths based on task type.
 
 | Task                     | Entry Point                                                         | Deep Dive          | Implementation Reference |
 | ------------------------ | ------------------------------------------------------------------- | ------------------ | ------------------------ |
-| **Understand linting**   | `docs/oxc/README.md`                                                | `docs/oxc/oxlint/` | Run `bun run lint`      |
-| **Formatting rules**     | `docs/oxc/oxfmt/`                                                   | —                  | Run `bun run format`    |
+| **Understand linting**   | `docs/oxc/README.md`                                                | `docs/oxc/oxlint/` | Run `bun run lint`       |
+| **Formatting rules**     | `docs/oxc/oxfmt/`                                                   | —                  | Run `bun run format`     |
 | **TypeScript patterns**  | `.github/instructions/code-standards.instructions.md` (Type Safety) | —                  | Codebase examples        |
 | **React best practices** | `.github/instructions/code-standards.instructions.md` (React & JSX) | —                  | Codebase examples        |
 
@@ -104,7 +104,7 @@ This guide provides 5-15 minute onboarding paths based on task type.
 | **How do I test this?**                 | `docs/participate/testing.md` + `.github/instructions/code-standards.instructions.md` (testing section) |
 | **What's the git workflow?**            | `.github/instructions/conventions.instructions.md` (git workflow)                                       |
 | **How do I run the dev server?**        | **You don't** — forbidden command (see `.github/copilot-instructions.md`)                               |
-| **How do I run tests?**                 | `bun run test` (allowed command)                                                                       |
+| **How do I run tests?**                 | `bun run test` (allowed command)                                                                        |
 | **What's the package manager?**         | `bun` exclusively (see `.github/instructions/conventions.instructions.md`)                              |
 
 ---

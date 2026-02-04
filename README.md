@@ -38,9 +38,9 @@ Learn more at [greendex.world](https://greendex.world) and [calculator.greendex.
 | **State Management** | nuqs                               | URL-based tab persistence (no extra backend state)  |
 | **Database**         | PostgreSQL + Drizzle ORM           | Type-safe migrations and queries                    |
 | **Server**           | Node.js + Socket.IO                | Custom server for WebSocket POC, real-time features |
-| **Monorepo**         | Turborepo + bun workspaces        | Build system, caching, task orchestration           |
+| **Monorepo**         | Turborepo + bun workspaces         | Build system, caching, task orchestration           |
 | **Code Quality**     | Oxc (oxlint + oxfmt)               | Rust-based linting & formatting                     |
-| **Package Manager**  | bun                               | Fast, efficient workspace management                |
+| **Package Manager**  | bun                                | Fast, efficient workspace management                |
 
 ---
 
