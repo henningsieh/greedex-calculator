@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Install dependencies
 FROM base AS install
-COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
 COPY turbo.json ./
 COPY packages packages
 COPY apps apps
@@ -13,7 +13,6 @@ RUN bun install --frozen-lockfile
 FROM base AS builder
 COPY --from=install /app/node_modules ./node_modules
 COPY . .
-RUN bun run prebuild
 RUN bun run build
 
 # Production
