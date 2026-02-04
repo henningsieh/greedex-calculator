@@ -49,6 +49,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "./src"),
+      "@greendex/calculator": resolve(__dirname, "./src"),
     },
   },
 });
