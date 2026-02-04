@@ -13,9 +13,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getLocaleData } from "@/lib/i18n/locales";
 import { usePathname, useRouter } from "@/lib/i18n/routing";
-import { cn } from "@/lib/utils";
+import { cn, getLocaleData } from "@/lib/utils";
 
 export function LocaleSwitcher({ className }: { className?: string }) {
   const locale = useLocale();

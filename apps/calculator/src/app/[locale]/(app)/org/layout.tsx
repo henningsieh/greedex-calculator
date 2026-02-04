@@ -5,10 +5,5 @@ export default function Layout({
 }>) {
   // Note: Data is already prefetched and awaited in the parent (app) layout.
   // No additional prefetching needed here.
-  return (
-    <>
-      {/* Organization header card removed — breadcrumb provides context now */}
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

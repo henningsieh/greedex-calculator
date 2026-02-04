@@ -8,8 +8,8 @@ import { NuqsProvider } from "@/components/providers/nuqs-adapter";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { env } from "@/env";
-import { isSupportedLocale } from "@/lib/i18n/locales";
 import { routing } from "@/lib/i18n/routing";
+import { isSupportedLocale } from "@/lib/utils";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",

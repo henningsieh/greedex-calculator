@@ -2,6 +2,7 @@
   // ============================================================================
   // CORE EDITOR SETTINGS
   // ============================================================================
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "source.fixAll.oxc": "explicit"
