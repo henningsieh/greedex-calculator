@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from "@greendex/i18n/client";
 import { getMessages, setRequestLocale } from "@greendex/i18n/server";
-import { DM_Sans, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Comfortaa, DM_Sans, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 
 import { JsonLd } from "@/components/json-ld";
@@ -11,13 +12,20 @@ import { env } from "@/env";
 import { isSupportedLocale } from "@/lib/i18n/locales";
 import { routing } from "@/lib/i18n/routing";
 
-const spaceGrotesk = Space_Grotesk({
+const clashDisplay = localFont({
+  src: "./../../../public/fonts/ClashDisplay_Complete/Fonts/TTF/ClashDisplay-Variable.ttf",
+  variable: "--font-clash",
+  display: "swap",
+});
+
+const spaceGrotesk = Comfortaa({
   variable: "--font-heading",
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
   preload: false,
 });
+
 const dmSans = DM_Sans({
   variable: "--font-body",
   weight: ["400", "500", "600", "700"],
@@ -62,7 +70,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html
-      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} scroll-smooth`}
+      className={`${clashDisplay.variable} ${spaceGrotesk.variable} ${dmSans.className} ${dmSans.variable} ${jetbrainsMono.variable} scroll-smooth`}
       lang={locale}
       suppressHydrationWarning
     >

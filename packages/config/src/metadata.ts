@@ -29,3 +29,4 @@ export const FACEBOOK_APP_ID: FacebookAppId["appId"] = "";
 
 // Logo path configuration
 export const LOGO_PATH = "/greendex_logo.png";
+export const ICON_PATH = "/favicon/apple-touch-icon.png";

@@ -55,73 +55,73 @@ export function LandingPageBackground() {
       {/* Light theme particles */}
       <div className="absolute inset-0 dark:opacity-0">
         {/* Top-left cluster - pollen/dust in morning light */}
-        <div className="absolute top-[10%] left-[15%] size-1 rounded-full bg-emerald-400/20" />
-        <div className="absolute top-[15%] left-[10%] size-0.5 rounded-full bg-sky-400/25" />
-        <div className="absolute top-[8%] left-[20%] size-0.5 rounded-full bg-emerald-300/20" />
-        <div className="absolute top-[20%] left-[12%] size-1 rounded-full bg-amber-300/15" />
+        <div className="absolute top-[10%] left-[15%] size-1 rounded-full bg-emerald-400/30 shadow-[0_0_4px_rgba(52,211,153,0.4)]" />
+        <div className="absolute top-[15%] left-[10%] size-0.5 rounded-full bg-sky-400/35 shadow-[0_0_3px_rgba(56,189,248,0.5)]" />
+        <div className="absolute top-[8%] left-[20%] size-0.5 rounded-full bg-emerald-300/30 shadow-[0_0_3px_rgba(110,231,183,0.4)]" />
+        <div className="absolute top-[20%] left-[12%] size-1 rounded-full bg-amber-300/25 shadow-[0_0_4px_rgba(252,211,77,0.3)]" />
 
         {/* Top-right cluster */}
-        <div className="absolute top-[12%] right-[18%] size-0.5 rounded-full bg-sky-300/20" />
-        <div className="absolute top-[18%] right-[12%] size-1 rounded-full bg-emerald-400/15" />
-        <div className="absolute top-[8%] right-[25%] size-0.5 rounded-full bg-amber-200/20" />
+        <div className="absolute top-[12%] right-[18%] size-0.5 rounded-full bg-sky-300/30 shadow-[0_0_3px_rgba(125,211,252,0.4)]" />
+        <div className="absolute top-[18%] right-[12%] size-1 rounded-full bg-emerald-400/25 shadow-[0_0_4px_rgba(52,211,153,0.3)]" />
+        <div className="absolute top-[8%] right-[25%] size-0.5 rounded-full bg-amber-200/30 shadow-[0_0_3px_rgba(254,240,138,0.4)]" />
 
         {/* Bottom-left cluster */}
-        <div className="absolute bottom-[20%] left-[8%] size-1 rounded-full bg-emerald-300/18" />
-        <div className="absolute bottom-[15%] left-[15%] size-0.5 rounded-full bg-sky-400/15" />
+        <div className="absolute bottom-[20%] left-[8%] size-1 rounded-full bg-emerald-300/28 shadow-[0_0_4px_rgba(110,231,183,0.35)]" />
+        <div className="absolute bottom-[15%] left-[15%] size-0.5 rounded-full bg-sky-400/25 shadow-[0_0_3px_rgba(56,189,248,0.4)]" />
 
         {/* Bottom-right cluster */}
-        <div className="absolute right-[20%] bottom-[18%] size-0.5 rounded-full bg-emerald-400/20" />
-        <div className="absolute right-[10%] bottom-[25%] size-1 rounded-full bg-amber-300/12" />
+        <div className="absolute right-[20%] bottom-[18%] size-0.5 rounded-full bg-emerald-400/30 shadow-[0_0_3px_rgba(52,211,153,0.4)]" />
+        <div className="absolute right-[10%] bottom-[25%] size-1 rounded-full bg-amber-300/22 shadow-[0_0_4px_rgba(252,211,77,0.3)]" />
 
         {/* Scattered particles */}
-        <div className="absolute top-[35%] left-[5%] size-0.5 rounded-full bg-sky-300/15" />
-        <div className="absolute top-[45%] right-[8%] size-0.5 rounded-full bg-emerald-300/18" />
-        <div className="absolute top-[60%] left-[25%] size-0.5 rounded-full bg-amber-200/10" />
-        <div className="absolute top-[70%] right-[30%] size-1 rounded-full bg-sky-400/12" />
-        <div className="absolute top-[55%] left-[40%] size-0.5 rounded-full bg-emerald-400/15" />
-        <div className="absolute top-[80%] left-[60%] size-0.5 rounded-full bg-amber-300/15" />
-        <div className="absolute top-[40%] right-[45%] size-0.5 rounded-full bg-sky-300/12" />
-        <div className="absolute top-[65%] left-[75%] size-1 rounded-full bg-emerald-300/10" />
-        <div className="absolute top-[25%] left-[50%] size-0.5 rounded-full bg-amber-200/15" />
-        <div className="absolute top-[85%] right-[15%] size-0.5 rounded-full bg-sky-400/10" />
-        <div className="absolute top-[50%] left-[85%] size-0.5 rounded-full bg-emerald-400/12" />
-        <div className="absolute top-[30%] right-[60%] size-1 rounded-full bg-amber-300/10" />
+        <div className="absolute top-[35%] left-[5%] size-0.5 rounded-full bg-sky-300/25 shadow-[0_0_3px_rgba(125,211,252,0.35)]" />
+        <div className="absolute top-[45%] right-[8%] size-0.5 rounded-full bg-emerald-300/28 shadow-[0_0_3px_rgba(110,231,183,0.35)]" />
+        <div className="absolute top-[60%] left-[25%] size-0.5 rounded-full bg-amber-200/20 shadow-[0_0_3px_rgba(254,240,138,0.3)]" />
+        <div className="absolute top-[70%] right-[30%] size-1 rounded-full bg-sky-400/22 shadow-[0_0_4px_rgba(56,189,248,0.3)]" />
+        <div className="absolute top-[55%] left-[40%] size-0.5 rounded-full bg-emerald-400/25 shadow-[0_0_3px_rgba(52,211,153,0.35)]" />
+        <div className="absolute top-[80%] left-[60%] size-0.5 rounded-full bg-amber-300/25 shadow-[0_0_3px_rgba(252,211,77,0.35)]" />
+        <div className="absolute top-[40%] right-[45%] size-0.5 rounded-full bg-sky-300/22 shadow-[0_0_3px_rgba(125,211,252,0.3)]" />
+        <div className="absolute top-[65%] left-[75%] size-1 rounded-full bg-emerald-300/20 shadow-[0_0_4px_rgba(110,231,183,0.3)]" />
+        <div className="absolute top-[25%] left-[50%] size-0.5 rounded-full bg-amber-200/25 shadow-[0_0_3px_rgba(254,240,138,0.35)]" />
+        <div className="absolute top-[85%] right-[15%] size-0.5 rounded-full bg-sky-400/20 shadow-[0_0_3px_rgba(56,189,248,0.3)]" />
+        <div className="absolute top-[50%] left-[85%] size-0.5 rounded-full bg-emerald-400/22 shadow-[0_0_3px_rgba(52,211,153,0.3)]" />
+        <div className="absolute top-[30%] right-[60%] size-1 rounded-full bg-amber-300/20 shadow-[0_0_4px_rgba(252,211,77,0.3)]" />
       </div>
 
       {/* Dark theme particles - fireflies/spores in forest */}
       <div className="absolute inset-0 opacity-0 dark:opacity-100">
         {/* Top-left cluster */}
-        <div className="absolute top-[10%] left-[15%] size-1 rounded-full bg-emerald-400/30" />
-        <div className="absolute top-[15%] left-[10%] size-0.5 rounded-full bg-teal-400/25" />
-        <div className="absolute top-[8%] left-[20%] size-0.5 rounded-full bg-emerald-300/20" />
-        <div className="absolute top-[20%] left-[12%] size-1 rounded-full bg-green-400/20" />
+        <div className="absolute top-[10%] left-[15%] size-1 rounded-full bg-emerald-400/40 shadow-[0_0_4px_rgba(52,211,153,0.5)]" />
+        <div className="absolute top-[15%] left-[10%] size-0.5 rounded-full bg-teal-400/35 shadow-[0_0_3px_rgba(20,184,166,0.5)]" />
+        <div className="absolute top-[8%] left-[20%] size-0.5 rounded-full bg-emerald-300/30 shadow-[0_0_3px_rgba(110,231,183,0.4)]" />
+        <div className="absolute top-[20%] left-[12%] size-1 rounded-full bg-green-400/30 shadow-[0_0_4px_rgba(74,222,128,0.4)]" />
 
         {/* Top-right cluster */}
-        <div className="absolute top-[12%] right-[18%] size-0.5 rounded-full bg-teal-300/25" />
-        <div className="absolute top-[18%] right-[12%] size-1 rounded-full bg-emerald-400/20" />
-        <div className="absolute top-[8%] right-[25%] size-0.5 rounded-full bg-green-300/20" />
+        <div className="absolute top-[12%] right-[18%] size-0.5 rounded-full bg-teal-300/35 shadow-[0_0_3px_rgba(94,234,212,0.5)]" />
+        <div className="absolute top-[18%] right-[12%] size-1 rounded-full bg-emerald-400/30 shadow-[0_0_4px_rgba(52,211,153,0.4)]" />
+        <div className="absolute top-[8%] right-[25%] size-0.5 rounded-full bg-green-300/30 shadow-[0_0_3px_rgba(134,239,172,0.4)]" />
 
         {/* Bottom-left cluster */}
-        <div className="absolute bottom-[20%] left-[8%] size-1 rounded-full bg-emerald-300/25" />
-        <div className="absolute bottom-[15%] left-[15%] size-0.5 rounded-full bg-teal-400/20" />
+        <div className="absolute bottom-[20%] left-[8%] size-1 rounded-full bg-emerald-300/35 shadow-[0_0_4px_rgba(110,231,183,0.45)]" />
+        <div className="absolute bottom-[15%] left-[15%] size-0.5 rounded-full bg-teal-400/30 shadow-[0_0_3px_rgba(20,184,166,0.4)]" />
 
         {/* Bottom-right cluster */}
-        <div className="absolute right-[20%] bottom-[18%] size-0.5 rounded-full bg-emerald-400/25" />
-        <div className="absolute right-[10%] bottom-[25%] size-1 rounded-full bg-green-400/18" />
+        <div className="absolute right-[20%] bottom-[18%] size-0.5 rounded-full bg-emerald-400/35 shadow-[0_0_3px_rgba(52,211,153,0.45)]" />
+        <div className="absolute right-[10%] bottom-[25%] size-1 rounded-full bg-green-400/28 shadow-[0_0_4px_rgba(74,222,128,0.35)]" />
 
         {/* Scattered particles */}
-        <div className="absolute top-[35%] left-[5%] size-0.5 rounded-full bg-teal-300/20" />
-        <div className="absolute top-[45%] right-[8%] size-0.5 rounded-full bg-emerald-300/22" />
-        <div className="absolute top-[60%] left-[25%] size-0.5 rounded-full bg-green-300/15" />
-        <div className="absolute top-[70%] right-[30%] size-1 rounded-full bg-teal-400/18" />
-        <div className="absolute top-[55%] left-[40%] size-0.5 rounded-full bg-emerald-400/20" />
-        <div className="absolute top-[80%] left-[60%] size-0.5 rounded-full bg-green-300/18" />
-        <div className="absolute top-[40%] right-[45%] size-0.5 rounded-full bg-teal-300/15" />
-        <div className="absolute top-[65%] left-[75%] size-1 rounded-full bg-emerald-300/15" />
-        <div className="absolute top-[25%] left-[50%] size-0.5 rounded-full bg-green-400/18" />
-        <div className="absolute top-[85%] right-[15%] size-0.5 rounded-full bg-teal-400/12" />
-        <div className="absolute top-[50%] left-[85%] size-0.5 rounded-full bg-emerald-400/15" />
-        <div className="absolute top-[30%] right-[60%] size-1 rounded-full bg-green-300/12" />
+        <div className="absolute top-[35%] left-[5%] size-0.5 rounded-full bg-teal-300/30 shadow-[0_0_3px_rgba(94,234,212,0.4)]" />
+        <div className="absolute top-[45%] right-[8%] size-0.5 rounded-full bg-emerald-300/32 shadow-[0_0_3px_rgba(110,231,183,0.4)]" />
+        <div className="absolute top-[60%] left-[25%] size-0.5 rounded-full bg-green-300/25 shadow-[0_0_3px_rgba(134,239,172,0.35)]" />
+        <div className="absolute top-[70%] right-[30%] size-1 rounded-full bg-teal-400/28 shadow-[0_0_4px_rgba(20,184,166,0.35)]" />
+        <div className="absolute top-[55%] left-[40%] size-0.5 rounded-full bg-emerald-400/30 shadow-[0_0_3px_rgba(52,211,153,0.4)]" />
+        <div className="absolute top-[80%] left-[60%] size-0.5 rounded-full bg-green-300/28 shadow-[0_0_3px_rgba(134,239,172,0.4)]" />
+        <div className="absolute top-[40%] right-[45%] size-0.5 rounded-full bg-teal-300/25 shadow-[0_0_3px_rgba(94,234,212,0.35)]" />
+        <div className="absolute top-[65%] left-[75%] size-1 rounded-full bg-emerald-300/25 shadow-[0_0_4px_rgba(110,231,183,0.35)]" />
+        <div className="absolute top-[25%] left-[50%] size-0.5 rounded-full bg-green-400/28 shadow-[0_0_3px_rgba(74,222,128,0.4)]" />
+        <div className="absolute top-[85%] right-[15%] size-0.5 rounded-full bg-teal-400/22 shadow-[0_0_3px_rgba(20,184,166,0.3)]" />
+        <div className="absolute top-[50%] left-[85%] size-0.5 rounded-full bg-emerald-400/25 shadow-[0_0_3px_rgba(52,211,153,0.35)]" />
+        <div className="absolute top-[30%] right-[60%] size-1 rounded-full bg-green-300/22 shadow-[0_0_4px_rgba(134,239,172,0.3)]" />
       </div>
 
       {/* Bottom fade to background color */}

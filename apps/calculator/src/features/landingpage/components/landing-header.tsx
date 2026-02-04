@@ -78,7 +78,7 @@ export const LandingHeader = () => {
         <div
           className={cn(
             "mx-auto mt-3 max-w-5xl rounded-2xl border border-border/40",
-            "bg-background/70 px-4 shadow-sm backdrop-blur-lg",
+            "bg-background/40 px-4 shadow-sm backdrop-blur-lg",
             "sm:px-6 lg:px-8",
           )}
         >
@@ -159,7 +159,7 @@ export const LandingHeader = () => {
 
             {/* Mobile Menu */}
             <div className="flex items-center gap-2 lg:hidden">
-              <ThemeSwitcher className="h-8 rounded-md" />
+              <ThemeSwitcher className="hidden h-8 rounded-md sm:flex" />
               <LocaleSwitcher className="h-8 rounded-md" />
               <Sheet onOpenChange={setMenuOpen} open={menuOpen}>
                 <SheetTrigger asChild>
@@ -185,7 +185,7 @@ export const LandingHeader = () => {
                     aria-label={t("navigation.openMenu")}
                     className="flex flex-1 flex-col justify-between"
                   >
-                    <ul className="flex flex-col gap-1">
+                    <ul className="m-2 flex flex-col gap-1">
                       {/* Main nav item */}
                       <li>
                         <Item asChild size="sm">
@@ -249,12 +249,15 @@ export const LandingHeader = () => {
                       ))}
                     </ul>
 
-                    <div className="m-8 space-y-4">
+                    <div className="m-6 space-y-4">
                       <div className="space-y-3">
-                        <p className="px-3 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                        <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                           {t("navigation.settings")}
                         </p>
-                        <LocaleSwitcher className="rounded-md" />
+                        <div className="flex items-center justify-between">
+                          <LocaleSwitcher className="rounded-md" />
+                          <ThemeSwitcher className="rounded-md" />
+                        </div>
                       </div>
 
                       <div className="flex flex-col gap-3 pt-4">

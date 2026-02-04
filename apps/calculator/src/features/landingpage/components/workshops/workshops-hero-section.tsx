@@ -3,6 +3,7 @@ import { getTranslations } from "@greendex/i18n/server";
 import { ArrowRight, ClockIcon } from "lucide-react";
 import Image from "next/image";
 
+import { Badge } from "@/components/ui/badge";
 import { Link } from "@/lib/i18n/routing";
 
 /**
@@ -16,7 +17,7 @@ export async function WorkshopsHeroSection() {
 
   return (
     <section
-      className="relative overflow-hidden border-y border-border/30 bg-linear-to-b from-background via-muted/30 to-background py-32 md:py-40"
+      className="relative overflow-hidden border-y border-border/30 bg-linear-to-b from-background via-muted/30 to-background py-24 md:py-32 lg:py-40"
       id="workshops"
     >
       {/* Background decorative elements */}
@@ -28,12 +29,12 @@ export async function WorkshopsHeroSection() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header - Enhanced */}
         <div className="mb-20 text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 backdrop-blur-sm">
+          <Badge className="mb-12 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 backdrop-blur-sm">
             <span className="flex h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
             <span className="text-sm font-semibold tracking-wider text-primary uppercase">
               {t("workshops.badge")}
             </span>
-          </div>
+          </Badge>
 
           <h2 className="mb-8 text-4xl font-semibold tracking-tight text-balance md:text-5xl lg:text-6xl">
             {t("workshops.headingPrefix")}{" "}

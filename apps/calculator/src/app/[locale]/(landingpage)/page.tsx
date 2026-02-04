@@ -18,14 +18,14 @@ export default function LandingPage() {
       {/* Hero - Clean centered, no image */}
       <HeroSection />
 
+      {/* Globe - Keep existing */}
+      <GlobeSection />
+
       {/* Workshops - MOST prominent section */}
       <WorkshopsHeroSection />
 
       {/* Preview - Hero image below the fold */}
       <PreviewSection />
-
-      {/* Globe - Keep existing */}
-      <GlobeSection />
     </main>
   );
 }

@@ -42,7 +42,7 @@ export function PillCTA({
     // Base styles
     "group relative inline-flex items-center gap-2.5 rounded-full",
     "border border-primary/60 bg-background/90",
-    "px-6 py-3 text-sm font-medium text-foreground",
+    "px-4 py-3 text-sm font-medium text-foreground",
     // Subtle, elegant default shadow with soft backdrop blur
     "shadow-[0_8px_24px_rgba(4,120,87,0.15),0_4px_12px_rgba(0,0,0,0.25)] backdrop-blur-sm",
     // Smooth transitions
