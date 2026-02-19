@@ -1,0 +1,1064 @@
+{
+  "landingPage": {
+    "launchButton": "Avvia il Calcolatore di Carbonio Erasmus+",
+    "launchButtonAria": "Avvia il Calcolatore di Carbonio Erasmus+ — accesso richiesto",
+    "about": {
+      "partnersTitle": "Partner",
+      "partnersHeadline": "Il Progetto Greendex è nato dall'amore per la natura e dalla necessità di contribuire a un futuro più sostenibile. Il progetto è stato strutturato come un partenariato strategico KA 2 all'interno del programma Erasmus+ e finanziato dall'Agenzia Nazionale Slovena MOVIT. In questo progetto abbiamo condotto ampie ricerche sulla sostenibilità e creato una Biblioteca per gli studi futuri. Abbiamo sviluppato Consigli e Trucchi creativi per le persone da praticare nella vita quotidiana e per le organizzazioni giovanili da implementare nel loro lavoro. Abbiamo creato sessioni educative da utilizzare nelle mobilità per sensibilizzare e compensare la nostra impronta di carbonio. Abbiamo inoltre sviluppato un calcolatore di impronta di carbonio specializzato per la realtà Erasmus+. Abbiamo investito nella foresta Erasmus+, dove vengono regolarmente piantati alberi. Abbiamo ricercato, imparato, condiviso, testato e piantato per noi, per voi e per il futuro.",
+      "partnerBadge": "Partner",
+      "visitWebsite": "Visita il sito web",
+      "erasmusFunding": "Cofinanziato dal programma Erasmus+.",
+      "aboutTitle": "Informazioni su Greendex"
+    },
+    "header": {
+      "navigation": {
+        "workshops": "Workshop",
+        "resources": "Risorse",
+        "tipsAndTricks": "Consigli e Trucchi",
+        "library": "Biblioteca",
+        "eforest": "Foresta E+",
+        "about": "Chi siamo",
+        "login": "Accedi",
+        "signup": "Registrati",
+        "openMenu": "Apri menu",
+        "settings": "Impostazioni"
+      }
+    },
+    "hero": {
+      "headline": "Calcola. Compensa. Impara.",
+      "subtitle": "Il calcolatore di impronta di carbonio progettato per i progetti Erasmus+. Misura il tuo impatto ambientale e pianta alberi per creare un'Europa più verde.",
+      "imageCaption": "Dashboard Greendex con tracciamento delle emissioni di CO₂ e obiettivi di piantagione di alberi",
+      "missionTitle": "La nostra missione",
+      "missionText": "Il programma Erasmus+ ci permette di vivere incredibili avventure di apprendimento con persone ispiratrici provenienti da paesi diversi. Tuttavia, ogni nostro incontro in presenza contribuisce a una significativa impronta di carbonio a causa delle nostre abitudini di viaggio e di vita. Lo scopo di questo progetto era compensare la nostra impronta di carbonio nei progetti che realizziamo, aumentando la consapevolezza e stimolando l'azione per cambiare le nostre abitudini. Per questo motivo abbiamo creato un calcolatore di impronta di carbonio specializzato per i progetti Erasmus+ come scambi giovanili, corsi di formazione, riunioni ecc. Questo calcolatore fornisce il totale di CO₂ prodotto da ciascun partecipante e trasforma questo numero nel numero medio di alberi che assorbiranno la nostra CO₂ nel corso della loro vita. I nostri calcoli si basano su ricerche scientifiche condotte da diversi professionisti. Non abbiamo eseguito calcoli propri.",
+      "visionTitle": "La nostra visione",
+      "visionText": "Vogliamo creare un movimento in cui ogni progetto Erasmus+ calcoli la propria impronta di carbonio e pianti alberi per compensarla. Immaginiamo diverse foreste Erasmus+ che crescono in Europa, contribuendo ad un'aria più pulita nel continente. Vediamo giovani che continuano ad imparare insieme in un ambiente più sostenibile, viaggiando in modo ecologico e godendosi la bellezza della natura. Questo sito web contiene tantissime conoscenze raccolte per te, quindi prenditi un po' di tempo per esplorare.",
+      "scrollDown": "Scorri verso il basso",
+      "meetCustomers": "Scopri i nostri utenti"
+    },
+    "EPlusForest": {
+      "hero": {
+        "title": "Foresta E+"
+      },
+      "dream": {
+        "title": "Un sogno",
+        "p1": "Ogni progetto inizia con un sogno. E i sogni sono l'essenza della vita. Il sogno di questo progetto è creare un mondo in cui tutti possano essere in contatto con la natura e apprezzarne la bellezza.",
+        "p2": "Vogliamo costruire un progetto che permetta alle persone di vedere, sentire e vivere da vicino la bellezza della natura. Aspiriamo a creare un progetto che unisca le persone e favorisca un senso di rispetto e comprensione dell'ambiente. Vogliamo che questo progetto ispiri le persone ad agire e a lavorare insieme per proteggere, conservare e ripristinare la natura. Immaginiamo un progetto che riunisca persone di tutte le età, provenienze e credenze per godere della bellezza della natura e fare la differenza nel mondo. Vogliamo fornire risorse e opportunità educative affinché le persone imparino a conoscere l'ambiente, l'importanza della conservazione e come agire. Crediamo che lavorando insieme possiamo creare un futuro migliore per il nostro pianeta e tutti i suoi abitanti.",
+        "ourForests": {
+          "title": "Le nostre foreste",
+          "portugal": {
+            "status": "Fondata",
+            "location": "Portogallo",
+            "description": "La prima foresta Erasmus+ dedicata alla compensazione dell'impronta di carbonio dei progetti di mobilità.",
+            "treesLabel": "Alberi piantati"
+          },
+          "expanding": {
+            "status": "In crescita",
+            "title": "In espansione in tutta Europa",
+            "description": "Il movimento si sta diffondendo in altri paesi, creando una rete di foreste sostenibili.",
+            "slovenia": "Slovenia — Foresta fondata",
+            "cyprus": "Cipro — In corso",
+            "netherlands": "Paesi Bassi — In corso",
+            "joinUs": "Vuoi avviare una foresta nel tuo paese? Contattaci per unirti al movimento."
+          },
+          "readArticle": "Leggi l'articolo completo",
+          "readMore": "Ulteriori coperture"
+        }
+      },
+      "donate": {
+        "title": "Dona",
+        "description": "Se la tua organizzazione non ha un posto dove avviare la propria foresta, sei invitato a donare a Greendex e noi pianteremo alberi in una delle nostre foreste a tuo nome.",
+        "howItWorks": {
+          "title": "Come funziona",
+          "p1": "Calcola il numero di alberi necessari per compensare l'impronta di carbonio della tua mobilità utilizzando il nostro calcolatore.",
+          "p2": "Il numero sarà visibile sul profilo dell'host. Ogni albero ti costerà 5 EUR."
+        },
+        "wePlantTrees": {
+          "title": "Piantiamo alberi",
+          "p1": "In primavera e in autunno. Non appena la tua donazione viene registrata, ti invieremo una conferma che potrà essere utilizzata a scopo promozionale o inserita nel rapporto finale del tuo progetto. Quando gli alberi vengono piantati, riceverai la conferma definitiva, la posizione dei tuoi alberi e una foto.",
+          "p2": "Puoi contattarci all'indirizzo plant.trees@greendex.world, comunicarci la tua donazione e ti invieremo le istruzioni."
+        },
+        "calculatorButton": "Calcolatore",
+        "contactButton": "Contattaci"
+      },
+      "funding": {
+        "text": "Cofinanziato dal"
+      }
+    },
+    "footer": {
+      "app": "App",
+      "company": "Azienda",
+      "explore": "Esplora",
+      "copyright": "Tutti i diritti riservati."
+    },
+    "workshops": {
+      "badge": "Educativo",
+      "headingPrefix": "Ciao, caro",
+      "headingEmphasis": "camminatore della Terra",
+      "intro1": "Siamo molto felici che tu abbia trovato la strada verso la nostra pagina Greendex. Questa pagina ti aiuterà a promuovere la consapevolezza delle abitudini sostenibili ed ecologiche nel progetto Erasmus+.",
+      "intro2": "In questa sezione ti offriamo tre diversi workshop da utilizzare durante la tua mobilità di apprendimento, in base al tempo disponibile:",
+      "pageSubtitle": "Scegli un workshop in base al tempo disponibile e inizia a fare la differenza",
+      "card": {
+        "learnMore": "Scopri di più"
+      },
+      "keyword": "workshop",
+      "bottomP1": "Puoi usare lo stesso workshop in ogni mobilità, perché i numeri saranno sempre diversi. Questi workshop sensibilizzeranno sulla sostenibilità della mobilità e ti ispireranno ad agire. La sostenibilità non è solo un argomento, è un principio secondo cui dovremmo tutti vivere.",
+      "bottomP2Prefix": "Se sei interessato a saperne di più sulla sostenibilità, vai alle sezioni",
+      "bottomP2Middle": "e",
+      "library": "Biblioteca",
+      "tipsAndTricks": "Consigli e Trucchi",
+      "types": {
+        "moment": {
+          "title": "Momento Greendex",
+          "duration": "30 min",
+          "description": "Questo workshop propone il calcolo della CO₂ della tua mobilità e quanti alberi devono essere piantati per compensarla."
+        },
+        "deal": {
+          "title": "Accordo Greendex",
+          "duration": "60 min",
+          "description": "Questo workshop propone il calcolo della CO₂ della tua mobilità e quanti alberi devono essere piantati per compensarla, oltre a sfide sostenibili e ispiratrici che i partecipanti possono provare durante il progetto."
+        },
+        "day": {
+          "title": "Giornata Greendex",
+          "duration": "180 min",
+          "description": "Questa sessione, oltre al calcolatore e alle sfide già menzionati, propone un quiz sull'impronta di carbonio, una riflessione su quanta plastica abbiamo portato in questa mobilità e supporto per esercitare una certa pressione sociale."
+        }
+      },
+      "details": {
+        "moment": {
+          "sections": {
+            "calculator": {
+              "title": "Calcolatore Greendex",
+              "steps": {
+                "create": {
+                  "title": "Crea il progetto sull'app Greendex",
+                  "content": "Inizia creando il tuo progetto nella nostra applicazione per monitorare la tua impronta di carbonio."
+                },
+                "map": {
+                  "title": "Mappa il tuo percorso da casa fino a qui",
+                  "content": "Invita i partecipanti a formare squadre nazionali. Chiedi loro di pensare alla loro esperienza di viaggio. Puoi aiutarli a mappare il percorso appendendo dei poster su cui disegnare i loro tragitti. È importante che immaginino i mezzi di trasporto in sequenza e trovino quanti chilometri hanno percorso con ciascun mezzo."
+                },
+                "share": {
+                  "title": "Condividi il link del progetto con i partecipanti",
+                  "content": "Offri loro il codice QR o condividi il link fornito tramite i social media utilizzati nel progetto."
+                },
+                "fill": {
+                  "title": "Invita i partecipanti a compilare le domande del calcolatore",
+                  "content": "Ogni partecipante deve compilare il modulo individualmente. L'host deve fornire ai partecipanti le seguenti informazioni:\n\n• Tipo di alloggio (campeggio, ostello, privato, hotel 1-3★, hotel 4-5★)\n• Tipo di energia utilizzata dall'alloggio (energia convenzionale, energia verde)"
+                },
+                "reflect": {
+                  "title": "Assicurati che tutti i partecipanti abbiano inviato il modulo e lascia spazio alla riflessione",
+                  "content": "Lascia ai partecipanti lo spazio per riflettere sui propri risultati individuali!"
+                },
+                "debate": {
+                  "title": "Mostra e discuti i risultati del progetto",
+                  "content": "Puoi porre loro le seguenti domande:\n\n• C'è qualcosa di sorprendente per te nei risultati?\n• Come ti fanno sentire i risultati?\n• Hai suggerimenti su come ridurre la CO₂ emessa nei progetti futuri?"
+                },
+                "plant": {
+                  "title": "Pianta alberi per compensare l'impronta di carbonio del tuo progetto",
+                  "content": "Puoi offrire le seguenti opzioni:\n\n• Dona per piantare alberi in una delle foreste Erasmus+\n• Cerca possibilità di piantare gli alberi da solo! Forse puoi persino avviare la tua foresta Erasmus+ e far parte del movimento Greendex."
+                },
+                "share_social": {
+                  "title": "Condividi il tuo percorso sui social media usando #greendex",
+                  "content": "Diffondi la tua esperienza sostenibile e ispira gli altri!"
+                }
+              }
+            }
+          }
+        },
+        "deal": {
+          "sections": {
+            "calculator": {
+              "title": "Calcolatore Greendex",
+              "steps": {
+                "create": {
+                  "title": "Crea il progetto sull'app Greendex",
+                  "content": "Inizia creando il tuo progetto nella nostra applicazione per monitorare la tua impronta di carbonio."
+                },
+                "map": {
+                  "title": "Mappa il tuo percorso da casa fino a qui",
+                  "content": "Invita i partecipanti a formare squadre nazionali. Chiedi loro di pensare alla loro esperienza di viaggio. Puoi aiutarli a mappare il percorso appendendo dei poster su cui disegnare i loro tragitti. È importante che immaginino i mezzi di trasporto in sequenza e trovino quanti chilometri hanno percorso con ciascun mezzo."
+                },
+                "share": {
+                  "title": "Condividi il link del progetto con i partecipanti",
+                  "content": "Offri loro il codice QR o condividi il link fornito tramite i social media utilizzati nel progetto."
+                },
+                "fill": {
+                  "title": "Invita i partecipanti a compilare le domande del calcolatore",
+                  "content": "Ogni partecipante deve compilare il modulo individualmente. L'host deve fornire ai partecipanti le seguenti informazioni:\n\n• Tipo di alloggio (campeggio, ostello, privato, hotel 1-3★, hotel 4-5★)\n• Tipo di energia utilizzata dall'alloggio (energia convenzionale, energia verde)"
+                },
+                "reflect": {
+                  "title": "Assicurati che tutti i partecipanti abbiano inviato il modulo e lascia spazio alla riflessione",
+                  "content": "Lascia ai partecipanti lo spazio per riflettere sui propri risultati individuali!"
+                },
+                "debate": {
+                  "title": "Mostra e discuti i risultati del progetto",
+                  "content": "Puoi porre loro le seguenti domande:\n\n• C'è qualcosa di sorprendente per te nei risultati?\n• Come ti fanno sentire i risultati?\n• Hai suggerimenti su come ridurre la CO₂ emessa nei progetti futuri?"
+                }
+              }
+            },
+            "challenges": {
+              "title": "Sfide",
+              "steps": {
+                "read": {
+                  "title": "Leggi di più sulle sfide",
+                  "content": "Come parte della preparazione a questo workshop, familiarizza con le sfide disponibili."
+                },
+                "present": {
+                  "title": "Presenta le sfide per ridurre la CO₂ emessa durante il progetto",
+                  "content": "Invita i partecipanti a scegliere almeno una sfida che vogliono provare durante il progetto. Crea gruppi di supporto più piccoli per motivarsi a vicenda durante il progetto."
+                },
+                "plant": {
+                  "title": "Pianta alberi per compensare l'impronta di carbonio del tuo progetto",
+                  "content": "Puoi offrire le seguenti opzioni:\n\n• Dona per piantare alberi in una delle foreste Erasmus+\n• Cerca possibilità di piantare gli alberi da solo! Forse puoi persino avviare la tua foresta Erasmus+ e far parte del movimento Greendex."
+                },
+                "share": {
+                  "title": "Condividi il tuo percorso sui social media usando #greendex",
+                  "content": "Diffondi la tua esperienza sostenibile e ispira gli altri!"
+                }
+              }
+            },
+            "evaluation": {
+              "title": "Valutazione",
+              "steps": {
+                "evaluate": {
+                  "title": "Usa la valutazione finale per verificare i tuoi progressi",
+                  "content": "Dedica alcune domande alla valutazione finale del progetto per verificare il livello di consapevolezza generata sulla sostenibilità e l'impronta di carbonio. Puoi porre loro le seguenti domande:\n\n• Quanto hai avuto successo nelle sfide?\n• Saresti disposto/a a integrare alcune sfide nella tua vita?\n• Cos'altro puoi fare per ridurre la tua impronta di carbonio?"
+                }
+              }
+            }
+          }
+        },
+        "day": {
+          "sections": {
+            "plastic": {
+              "title": "Quanta plastica possediamo?",
+              "steps": {
+                "form_groups": {
+                  "title": "Formare gruppi nazionali",
+                  "content": "Chiedi ai partecipanti di formare gruppi nazionali e posizionarsi nella stanza."
+                },
+                "bring_items": {
+                  "title": "Invita i partecipanti a portare tutti gli oggetti in plastica e non riciclabili",
+                  "content": "Chiedi loro di setacciare i loro bagagli e portare nella stanza tutto ciò che è in plastica o non può essere riciclato. Devono essere molto accurati. Se non desiderano portare i propri oggetti personali nella stanza, devono contarli. Devono contare ogni carta di credito, scarpa, spazzolino, cavo, flacone di shampoo, ecc."
+                },
+                "calculate": {
+                  "title": "Calcoliamo qualche numero",
+                  "content": "Invita ogni gruppo nazionale a sommare il numero totale di oggetti in plastica e/o quelli non riciclabili. Invitali a calcolare gli oggetti per persona nel team. Il facilitatore deve sommare gli oggetti per l'intera mobilità e calcolare una media per persona. Mostra i risultati su un poster o una lavagna."
+                },
+                "debate": {
+                  "title": "Dibattito",
+                  "content": "Guarda i numeri e invita i partecipanti a esprimere i loro pensieri ed emozioni. Puoi anche porre loro le seguenti domande:\n\n• Quanti oggetti hai intenzione di lasciare qui?\n• Ci sono oggetti che potresti sostituire con qualcos'altro? Se sì, quali oggetti puoi sostituire con cosa?\n• Ci sono oggetti che non puoi sostituire adesso, perché stai aspettando che la tecnologia migliori?\n• Ci sono oggetti per cui il produttore può fare qualcosa?"
+                },
+                "introduce": {
+                  "title": "Presentazione del sito web di Greendex",
+                  "content": "Presenta il nostro sito web ai partecipanti, poiché contiene diversi consigli su come migliorare la routine quotidiana e offre risorse aggiuntive per lo studio."
+                }
+              }
+            },
+            "social_pressure": {
+              "title": "Pressione sociale",
+              "steps": {
+                "create_groups": {
+                  "title": "Creare gruppi interculturali più piccoli",
+                  "content": "Crea gruppi interculturali più piccoli o rimani negli stessi se usi questa attività come continuazione dell'attività precedente!"
+                },
+                "think_products": {
+                  "title": "Pensa a dei prodotti che ami",
+                  "content": "Forse ci sono dei biscotti speciali che ami mangiare o delle scarpe che ami indossare. Pensa a prodotti che ami usare ma che sono avvolti in troppi imballaggi. Forse usi un prodotto che non deve essere fatto di plastica? Ogni gruppo deve decidere su un prodotto del genere."
+                },
+                "find_solutions": {
+                  "title": "Trova soluzioni se possibile",
+                  "content": "Se possibile, trova una soluzione per il tuo prodotto che ti soddisfi."
+                },
+                "write_message": {
+                  "title": "Scrivi un messaggio ai produttori",
+                  "content": "Scrivi un messaggio o una lettera educata ai produttori del prodotto di cui stavi parlando. Assicurati di scrivere il messaggio nella forma: dì qualcosa di positivo, dì qualcosa di negativo, suggerisci un miglioramento."
+                },
+                "use_hashtag": {
+                  "title": "Usa #greendex",
+                  "content": "Se decidi di pubblicare questo messaggio sui social media, ti chiediamo gentilmente di usare #greendex per una maggiore visibilità di questo movimento."
+                }
+              }
+            },
+            "quiz": {
+              "title": "Cos'è l'impronta di carbonio?",
+              "steps": {
+                "form_groups": {
+                  "title": "Formare gruppi interculturali più piccoli",
+                  "content": "Lasciali trovare un posto comodo nella stanza e preparare almeno uno smartphone. È importante fornire accesso a internet."
+                },
+                "name_group": {
+                  "title": "Chiedi ai partecipanti di dare un nome al loro gruppo",
+                  "content": "Questo ha uno scopo di team building e ti aiuterà a identificare meglio le risposte."
+                },
+                "introduce_quiz": {
+                  "title": "Presentazione del quiz",
+                  "content": "Spiega ai partecipanti che li guideremo attraverso un breve quiz e che possono usare gli smartphone."
+                },
+                "start_quiz": {
+                  "title": "Inizia il quiz",
+                  "content": "Puoi leggere le domande, pubblicarle su carta o usare qualche strumento online per i partecipanti. Non è una competizione, solo una ricerca.\n\nPrima del quiz, fai due domande molto basilari:\n\n• Sai cos'è un'impronta di carbonio?\nRisposta: Un'impronta di carbonio è la quantità totale di gas serra generata dalle nostre azioni.\n\n• Perché parliamo di anidride carbonica – CO₂?\nRisposta: Troppa anidride carbonica (e altri gas serra come il metano) nell'atmosfera riscalda il pianeta, causando i cambiamenti climatici.\n\nEcco le domande:\n• Quanta CO₂ emette chi mangia carne?\n• Quanta CO₂ emette un vegetariano?\n• Quanta CO₂ viene emessa volando 1000 km?\n• Quanta CO₂ viene emessa viaggiando 1000 km in treno?\n• Quanta CO₂ viene emessa viaggiando 1000 km in auto?\n• Quanta CO₂ assorbe un albero conifero?\n• Quanta CO₂ assorbe un albero deciduo?\n• Di quanta O₂ ha bisogno una persona all'anno (in kg)?\n• Quanta O₂ produce un albero medio all'anno (in kg)?\n• Quante persone ci sono attualmente nel mondo?"
+                },
+                "debate": {
+                  "title": "Dibattito",
+                  "content": "Incoraggia i partecipanti a condividere pensieri ed emozioni sui risultati. Puoi porre loro le seguenti domande:\n\n• Cosa è stato più interessante nella tua ricerca?\n• C'era qualcosa che ha suscitato emozioni? Se sì, quali emozioni e perché?\n• Sei riuscito/a a riconoscere il rapporto tra la CO₂ assorbita e l'O₂ prodotto?\n• Quanto sono fitti gli alberi nel tuo paese?"
+                }
+              }
+            },
+            "calculator": {
+              "title": "Calcolatore Greendex",
+              "steps": {
+                "create": {
+                  "title": "Crea il progetto sull'app Greendex",
+                  "content": "Inizia creando il tuo progetto nella nostra applicazione per monitorare la tua impronta di carbonio."
+                },
+                "map": {
+                  "title": "Mappa il tuo percorso da casa fino a qui",
+                  "content": "Invita i partecipanti a formare squadre nazionali. Chiedi loro di pensare alla loro esperienza di viaggio. Puoi aiutarli a mappare il percorso appendendo dei poster su cui disegnare i loro tragitti. È importante che immaginino i mezzi di trasporto in sequenza e trovino quanti chilometri hanno percorso con ciascun mezzo."
+                },
+                "share": {
+                  "title": "Condividi il link del progetto con i partecipanti",
+                  "content": "Offri loro il codice QR o condividi il link fornito tramite i social media utilizzati nel progetto."
+                },
+                "fill": {
+                  "title": "Invita i partecipanti a compilare le domande del calcolatore",
+                  "content": "Ogni partecipante deve compilare il modulo individualmente. L'host deve fornire ai partecipanti le seguenti informazioni:\n\n• Tipo di alloggio (campeggio, ostello, privato, hotel 1-3★, hotel 4-5★)\n• Tipo di energia utilizzata dall'alloggio (energia convenzionale, energia verde)"
+                },
+                "reflect": {
+                  "title": "Assicurati che tutti i partecipanti abbiano inviato il modulo e lascia spazio alla riflessione",
+                  "content": "Lascia ai partecipanti lo spazio per riflettere sui propri risultati individuali!"
+                },
+                "debate": {
+                  "title": "Mostra e discuti i risultati del progetto",
+                  "content": "Puoi porre loro le seguenti domande:\n\n• C'è qualcosa di sorprendente per te nei risultati?\n• Come ti fanno sentire i risultati?\n• Hai suggerimenti su come ridurre la CO₂ emessa nei progetti futuri?"
+                }
+              }
+            },
+            "challenges": {
+              "title": "Sfide",
+              "steps": {
+                "read": {
+                  "title": "Leggi di più sulle sfide",
+                  "content": "Come parte della preparazione a questo workshop, familiarizza con le sfide disponibili."
+                },
+                "present": {
+                  "title": "Presenta le sfide per ridurre la CO₂ emessa durante il progetto",
+                  "content": "Invita i partecipanti a scegliere almeno una sfida che vogliono provare durante il progetto. Crea gruppi di supporto più piccoli per motivarsi a vicenda durante il progetto."
+                },
+                "plant": {
+                  "title": "Pianta alberi per compensare l'impronta di carbonio del tuo progetto",
+                  "content": "Puoi offrire le seguenti opzioni:\n\n• Dona per piantare alberi in una delle foreste Erasmus+\n• Cerca possibilità di piantare gli alberi da solo! Forse puoi persino avviare la tua foresta Erasmus+ e far parte del movimento Greendex."
+                },
+                "share": {
+                  "title": "Condividi il tuo percorso sui social media usando #greendex",
+                  "content": "Diffondi la tua esperienza sostenibile e ispira gli altri!"
+                }
+              }
+            },
+            "final": {
+              "title": "Valutazione finale",
+              "steps": {
+                "evaluate": {
+                  "title": "Dedica tempo alla valutazione finale",
+                  "content": "Ti invitiamo a dedicare una piccola parte del tempo nella valutazione finale, nell'ultimo giorno della tua mobilità, per fare alcune domande verdi. Puoi porre loro le seguenti domande:\n\n• Quanto eri consapevole delle tue abitudini (non) rispettose dell'ambiente?\n• Hai riconosciuto qualcosa che potresti fare per cambiare le tue abitudini?\n• Hai partecipato alle sfide proposte?\n• Quanto hai avuto successo nelle tue sfide?\n• C'è qualche sfida che pensi di poter fare per il resto della tua vita?\n• Saresti disposto/a a integrare alcune sfide nella tua vita?\n• Cos'altro puoi fare per ridurre la tua impronta di carbonio?\n\nCosa puoi pubblicare sui social media con #greendex:\n• Numero di alberi da piantare\n• A quali sfide hai deciso di partecipare?\n• Lettera di pressione sociale."
+                }
+              }
+            }
+          }
+        }
+      },
+      "links": {
+        "openApp": "Apri l'app Greendex",
+        "erasmusCalculator": "Calcolatore di distanza E+",
+        "googleMaps": "Google Maps",
+        "eForest": "Foresta E+",
+        "challengesDescription": "Descrizione delle sfide (PDF)",
+        "challengesPresentation": "Presentazione delle sfide (PDF)",
+        "greendexWebsite": "www.greendex.world"
+      }
+    }
+  },
+  "app": {
+    "appearance": {
+      "title": "Aspetto",
+      "description": "Personalizza l'aspetto e il comportamento dell'applicazione",
+      "theme": "Tema",
+      "themeDescription": "Scegli la combinazione di colori che preferisci",
+      "themes": {
+        "light": "Tema chiaro",
+        "dark": "Tema scuro",
+        "system": "Tema di sistema"
+      }
+    },
+    "sidebar": {
+      "projects": {
+        "groupLabel": "Area progetti",
+        "projects": "Progetti",
+        "participants": "Partecipanti",
+        "archive": "Archivio",
+        "archiveLabel": "Archivio progetti",
+        "details": "Dettagli progetto"
+      },
+      "organization": {
+        "groupLabel": "Area organizzazione",
+        "dashboard": "Dashboard",
+        "projects": "Progetti",
+        "team": "Membri del team",
+        "settings": "Organizzazione",
+        "createproject": "Crea progetto"
+      },
+      "collapse": "Comprimi barra laterale"
+    },
+    "loading": {
+      "default": "Caricamento…",
+      "switchingOrganization": "Cambio organizzazione…"
+    },
+    "userSettings": {
+      "title": "Impostazioni utente",
+      "description": "Gestisci le tue preferenze personali e le impostazioni dell'account",
+      "language": {
+        "title": "Lingua e regione",
+        "description": "Seleziona la tua lingua e le impostazioni regionali preferite",
+        "locale": "Lingua",
+        "localeDescription": "Scegli la tua lingua preferita"
+      }
+    }
+  },
+  "organization": {
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Panoramica delle statistiche, dei progetti e dei partecipanti della tua organizzazione.",
+      "welcome-to-your-organizations-dashboard": "Gestione dell'organizzazione",
+      "total-projects": "Totale progetti",
+      "total-participants": "Totale partecipanti",
+      "total-activities": "Emissioni totali delle attività",
+      "coming-soon": "Prossimamente",
+      "tabs": {
+        "participants": "Partecipanti",
+        "projects": "Progetti",
+        "loading-projects": "Caricamento progetti…",
+        "statistics": "Statistiche",
+        "loading-stats": "Le statistiche sono attualmente in fase di caricamento."
+      }
+    },
+    "projects": {
+      "title": "Tutti i progetti",
+      "description": "Elenco di tutti i progetti non archiviati della tua organizzazione.",
+      "error-message": "Qualcosa è andato storto.",
+      "table": {
+        "columns": "Seleziona colonne",
+        "name": "Nome",
+        "country": "Paese",
+        "start-date": "Data di inizio",
+        "created": "Creato il",
+        "updated": "Aggiornato il",
+        "actions": "Azioni",
+        "open-menu": "Apri menu",
+        "view-details": "Visualizza dettagli",
+        "edit-project": "Modifica progetto",
+        "delete-project": "Elimina progetto",
+        "batch-delete": "Elimina selezionati ({count})",
+        "filter-projects": "Filtra progetti…",
+        "active-filters": "Filtri attivi",
+        "search-by-name": "Cerca per nome progetto",
+        "filter-all-countries": "Tutti i paesi",
+        "previous": "Precedente",
+        "next": "Successivo",
+        "rows-per-page": "Righe per pagina",
+        "projects-count": "Progetti",
+        "showing-range": "Visualizzazione {start}-{end} di {total} progetti",
+        "no-projects-count": "0 progetti",
+        "no-results": {
+          "title": "Nessun progetto trovato",
+          "description": "Prova a modificare i filtri o la query di ricerca."
+        },
+        "clear-filters": "Cancella filtri",
+        "city": "Città"
+      },
+      "views": {
+        "table": "Tabella",
+        "grid": "Griglia"
+      },
+      "sort-label": "Ordina",
+      "sort-projects": "Ordina progetti",
+      "no-projects-yet": {
+        "title": "Ancora nessun progetto",
+        "description": "I progetti ti aiuteranno a organizzare il lavoro e monitorare le attività. Inizia creando il tuo primo progetto!"
+      },
+      "form": {
+        "edit": {
+          "title": "Modifica progetto",
+          "update": "Aggiorna progetto",
+          "toast": {
+            "success": "Progetto aggiornato con successo",
+            "error": "Aggiornamento del progetto non riuscito",
+            "failed-activities": "Elaborazione di {count, plural, one {# attività} other {# attività}} non riuscita: {activities}"
+          },
+          "back": "Indietro"
+        },
+        "delete": {
+          "confirm-title": "Sei sicuro/a?",
+          "confirm-description": "Questa operazione eliminerà definitivamente il progetto \"{name}\". Questa azione non può essere annullata.",
+          "confirm-button": "Elimina",
+          "cancel-button": "Annulla",
+          "toast-success": "Progetto eliminato con successo",
+          "toast-error": "Eliminazione del progetto non riuscita",
+          "toast-error-generic": "Si è verificato un errore durante l'eliminazione del progetto"
+        },
+        "batch-delete": {
+          "confirm-title": "Eliminare i progetti selezionati?",
+          "confirm-description": "Questa operazione eliminerà definitivamente {count} progetti selezionati: {names}. Questa azione non può essere annullata.",
+          "confirm-button": "Elimina progetti",
+          "cancel-button": "Annulla",
+          "toast-success": "{count} progetti eliminati con successo",
+          "toast-error": "Eliminazione dei progetti non riuscita",
+          "toast-error-generic": "Si è verificato un errore durante l'eliminazione dei progetti"
+        },
+        "archive": {
+          "archive": "Archivia",
+          "unarchive": "Ripristina dall'archivio",
+          "confirm-title": "Archiviare questo progetto?",
+          "confirm-description": "Questa operazione archivierà il progetto \"{name}\". Potrai ripristinarlo in seguito dall'archivio.",
+          "unarchive-title": "Ripristinare questo progetto?",
+          "unarchive-description": "Questa operazione ripristinerà il progetto \"{name}\" dall'archivio.",
+          "confirm-button": "Archivia progetto",
+          "unarchive-button": "Ripristina progetto",
+          "cancel-button": "Annulla",
+          "toast-success": "Progetto archiviato con successo",
+          "toast-unarchive-success": "Progetto ripristinato con successo",
+          "toast-error": "Archiviazione del progetto non riuscita",
+          "toast-error-generic": "Si è verificato un errore durante l'archiviazione del progetto"
+        },
+        "new": {
+          "toast": {
+            "success": "Progetto creato con successo",
+            "error": "Creazione del progetto non riuscita",
+            "error-generic": "Si è verificato un errore",
+            "failed-activities": "Creazione di {count, plural, one {# attività} other {# attività}} non riuscita: {activities}"
+          },
+          "submit": {
+            "label": "Nuovo progetto"
+          },
+          "name": "Nome progetto",
+          "start-date": "Data di inizio",
+          "end-date": "Data di fine",
+          "country": "Paese",
+          "location": "Luogo (facoltativo)",
+          "welcome-message": "Messaggio di benvenuto (facoltativo)",
+          "organization": "Organizzazione",
+          "select-organization": "Seleziona organizzazione",
+          "creating": "Creazione in corso…",
+          "create-project": "Crea progetto",
+          "title": "Crea un nuovo progetto",
+          "legend": "Crea un nuovo progetto Erasmus+ per monitorare le attività dei tuoi partecipanti e calcolare la loro impronta di CO₂.",
+          "description": "Compila i dettagli per creare un nuovo progetto.",
+          "name-description": "Inserisci il nome del tuo progetto.",
+          "start-date-description": "Seleziona la data di inizio del progetto.",
+          "end-date-description": "Seleziona la data di fine del progetto.",
+          "country-description": "Specifica il paese in cui si svolge il progetto.",
+          "location-description": "Facoltativo: fornisci informazioni aggiuntive sulla località.",
+          "welcome-message-description": "Facoltativo: aggiungi un messaggio di benvenuto per i partecipanti.",
+          "organization-description": "Scegli l'organizzazione proprietaria di questo progetto.",
+          "back": "Indietro",
+          "country-placeholder": "Seleziona il paese"
+        }
+      },
+      "activeProject": {
+        "emptyState": {
+          "title": "Nessun progetto attivo",
+          "description": "Seleziona un progetto per visualizzare i partecipanti."
+        },
+        "header": {
+          "contextLabel": "Progetto attivo",
+          "edit": "Modifica",
+          "delete": "Elimina",
+          "deleteDialog": {
+            "title": "Sei sicuro/a?",
+            "description": "Questa operazione eliminerà definitivamente il progetto \"{name}\". Questa azione non può essere annullata.",
+            "confirm": "Elimina",
+            "cancel": "Annulla"
+          },
+          "toast": {
+            "deleteSuccess": "Progetto eliminato con successo",
+            "deleteFailure": "Eliminazione del progetto non riuscita",
+            "deleteFailureGeneric": "Si è verificato un errore durante l'eliminazione del progetto"
+          },
+          "noSelection": "Non hai selezionato alcun progetto"
+        },
+        "participation": {
+          "title": "Link di partecipazione",
+          "description": "Condividi questo link con i partecipanti per consentire loro di unirsi al progetto e inviare le proprie attività di viaggio.",
+          "qrButtonLabel": "Mostra codice QR",
+          "openLink": "Apri link",
+          "qrError": "Generazione del codice QR non riuscita",
+          "modalTitle": "Codice QR di partecipazione",
+          "modalDescription": "Scansiona questo codice QR per accedere alla pagina di partecipazione",
+          "linkLabel": "URL di partecipazione",
+          "copyClipboard": "Copia l'URL di partecipazione negli appunti",
+          "copySuccess": "Link di partecipazione copiato negli appunti!",
+          "copyFailure": "Copia negli appunti non riuscita"
+        }
+      },
+      "filter-by-country": "Filtra per paese",
+      "rows-selected": "Riga/e selezionata/e",
+      "noResults": "Nessun progetto trovato"
+    },
+    "userstable": {
+      "name": "Nome",
+      "email": "E-mail",
+      "role": "Ruolo",
+      "joined": "Iscritto il",
+      "control": {
+        "filter": "Filtra elenco",
+        "clear": "Cancella tutti i filtri"
+      },
+      "loading": "Caricamento membri del team…",
+      "noResults": "Nessun risultato.",
+      "rowsSelected": "{selected} di {total} riga/e selezionata/e.",
+      "previous": "Precedente",
+      "next": "Successivo"
+    },
+    "team": {
+      "title": "Membri del team",
+      "description": "Elenco di tutti i membri del team della tua organizzazione",
+      "invite": {
+        "button": "Nuovo membro del team",
+        "title": "Invita un nuovo membro",
+        "description": "Invita un nuovo membro del team nella tua organizzazione.",
+        "emailLabel": "E-mail dell'utente",
+        "emailDescription": "Indirizzo e-mail della persona che vuoi invitare",
+        "nameLabel": "Nome completo (facoltativo)",
+        "roleLabel": "Ruolo",
+        "rolePlaceholder": "Seleziona ruolo",
+        "cancelButton": "Annulla",
+        "sendingButton": "Invio in corso…",
+        "sendButton": "Invia invito",
+        "successToast": "Membro del team invitato con successo."
+      },
+      "emptyState": {
+        "title": "Nessun membro del team trovato",
+        "description": "Nessun membro del team corrisponde ai criteri di ricerca. Prova a modificare i filtri o invita nuovi membri nella tua organizzazione."
+      }
+    },
+    "participants": {
+      "title": "Tutti i partecipanti",
+      "description": "Elenco di tutti i partecipanti ai progetti della tua organizzazione",
+      "emptyState": {
+        "description": "Prova a modificare i filtri o invia il \"link di partecipazione\" del progetto ad altri partecipanti.",
+        "title": "Nessun partecipante al progetto trovato"
+      }
+    },
+    "projectsArchive": {
+      "title": "Progetti archiviati",
+      "description": "Visualizza e ripristina tutti i progetti archiviati",
+      "error-message": "Errore durante il caricamento dei progetti archiviati.",
+      "no-archived-projects": {
+        "title": "Nessun progetto archiviato",
+        "description": "Non hai ancora archiviato nessun progetto. I progetti archiviati appaiono qui e possono essere ripristinati in qualsiasi momento."
+      },
+      "go-to-projects": "I tuoi progetti attivi"
+    },
+    "settings": {
+      "title": "Impostazioni organizzazione",
+      "description": "Questi sono i dettagli e le impostazioni dell'organizzazione."
+    },
+    "roles": {
+      "owner": "Proprietario",
+      "admin": "Dipendente",
+      "member": "Partecipante"
+    },
+    "invitation": {
+      "title": "Accetta invito",
+      "description": "Sei stato/a invitato/a a unirti a un'organizzazione.",
+      "organization": "Organizzazione",
+      "role": "Ruolo",
+      "invitedBy": "Invitato/a da",
+      "cancel": {
+        "confirm-title": "Annullare l'invito?",
+        "confirm-description": "Sei sicuro/a di voler annullare questo invito? Questa azione non può essere annullata.",
+        "confirm-button": "Annulla invito",
+        "cancel-button": "Mantieni invito"
+      }
+    }
+  },
+  "participation": {
+    "questionnaire": {
+      "header": {
+        "badge": "Greendex 2.0",
+        "title": "Benvenuto/a su Greendex",
+        "subtitle": "Calcolatore di CO₂ per le attività dei progetti Erasmus+",
+        "step-counter": "Passo {current} di {total}"
+      },
+      "welcome": {
+        "default-message": "Calcola l'impronta di carbonio della tua partecipazione a questo progetto Erasmus+.",
+        "ready": "Preparati a scoprire la tua impronta di carbonio! 🌱",
+        "every-choice": "Ogni scelta conta nel tuo percorso verso un futuro più verde!",
+        "fun-message": "Ti auguriamo tanto divertimento e qualche momento «Aha!» nel tuo percorso con Greendex! 🌳",
+        "start-button": "Avvia Greendex"
+      },
+      "participant-info": {
+        "title": "Prima di iniziare, dicci:",
+        "first-name": "Il tuo nome",
+        "first-name-placeholder": "Inserisci il tuo nome",
+        "country": "In quale paese vivi?",
+        "country-placeholder": "Inserisci il tuo paese",
+        "email": "Il tuo indirizzo e-mail",
+        "email-placeholder": "Inserisci la tua e-mail",
+        "required": "*"
+      },
+      "days": {
+        "question": "Quanti giorni partecipi al progetto?",
+        "note": "esclusi i giorni di viaggio",
+        "placeholder": "Numero di giorni"
+      },
+      "accommodation": {
+        "category-question": "In che tipo di alloggio soggiorni?",
+        "occupancy-question": "Quante persone condividono la camera/tenda?",
+        "electricity-question": "Che tipo di energia utilizza il tuo alloggio?",
+        "options": {
+          "camping": "Campeggio",
+          "hostel": "Ostello",
+          "3star": "Hotel 3★",
+          "4star": "Hotel 4★",
+          "5star": "Hotel 5★",
+          "apartment": "Appartamento",
+          "friends": "Amici/Famiglia",
+          "alone": "da solo/a",
+          "2people": "2 persone",
+          "3people": "3 persone",
+          "4plus": "4+ persone",
+          "green": "energia verde",
+          "conventional": "energia convenzionale",
+          "unknown": "non sono riuscito/a a scoprirlo"
+        }
+      },
+      "food": {
+        "question": "Con quale frequenza hai intenzione di mangiare carne durante il progetto?",
+        "options": {
+          "never": "mai",
+          "rarely": "raramente",
+          "sometimes": "a volte",
+          "almost-every-day": "quasi ogni giorno",
+          "every-day": "ogni giorno"
+        }
+      },
+      "transport": {
+        "flight-question": "Il tuo percorso VERSO il progetto: quanti chilometri hai volato?",
+        "boat-question": "Il tuo percorso VERSO il progetto: quanti chilometri hai percorso in barca?",
+        "train-question": "Il tuo percorso VERSO il progetto: quanti chilometri hai percorso in treno o metro?",
+        "bus-question": "Il tuo percorso VERSO il progetto: quanti chilometri hai percorso in autobus/van?",
+        "car-question": "Il tuo percorso VERSO il progetto: quanti chilometri hai percorso in auto?",
+        "car-type-question": "Che tipo di auto hai utilizzato?",
+        "car-passengers-question": "Quanti partecipanti (te incluso/a) erano in auto?",
+        "placeholder": "0",
+        "car-type": {
+          "car": "convenzionale (diesel, benzina, gas…)",
+          "electricCar": "elettrica"
+        }
+      },
+      "demographics": {
+        "age-question": "Quanti anni hai?",
+        "age-placeholder": "Età",
+        "gender-question": "Qual è il tuo genere?",
+        "gender-options": {
+          "female": "Donna",
+          "male": "Uomo",
+          "other": "Altro / Preferisco non specificare"
+        }
+      },
+      "navigation": {
+        "back": "Indietro",
+        "continue": "Continua",
+        "complete": "Completa"
+      },
+      "project-activities": {
+        "title": "Attività del progetto",
+        "description": "Questo progetto include attività organizzate che si aggiungono alle emissioni di base:",
+        "note": "Queste saranno incluse nel calcolo delle emissioni personali del progetto.",
+        "empty": {
+          "title": "Nessuna attività del progetto",
+          "description": "Non ci sono attività associate a questo progetto."
+        }
+      },
+      "results": {
+        "trees-needed": "Anni-albero (alberi × anni)",
+        "summary-title": "Riepilogo della tua impronta di carbonio",
+        "transport": "Trasporto:",
+        "accommodation": "Alloggio:",
+        "food": "Alimentazione:",
+        "project-activities": "Attività del progetto:",
+        "total": "Totale:",
+        "console-note": "I dati sono stati registrati nella console (controlla gli strumenti per sviluppatori del browser)",
+        "co2-footprint": "Emissioni di CO₂"
+      },
+      "impact-modal": {
+        "title": "Il tuo impatto",
+        "total-co2": "CO₂ totale",
+        "kg-CO₂": "kg CO₂",
+        "trees-needed": "Anni-albero necessari",
+        "to-offset": "per compensare",
+        "impact": "Impatto:",
+        "continue": "Continua",
+        "messages": {
+          "flight-zero": "✅ Ottimo! Non volare mantiene bassa la tua impronta!",
+          "flight": "✈️ Volare {km} km aggiunge {impact} kg di CO₂ alla tua impronta",
+          "train-zero": "🚆 Nessun viaggio in treno questa volta",
+          "train": "🚆 Scelta eccellente! Il treno è ecologico (+{impact} kg CO₂)",
+          "bus-zero": "🚌 Nessun viaggio in autobus",
+          "bus": "🚌 Buona scelta di trasporto pubblico! (+{impact} kg CO₂)",
+          "boat-zero": "⛴️ Nessun viaggio in barca",
+          "boat": "⛴️ Il viaggio in barca aggiunge {impact} kg di CO₂",
+          "car-zero": "🚗 Ottimo! Non viaggiare in auto mantiene basse le emissioni!",
+          "car": "🚗 Il viaggio in auto aggiunge {impact} kg di CO₂",
+          "food-never": "🌱 Incredibile! Una dieta vegetariana per {days} giorni è amica del pianeta! (+{impact} kg CO₂)",
+          "food-rarely": "🥗 Ottima scelta! Scarso consumo di carne per {days} giorni (+{impact} kg CO₂)",
+          "food-sometimes": "🍖 Consumo moderato di carne per {days} giorni (+{impact} kg CO₂)",
+          "food-almost": "🥩 L'alto consumo di carne per {days} giorni ha un impatto significativo (+{impact} kg CO₂)",
+          "food-daily": "🥩 Mangiare carne ogni giorno per {days} giorni ha un importante impatto ambientale (+{impact} kg CO₂)",
+          "electricity-green": "♻️ Eccellente! {accommodation} con {energy} per {nights} notti, {occupancy} mantiene basse le emissioni a {impact} kg CO₂",
+          "electricity-conventional": "🏨 {accommodation} con {energy} per {nights} notti, {occupancy} aggiunge {impact} kg di CO₂ alla tua impronta",
+          "car-type-electric": "🔋 Eccellente! Le auto elettriche emettono il 75% in meno!",
+          "car-type-car": "⛽ L'auto convenzionale aumenta la tua impronta",
+          "car-passengers-solo": "🚗 Considera il carpooling la prossima volta! Condividere i viaggi può ridurre le emissioni fino al 75%.",
+          "car-passengers-shared": "👥 Ottimo carpooling! Stai riducendo le emissioni condividendo con altre {count} person{plural}.",
+          "default-low": "✅ Questa scelta non influisce sulla tua impronta di CO₂",
+          "default": "+{impact} kg CO₂ aggiunti"
+        }
+      }
+    }
+  },
+  "project": {
+    "details": {
+      "title": "Dettagli progetto",
+      "start-date": "Data di inizio",
+      "end-date": "Data di fine",
+      "location": "Luogo",
+      "country": "Paese",
+      "welcome-message": "Messaggio di benvenuto",
+      "participants": "Partecipanti",
+      "participants-description": "I partecipanti verranno visualizzati qui.",
+      "activities": "Attività",
+      "activities-description": "Le attività del progetto verranno visualizzate qui.",
+      "loading": "Caricamento dettagli progetto…",
+      "people-joined": "persone si sono già unite",
+      "no-participants-yet": "Ancora nessun partecipante",
+      "share-the-participation-link": "Condividi il link di partecipazione per invitare persone a questo progetto.",
+      "tabs": {
+        "details": "Dettagli progetto",
+        "activities": "Attività del progetto",
+        "participants": "Partecipanti al progetto"
+      },
+      "statistics": {
+        "participants": "Partecipanti",
+        "activities": "Attività",
+        "total-distance": "Distanza totale",
+        "duration": "Durata",
+        "km": "km",
+        "days": "giorni",
+        "co2-emissions": "Emissioni"
+      },
+      "errors": {
+        "default-error": "Caricamento dei dettagli del progetto non riuscito.",
+        "project-not-found": "Il progetto che stai cercando non esiste.",
+        "project-access-denied": "Non hai accesso a questo progetto."
+      },
+      "joined-on": "iscritto/a il"
+    },
+    "activities": {
+      "title": "Attività del progetto",
+      "description": "Attività di viaggio tracciate per il calcolo dell'impronta di carbonio",
+      "empty": {
+        "title": "Ancora nessuna attività",
+        "description": "Questo progetto non ha attività registrate. Aggiungi attività per monitorare l'impronta di carbonio."
+      },
+      "types": {
+        "boat": "Barca",
+        "bus": "Autobus",
+        "train": "Treno",
+        "car": "Auto"
+      },
+      "form": {
+        "title": "Aggiungi attività",
+        "edit-title": "Modifica attività",
+        "activity-type": "Tipo di attività",
+        "activity-type-placeholder": "Seleziona tipo di attività",
+        "distance": "Distanza (km)",
+        "distance-placeholder": "Inserisci la distanza in chilometri",
+        "description": "Descrizione (facoltativo)",
+        "description-placeholder": "Aggiungi una descrizione per questa attività",
+        "activity-date": "Data attività (facoltativo)",
+        "submit": "Aggiungi attività",
+        "update": "Aggiorna attività",
+        "cancel": "Annulla",
+        "adding": "Aggiunta in corso…",
+        "updating": "Aggiornamento in corso…",
+        "validation": {
+          "distanceKm": {
+            "min": "La distanza deve essere di almeno {min} km",
+            "max": "La distanza non può superare {max} km",
+            "step": "La distanza deve essere in incrementi di {step} km"
+          }
+        }
+      },
+      "delete": {
+        "confirm-title": "Eliminare l'attività?",
+        "confirm-description": "Questa operazione eliminerà definitivamente questa attività. Questa azione non può essere annullata.",
+        "confirm-button": "Elimina",
+        "cancel-button": "Annulla",
+        "deleting": "Eliminazione in corso..."
+      },
+      "toast": {
+        "create-success": "Attività aggiunta con successo",
+        "create-error": "Aggiunta dell'attività non riuscita",
+        "update-success": "Attività aggiornata con successo",
+        "update-error": "Aggiornamento dell'attività non riuscito",
+        "delete-success": "Attività eliminata con successo",
+        "delete-error": "Eliminazione dell'attività non riuscita"
+      },
+      "table": {
+        "type": "Tipo",
+        "distance": "Distanza",
+        "description": "Descrizione",
+        "date": "Data",
+        "actions": "Azioni",
+        "edit": "Modifica",
+        "delete": "Elimina",
+        "km": "km"
+      },
+      "error": {
+        "load-failed": "Caricamento delle attività non riuscito. Riprova."
+      }
+    }
+  },
+  "authentication": {
+    "common": {
+      "emailPlaceholder": "m@esempio.it",
+      "fullNamePlaceholder": "Mario Rossi",
+      "backToLogin": "Torna all'accesso",
+      "orContinueWith": "Oppure continua con",
+      "signingUp": "Creazione account…",
+      "sending": "Invio in corso…",
+      "failedSignIn": "Accesso non riuscito",
+      "failedCreate": "Creazione account non riuscita",
+      "failedSend": "Invio dell'e-mail di ripristino non riuscito"
+    },
+    "login": {
+      "title": "Bentornato/a, Greendexer!",
+      "description": "Accedi al tuo account per continuare il tuo progetto Erasmus+",
+      "lastUsed": "Ultimo utilizzo",
+      "tabs": {
+        "password": "Password",
+        "magicLink": "Link magico"
+      },
+      "email": "E-mail",
+      "password": "Password",
+      "forgotPassword": "Password dimenticata?",
+      "loginButton": "Accedi",
+      "logOut": "Esci",
+      "settings": "Impostazioni",
+      "signingIn": "Accesso in corso…",
+      "sendMagicLink": "Invia link magico",
+      "verifyEmail": "Verifica il tuo indirizzo e-mail per continuare",
+      "magicLinkSent": "Link magico inviato! Controlla la tua e-mail.",
+      "failedMagicLink": "Invio del link magico non riuscito",
+      "footer": {
+        "noAccount": "Non hai un account?",
+        "signUp": "Registrati"
+      }
+    },
+    "magicLink": {
+      "title": "Accedi con link magico",
+      "description": "Inserisci il tuo indirizzo e-mail e ti invieremo un link magico per accedere."
+    },
+    "signup": {
+      "title": "Crea il tuo account",
+      "description": "Compila il modulo sottostante per creare il tuo account",
+      "fullName": "Nome completo",
+      "email": "E-mail",
+      "emailDescription": "Lo useremo per contattarti. Non condivideremo la tua e-mail con nessun altro.",
+      "password": "Password",
+      "passwordDescription": "Deve essere di almeno 8 caratteri.",
+      "confirmPassword": "Conferma password",
+      "confirmPasswordDescription": "Conferma la tua password.",
+      "signUpButton": "Crea account",
+      "footer": {
+        "haveAccount": "Hai già un account?",
+        "signIn": "Accedi"
+      }
+    },
+    "forgotPassword": {
+      "title": "Password dimenticata?",
+      "description": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la password.",
+      "email": "E-mail",
+      "sendResetLink": "Invia link di ripristino",
+      "resetLinkSent": "Link di ripristino password inviato! Controlla la tua e-mail."
+    },
+    "resetPassword": {
+      "title": "Reimposta la tua password",
+      "description": "Inserisci la tua nuova password di seguito per reimpostare la password del tuo account.",
+      "newPassword": "Nuova password",
+      "newPasswordDescription": "Deve essere di almeno 8 caratteri.",
+      "confirmPassword": "Conferma nuova password",
+      "confirmPasswordDescription": "Conferma la tua nuova password.",
+      "resetPasswordButton": "Reimposta password",
+      "resetting": "Reimpostazione in corso…",
+      "resetSuccess": "Password reimpostata con successo! Effettua l'accesso.",
+      "resetFailed": "Reimpostazione della password non riuscita. Il link potrebbe essere scaduto."
+    },
+    "validation": {
+      "emailInvalid": "Inserisci un indirizzo e-mail valido.",
+      "passwordRequired": "La password è obbligatoria.",
+      "passwordMinLength": "La password deve essere di almeno 8 caratteri.",
+      "passwordConfirmRequired": "Conferma la tua password.",
+      "passwordsNoMatch": "Le password non corrispondono.",
+      "fullNameRequired": "Il nome completo è obbligatorio."
+    },
+    "brand": {
+      "badge": "Calcolatore Climatico Greendex",
+      "tagline": "Greendex · Calcolatore Climatico",
+      "headline": "Porta trasparenza nei percorsi del tuo progetto Erasmus+",
+      "description": "Coordina il tuo team, festeggia i successi e mantieni bassa l'impronta senza destreggiarti con i fogli di calcolo.",
+      "values": {
+        "one": "Dashboard in tempo reale con KPI verdi",
+        "two": "Condividi storie di impatto con ogni squadra",
+        "three": "Automatizza inviti, ispirazione e miglioramento"
+      },
+      "heroBadge": "Greendex Live",
+      "heroTitle": "Visualizza il polso dell'impatto in ogni team",
+      "heroCaption": "Greendex mantiene visibile la storia climatica così puoi concentrarti sul lavoro.",
+      "heroStatOne": "24% di rapporti d'impatto più veloci",
+      "heroStatTwo": "88% di check-in positivi per il pianeta"
+    },
+    "verifyEmail": {
+      "emailRequired": {
+        "title": "E-mail richiesta",
+        "description": "Nessun indirizzo e-mail è stato fornito. Effettua la registrazione o l'accesso nuovamente.",
+        "goToSignUp": "Vai alla registrazione"
+      },
+      "title": "Verifica la tua e-mail",
+      "description": "Abbiamo inviato un'e-mail di verifica a",
+      "steps": {
+        "title": "Cosa succede dopo?",
+        "checkInbox": "Controlla la tua casella di posta per l'e-mail di verifica",
+        "clickLink": "Fai clic sul link di verifica nell'e-mail",
+        "autoSignIn": "Verrai automaticamente connesso/a e reindirizzato/a"
+      },
+      "important": {
+        "label": "Importante:",
+        "text": "Devi verificare la tua e-mail prima di poter accedere."
+      },
+      "resend": {
+        "sending": "Invio in corso…",
+        "button": "Reinvia e-mail di verifica",
+        "disabled": "Reinvia tra {countdown}s",
+        "footer": "Non hai ricevuto l'e-mail? Controlla la cartella spam o prova a reinviare."
+      },
+      "toast": {
+        "emailRequired": "L'indirizzo e-mail è obbligatorio",
+        "waitBeforeResend": "Attendi {countdown} secondi prima di reinviare",
+        "success": "E-mail di verifica inviata con successo!",
+        "error": "Invio dell'e-mail di verifica non riuscito"
+      }
+    }
+  }
+}

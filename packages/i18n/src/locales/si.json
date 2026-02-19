@@ -1,0 +1,1064 @@
+{
+  "landingPage": {
+    "launchButton": "Zaženi Erasmus+ kalkulator ogljičnega odtisa",
+    "launchButtonAria": "Zaženi Erasmus+ kalkulator ogljičnega odtisa — prijava obvezna",
+    "about": {
+      "partnersTitle": "Partnerji",
+      "partnersHeadline": "Projekt Greendex se je rodil iz ljubezni do narave in potrebe prispevati k bolj trajnostni prihodnosti. Projekt je bil zasnovan kot KA 2 – strateško partnerstvo v okviru programa Erasmus+ in financiran s strani slovenske nacionalne agencije MOVIT. V tem projektu smo opravili obsežne raziskave o trajnosti in ustvarili knjižnico za prihodnje učenje. Ustvarili smo ustvarjalne nasvete in trike, ki jih lahko ljudje uporabljajo v vsakdanjem življenju in jih mladinske organizacije vključijo v svoje delo. Pripravili smo izobraževalne delavnice za mobilnosti, da bi povečali ozaveščenost in izravnali naš ogljični odtis. Prav tako smo ustvarili kalkulator ogljičnega odtisa, specializiran za realnost Erasmus+. Vložili smo v Erasmus+ gozd, kjer se redno sadijo drevesa. Raziskovali smo, se učili, delili, preizkušali in sadili za nas, za vas in za prihodnost.",
+      "partnerBadge": "Partner",
+      "visitWebsite": "Obišči spletno stran",
+      "erasmusFunding": "So-financirano v okviru programa Erasmus+.",
+      "aboutTitle": "O Greendexu"
+    },
+    "header": {
+      "navigation": {
+        "workshops": "Delavnice",
+        "resources": "Viri",
+        "tipsAndTricks": "Nasveti in triki",
+        "library": "Knjižnica",
+        "eforest": "E+ gozd",
+        "about": "O projektu",
+        "login": "Prijava",
+        "signup": "Registracija",
+        "openMenu": "Odpri meni",
+        "settings": "Nastavitve"
+      }
+    },
+    "hero": {
+      "headline": "Izračunaj. Izravnaj. Uči se.",
+      "subtitle": "Kalkulator ogljičnega odtisa, zasnovan za projekte Erasmus+. Izmeri svoj okoljski vpliv in posadi drevesa za bolj zeleno Evropo.",
+      "imageCaption": "Nadzorna plošča Greendex s sledenjem emisij CO₂ in cilji sajenja dreves",
+      "missionTitle": "Naše poslanstvo",
+      "missionText": "Program Erasmus+ nam omogoča neverjetne učne izkušnje z navdihujočimi ljudmi iz različnih držav. Vendar pa vsako osebno srečanje prispeva k večjemu ogljičnemu odtisu zaradi naših potovalnih in življenjskih navad. Namen tega projekta je bil izravnati ogljični odtis projektov, ki jih izvajamo, z večjo ozaveščenostjo in konkretnimi ukrepi za spremembo navad. Zato smo ustvarili kalkulator ogljičnega odtisa, specializiran za Erasmus+ projekte, kot so mladinske izmenjave, usposabljanja, srečanja ipd. Kalkulator ponuja končno vrednost CO₂, ki ga proizvede vsak udeleženec, in to številko pretvori v število povprečnih dreves, ki bodo v svojem življenju absorbirala naš CO₂. Izračuni temeljijo na znanstvenih raziskavah različnih strokovnjakov. Lastnih izračunov nismo delali.",
+      "visionTitle": "Naša vizija",
+      "visionText": "Želimo ustvariti gibanje, kjer vsak Erasmus+ projekt izračuna svoj ogljični odtis in posadi drevesa za izravnavo. Vidimo več Erasmus+ gozdov, ki rastejo po Evropi in prispevajo k čistejšemu zraku. Vidimo mlade, ki se še naprej učijo skupaj v bolj trajnostnem okolju, potujejo zeleno in uživajo v lepoti narave. Na tej spletni strani je zbranega veliko znanja, zato si vzemite čas in jo raziščite.",
+      "scrollDown": "Pomakni se navzdol",
+      "meetCustomers": "Spoznajte naše uporabnike"
+    },
+    "EPlusForest": {
+      "hero": {
+        "title": "E+ gozd"
+      },
+      "dream": {
+        "title": "Sanje",
+        "p1": "Vsak projekt se začne s sanjami. In sanje so bistvo življenja. Sanje tega projekta so ustvariti svet, kjer je vsak v stiku z naravo in ceni njeno lepoto.",
+        "p2": "Želimo zgraditi projekt, ki ljudem omogoča videti, čutiti in doživeti lepoto narave od blizu. Prizadevamo si ustvariti projekt, ki bo združil ljudi in spodbudil spoštovanje ter razumevanje okolja. Želimo navdihniti ljudi, da delujejo in sodelujejo pri zaščiti, ohranjanju in obnovi narave. Predstavljamo si projekt, ki bo združil ljudi vseh starosti, ozadij in prepričanj, da uživajo v lepoti narave in naredijo razliko v svetu. Želimo zagotoviti vire in izobraževalne priložnosti, da se ljudje učijo o okolju, pomenu varovanja ter kako ukrepati. Verjamemo, da lahko s skupnim delom ustvarimo boljšo prihodnost za naš planet in vse njegove prebivalce.",
+        "ourForests": {
+          "title": "Naši gozdovi",
+          "portugal": {
+            "status": "Vzpostavljen",
+            "location": "Portugalska",
+            "description": "Prvi Erasmus+ gozd, namenjen izravnavi ogljičnih odtisov mobilnostnih projektov.",
+            "treesLabel": "Posajenih dreves"
+          },
+          "expanding": {
+            "status": "Širimo se",
+            "title": "Širitev po Evropi",
+            "description": "Gibanje se širi v več držav in ustvarja mrežo trajnostnih gozdov.",
+            "slovenia": "Slovenija — vzpostavljen gozd",
+            "cyprus": "Ciper — v teku",
+            "netherlands": "Nizozemska — v teku",
+            "joinUs": "Želite začeti gozd v svoji državi? Kontaktirajte nas in pridružite se gibanju."
+          },
+          "readArticle": "Preberi celoten članek",
+          "readMore": "Več objav"
+        }
+      },
+      "donate": {
+        "title": "Doniraj",
+        "description": "Če vaša organizacija nima prostora za začetek lastnega gozda, ste vabljeni, da donirate Greendexu in v vašem imenu bomo posadili drevesa v enem od naših gozdov.",
+        "howItWorks": {
+          "title": "Kako deluje",
+          "p1": "Izračunajte število dreves, potrebnih za izravnavo ogljičnega odtisa vaše mobilnosti z uporabo našega kalkulatorja.",
+          "p2": "Številka bo vidna na profilu gostitelja. Vsako drevo stane 5 EUR."
+        },
+        "wePlantTrees": {
+          "title": "Mi sadimo drevesa",
+          "p1": "Spomladi in jeseni. Takoj ko je vaša donacija zabeležena, vam pošljemo potrdilo, ki ga lahko uporabite za promocijske namene ali ga vključite v končno poročilo projekta. Ko bodo drevesa posajena, boste prejeli končno potrdilo, lokacijo vaših dreves in fotografijo.",
+          "p2": "Kontaktirate nas lahko na plant.trees@greendex.world, sporočite nam svojo donacijo in poslali vam bomo navodila."
+        },
+        "calculatorButton": "Kalkulator",
+        "contactButton": "Kontaktirajte nas"
+      },
+      "funding": {
+        "text": "So-financirano s strani"
+      }
+    },
+    "footer": {
+      "app": "Aplikacija",
+      "company": "Podjetje",
+      "explore": "Raziskuj",
+      "copyright": "Vse pravice pridržane."
+    },
+    "workshops": {
+      "badge": "Izobraževalno",
+      "headingPrefix": "Pozdravljen,",
+      "headingEmphasis": "sprehajalec Zemlje",
+      "intro1": "Veseli smo, da ste našli pot do Greendexa. Ta stran vam bo pomagala povečati ozaveščenost o trajnostnih in okolju prijaznih navadah na projektu Erasmus+.",
+      "intro2": "V tem razdelku ponujamo tri različne delavnice, ki jih lahko uporabite na svoji učni mobilnosti glede na razpoložljiv čas:",
+      "pageSubtitle": "Izberite delavnico glede na razpoložljiv čas in začnite ustvarjati spremembe",
+      "card": {
+        "learnMore": "Več"
+      },
+      "keyword": "delavnice",
+      "bottomP1": "Isto delavnico lahko uporabite na vsaki mobilnosti, saj bodo številke vedno drugačne. Te delavnice bodo povečale ozaveščenost o trajnosti mobilnosti in spodbudile k ukrepanju. Trajnost ni le tema, je načelo, po katerem bi morali živeti.",
+      "bottomP2Prefix": "Če želite izvedeti več o trajnosti, obiščite razdelka",
+      "bottomP2Middle": "in",
+      "library": "Knjižnica",
+      "tipsAndTricks": "Nasveti in triki",
+      "types": {
+        "moment": {
+          "title": "Greendex trenutek",
+          "duration": "30 min",
+          "description": "Ta delavnica ponuja izračune CO₂ za vašo mobilnost in koliko dreves je potrebno posaditi za izravnavo CO₂."
+        },
+        "deal": {
+          "title": "Greendex dogovor",
+          "duration": "60 min",
+          "description": "Ta delavnica ponuja izračune CO₂ za vašo mobilnost in koliko dreves je potrebno posaditi za izravnavo CO₂, skupaj z izzivi trajnosti in navdiha za udeležence."
+        },
+        "day": {
+          "title": "Greendex dan",
+          "duration": "180 min",
+          "description": "Ta delavnica poleg kalkulatorja in izzivov vključuje kviz o ogljičnem odtisu, refleksijo o količini plastike, ki smo jo prinesli, in podporo za ustvarjanje socialnega pritiska."
+        }
+      },
+      "details": {
+        "moment": {
+          "sections": {
+            "calculator": {
+              "title": "Greendex kalkulator",
+              "steps": {
+                "create": {
+                  "title": "Ustvarite projekt v aplikaciji Greendex",
+                  "content": "Začnite z ustvarjanjem projekta v naši aplikaciji, da boste lahko spremljali svoj ogljični odtis."
+                },
+                "map": {
+                  "title": "Zemljevid poti od doma do lokacije",
+                  "content": "Povabite udeležence, da se razdelijo v nacionalne skupine. Prosite jih, da razmislijo o svoji poti. Pomagate jim lahko tako, da pripravite plakate in narišejo potovanja. Pomembno je, da si predstavljajo vrste prevoznih sredstev po vrsti in ugotovijo, koliko kilometrov so prepotovali z vsakim."
+                },
+                "share": {
+                  "title": "Delite povezavo do projekta z udeleženci",
+                  "content": "Ponudite jim QR kodo ali delite povezavo prek družbenih omrežij, uporabljenih na projektu."
+                },
+                "fill": {
+                  "title": "Povabite udeležence, da izpolnijo vprašanja kalkulatorja",
+                  "content": "Vsak udeleženec mora obrazec izpolniti individualno. Gostitelj mora udeležencem zagotoviti naslednje informacije:\n\n• Vrsta nastanitve (kampiranje, hostel, zasebno, hotel 1–3★, hotel 4–5★)\n• Vrsta energije, ki jo uporablja nastanitev (konvencionalna energija, zelena energija)"
+                },
+                "reflect": {
+                  "title": "Poskrbite, da so vsi udeleženci oddali obrazec, in omogočite prostor za refleksijo",
+                  "content": "Dovolite udeležencem prostor za razmislek o njihovih rezultatih!"
+                },
+                "debate": {
+                  "title": "Prikažite in razpravljajte o rezultatih projekta",
+                  "content": "Lahko jih vprašate naslednje:\n\n• Vas je v rezultatih kaj presenetilo?\n• Kako se ob rezultatih počutite?\n• Ali imate kakšne predloge, kako zmanjšati izpuste CO₂ v prihodnjih projektih?"
+                },
+                "plant": {
+                  "title": "Posadite drevesa za izravnavo ogljičnega odtisa projekta",
+                  "content": "Lahko ponudite naslednje možnosti:\n\n• Donirajte za sajenje dreves v enem izmed Erasmus+ gozdov\n• Poiščite možnosti, da drevesa posadite sami! Morda lahko celo začnete svoj Erasmus+ gozd in postanete del gibanja Greendex."
+                },
+                "share_social": {
+                  "title": "Delite svojo pot na družbenih omrežjih z #greendex",
+                  "content": "Razširite glas o trajnostnem potovanju in navdihnite druge!"
+                }
+              }
+            }
+          }
+        },
+        "deal": {
+          "sections": {
+            "calculator": {
+              "title": "Greendex kalkulator",
+              "steps": {
+                "create": {
+                  "title": "Ustvarite projekt v aplikaciji Greendex",
+                  "content": "Začnite z ustvarjanjem projekta v naši aplikaciji, da boste lahko spremljali svoj ogljični odtis."
+                },
+                "map": {
+                  "title": "Zemljevid poti od doma do lokacije",
+                  "content": "Povabite udeležence, da se razdelijo v nacionalne skupine. Prosite jih, da razmislijo o svoji poti. Pomagate jim lahko tako, da pripravite plakate in narišejo potovanja. Pomembno je, da si predstavljajo vrste prevoznih sredstev po vrsti in ugotovijo, koliko kilometrov so prepotovali z vsakim."
+                },
+                "share": {
+                  "title": "Delite povezavo do projekta z udeleženci",
+                  "content": "Ponudite jim QR kodo ali delite povezavo prek družbenih omrežij, uporabljenih na projektu."
+                },
+                "fill": {
+                  "title": "Povabite udeležence, da izpolnijo vprašanja kalkulatorja",
+                  "content": "Vsak udeleženec mora obrazec izpolniti individualno. Gostitelj mora udeležencem zagotoviti naslednje informacije:\n\n• Vrsta nastanitve (kampiranje, hostel, zasebno, hotel 1–3★, hotel 4–5★)\n• Vrsta energije, ki jo uporablja nastanitev (konvencionalna energija, zelena energija)"
+                },
+                "reflect": {
+                  "title": "Poskrbite, da so vsi udeleženci oddali obrazec, in omogočite prostor za refleksijo",
+                  "content": "Dovolite udeležencem prostor za razmislek o njihovih rezultatih!"
+                },
+                "debate": {
+                  "title": "Prikažite in razpravljajte o rezultatih projekta",
+                  "content": "Lahko jih vprašate naslednje:\n\n• Vas je v rezultatih kaj presenetilo?\n• Kako se ob rezultatih počutite?\n• Ali imate kakšne predloge, kako zmanjšati izpuste CO₂ v prihodnjih projektih?"
+                }
+              }
+            },
+            "challenges": {
+              "title": "Izzivi",
+              "steps": {
+                "read": {
+                  "title": "Preberite več o izzivih",
+                  "content": "V okviru priprave na delavnico se seznanite z razpoložljivimi izzivi."
+                },
+                "present": {
+                  "title": "Predstavite izzive za zmanjšanje izpustov CO₂ med projektom",
+                  "content": "Povabite udeležence, da izberejo vsaj en izziv, ki ga želijo preizkusiti med projektom. Ustvarite manjše podporne skupine, da se med seboj motivirajo."
+                },
+                "plant": {
+                  "title": "Posadite drevesa za izravnavo ogljičnega odtisa projekta",
+                  "content": "Lahko ponudite naslednje možnosti:\n\n• Donirajte za sajenje dreves v enem izmed Erasmus+ gozdov\n• Poiščite možnosti, da drevesa posadite sami! Morda lahko celo začnete svoj Erasmus+ gozd in postanete del gibanja Greendex."
+                },
+                "share": {
+                  "title": "Delite svojo pot na družbenih omrežjih z #greendex",
+                  "content": "Razširite glas o trajnostnem potovanju in navdihnite druge!"
+                }
+              }
+            },
+            "evaluation": {
+              "title": "Evalvacija",
+              "steps": {
+                "evaluate": {
+                  "title": "Uporabite končno evalvacijo za pregled napredka",
+                  "content": "V zaključni evalvaciji projekta namenite nekaj vprašanj preverjanju stopnje ozaveščenosti o trajnosti in ogljičnem odtisu. Lahko jih vprašate:\n\n• Kako uspešni ste bili v izzivih?\n• Ali bi bili pripravljeni vključiti izzive v svoje življenje?\n• Kaj še lahko storite za zmanjšanje ogljičnega odtisa?"
+                }
+              }
+            }
+          }
+        },
+        "day": {
+          "sections": {
+            "plastic": {
+              "title": "Koliko plastike imamo?",
+              "steps": {
+                "form_groups": {
+                  "title": "Oblikujte nacionalne skupine",
+                  "content": "Prosite udeležence, naj se razdelijo v nacionalne skupine in se razporedijo po prostoru."
+                },
+                "bring_items": {
+                  "title": "Povabite udeležence, da prinesejo vse plastične in nereciklabilne predmete",
+                  "content": "Prosite jih, naj pregledajo svojo prtljago in v prostor prinesejo vse, kar je plastično ali se ne da reciklirati. Naj bodo zelo temeljiti. Če svojih osebnih predmetov ne želijo prinesti, naj jih preštejejo. Naj preštejejo vsako kreditno kartico, čevlje, zobno ščetko, kable, stekleničke šampona itd."
+                },
+                "calculate": {
+                  "title": "Izračunajmo nekaj števil",
+                  "content": "Vsaka nacionalna skupina naj sešteje število vseh plastičnih predmetov in/ali predmetov, ki jih ni mogoče reciklirati. Naj izračunajo število predmetov na osebo v skupini. Moderator naj sešteje predmete za celotno mobilnost in povprečje na osebo. Rezultate prikažite na plakatu ali tabli."
+                },
+                "debate": {
+                  "title": "Razprava",
+                  "content": "Poglejte številke in povabite udeležence, da izrazijo svoje misli in čustva. Lahko jih vprašate:\n\n• Koliko predmetov nameravate pustiti tukaj?\n• Ali obstajajo predmeti, ki bi jih lahko zamenjali z nečim drugim? Če da, s čim?\n• Ali obstajajo predmeti, ki jih trenutno ne morete zamenjati, ker čakate na tehnološki napredek?\n• Ali obstajajo predmeti, pri katerih lahko proizvajalec kaj izboljša?"
+                },
+                "introduce": {
+                  "title": "Predstavitev spletne strani Greendex",
+                  "content": "Predstavite udeležencem našo spletno stran, saj vsebuje številne nasvete za izboljšanje vsakdanje rutine in dodatne vire za učenje."
+                }
+              }
+            },
+            "social_pressure": {
+              "title": "Socialni pritisk",
+              "steps": {
+                "create_groups": {
+                  "title": "Ustvarite manjše medkulturne skupine",
+                  "content": "Ustvarite manjše medkulturne skupine ali ostanite v isti skupini, če to dejavnost uporabljate kot nadaljevanje prejšnje aktivnosti!"
+                },
+                "think_products": {
+                  "title": "Pomislite na izdelke, ki jih imate radi",
+                  "content": "Morda imate radi posebne piškote ali čevlje. Pomislite na izdelke, ki jih radi uporabljate, a so zapakirani v preveč embalaže. Morda uporabljate izdelek, ki ga ni treba izdelati iz plastike? Vsaka skupina naj izbere en tak izdelek."
+                },
+                "find_solutions": {
+                  "title": "Če je mogoče, poiščite rešitve",
+                  "content": "Če je mogoče, poiščite rešitev za izdelek, ki bi vam ustrezala."
+                },
+                "write_message": {
+                  "title": "Napišite sporočilo proizvajalcem",
+                  "content": "Napišite vljudno sporočilo ali pismo proizvajalcem izdelka. Sporočilo naj vsebuje nekaj pozitivnega, nekaj negativnega in predlog izboljšave."
+                },
+                "use_hashtag": {
+                  "title": "Uporabite #greendex",
+                  "content": "Če se odločite objaviti sporočilo na družbenih omrežjih, vas prosimo, da uporabite #greendex za boljšo vidnost gibanja."
+                }
+              }
+            },
+            "quiz": {
+              "title": "Kaj je ogljični odtis?",
+              "steps": {
+                "form_groups": {
+                  "title": "Oblikujte manjše medkulturne skupine",
+                  "content": "Naj si poiščejo udoben prostor in pripravijo vsaj en pametni telefon. Pomembno je, da omogočite dostop do interneta."
+                },
+                "name_group": {
+                  "title": "Prosite udeležence, naj poimenujejo skupino",
+                  "content": "To ima namen timskega povezovanja in vam bo pomagalo pri prepoznavanju odgovorov."
+                },
+                "introduce_quiz": {
+                  "title": "Predstavitev kviza",
+                  "content": "Pojasnite udeležencem, da jih boste vodili skozi kratek kviz in da lahko uporabljajo pametne telefone."
+                },
+                "start_quiz": {
+                  "title": "Začnite s kvizom",
+                  "content": "Vprašanja lahko preberete, jih napišete na papir ali uporabite spletno orodje. To ni tekmovanje, temveč raziskovanje.\n\nPred kvizom postavite dve zelo osnovni vprašanji:\n\n• Ali veš, kaj je ogljični odtis?\nOdgovor: Ogljični odtis je skupna količina toplogrednih plinov, ki nastanejo zaradi naših dejanj.\n\n• Zakaj govorimo o ogljikovem dioksidu – CO₂?\nOdgovor: Preveč ogljikovega dioksida (in drugih toplogrednih plinov, kot je metan) v ozračju segreva planet in povzroča podnebne spremembe.\n\nTukaj so vprašanja:\n• Koliko CO₂ izpusti mesojedec?\n• Koliko CO₂ izpusti vegetarijanec?\n• Koliko CO₂ se izpusti pri letu na 1000 km?\n• Koliko CO₂ se izpusti pri potovanju z vlakom na 1000 km?\n• Koliko CO₂ se izpusti pri potovanju z avtom na 1000 km?\n• Koliko CO₂ absorbira eno iglasto drevo?\n• Koliko CO₂ absorbira eno listnato drevo?\n• Koliko O2 potrebuje ena oseba na leto (v kg)?\n• Koliko O2 proizvede eno povprečno drevo na leto (v kg)?\n• Koliko ljudi je trenutno na svetu?"
+                },
+                "debate": {
+                  "title": "Razprava",
+                  "content": "Spodbudite udeležence, da delijo misli in čustva o rezultatih. Lahko jih vprašate:\n\n• Kaj je bilo v raziskovanju najbolj zanimivo?\n• Ali se je pojavilo kakšno čustvo? Če da, katero in zakaj?\n• Ali ste prepoznali razmerje med absorbiranjem CO₂ in sproščenim O2?\n• Kako gosto so zasajena drevesa v vaši državi?"
+                }
+              }
+            },
+            "calculator": {
+              "title": "Greendex kalkulator",
+              "steps": {
+                "create": {
+                  "title": "Ustvarite projekt v aplikaciji Greendex",
+                  "content": "Začnite z ustvarjanjem projekta v naši aplikaciji, da boste lahko spremljali svoj ogljični odtis."
+                },
+                "map": {
+                  "title": "Zemljevid poti od doma do lokacije",
+                  "content": "Povabite udeležence, da se razdelijo v nacionalne skupine. Prosite jih, da razmislijo o svoji poti. Pomagate jim lahko tako, da pripravite plakate in narišejo potovanja. Pomembno je, da si predstavljajo vrste prevoznih sredstev po vrsti in ugotovijo, koliko kilometrov so prepotovali z vsakim."
+                },
+                "share": {
+                  "title": "Delite povezavo do projekta z udeleženci",
+                  "content": "Ponudite jim QR kodo ali delite povezavo prek družbenih omrežij, uporabljenih na projektu."
+                },
+                "fill": {
+                  "title": "Povabite udeležence, da izpolnijo vprašanja kalkulatorja",
+                  "content": "Vsak udeleženec mora obrazec izpolniti individualno. Gostitelj mora udeležencem zagotoviti naslednje informacije:\n\n• Vrsta nastanitve (kampiranje, hostel, zasebno, hotel 1–3★, hotel 4–5★)\n• Vrsta energije, ki jo uporablja nastanitev (konvencionalna energija, zelena energija)"
+                },
+                "reflect": {
+                  "title": "Poskrbite, da so vsi udeleženci oddali obrazec, in omogočite prostor za refleksijo",
+                  "content": "Dovolite udeležencem prostor za razmislek o njihovih rezultatih!"
+                },
+                "debate": {
+                  "title": "Prikažite in razpravljajte o rezultatih projekta",
+                  "content": "Lahko jih vprašate naslednje:\n\n• Vas je v rezultatih kaj presenetilo?\n• Kako se ob rezultatih počutite?\n• Ali imate kakšne predloge, kako zmanjšati izpuste CO₂ v prihodnjih projektih?"
+                }
+              }
+            },
+            "challenges": {
+              "title": "Izzivi",
+              "steps": {
+                "read": {
+                  "title": "Preberite več o izzivih",
+                  "content": "V okviru priprave na delavnico se seznanite z razpoložljivimi izzivi."
+                },
+                "present": {
+                  "title": "Predstavite izzive za zmanjšanje izpustov CO₂ med projektom",
+                  "content": "Povabite udeležence, da izberejo vsaj en izziv, ki ga želijo preizkusiti med projektom. Ustvarite manjše podporne skupine, da se med seboj motivirajo."
+                },
+                "plant": {
+                  "title": "Posadite drevesa za izravnavo ogljičnega odtisa projekta",
+                  "content": "Lahko ponudite naslednje možnosti:\n\n• Donirajte za sajenje dreves v enem izmed Erasmus+ gozdov\n• Poiščite možnosti, da drevesa posadite sami! Morda lahko celo začnete svoj Erasmus+ gozd in postanete del gibanja Greendex."
+                },
+                "share": {
+                  "title": "Delite svojo pot na družbenih omrežjih z #greendex",
+                  "content": "Razširite glas o trajnostnem potovanju in navdihnite druge!"
+                }
+              }
+            },
+            "final": {
+              "title": "Končna evalvacija",
+              "steps": {
+                "evaluate": {
+                  "title": "Namenite čas končni evalvaciji",
+                  "content": "Vabimo vas, da na zadnji dan mobilnosti namenite nekaj časa končni evalvaciji in postavite nekaj zelenih vprašanj. Lahko jih vprašate:\n\n• Kako zavedni ste bili svojih okolju (ne)prijaznih navad?\n• Ste prepoznali nekaj, kar bi lahko spremenili?\n• Ste sodelovali v predlaganih izzivih?\n• Kako uspešni ste bili v izzivih?\n• Ali obstaja izziv, ki bi ga lahko izvajali vse življenje?\n• Ali bi bili pripravljeni vključiti izzive v svoje življenje?\n• Kaj še lahko storite za zmanjšanje ogljičnega odtisa?\n\nKaj lahko objavite na družbenih omrežjih z #greendex:\n• Število dreves za sajenje\n• V katerih izzivih ste se odločili sodelovati?\n• Pismo socialnega pritiska."
+                }
+              }
+            }
+          }
+        }
+      },
+      "links": {
+        "openApp": "Odpri Greendex aplikacijo",
+        "erasmusCalculator": "E+ kalkulator razdalj",
+        "googleMaps": "Google Maps",
+        "eForest": "E-gozd",
+        "challengesDescription": "Opis izzivov (PDF)",
+        "challengesPresentation": "Predstavitev izzivov (PDF)",
+        "greendexWebsite": "www.greendex.world"
+      }
+    }
+  },
+  "app": {
+    "appearance": {
+      "title": "Videz",
+      "description": "Prilagodi videz in občutek aplikacije",
+      "theme": "Tema",
+      "themeDescription": "Izberite želeno barvno shemo",
+      "themes": {
+        "light": "Svetla tema",
+        "dark": "Temna tema",
+        "system": "Sistemska tema"
+      }
+    },
+    "sidebar": {
+      "projects": {
+        "groupLabel": "Območje projektov",
+        "projects": "Projekti",
+        "participants": "Udeleženci",
+        "archive": "Arhiv",
+        "archiveLabel": "Arhiv projektov",
+        "details": "Podrobnosti projekta"
+      },
+      "organization": {
+        "groupLabel": "Območje organizacije",
+        "dashboard": "Nadzorna plošča",
+        "projects": "Projekti",
+        "team": "Člani ekipe",
+        "settings": "Organizacija",
+        "createproject": "Ustvari projekt"
+      },
+      "collapse": "Skrči stransko vrstico"
+    },
+    "loading": {
+      "default": "Nalaganje…",
+      "switchingOrganization": "Menjava organizacije…"
+    },
+    "userSettings": {
+      "title": "Uporabniške nastavitve",
+      "description": "Upravljajte osebne nastavitve in račun",
+      "language": {
+        "title": "Jezik in regija",
+        "description": "Izberite želeni jezik in regionalne nastavitve",
+        "locale": "Jezik",
+        "localeDescription": "Izberite želeni jezik"
+      }
+    }
+  },
+  "organization": {
+    "dashboard": {
+      "title": "Nadzorna plošča",
+      "description": "Pregled statistike, projektov in udeležencev organizacije.",
+      "welcome-to-your-organizations-dashboard": "Upravljanje organizacije",
+      "total-projects": "Skupaj projektov",
+      "total-participants": "Skupaj udeležencev",
+      "total-activities": "Skupne emisije iz aktivnosti",
+      "coming-soon": "Kmalu na voljo",
+      "tabs": {
+        "participants": "Udeleženci",
+        "projects": "Projekti",
+        "loading-projects": "Nalaganje projektov…",
+        "statistics": "Statistika",
+        "loading-stats": "Statistika se trenutno nalaga."
+      }
+    },
+    "projects": {
+      "title": "Vsi projekti",
+      "description": "Seznam vseh ne-arhiviranih projektov organizacije.",
+      "error-message": "Prišlo je do napake.",
+      "table": {
+        "columns": "Izberi stolpce",
+        "name": "Ime",
+        "country": "Država",
+        "start-date": "Datum začetka",
+        "created": "Ustvarjeno",
+        "updated": "Posodobljeno^ob",
+        "actions": "Dejanja",
+        "open-menu": "Odpri meni",
+        "view-details": "Ogled podrobnosti",
+        "edit-project": "Uredi projekt",
+        "delete-project": "Izbriši projekt",
+        "batch-delete": "Izbriši izbrane ({count})",
+        "filter-projects": "Filtriraj projekte…",
+        "active-filters": "Aktivni filtri",
+        "search-by-name": "Išči po imenu projekta",
+        "filter-all-countries": "Vse države",
+        "previous": "Prejšnja",
+        "next": "Naslednja",
+        "rows-per-page": "Vrstic na stran",
+        "projects-count": "Projekti",
+        "showing-range": "Prikaz {start}-{end} od {total} projektov",
+        "no-projects-count": "0 projektov",
+        "no-results": {
+          "title": "Ni najdenih projektov",
+          "description": "Poskusite prilagoditi filtre ali iskalni niz."
+        },
+        "clear-filters": "Počisti filtre",
+        "city": "Mesto"
+      },
+      "views": {
+        "table": "Tabela",
+        "grid": "Mreža"
+      },
+      "sort-label": "Razvrsti",
+      "sort-projects": "Razvrsti projekte",
+      "no-projects-yet": {
+        "title": "Projektov še ni",
+        "description": "Projekti vam bodo pomagali organizirati delo in spremljati aktivnosti. Začnite z ustvarjanjem prvega projekta!"
+      },
+      "form": {
+        "edit": {
+          "title": "Uredi projekt",
+          "update": "Posodobi projekt",
+          "toast": {
+            "success": "Projekt uspešno posodobljen",
+            "error": "Posodobitev projekta ni uspela",
+            "failed-activities": "Ni uspelo obdelati {count, plural, one {# aktivnosti} other {# aktivnosti}}: {activities}"
+          },
+          "back": "Nazaj"
+        },
+        "delete": {
+          "confirm-title": "Ali ste prepričani?",
+          "confirm-description": "To bo trajno izbrisalo projekt \"{name}\". Tega dejanja ni mogoče razveljaviti.",
+          "confirm-button": "Izbriši",
+          "cancel-button": "Prekliči",
+          "toast-success": "Projekt uspešno izbrisan",
+          "toast-error": "Izbris projekta ni uspel",
+          "toast-error-generic": "Prišlo je do napake pri brisanju projekta"
+        },
+        "batch-delete": {
+          "confirm-title": "Izbrišem izbrane projekte?",
+          "confirm-description": "To bo trajno izbrisalo {count} izbranih projektov: {names}. Tega dejanja ni mogoče razveljaviti.",
+          "confirm-button": "Izbriši projekte",
+          "cancel-button": "Prekliči",
+          "toast-success": "{count} projektov uspešno izbrisanih",
+          "toast-error": "Brisanje projektov ni uspelo",
+          "toast-error-generic": "Prišlo je do napake pri brisanju projektov"
+        },
+        "archive": {
+          "archive": "Arhiviraj",
+          "unarchive": "Od-arhiviraj",
+          "confirm-title": "Arhiviram ta projekt?",
+          "confirm-description": "To bo arhiviralo projekt \"{name}\". Kasneje ga lahko obnovite iz arhiva.",
+          "unarchive-title": "Obnovim ta projekt?",
+          "unarchive-description": "To bo obnovilo projekt \"{name}\" iz arhiva.",
+          "confirm-button": "Arhiviraj projekt",
+          "unarchive-button": "Obnovi projekt",
+          "cancel-button": "Prekliči",
+          "toast-success": "Projekt uspešno arhiviran",
+          "toast-unarchive-success": "Projekt uspešno obnovljen",
+          "toast-error": "Arhiviranje projekta ni uspelo",
+          "toast-error-generic": "Prišlo je do napake pri arhiviranju projekta"
+        },
+        "new": {
+          "toast": {
+            "success": "Projekt uspešno ustvarjen",
+            "error": "Ustvarjanje projekta ni uspelo",
+            "error-generic": "Prišlo je do napake",
+            "failed-activities": "Ni uspelo ustvariti {count, plural, one {# aktivnosti} other {# aktivnosti}}: {activities}"
+          },
+          "submit": {
+            "label": "Nov projekt"
+          },
+          "name": "Ime projekta",
+          "start-date": "Datum začetka",
+          "end-date": "Datum konca",
+          "country": "Država",
+          "location": "Lokacija (neobvezno)",
+          "welcome-message": "Pozdravno sporočilo (neobvezno)",
+          "organization": "Organizacija",
+          "select-organization": "Izberi organizacijo",
+          "creating": "Ustvarjanje…",
+          "create-project": "Ustvari projekt",
+          "title": "Ustvari nov projekt",
+          "legend": "Ustvarite nov Erasmus+ projekt za sledenje aktivnosti udeležencev in izračun njihovega CO₂ odtisa.",
+          "description": "Izpolnite podatke za ustvarjanje novega projekta.",
+          "name-description": "Vnesite ime projekta.",
+          "start-date-description": "Izberite datum začetka projekta.",
+          "end-date-description": "Izberite datum konca projekta.",
+          "country-description": "Določite državo, kjer poteka projekt.",
+          "location-description": "Neobvezno: Vnesite dodatne podrobnosti lokacije.",
+          "welcome-message-description": "Neobvezno: Dodajte pozdravno sporočilo za udeležence.",
+          "organization-description": "Izberite organizacijo, ki je lastnica projekta.",
+          "back": "Nazaj",
+          "country-placeholder": "Izberi državo"
+        }
+      },
+      "activeProject": {
+        "emptyState": {
+          "title": "Ni aktivnega projekta",
+          "description": "Izberite projekt za ogled udeležencev."
+        },
+        "header": {
+          "contextLabel": "Aktivni projekt",
+          "edit": "Uredi",
+          "delete": "Izbriši",
+          "deleteDialog": {
+            "title": "Ali ste prepričani?",
+            "description": "To bo trajno izbrisalo projekt \"{name}\". Tega dejanja ni mogoče razveljaviti.",
+            "confirm": "Izbriši",
+            "cancel": "Prekliči"
+          },
+          "toast": {
+            "deleteSuccess": "Projekt uspešno izbrisan",
+            "deleteFailure": "Brisanje projekta ni uspelo",
+            "deleteFailureGeneric": "Prišlo je do napake pri brisanju projekta"
+          },
+          "noSelection": "Niste izbrali projekta"
+        },
+        "participation": {
+          "title": "Povezava za sodelovanje",
+          "description": "Delite to povezavo z udeleženci, da se lahko pridružijo projektu in oddajo potovalne aktivnosti.",
+          "qrButtonLabel": "Prikaži QR kodo",
+          "openLink": "Odpri povezavo",
+          "qrError": "Generiranje QR kode ni uspelo",
+          "modalTitle": "QR koda za sodelovanje",
+          "modalDescription": "Skenirajte QR kodo za dostop do strani za sodelovanje",
+          "linkLabel": "URL za sodelovanje",
+          "copyClipboard": "Kopiraj URL za sodelovanje",
+          "copySuccess": "Povezava za sodelovanje kopirana!",
+          "copyFailure": "Kopiranje ni uspelo"
+        }
+      },
+      "filter-by-country": "Filtriraj po državi",
+      "rows-selected": "Izbranih vrstic",
+      "noResults": "Ni najdenih projektov"
+    },
+    "userstable": {
+      "name": "Ime",
+      "email": "E-pošta",
+      "role": "Vloga",
+      "joined": "Pridružen",
+      "control": {
+        "filter": "Filtriraj seznam",
+        "clear": "Počisti vse filtre"
+      },
+      "loading": "Nalaganje članov ekipe…",
+      "noResults": "Ni rezultatov.",
+      "rowsSelected": "{selected} od {total} izbranih vrstic.",
+      "previous": "Prejšnja",
+      "next": "Naslednja"
+    },
+    "team": {
+      "title": "Člani ekipe",
+      "description": "Seznam vseh članov ekipe v vaši organizaciji",
+      "invite": {
+        "button": "Nov član ekipe",
+        "title": "Povabi novega člana",
+        "description": "Povabite novega člana v svojo organizacijo.",
+        "emailLabel": "E-pošta uporabnika",
+        "emailDescription": "E-poštni naslov osebe, ki jo želite povabiti",
+        "nameLabel": "Polno ime (neobvezno)",
+        "roleLabel": "Vloga",
+        "rolePlaceholder": "Izberi vlogo",
+        "cancelButton": "Prekliči",
+        "sendingButton": "Pošiljanje…",
+        "sendButton": "Pošlji povabilo",
+        "successToast": "Član ekipe uspešno povabljen."
+      },
+      "emptyState": {
+        "title": "Ni najdenih članov ekipe",
+        "description": "Noben član ekipe ne ustreza vašim kriterijem. Poskusite prilagoditi filtre ali povabite nove člane."
+      }
+    },
+    "participants": {
+      "title": "Vsi udeleženci",
+      "description": "Seznam vseh udeležencev projektov v vaši organizaciji",
+      "emptyState": {
+        "description": "Poskusite prilagoditi filtre ali pošljite \"povezavo za sodelovanje\" dodatnim udeležencem.",
+        "title": "Ni najdenih udeležencev projektov"
+      }
+    },
+    "projectsArchive": {
+      "title": "Arhivirani projekti",
+      "description": "Oglejte si in obnovite vse arhivirane projekte",
+      "error-message": "Napaka pri nalaganju arhiviranih projektov.",
+      "no-archived-projects": {
+        "title": "Ni arhiviranih projektov",
+        "description": "Trenutno nimate arhiviranih projektov. Arhivirani projekti se pojavijo tukaj in jih lahko kadarkoli obnovite."
+      },
+      "go-to-projects": "Vaši aktivni projekti"
+    },
+    "settings": {
+      "title": "Nastavitve organizacije",
+      "description": "Podrobnosti in nastavitve organizacije."
+    },
+    "roles": {
+      "owner": "Lastnik",
+      "admin": "Zaposleni",
+      "member": "Udeleženec"
+    },
+    "invitation": {
+      "title": "Sprejmi povabilo",
+      "description": "Povabljeni ste, da se pridružite organizaciji.",
+      "organization": "Organizacija",
+      "role": "Vloga",
+      "invitedBy": "Povabil",
+      "cancel": {
+        "confirm-title": "Prekličem povabilo?",
+        "confirm-description": "Ste prepričani, da želite preklicati povabilo? Tega dejanja ni mogoče razveljaviti.",
+        "confirm-button": "Prekliči povabilo",
+        "cancel-button": "Obdrži povabilo"
+      }
+    }
+  },
+  "participation": {
+    "questionnaire": {
+      "header": {
+        "badge": "Greendex 2.0",
+        "title": "Dobrodošli v Greendexu",
+        "subtitle": "CO₂ kalkulator za aktivnosti Erasmus+ projektov",
+        "step-counter": "Korak {current} od {total}"
+      },
+      "welcome": {
+        "default-message": "Izračunajte ogljični odtis svoje udeležbe v tem Erasmus+ projektu.",
+        "ready": "Pripravite se na odkrivanje svojega ogljičnega odtisa! 🌱",
+        "every-choice": "Vsaka izbira šteje na poti do bolj zelene prihodnosti!",
+        "fun-message": "Želimo vam veliko zabave in nekaj \"Aha!\" trenutkov na poti z Greendexom! 🌳",
+        "start-button": "Začni Greendex"
+      },
+      "participant-info": {
+        "title": "Preden začnemo, nam povejte:",
+        "first-name": "Vaše ime",
+        "first-name-placeholder": "Vnesite svoje ime",
+        "country": "V kateri državi živite?",
+        "country-placeholder": "Vnesite državo",
+        "email": "Vaš e-poštni naslov",
+        "email-placeholder": "Vnesite e-pošto",
+        "required": "*"
+      },
+      "days": {
+        "question": "Koliko dni sodelujete na projektu?",
+        "note": "brez potovalnih dni",
+        "placeholder": "Število dni"
+      },
+      "accommodation": {
+        "category-question": "V kateri vrsti nastanitve bivate?",
+        "occupancy-question": "Koliko ljudi si deli sobo/šotor?",
+        "electricity-question": "Katero vrsto energije uporablja vaša nastanitev?",
+        "options": {
+          "camping": "Kampiranje",
+          "hostel": "Hostel",
+          "3star": "Hotel 3★",
+          "4star": "Hotel 4★",
+          "5star": "Hotel 5★",
+          "apartment": "Apartma",
+          "friends": "Prijatelji/Družina",
+          "alone": "sam",
+          "2people": "2 osebi",
+          "3people": "3 osebe",
+          "4plus": "4+ oseb",
+          "green": "zelena energija",
+          "conventional": "konvencionalna energija",
+          "unknown": "ni bilo mogoče izvedeti"
+        }
+      },
+      "food": {
+        "question": "Kako pogosto nameravate jesti meso na projektu?",
+        "options": {
+          "never": "nikoli",
+          "rarely": "redko",
+          "sometimes": "včasih",
+          "almost-every-day": "skoraj vsak dan",
+          "every-day": "vsak dan"
+        }
+      },
+      "transport": {
+        "flight-question": "Pot DO projekta: Koliko kilometrov ste leteli?",
+        "boat-question": "Pot DO projekta: Koliko kilometrov ste prepotovali z ladjo?",
+        "train-question": "Pot DO projekta: Koliko kilometrov ste prepotovali z vlakom ali metrojem?",
+        "bus-question": "Pot DO projekta: Koliko kilometrov ste prepotovali z avtobusom/kombijem?",
+        "car-question": "Pot DO projekta: Koliko kilometrov ste prepotovali z avtom?",
+        "car-type-question": "Kakšen tip avtomobila ste uporabljali?",
+        "car-passengers-question": "Koliko udeležencev (vključno z vami) je sedelo v avtomobilu?",
+        "placeholder": "0",
+        "car-type": {
+          "car": "klasičen (dizel, bencin, plin…)",
+          "electricCar": "električni"
+        }
+      },
+      "demographics": {
+        "age-question": "Koliko ste stari?",
+        "age-placeholder": "Starost",
+        "gender-question": "Kateri spol ste?",
+        "gender-options": {
+          "female": "Ženska",
+          "male": "Moški",
+          "other": "Drugo / Ne želim povedati"
+        }
+      },
+      "navigation": {
+        "back": "Nazaj",
+        "continue": "Nadaljuj",
+        "complete": "Zaključi"
+      },
+      "project-activities": {
+        "title": "Projektne aktivnosti",
+        "description": "Ta projekt vključuje organizirane aktivnosti, ki povečajo osnovne emisije:",
+        "note": "To bo vključeno v vaš osebni izračun emisij projekta.",
+        "empty": {
+          "title": "Ni projektnih aktivnosti",
+          "description": "S tem projektom niso povezane nobene aktivnosti."
+        }
+      },
+      "results": {
+        "trees-needed": "Drevesna leta (drevesa x leta)",
+        "summary-title": "Povzetek vašega ogljičnega odtisa",
+        "transport": "Transport:",
+        "accommodation": "Nastanitev:",
+        "food": "Prehrana:",
+        "project-activities": "Projektne aktivnosti:",
+        "total": "Skupaj:",
+        "console-note": "Podatki so bili zapisani v konzolo (preverite orodja za razvijalce v brskalniku)",
+        "co2-footprint": "Emisije CO₂"
+      },
+      "impact-modal": {
+        "title": "Vaš vpliv",
+        "total-co2": "Skupni CO₂",
+        "kg-CO₂": "kg CO₂",
+        "trees-needed": "Potrebna drevesna leta",
+        "to-offset": "za izravnavo",
+        "impact": "Vpliv:",
+        "continue": "Nadaljuj",
+        "messages": {
+          "flight-zero": "✅ Odlično! Brez letenja je odtis nizek!",
+          "flight": "✈️ Letenje {km} km doda {impact} kg CO₂ vašemu odtisu",
+          "train-zero": "🚆 Tokrat brez potovanja z vlakom",
+          "train": "🚆 Odlična izbira! Potovanje z vlakom je okolju prijazno (+{impact} kg CO₂)",
+          "bus-zero": "🚌 Tokrat brez avtobusa",
+          "bus": "🚌 Dobra izbira javnega prevoza! (+{impact} kg CO₂)",
+          "boat-zero": "⛴️ Tokrat brez ladje",
+          "boat": "⛴️ Potovanje z ladjo doda {impact} kg CO₂",
+          "car-zero": "🚗 Odlično! Brez avtomobila ohranite nizke emisije!",
+          "car": "🚗 Potovanje z avtom doda {impact} kg CO₂",
+          "food-never": "🌱 Super! Vegetarijanska prehrana {days} dni je prijazna planetu! (+{impact} kg CO₂)",
+          "food-rarely": "🥗 Odlična izbira! Malo mesa {days} dni (+{impact} kg CO₂)",
+          "food-sometimes": "🍖 Zmerno uživanje mesa {days} dni (+{impact} kg CO₂)",
+          "food-almost": "🥩 Veliko mesa {days} dni ima pomemben vpliv (+{impact} kg CO₂)",
+          "food-daily": "🥩 Meso vsak dan {days} dni ima velik okoljski vpliv (+{impact} kg CO₂)",
+          "electricity-green": "♻️ Odlično! {accommodation} z {energy} za {nights} noči, {occupancy}, ohranja nizke emisije pri {impact} kg CO₂",
+          "electricity-conventional": "🏨 {accommodation} z {energy} za {nights} noči, {occupancy}, doda {impact} kg CO₂ vašemu odtisu",
+          "car-type-electric": "🔋 Odlično! Električni avtomobili imajo 75% manjše emisije!",
+          "car-type-car": "⛽ Klasičen avtomobil poveča vaš odtis",
+          "car-passengers-solo": "🚗 Razmislite o souporabi prevoza! Deljenje voženj lahko zmanjša emisije do 75%.",
+          "car-passengers-shared": "👥 Odlično souporabljanje! Emisije zmanjšujete s {count} drugimi{plural}.",
+          "default-low": "✅ Ta izbira ne vpliva na vaš CO₂ odtis",
+          "default": "+{impact} kg CO₂ dodano"
+        }
+      }
+    }
+  },
+  "project": {
+    "details": {
+      "title": "Podrobnosti projekta",
+      "start-date": "Datum začetka",
+      "end-date": "Datum konca",
+      "location": "Lokacija",
+      "country": "Država",
+      "welcome-message": "Pozdravno sporočilo",
+      "participants": "Udeleženci",
+      "participants-description": "Udeleženci bodo prikazani tukaj.",
+      "activities": "Aktivnosti",
+      "activities-description": "Projektne aktivnosti bodo prikazane tukaj.",
+      "loading": "nalaganje podrobnosti projekta…",
+      "people-joined": "ljudi se je že pridružilo",
+      "no-participants-yet": "Še ni udeležencev",
+      "share-the-participation-link": "Delite povezavo za sodelovanje, da povabite ljudi v ta projekt.",
+      "tabs": {
+        "details": "Podrobnosti projekta",
+        "activities": "Projektne aktivnosti",
+        "participants": "Udeleženci projekta"
+      },
+      "statistics": {
+        "participants": "Udeleženci",
+        "activities": "Aktivnosti",
+        "total-distance": "Skupna razdalja",
+        "duration": "Trajanje",
+        "km": "km",
+        "days": "dni",
+        "co2-emissions": "Emisije"
+      },
+      "errors": {
+        "default-error": "Podrobnosti projekta ni bilo mogoče naložiti.",
+        "project-not-found": "Projekt, ki ga iščete, ne obstaja.",
+        "project-access-denied": "Nimate dostopa do tega projekta."
+      },
+      "joined-on": "pridružil/a se"
+    },
+    "activities": {
+      "title": "Projektne aktivnosti",
+      "description": "Potovalne aktivnosti za izračun ogljičnega odtisa",
+      "empty": {
+        "title": "Še ni aktivnosti",
+        "description": "Ta projekt nima zabeleženih aktivnosti. Dodajte aktivnosti za sledenje ogljičnega odtisa."
+      },
+      "types": {
+        "boat": "Čoln",
+        "bus": "Avtobus",
+        "train": "Vlak",
+        "car": "Avto"
+      },
+      "form": {
+        "title": "Dodaj aktivnost",
+        "edit-title": "Uredi aktivnost",
+        "activity-type": "Vrsta aktivnosti",
+        "activity-type-placeholder": "Izberi vrsto aktivnosti",
+        "distance": "Razdalja (km)",
+        "distance-placeholder": "Vnesite razdaljo v kilometrih",
+        "description": "Opis (neobvezno)",
+        "description-placeholder": "Dodajte opis aktivnosti",
+        "activity-date": "Datum aktivnosti (neobvezno)",
+        "submit": "Dodaj aktivnost",
+        "update": "Posodobi aktivnost",
+        "cancel": "Prekliči",
+        "adding": "Dodajanje…",
+        "updating": "Posodabljanje…",
+        "validation": {
+          "distanceKm": {
+            "min": "Razdalja mora biti vsaj {min} km",
+            "max": "Razdalja ne sme presegati {max} km",
+            "step": "Razdalja mora biti v korakih po {step} km"
+          }
+        }
+      },
+      "delete": {
+        "confirm-title": "Izbrišem aktivnost?",
+        "confirm-description": "To bo trajno izbrisalo to aktivnost. Tega dejanja ni mogoče razveljaviti.",
+        "confirm-button": "Izbriši",
+        "cancel-button": "Prekliči",
+        "deleting": "Brisanje..."
+      },
+      "toast": {
+        "create-success": "Aktivnost uspešno dodana",
+        "create-error": "Dodajanje aktivnosti ni uspelo",
+        "update-success": "Aktivnost uspešno posodobljena",
+        "update-error": "Posodobitev aktivnosti ni uspela",
+        "delete-success": "Aktivnost uspešno izbrisana",
+        "delete-error": "Brisanje aktivnosti ni uspelo"
+      },
+      "table": {
+        "type": "Vrsta",
+        "distance": "Razdalja",
+        "description": "Opis",
+        "date": "Datum",
+        "actions": "Dejanja",
+        "edit": "Uredi",
+        "delete": "Izbriši",
+        "km": "km"
+      },
+      "error": {
+        "load-failed": "Nalagaljenje aktivnosti ni uspelo. Poskusite znova."
+      }
+    }
+  },
+  "authentication": {
+    "common": {
+      "emailPlaceholder": "m@primer.com",
+      "fullNamePlaceholder": "Janez Novak",
+      "backToLogin": "Nazaj na prijavo",
+      "orContinueWith": "Ali nadaljujte z",
+      "signingUp": "Ustvarjanje računa…",
+      "sending": "Pošiljanje…",
+      "failedSignIn": "Prijava ni uspela",
+      "failedCreate": "Ustvarjanje računa ni uspelo",
+      "failedSend": "Pošiljanje ponastavitvenega e-poštnega sporočila ni uspelo"
+    },
+    "login": {
+      "title": "Dobrodošel/la nazaj, Greendexer!",
+      "description": "Prijavite se v svoj račun za nadaljevanje dela na Erasmus+ projektu",
+      "lastUsed": "Nazadnje uporabljeno",
+      "tabs": {
+        "password": "Geslo",
+        "magicLink": "Čarobna povezava"
+      },
+      "email": "E-pošta",
+      "password": "Geslo",
+      "forgotPassword": "Ste pozabili geslo?",
+      "loginButton": "Prijava",
+      "logOut": "Odjava",
+      "settings": "Nastavitve",
+      "signingIn": "Prijavljanje…",
+      "sendMagicLink": "Pošlji čarobno povezavo",
+      "verifyEmail": "Prosimo, potrdite svoj e-poštni naslov za nadaljevanje",
+      "magicLinkSent": "Čarobna povezava poslana! Preverite e-pošto.",
+      "failedMagicLink": "Pošiljanje čarobne povezave ni uspelo",
+      "footer": {
+        "noAccount": "Nimate računa?",
+        "signUp": "Registracija"
+      }
+    },
+    "magicLink": {
+      "title": "Prijava s čarobno povezavo",
+      "description": "Vnesite svoj e-poštni naslov in poslali vam bomo čarobno povezavo za prijavo."
+    },
+    "signup": {
+      "title": "Ustvarite svoj račun",
+      "description": "Izpolnite spodnji obrazec za ustvarjanje računa",
+      "fullName": "Polno ime",
+      "email": "E-pošta",
+      "emailDescription": "To bomo uporabili za stik z vami. Vaše e-pošte ne bomo delili z drugimi.",
+      "password": "Geslo",
+      "passwordDescription": "Mora biti dolgo vsaj 8 znakov.",
+      "confirmPassword": "Potrdite geslo",
+      "confirmPasswordDescription": "Prosimo, potrdite geslo.",
+      "signUpButton": "Ustvari račun",
+      "footer": {
+        "haveAccount": "Že imate račun?",
+        "signIn": "Prijava"
+      }
+    },
+    "forgotPassword": {
+      "title": "Ste pozabili geslo?",
+      "description": "Vnesite svoj e-poštni naslov in poslali vam bomo povezavo za ponastavitev gesla.",
+      "email": "E-pošta",
+      "sendResetLink": "Pošlji povezavo za ponastavitev",
+      "resetLinkSent": "Povezava za ponastavitev gesla poslana! Preverite e-pošto."
+    },
+    "resetPassword": {
+      "title": "Ponastavite svoje geslo",
+      "description": "Vnesite novo geslo za ponastavitev.",
+      "newPassword": "Novo geslo",
+      "newPasswordDescription": "Mora biti dolgo vsaj 8 znakov.",
+      "confirmPassword": "Potrdite novo geslo",
+      "confirmPasswordDescription": "Prosimo, potrdite novo geslo.",
+      "resetPasswordButton": "Ponastavi geslo",
+      "resetting": "Ponastavljanje…",
+      "resetSuccess": "Geslo uspešno ponastavljeno! Prosimo, prijavite se.",
+      "resetFailed": "Ponastavitev gesla ni uspela. Povezava je morda potekla."
+    },
+    "validation": {
+      "emailInvalid": "Vnesite veljaven e-poštni naslov.",
+      "passwordRequired": "Geslo je obvezno.",
+      "passwordMinLength": "Geslo mora biti dolgo vsaj 8 znakov.",
+      "passwordConfirmRequired": "Prosimo, potrdite geslo.",
+      "passwordsNoMatch": "Gesli se ne ujemata.",
+      "fullNameRequired": "Polno ime je obvezno."
+    },
+    "brand": {
+      "badge": "Greendex kalkulator podnebja",
+      "tagline": "Greendex · Podnebni kalkulator",
+      "headline": "Prinesite preglednost v Erasmus+ projektna potovanja",
+      "description": "Uskladite ekipo, proslavite uspehe in ohranite nizek odtis brez preglednic.",
+      "values": {
+        "one": "Živi nadzorni kazalniki s zelenimi KPI-ji",
+        "two": "Deljenje zgodb o vplivu z vsemi ekipami",
+        "three": "Avtomatizirano vabljenje, navdihovanje in izboljševanje"
+      },
+      "heroBadge": "Greendex Live",
+      "heroTitle": "Oglejte si utrip vpliva v vseh ekipah",
+      "heroCaption": "Greendex ohranja podnebno zgodbo vidno, da se lahko osredotočite na delo.",
+      "heroStatOne": "24% hitrejša poročila o vplivu",
+      "heroStatTwo": "88% planetu prijaznih prijav"
+    },
+    "verifyEmail": {
+      "emailRequired": {
+        "title": "E-pošta je obvezna",
+        "description": "E-poštni naslov ni bil podan. Prosimo, ponovno se registrirajte ali prijavite.",
+        "goToSignUp": "Pojdi na registracijo"
+      },
+      "title": "Potrdite svoj e-poštni naslov",
+      "description": "Poslali smo potrditveno e-pošto na",
+      "steps": {
+        "title": "Kaj se zgodi naprej?",
+        "checkInbox": "Preverite svoj nabiralnik za potrditveno e-pošto",
+        "clickLink": "Kliknite potrditveno povezavo v e-pošti",
+        "autoSignIn": "Samodejno boste prijavljeni in preusmerjeni"
+      },
+      "important": {
+        "label": "Pomembno:",
+        "text": "Pred prijavo morate potrditi svoj e-poštni naslov."
+      },
+      "resend": {
+        "sending": "Pošiljanje…",
+        "button": "Ponovno pošlji potrditveno e-pošto",
+        "disabled": "Ponovno pošiljanje čez {countdown}s",
+        "footer": "Niste prejeli e-pošte? Preverite mapo z nezaželeno pošto ali poskusite znova."
+      },
+      "toast": {
+        "emailRequired": "E-poštni naslov je obvezen",
+        "waitBeforeResend": "Prosimo, počakajte {countdown} sekund pred ponovnim pošiljanjem",
+        "success": "Potrditvena e-pošta uspešno poslana!",
+        "error": "Pošiljanje potrditvene e-pošte ni uspelo"
+      }
+    }
+  }
+}
