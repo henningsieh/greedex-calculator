@@ -7,6 +7,7 @@
     "build:cloudenv": "turbo run build:cloudenv",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "start": "turbo run start",
     "format": "turbo run format",
     "test": "turbo run test --",
     "test:run": "turbo run test:run --",

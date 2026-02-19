@@ -20,7 +20,37 @@ export const SUPPORTED_LANGUAGES = [
     code: "de",
     label: "German",
     displayRegion: "Germany",
-    countryCode: "DE", // Germany is an EU member
+    countryCode: "DE", // Germany is an EUc member
+  },
+  {
+    code: "es",
+    label: "Spanish",
+    displayRegion: "Spain",
+    countryCode: "ES", // Spain is an EU member
+  },
+  {
+    code: "it",
+    label: "Italian",
+    displayRegion: "Italy",
+    countryCode: "IT", // Italy is an EU member
+  },
+  {
+    code: "fr",
+    label: "French",
+    displayRegion: "France",
+    countryCode: "FR", // France is an EU member
+  },
+  {
+    code: "nl",
+    label: "Dutch",
+    displayRegion: "Netherlands",
+    countryCode: "NL", // Netherlands is an EU member
+  },
+  {
+    code: "si",
+    label: "Slovenian",
+    displayRegion: "Slovenia",
+    countryCode: "SI", // Slovenia is an EU member
   },
 ] as const;
 

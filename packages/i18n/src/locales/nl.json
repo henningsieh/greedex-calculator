@@ -1,0 +1,1064 @@
+{
+  "landingPage": {
+    "launchButton": "Erasmus+ Koolstofcalculator starten",
+    "launchButtonAria": "Erasmus+ Koolstofcalculator starten — inloggen vereist",
+    "about": {
+      "partnersTitle": "Partners",
+      "partnersHeadline": "Project Greendex is ontstaan uit liefde voor de natuur en de noodzaak om bij te dragen aan een duurzamere toekomst. Het project werd opgezet als een KA 2 – Strategisch partnerschap binnen het Erasmus+-programma en gefinancierd door het Sloveense Nationaal Agentschap MOVIT. In dit project hebben we uitgebreid onderzoek gedaan naar duurzaamheid en een Bibliotheek aangelegd voor toekomstige studie. We hebben creatieve Tips en Trucs ontwikkeld voor mensen om in hun dagelijks leven toe te passen en voor jongerenorganisaties om in hun werk te implementeren. We hebben educatieve sessies gemaakt om te gebruiken tijdens mobiliteiten om bewustwording te creëren en onze koolstofvoetafdruk te compenseren. We hebben ook een koolstofvoetafdrukcalculator ontwikkeld, gespecialiseerd in de Erasmus+-realiteit. We hebben geïnvesteerd in het Erasmus+-bos, waar regelmatig bomen worden geplant. We hebben onderzocht, geleerd, gedeeld, getest en geplant voor ons, voor jullie en voor de toekomst.",
+      "partnerBadge": "Partner",
+      "visitWebsite": "Website bezoeken",
+      "erasmusFunding": "Medegefinancierd door het Erasmus+-programma.",
+      "aboutTitle": "Over Greendex"
+    },
+    "header": {
+      "navigation": {
+        "workshops": "Workshops",
+        "resources": "Bronnen",
+        "tipsAndTricks": "Tips & Trucs",
+        "library": "Bibliotheek",
+        "eforest": "E+ Bos",
+        "about": "Over ons",
+        "login": "Inloggen",
+        "signup": "Registreren",
+        "openMenu": "Menu openen",
+        "settings": "Instellingen"
+      }
+    },
+    "hero": {
+      "headline": "Bereken. Compenseer. Leer.",
+      "subtitle": "De koolstofvoetafdrukcalculator ontworpen voor Erasmus+-projecten. Meet je milieu-impact en plant bomen voor een groener Europa.",
+      "imageCaption": "Greendex-dashboard met CO₂-uitstoottracking en bomplantdoelen",
+      "missionTitle": "Onze missie",
+      "missionText": "Het Erasmus+-programma stelt ons in staat om geweldige leeravonturen te beleven met inspirerende mensen uit verschillende landen. Elk persoonlijk samenzijn draagt echter bij aan een grote koolstofvoetafdruk door onze reis- en leefgewoonten. Het doel van dit project was om onze koolstofvoetafdruk te compenseren door meer bewustwording te creëren en actie te ondernemen om onze gewoonten te veranderen. Daarom hebben we een koolstofvoetafdrukcalculator ontwikkeld die is gespecialiseerd voor Erasmus+-projecten zoals jongerenuitwisselingen, trainingscursussen, vergaderingen, enz. Deze calculator geeft het totale CO₂ dat door elke deelnemer wordt geproduceerd en zet dit om in het gemiddeld aantal bomen dat onze CO₂ gedurende hun leven zal absorberen. Onze berekeningen zijn gebaseerd op wetenschappelijk onderzoek van verschillende professionals. We hebben geen eigen berekeningen gemaakt.",
+      "visionTitle": "Onze visie",
+      "visionText": "We willen een beweging creëren waarbij elk Erasmus+-project zijn koolstofvoetafdruk berekent en bomen plant om die te compenseren. We zien meerdere Erasmus+-bossen opkomen in Europa die bijdragen aan schonere lucht op het continent. We zien jongeren die samen blijven leren in een duurzamere omgeving, groen reizen en genieten van de schoonheid van de natuur. Deze website bevat veel kennis die voor je is samengebracht, dus neem de tijd om even rond te kijken.",
+      "scrollDown": "Omlaag scrollen",
+      "meetCustomers": "Ontmoet onze gebruikers"
+    },
+    "EPlusForest": {
+      "hero": {
+        "title": "E+ Bos"
+      },
+      "dream": {
+        "title": "Een droom",
+        "p1": "Elk project begint met een droom. En dromen zijn de essentie van het leven. De droom voor dit project is het creëren van een wereld waar iedereen in contact kan zijn met de natuur en de schoonheid ervan kan waarderen.",
+        "p2": "We willen een project bouwen dat mensen in staat stelt de schoonheid van de natuur van dichtbij te zien, te voelen en te ervaren. We streven ernaar een project te creëren dat mensen samenbrengt en een gevoel van respect en begrip voor de natuur bevordert. We willen dat dit project mensen inspireert om te handelen en samen te werken om de natuur te beschermen, te behouden en te herstellen. We stellen ons een project voor dat mensen van alle leeftijden, achtergronden en overtuigingen samenbrengt om te genieten van de schoonheid van de natuur en een verschil te maken in de wereld. We willen middelen en educatieve kansen bieden zodat mensen kunnen leren over het milieu, het belang van behoud en hoe ze kunnen handelen. We geloven dat we door samen te werken een betere toekomst kunnen creëren voor onze planeet en alle bewoners ervan.",
+        "ourForests": {
+          "title": "Onze bossen",
+          "portugal": {
+            "status": "Opgericht",
+            "location": "Portugal",
+            "description": "Het eerste Erasmus+-bos gewijd aan het compenseren van koolstofvoetafdrukken van mobiliteitprojecten.",
+            "treesLabel": "Geplante bomen"
+          },
+          "expanding": {
+            "status": "Groeiend",
+            "title": "Uitbreiden door heel Europa",
+            "description": "De beweging verspreidt zich naar meer landen en creëert een netwerk van duurzame bossen.",
+            "slovenia": "Slovenië — Bos opgericht",
+            "cyprus": "Cyprus — In uitvoering",
+            "netherlands": "Nederland — In uitvoering",
+            "joinUs": "Wil je een bos starten in jouw land? Neem contact met ons op om deel te nemen aan de beweging."
+          },
+          "readArticle": "Volledig artikel lezen",
+          "readMore": "Meer berichtgeving"
+        }
+      },
+      "donate": {
+        "title": "Doneren",
+        "description": "Als jouw organisatie geen plek heeft om een eigen bos te starten, kun je doneren aan Greendex en zullen wij namens jou bomen planten in een van onze bossen.",
+        "howItWorks": {
+          "title": "Hoe het werkt",
+          "p1": "Bereken het aantal benodigde bomen om de koolstofvoetafdruk van jouw mobiliteit te compenseren met onze calculator.",
+          "p2": "Het aantal is zichtbaar op het gastprofiel. Elke boom kost je 5 EUR."
+        },
+        "wePlantTrees": {
+          "title": "Wij planten bomen",
+          "p1": "In het voorjaar en in het najaar. Zodra je donatie is geregistreerd, sturen we je een bevestiging die voor promotionele doeleinden kan worden gebruikt of toegevoegd kan worden aan het eindrapport van je project. Wanneer de bomen worden geplant, ontvang je de definitieve bevestiging, de locatie van jouw bomen en een foto.",
+          "p2": "Je kunt contact met ons opnemen via plant.trees@greendex.world, ons informeren over je donatie en we sturen je de instructies."
+        },
+        "calculatorButton": "Calculator",
+        "contactButton": "Contact opnemen"
+      },
+      "funding": {
+        "text": "Medegefinancierd door het"
+      }
+    },
+    "footer": {
+      "app": "App",
+      "company": "Bedrijf",
+      "explore": "Verkennen",
+      "copyright": "Alle rechten voorbehouden."
+    },
+    "workshops": {
+      "badge": "Educatief",
+      "headingPrefix": "Hallo, mede",
+      "headingEmphasis": "aardbewoner",
+      "intro1": "We zijn erg blij dat je de weg naar onze Greendex-pagina hebt gevonden. Deze pagina helpt je bewustwording te creëren over duurzame en milieuvriendelijke gewoonten tijdens het Erasmus+-project.",
+      "intro2": "In deze sectie bieden we je drie verschillende workshops aan om te gebruiken tijdens je leermobiliteit, afhankelijk van je beschikbare tijd:",
+      "pageSubtitle": "Kies een workshop op basis van je beschikbare tijd en begin het verschil te maken",
+      "card": {
+        "learnMore": "Meer informatie"
+      },
+      "keyword": "workshops",
+      "bottomP1": "Je kunt dezelfde workshop bij elke mobiliteit gebruiken, want de cijfers zullen altijd anders zijn. Deze workshops creëren bewustwording over de duurzaamheid van de mobiliteit en inspireren je om actie te ondernemen. Duurzaamheid is niet alleen een onderwerp, het is een principe dat we allemaal zouden moeten naleven.",
+      "bottomP2Prefix": "Als je meer wilt leren over duurzaamheid, ga dan naar de secties",
+      "bottomP2Middle": "en",
+      "library": "Bibliotheek",
+      "tipsAndTricks": "Tips en Trucs",
+      "types": {
+        "moment": {
+          "title": "Greendex Moment",
+          "duration": "30 min",
+          "description": "Deze workshop biedt berekeningen van de CO₂ tijdens je mobiliteit en hoeveel bomen er moeten worden geplant om de CO₂ te compenseren."
+        },
+        "deal": {
+          "title": "Greendex Deal",
+          "duration": "60 min",
+          "description": "Deze workshop biedt berekeningen van de CO₂ tijdens je mobiliteit en hoeveel bomen er geplant moeten worden, evenals duurzame en inspirerende uitdagingen voor deelnemers om tijdens het project te proberen."
+        },
+        "day": {
+          "title": "Greendex Dag",
+          "duration": "180 min",
+          "description": "Deze sessie biedt naast de eerder genoemde calculator en uitdagingen ook een quiz over de koolstofvoetafdruk, een reflectie over hoeveel plastic we meenamen naar deze mobiliteit en ondersteuning om sociale druk uit te oefenen."
+        }
+      },
+      "details": {
+        "moment": {
+          "sections": {
+            "calculator": {
+              "title": "Greendex Calculator",
+              "steps": {
+                "create": {
+                  "title": "Maak het project aan in de Greendex-app",
+                  "content": "Begin met het aanmaken van je project in onze applicatie om je koolstofvoetafdruk bij te houden."
+                },
+                "map": {
+                  "title": "Breng je reis van thuis naar hier in kaart",
+                  "content": "Nodig deelnemers uit om nationale teams te vormen. Vraag hen na te denken over hun reiservaringen. Je kunt ze helpen hun reis in kaart te brengen door posters op te hangen waarop ze hun reizen kunnen tekenen. Het is belangrijk dat ze de vervoersmiddelen in volgorde voor zich zien en uitvinden hoeveel kilometer ze met elk vervoermiddel hebben afgelegd."
+                },
+                "share": {
+                  "title": "Deel de projectlink met de deelnemers",
+                  "content": "Bied ze de QR-code aan of deel de meegeleverde link via sociale media die in het project worden gebruikt."
+                },
+                "fill": {
+                  "title": "Nodig deelnemers uit om de vragen van de calculator in te vullen",
+                  "content": "Elke deelnemer moet het formulier individueel invullen. De gastheer moet de volgende informatie aan de deelnemers verstrekken:\n\n• Type accommodatie (camping, hostel, privé, hotel 1-3★, hotel 4-5★)\n• Type energie dat de accommodatie gebruikt (conventionele energie, groene energie)"
+                },
+                "reflect": {
+                  "title": "Zorg ervoor dat alle deelnemers het formulier hebben ingediend en maak ruimte voor reflectie",
+                  "content": "Geef deelnemers de ruimte om na te denken over hun individuele resultaten!"
+                },
+                "debate": {
+                  "title": "Toon en bespreek de projectresultaten",
+                  "content": "Je kunt de volgende vragen stellen:\n\n• Is er iets verrassends voor je in de resultaten?\n• Hoe laten de resultaten je voelen?\n• Heb je suggesties om de CO₂-uitstoot bij toekomstige projecten te verminderen?"
+                },
+                "plant": {
+                  "title": "Plant bomen om de koolstofvoetafdruk van je project te compenseren",
+                  "content": "Je kunt de volgende opties aanbieden:\n\n• Doneer om bomen te planten in een van de Erasmus+-bossen\n• Zoek mogelijkheden om zelf bomen te planten! Misschien kun je zelfs je eigen Erasmus+-bos starten en deel uitmaken van de Greendex-beweging."
+                },
+                "share_social": {
+                  "title": "Deel je reis op sociale media met #greendex",
+                  "content": "Verspreid het woord over je duurzame reis en inspireer anderen!"
+                }
+              }
+            }
+          }
+        },
+        "deal": {
+          "sections": {
+            "calculator": {
+              "title": "Greendex Calculator",
+              "steps": {
+                "create": {
+                  "title": "Maak het project aan in de Greendex-app",
+                  "content": "Begin met het aanmaken van je project in onze applicatie om je koolstofvoetafdruk bij te houden."
+                },
+                "map": {
+                  "title": "Breng je reis van thuis naar hier in kaart",
+                  "content": "Nodig deelnemers uit om nationale teams te vormen. Vraag hen na te denken over hun reiservaringen. Je kunt ze helpen hun reis in kaart te brengen door posters op te hangen waarop ze hun reizen kunnen tekenen. Het is belangrijk dat ze de vervoersmiddelen in volgorde voor zich zien en uitvinden hoeveel kilometer ze met elk vervoermiddel hebben afgelegd."
+                },
+                "share": {
+                  "title": "Deel de projectlink met de deelnemers",
+                  "content": "Bied ze de QR-code aan of deel de meegeleverde link via sociale media die in het project worden gebruikt."
+                },
+                "fill": {
+                  "title": "Nodig deelnemers uit om de vragen van de calculator in te vullen",
+                  "content": "Elke deelnemer moet het formulier individueel invullen. De gastheer moet de volgende informatie aan de deelnemers verstrekken:\n\n• Type accommodatie (camping, hostel, privé, hotel 1-3★, hotel 4-5★)\n• Type energie dat de accommodatie gebruikt (conventionele energie, groene energie)"
+                },
+                "reflect": {
+                  "title": "Zorg ervoor dat alle deelnemers het formulier hebben ingediend en maak ruimte voor reflectie",
+                  "content": "Geef deelnemers de ruimte om na te denken over hun individuele resultaten!"
+                },
+                "debate": {
+                  "title": "Toon en bespreek de projectresultaten",
+                  "content": "Je kunt de volgende vragen stellen:\n\n• Is er iets verrassends voor je in de resultaten?\n• Hoe laten de resultaten je voelen?\n• Heb je suggesties om de CO₂-uitstoot bij toekomstige projecten te verminderen?"
+                }
+              }
+            },
+            "challenges": {
+              "title": "Uitdagingen",
+              "steps": {
+                "read": {
+                  "title": "Lees meer over de uitdagingen",
+                  "content": "Maak je als voorbereiding op deze workshop vertrouwd met de beschikbare uitdagingen."
+                },
+                "present": {
+                  "title": "Presenteer uitdagingen om de CO₂-uitstoot tijdens het project te verminderen",
+                  "content": "Nodig deelnemers uit om minstens één uitdaging te kiezen die ze tijdens het project willen proberen. Maak kleinere ondersteuningsgroepen om elkaar door het project heen te motiveren."
+                },
+                "plant": {
+                  "title": "Plant bomen om de koolstofvoetafdruk van je project te compenseren",
+                  "content": "Je kunt de volgende opties aanbieden:\n\n• Doneer om bomen te planten in een van de Erasmus+-bossen\n• Zoek mogelijkheden om zelf bomen te planten! Misschien kun je zelfs je eigen Erasmus+-bos starten en deel uitmaken van de Greendex-beweging."
+                },
+                "share": {
+                  "title": "Deel je reis op sociale media met #greendex",
+                  "content": "Verspreid het woord over je duurzame reis en inspireer anderen!"
+                }
+              }
+            },
+            "evaluation": {
+              "title": "Evaluatie",
+              "steps": {
+                "evaluate": {
+                  "title": "Gebruik de eindevaluatie om je voortgang te controleren",
+                  "content": "Besteed een paar vragen aan de eindevaluatie van het project om het bereik van bewustwording over duurzaamheid en koolstofvoetafdruk te meten. Je kunt de volgende vragen stellen:\n\n• Hoe succesvol was je in de uitdagingen?\n• Ben je bereid sommige uitdagingen in je leven te integreren?\n• Wat kun je nog meer doen om je koolstofvoetafdruk te verkleinen?"
+                }
+              }
+            }
+          }
+        },
+        "day": {
+          "sections": {
+            "plastic": {
+              "title": "Hoeveel plastic bezitten we?",
+              "steps": {
+                "form_groups": {
+                  "title": "Nationale groepen vormen",
+                  "content": "Vraag deelnemers nationale groepen te vormen en zich in de ruimte op te stellen."
+                },
+                "bring_items": {
+                  "title": "Nodig deelnemers uit om alle plastic en niet-recyclebare voorwerpen mee te brengen",
+                  "content": "Vraag hen door hun bagage te gaan en alles wat plastic is of niet gerecycled kan worden naar de ruimte te brengen. Ze moeten heel grondig zijn. Als ze hun persoonlijke spullen niet naar de ruimte willen brengen, moeten ze ze tellen. Ze moeten elke creditcard, schoen, tandenborstel, kabel, shampooflessen, enz. tellen."
+                },
+                "calculate": {
+                  "title": "Laten we wat cijfers berekenen",
+                  "content": "Nodig elke nationale groep uit om het totale aantal plastic voorwerpen en/of de niet-recyclebare voorwerpen op te tellen. Nodig ze uit om het aantal voorwerpen per persoon in het team te berekenen. De facilitator moet de voorwerpen voor de gehele mobiliteit optellen en een gemiddelde per persoon van de mobiliteit berekenen. Toon de resultaten op een poster of bord."
+                },
+                "debate": {
+                  "title": "Debat",
+                  "content": "Bekijk de cijfers en nodig deelnemers uit hun gedachten en emoties te delen. Je kunt ook de volgende vragen stellen:\n\n• Hoeveel voorwerpen ben je van plan hier achter te laten?\n• Zijn er voorwerpen die je door iets anders kunt vervangen? Zo ja, welke voorwerpen kun je door wat vervangen?\n• Zijn er voorwerpen die je nu niet kunt vervangen, omdat je wacht tot de technologie verbetert?\n• Zijn er voorwerpen waarbij de producent iets kan doen?"
+                },
+                "introduce": {
+                  "title": "Introductie van de Greendex-website",
+                  "content": "Stel onze website aan de deelnemers voor, want die bevat diverse tips over hoe je de dagelijkse routine kunt verbeteren en biedt aanvullende bronnen voor studie."
+                }
+              }
+            },
+            "social_pressure": {
+              "title": "Sociale druk",
+              "steps": {
+                "create_groups": {
+                  "title": "Kleinere interculturele groepen vormen",
+                  "content": "Maak kleinere interculturele groepen aan of blijf in dezelfde als je deze activiteit gebruikt als voortzetting van de vorige activiteit!"
+                },
+                "think_products": {
+                  "title": "Denk aan producten die je geweldig vindt",
+                  "content": "Misschien zijn er speciale koekjes die je graag eet of schoenen die je graag draagt. Denk aan producten die je graag gebruikt maar die in te veel verpakking zijn gewikkeld. Misschien gebruik je een product dat niet van plastic hoeft te zijn? Elke groep moet één zo'n product kiezen."
+                },
+                "find_solutions": {
+                  "title": "Zoek oplossingen indien mogelijk",
+                  "content": "Zoek indien mogelijk een oplossing voor je product die je tevreden zou stellen."
+                },
+                "write_message": {
+                  "title": "Schrijf een bericht aan de producenten",
+                  "content": "Schrijf een beleefde boodschap of brief aan de producenten van het product waarover je het had. Zorg ervoor dat je het bericht schrijft in de vorm van: zeg iets positiefs, zeg iets negatiefs, stel een verbetering voor."
+                },
+                "use_hashtag": {
+                  "title": "Gebruik #greendex",
+                  "content": "Als je besluit dit bericht op sociale media te plaatsen, vragen we je vriendelijk om #greendex te gebruiken voor een betere zichtbaarheid van deze beweging."
+                }
+              }
+            },
+            "quiz": {
+              "title": "Wat is een koolstofvoetafdruk?",
+              "steps": {
+                "form_groups": {
+                  "title": "Kleinere interculturele groepen vormen",
+                  "content": "Laat ze een comfortabele plek in de ruimte vinden en ten minste één smartphone klaarzetten. Het is belangrijk internettoegang te bieden."
+                },
+                "name_group": {
+                  "title": "Vraag deelnemers hun groep een naam te geven",
+                  "content": "Dit heeft een teambuilding-doel en helpt je de antwoorden beter te identificeren."
+                },
+                "introduce_quiz": {
+                  "title": "Introductie van de quiz",
+                  "content": "Leg deelnemers uit dat we ze door een korte quiz leiden en dat ze smartphones mogen gebruiken."
+                },
+                "start_quiz": {
+                  "title": "Start de quiz",
+                  "content": "Je kunt de vragen voorlezen, op papier plaatsen of een online tool gebruiken voor de deelnemers. Dit is geen wedstrijd, alleen onderzoek.\n\nStel voor de quiz twee heel basale vragen:\n\n• Weet je wat een koolstofvoetafdruk is?\nAntwoord: Een koolstofvoetafdruk is de totale hoeveelheid broeikasgassen die door onze acties worden gegenereerd.\n\n• Waarom praten we over koolstofdioxide – CO₂?\nAntwoord: Te veel koolstofdioxide (en andere broeikasgassen zoals methaan) in de atmosfeer warmt de planeet op en veroorzaakt klimaatverandering.\n\nDit zijn de vragen:\n• Hoeveel CO₂ stoot iemand die vlees eet uit?\n• Hoeveel CO₂ stoot een vegetariër uit?\n• Hoeveel CO₂ komt vrij bij een vlucht van 1000 km?\n• Hoeveel CO₂ komt vrij bij 1000 km reizen per trein?\n• Hoeveel CO₂ komt vrij bij 1000 km reizen per auto?\n• Hoeveel CO₂ absorbeert één naaldboom?\n• Hoeveel CO₂ absorbeert één loofboom?\n• Hoeveel O₂ heeft één persoon per jaar nodig (in kg)?\n• Hoeveel O₂ produceert één gemiddelde boom per jaar (in kg)?\n• Hoeveel mensen zijn er momenteel op de wereld?"
+                },
+                "debate": {
+                  "title": "Debat",
+                  "content": "Moedig deelnemers aan gedachten en emoties over de resultaten te delen. Je kunt de volgende vragen stellen:\n\n• Wat was het interessantst in je onderzoek?\n• Was er iets dat emoties opriep? Zo ja, welke emoties en waarom?\n• Kon je de verhouding herkennen tussen de geabsorbeerde CO₂ en de geproduceerde O₂?\n• Hoe dicht zijn de bomen beplant in jouw land?"
+                }
+              }
+            },
+            "calculator": {
+              "title": "Greendex Calculator",
+              "steps": {
+                "create": {
+                  "title": "Maak het project aan in de Greendex-app",
+                  "content": "Begin met het aanmaken van je project in onze applicatie om je koolstofvoetafdruk bij te houden."
+                },
+                "map": {
+                  "title": "Breng je reis van thuis naar hier in kaart",
+                  "content": "Nodig deelnemers uit om nationale teams te vormen. Vraag hen na te denken over hun reiservaringen. Je kunt ze helpen hun reis in kaart te brengen door posters op te hangen waarop ze hun reizen kunnen tekenen. Het is belangrijk dat ze de vervoersmiddelen in volgorde voor zich zien en uitvinden hoeveel kilometer ze met elk vervoermiddel hebben afgelegd."
+                },
+                "share": {
+                  "title": "Deel de projectlink met de deelnemers",
+                  "content": "Bied ze de QR-code aan of deel de meegeleverde link via sociale media die in het project worden gebruikt."
+                },
+                "fill": {
+                  "title": "Nodig deelnemers uit om de vragen van de calculator in te vullen",
+                  "content": "Elke deelnemer moet het formulier individueel invullen. De gastheer moet de volgende informatie aan de deelnemers verstrekken:\n\n• Type accommodatie (camping, hostel, privé, hotel 1-3★, hotel 4-5★)\n• Type energie dat de accommodatie gebruikt (conventionele energie, groene energie)"
+                },
+                "reflect": {
+                  "title": "Zorg ervoor dat alle deelnemers het formulier hebben ingediend en maak ruimte voor reflectie",
+                  "content": "Geef deelnemers de ruimte om na te denken over hun individuele resultaten!"
+                },
+                "debate": {
+                  "title": "Toon en bespreek de projectresultaten",
+                  "content": "Je kunt de volgende vragen stellen:\n\n• Is er iets verrassends voor je in de resultaten?\n• Hoe laten de resultaten je voelen?\n• Heb je suggesties om de CO₂-uitstoot bij toekomstige projecten te verminderen?"
+                }
+              }
+            },
+            "challenges": {
+              "title": "Uitdagingen",
+              "steps": {
+                "read": {
+                  "title": "Lees meer over de uitdagingen",
+                  "content": "Maak je als voorbereiding op deze workshop vertrouwd met de beschikbare uitdagingen."
+                },
+                "present": {
+                  "title": "Presenteer uitdagingen om de CO₂-uitstoot tijdens het project te verminderen",
+                  "content": "Nodig deelnemers uit om minstens één uitdaging te kiezen die ze tijdens het project willen proberen. Maak kleinere ondersteuningsgroepen om elkaar door het project heen te motiveren."
+                },
+                "plant": {
+                  "title": "Plant bomen om de koolstofvoetafdruk van je project te compenseren",
+                  "content": "Je kunt de volgende opties aanbieden:\n\n• Doneer om bomen te planten in een van de Erasmus+-bossen\n• Zoek mogelijkheden om zelf bomen te planten! Misschien kun je zelfs je eigen Erasmus+-bos starten en deel uitmaken van de Greendex-beweging."
+                },
+                "share": {
+                  "title": "Deel je reis op sociale media met #greendex",
+                  "content": "Verspreid het woord over je duurzame reis en inspireer anderen!"
+                }
+              }
+            },
+            "final": {
+              "title": "Eindevaluatie",
+              "steps": {
+                "evaluate": {
+                  "title": "Besteed tijd aan de eindevaluatie",
+                  "content": "We nodigen je uit om op de laatste dag van je mobiliteit een kleine hoeveelheid tijd in je eindevaluatie te reserveren voor een paar groene vragen. Je kunt de volgende vragen stellen:\n\n• Hoe bewust was je van je milieuvriendelijke (of niet-milieuvriendelijke) gewoonten?\n• Heb je iets herkend wat je zou kunnen doen om je gewoonten te veranderen?\n• Heb je deelgenomen aan de voorgestelde uitdagingen?\n• Hoe succesvol was je in je uitdagingen?\n• Is er een uitdaging waarvan je denkt dat je die de rest van je leven zou kunnen doen?\n• Ben je bereid sommige uitdagingen in je leven te integreren?\n• Wat kun je nog meer doen om je koolstofvoetafdruk te verkleinen?\n\nWat je op sociale media kunt plaatsen met #greendex:\n• Aantal te planten bomen\n• Aan welke uitdagingen heb je besloten deel te nemen?\n• Brief voor sociale druk."
+                }
+              }
+            }
+          }
+        }
+      },
+      "links": {
+        "openApp": "Greendex-app openen",
+        "erasmusCalculator": "E+ Afstandscalculator",
+        "googleMaps": "Google Maps",
+        "eForest": "E-Bos",
+        "challengesDescription": "Beschrijving uitdagingen (PDF)",
+        "challengesPresentation": "Presentatie uitdagingen (PDF)",
+        "greendexWebsite": "www.greendex.world"
+      }
+    }
+  },
+  "app": {
+    "appearance": {
+      "title": "Weergave",
+      "description": "Pas het uiterlijk en de bediening van de applicatie aan",
+      "theme": "Thema",
+      "themeDescription": "Kies je favoriete kleurenschema",
+      "themes": {
+        "light": "Licht thema",
+        "dark": "Donker thema",
+        "system": "Systeemthema"
+      }
+    },
+    "sidebar": {
+      "projects": {
+        "groupLabel": "Projectengebied",
+        "projects": "Projecten",
+        "participants": "Deelnemers",
+        "archive": "Archief",
+        "archiveLabel": "Projectarchief",
+        "details": "Projectdetails"
+      },
+      "organization": {
+        "groupLabel": "Organisatiegebied",
+        "dashboard": "Dashboard",
+        "projects": "Projecten",
+        "team": "Teamleden",
+        "settings": "Organisatie",
+        "createproject": "Project aanmaken"
+      },
+      "collapse": "Zijbalk inklappen"
+    },
+    "loading": {
+      "default": "Laden…",
+      "switchingOrganization": "Organisatie wisselen…"
+    },
+    "userSettings": {
+      "title": "Gebruikersinstellingen",
+      "description": "Beheer je persoonlijke voorkeuren en accountinstellingen",
+      "language": {
+        "title": "Taal en regio",
+        "description": "Selecteer je voorkeurstaal en regionale instellingen",
+        "locale": "Taal",
+        "localeDescription": "Kies je voorkeurstaal"
+      }
+    }
+  },
+  "organization": {
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Overzicht van de statistieken, projecten en deelnemers van je organisatie.",
+      "welcome-to-your-organizations-dashboard": "Organisatiebeheer",
+      "total-projects": "Totaal projecten",
+      "total-participants": "Totaal deelnemers",
+      "total-activities": "Totale uitstoot van activiteiten",
+      "coming-soon": "Binnenkort beschikbaar",
+      "tabs": {
+        "participants": "Deelnemers",
+        "projects": "Projecten",
+        "loading-projects": "Projecten laden…",
+        "statistics": "Statistieken",
+        "loading-stats": "De statistieken worden momenteel geladen."
+      }
+    },
+    "projects": {
+      "title": "Alle projecten",
+      "description": "Lijst van alle niet-gearchiveerde projecten van je organisatie.",
+      "error-message": "Er is iets misgegaan.",
+      "table": {
+        "columns": "Kolommen selecteren",
+        "name": "Naam",
+        "country": "Land",
+        "start-date": "Startdatum",
+        "created": "Aangemaakt op",
+        "updated": "Bijgewerkt op",
+        "actions": "Acties",
+        "open-menu": "Menu openen",
+        "view-details": "Details bekijken",
+        "edit-project": "Project bewerken",
+        "delete-project": "Project verwijderen",
+        "batch-delete": "Geselecteerde verwijderen ({count})",
+        "filter-projects": "Projecten filteren…",
+        "active-filters": "Actieve filters",
+        "search-by-name": "Zoeken op projectnaam",
+        "filter-all-countries": "Alle landen",
+        "previous": "Vorige",
+        "next": "Volgende",
+        "rows-per-page": "Rijen per pagina",
+        "projects-count": "Projecten",
+        "showing-range": "{start}-{end} van {total} projecten weergegeven",
+        "no-projects-count": "0 projecten",
+        "no-results": {
+          "title": "Geen projecten gevonden",
+          "description": "Pas je filters of zoekopdracht aan en probeer opnieuw."
+        },
+        "clear-filters": "Filters wissen",
+        "city": "Stad"
+      },
+      "views": {
+        "table": "Tabel",
+        "grid": "Raster"
+      },
+      "sort-label": "Sorteren",
+      "sort-projects": "Projecten sorteren",
+      "no-projects-yet": {
+        "title": "Nog geen projecten",
+        "description": "Projecten helpen je je werk te organiseren en activiteiten bij te houden. Begin met het aanmaken van je eerste project!"
+      },
+      "form": {
+        "edit": {
+          "title": "Project bewerken",
+          "update": "Project bijwerken",
+          "toast": {
+            "success": "Project succesvol bijgewerkt",
+            "error": "Project bijwerken mislukt",
+            "failed-activities": "Verwerken van {count, plural, one {# activiteit} other {# activiteiten}} mislukt: {activities}"
+          },
+          "back": "Terug"
+        },
+        "delete": {
+          "confirm-title": "Weet je het zeker?",
+          "confirm-description": "Hiermee wordt het project \"{name}\" definitief verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+          "confirm-button": "Verwijderen",
+          "cancel-button": "Annuleren",
+          "toast-success": "Project succesvol verwijderd",
+          "toast-error": "Project verwijderen mislukt",
+          "toast-error-generic": "Er is een fout opgetreden bij het verwijderen van het project"
+        },
+        "batch-delete": {
+          "confirm-title": "Geselecteerde projecten verwijderen?",
+          "confirm-description": "Hiermee worden {count} geselecteerde projecten definitief verwijderd: {names}. Deze actie kan niet ongedaan worden gemaakt.",
+          "confirm-button": "Projecten verwijderen",
+          "cancel-button": "Annuleren",
+          "toast-success": "{count} projecten succesvol verwijderd",
+          "toast-error": "Projecten verwijderen mislukt",
+          "toast-error-generic": "Er is een fout opgetreden bij het verwijderen van de projecten"
+        },
+        "archive": {
+          "archive": "Archiveren",
+          "unarchive": "Uit archief halen",
+          "confirm-title": "Dit project archiveren?",
+          "confirm-description": "Hiermee wordt het project \"{name}\" gearchiveerd. Je kunt het later vanuit het archief herstellen.",
+          "unarchive-title": "Dit project herstellen?",
+          "unarchive-description": "Hiermee wordt het project \"{name}\" vanuit het archief hersteld.",
+          "confirm-button": "Project archiveren",
+          "unarchive-button": "Project herstellen",
+          "cancel-button": "Annuleren",
+          "toast-success": "Project succesvol gearchiveerd",
+          "toast-unarchive-success": "Project succesvol hersteld",
+          "toast-error": "Project archiveren mislukt",
+          "toast-error-generic": "Er is een fout opgetreden bij het archiveren van het project"
+        },
+        "new": {
+          "toast": {
+            "success": "Project succesvol aangemaakt",
+            "error": "Project aanmaken mislukt",
+            "error-generic": "Er is een fout opgetreden",
+            "failed-activities": "Aanmaken van {count, plural, one {# activiteit} other {# activiteiten}} mislukt: {activities}"
+          },
+          "submit": {
+            "label": "Nieuw project"
+          },
+          "name": "Projectnaam",
+          "start-date": "Startdatum",
+          "end-date": "Einddatum",
+          "country": "Land",
+          "location": "Locatie (optioneel)",
+          "welcome-message": "Welkomstbericht (optioneel)",
+          "organization": "Organisatie",
+          "select-organization": "Organisatie selecteren",
+          "creating": "Aanmaken…",
+          "create-project": "Project aanmaken",
+          "title": "Een nieuw project aanmaken",
+          "legend": "Maak een nieuw Erasmus+-project aan om de activiteiten van je deelnemers bij te houden en hun CO₂-voetafdruk te berekenen.",
+          "description": "Vul de gegevens in om een nieuw project aan te maken.",
+          "name-description": "Voer de naam van je project in.",
+          "start-date-description": "Selecteer de startdatum van het project.",
+          "end-date-description": "Selecteer de einddatum van het project.",
+          "country-description": "Geef het land op waar het project plaatsvindt.",
+          "location-description": "Optioneel: Geef aanvullende locatiegegevens op.",
+          "welcome-message-description": "Optioneel: Voeg een welkomstbericht toe voor deelnemers.",
+          "organization-description": "Kies de organisatie die eigenaar is van dit project.",
+          "back": "Terug",
+          "country-placeholder": "Selecteer het land"
+        }
+      },
+      "activeProject": {
+        "emptyState": {
+          "title": "Geen actief project",
+          "description": "Selecteer een project om deelnemers te bekijken."
+        },
+        "header": {
+          "contextLabel": "Actief project",
+          "edit": "Bewerken",
+          "delete": "Verwijderen",
+          "deleteDialog": {
+            "title": "Weet je het zeker?",
+            "description": "Hiermee wordt het project \"{name}\" definitief verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+            "confirm": "Verwijderen",
+            "cancel": "Annuleren"
+          },
+          "toast": {
+            "deleteSuccess": "Project succesvol verwijderd",
+            "deleteFailure": "Project verwijderen mislukt",
+            "deleteFailureGeneric": "Er is een fout opgetreden bij het verwijderen van het project"
+          },
+          "noSelection": "Je hebt geen project geselecteerd"
+        },
+        "participation": {
+          "title": "Deelnamelink",
+          "description": "Deel deze link met deelnemers zodat ze het project kunnen bijvoegen en hun reisactiviteiten kunnen indienen.",
+          "qrButtonLabel": "QR-code weergeven",
+          "openLink": "Link openen",
+          "qrError": "QR-code genereren mislukt",
+          "modalTitle": "Deelname QR-code",
+          "modalDescription": "Scan deze QR-code om toegang te krijgen tot de deelnamepagina",
+          "linkLabel": "Deelname-URL",
+          "copyClipboard": "Deelname-URL naar klembord kopiëren",
+          "copySuccess": "Deelnamelink naar klembord gekopieerd!",
+          "copyFailure": "Kopiëren naar klembord mislukt"
+        }
+      },
+      "filter-by-country": "Filteren op land",
+      "rows-selected": "Rij(en) geselecteerd",
+      "noResults": "Geen projecten gevonden"
+    },
+    "userstable": {
+      "name": "Naam",
+      "email": "E-mail",
+      "role": "Rol",
+      "joined": "Lid geworden",
+      "control": {
+        "filter": "Lijst filteren",
+        "clear": "Alle filters wissen"
+      },
+      "loading": "Teamleden laden…",
+      "noResults": "Geen resultaten.",
+      "rowsSelected": "{selected} van {total} rij(en) geselecteerd.",
+      "previous": "Vorige",
+      "next": "Volgende"
+    },
+    "team": {
+      "title": "Teamleden",
+      "description": "Lijst van alle teamleden van je organisatie",
+      "invite": {
+        "button": "Nieuw teamlid",
+        "title": "Een nieuw lid uitnodigen",
+        "description": "Nodig een nieuw teamlid uit voor je organisatie.",
+        "emailLabel": "E-mailadres gebruiker",
+        "emailDescription": "E-mailadres van de persoon die je wilt uitnodigen",
+        "nameLabel": "Volledige naam (optioneel)",
+        "roleLabel": "Rol",
+        "rolePlaceholder": "Rol selecteren",
+        "cancelButton": "Annuleren",
+        "sendingButton": "Verzenden…",
+        "sendButton": "Uitnodiging versturen",
+        "successToast": "Teamlid succesvol uitgenodigd."
+      },
+      "emptyState": {
+        "title": "Geen teamleden gevonden",
+        "description": "Geen teamleden voldoen aan je zoekcriteria. Pas je filters aan of nodig nieuwe teamleden uit voor je organisatie."
+      }
+    },
+    "participants": {
+      "title": "Alle deelnemers",
+      "description": "Lijst van alle projectdeelnemers in je organisatie",
+      "emptyState": {
+        "description": "Pas je filters aan of stuur de \"deelnamelink\" van het project naar verdere deelnemers.",
+        "title": "Geen projectdeelnemers gevonden"
+      }
+    },
+    "projectsArchive": {
+      "title": "Gearchiveerde projecten",
+      "description": "Alle gearchiveerde projecten bekijken en herstellen",
+      "error-message": "Fout bij het laden van gearchiveerde projecten.",
+      "no-archived-projects": {
+        "title": "Geen gearchiveerde projecten",
+        "description": "Je hebt nog geen projecten gearchiveerd. Gearchiveerde projecten verschijnen hier en kunnen op elk moment worden hersteld."
+      },
+      "go-to-projects": "Je actieve projecten"
+    },
+    "settings": {
+      "title": "Organisatie-instellingen",
+      "description": "Dit zijn de gegevens en instellingen van de organisatie."
+    },
+    "roles": {
+      "owner": "Eigenaar",
+      "admin": "Medewerker",
+      "member": "Deelnemer"
+    },
+    "invitation": {
+      "title": "Uitnodiging accepteren",
+      "description": "Je bent uitgenodigd om lid te worden van een organisatie.",
+      "organization": "Organisatie",
+      "role": "Rol",
+      "invitedBy": "Uitgenodigd door",
+      "cancel": {
+        "confirm-title": "Uitnodiging annuleren?",
+        "confirm-description": "Weet je zeker dat je deze uitnodiging wilt annuleren? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm-button": "Uitnodiging annuleren",
+        "cancel-button": "Uitnodiging bewaren"
+      }
+    }
+  },
+  "participation": {
+    "questionnaire": {
+      "header": {
+        "badge": "Greendex 2.0",
+        "title": "Welkom bij Greendex",
+        "subtitle": "CO₂-calculator voor activiteiten van Erasmus+-projecten",
+        "step-counter": "Stap {current} van {total}"
+      },
+      "welcome": {
+        "default-message": "Bereken de koolstofvoetafdruk van jouw deelname aan dit Erasmus+-project.",
+        "ready": "Bereid je voor om je koolstofvoetafdruk te ontdekken! 🌱",
+        "every-choice": "Elke keuze telt op weg naar een groenere toekomst!",
+        "fun-message": "We wensen je veel plezier en een paar 'Aha!'-momenten tijdens je reis met Greendex! 🌳",
+        "start-button": "Greendex starten"
+      },
+      "participant-info": {
+        "title": "Vertel ons voor we beginnen:",
+        "first-name": "Je voornaam",
+        "first-name-placeholder": "Voer je voornaam in",
+        "country": "In welk land woon je?",
+        "country-placeholder": "Voer je land in",
+        "email": "Je e-mailadres",
+        "email-placeholder": "Voer je e-mail in",
+        "required": "*"
+      },
+      "days": {
+        "question": "Hoeveel dagen neem je deel aan het project?",
+        "note": "zonder reisdagen",
+        "placeholder": "Aantal dagen"
+      },
+      "accommodation": {
+        "category-question": "In welk type accommodatie verblijf je?",
+        "occupancy-question": "Hoeveel mensen delen de kamer/tent?",
+        "electricity-question": "Welk type energie gebruikt je accommodatie?",
+        "options": {
+          "camping": "Camping",
+          "hostel": "Hostel",
+          "3star": "Hotel 3★",
+          "4star": "Hotel 4★",
+          "5star": "Hotel 5★",
+          "apartment": "Appartement",
+          "friends": "Vrienden/Familie",
+          "alone": "alleen",
+          "2people": "2 personen",
+          "3people": "3 personen",
+          "4plus": "4+ personen",
+          "green": "groene energie",
+          "conventional": "conventionele energie",
+          "unknown": "kon ik niet achterhalen"
+        }
+      },
+      "food": {
+        "question": "Hoe vaak ben je van plan vlees te eten tijdens het project?",
+        "options": {
+          "never": "nooit",
+          "rarely": "zelden",
+          "sometimes": "soms",
+          "almost-every-day": "bijna elke dag",
+          "every-day": "elke dag"
+        }
+      },
+      "transport": {
+        "flight-question": "Je reis NAAR het project: Hoeveel kilometer heb je gevlogen?",
+        "boat-question": "Je reis NAAR het project: Hoeveel kilometer heb je per boot gereisd?",
+        "train-question": "Je reis NAAR het project: Hoeveel kilometer heb je per trein of metro gereisd?",
+        "bus-question": "Je reis NAAR het project: Hoeveel kilometer heb je per bus/bestelbus gereisd?",
+        "car-question": "Je reis NAAR het project: Hoeveel kilometer heb je per auto gereisd?",
+        "car-type-question": "Welk type auto heb je gebruikt?",
+        "car-passengers-question": "Hoeveel deelnemers (inclusief jijzelf) zaten er in de auto?",
+        "placeholder": "0",
+        "car-type": {
+          "car": "conventioneel (diesel, benzine, gas…)",
+          "electricCar": "elektrisch"
+        }
+      },
+      "demographics": {
+        "age-question": "Hoe oud ben je?",
+        "age-placeholder": "Leeftijd",
+        "gender-question": "Wat is je geslacht?",
+        "gender-options": {
+          "female": "Vrouw",
+          "male": "Man",
+          "other": "Anders / Zeg ik liever niet"
+        }
+      },
+      "navigation": {
+        "back": "Terug",
+        "continue": "Doorgaan",
+        "complete": "Voltooien"
+      },
+      "project-activities": {
+        "title": "Projectactiviteiten",
+        "description": "Dit project bevat georganiseerde activiteiten die bovenop de basisuitstoot komen:",
+        "note": "Deze worden opgenomen in de berekening van jouw persoonlijke projectuitstoot.",
+        "empty": {
+          "title": "Geen projectactiviteiten",
+          "description": "Er zijn geen activiteiten gekoppeld aan dit project."
+        }
+      },
+      "results": {
+        "trees-needed": "Boomjaren (bomen × jaren)",
+        "summary-title": "Samenvatting van je koolstofvoetafdruk",
+        "transport": "Vervoer:",
+        "accommodation": "Accommodatie:",
+        "food": "Voeding:",
+        "project-activities": "Projectactiviteiten:",
+        "total": "Totaal:",
+        "console-note": "Gegevens zijn naar de console gestuurd (controleer de ontwikkelaarstools van de browser)",
+        "co2-footprint": "CO₂-uitstoot"
+      },
+      "impact-modal": {
+        "title": "Jouw impact",
+        "total-co2": "Totaal CO₂",
+        "kg-CO₂": "kg CO₂",
+        "trees-needed": "Benodigde boomjaren",
+        "to-offset": "om te compenseren",
+        "impact": "Impact:",
+        "continue": "Doorgaan",
+        "messages": {
+          "flight-zero": "✅ Geweldig! Niet vliegen houdt je voetafdruk laag!",
+          "flight": "✈️ {km} km vliegen voegt {impact} kg CO₂ aan je voetafdruk toe",
+          "train-zero": "🚆 Geen treinreis deze keer",
+          "train": "🚆 Uitstekende keuze! Treinreizen is milieuvriendelijk (+{impact} kg CO₂)",
+          "bus-zero": "🚌 Geen busreis",
+          "bus": "🚌 Goede keuze voor openbaar vervoer! (+{impact} kg CO₂)",
+          "boat-zero": "⛴️ Geen bootreis",
+          "boat": "⛴️ Bootreis voegt {impact} kg CO₂ toe",
+          "car-zero": "🚗 Geweldig! Niet met de auto reizen houdt de uitstoot laag!",
+          "car": "🚗 Autoreis voegt {impact} kg CO₂ toe",
+          "food-never": "🌱 Geweldig! Een vegetarisch dieet gedurende {days} dagen is planeetvriendelijk! (+{impact} kg CO₂)",
+          "food-rarely": "🥗 Goede keuze! Weinig vlees eten gedurende {days} dagen (+{impact} kg CO₂)",
+          "food-sometimes": "🍖 Matig vleesgebruik gedurende {days} dagen (+{impact} kg CO₂)",
+          "food-almost": "🥩 Hoog vleesgebruik gedurende {days} dagen heeft een aanzienlijke impact (+{impact} kg CO₂)",
+          "food-daily": "🥩 Dagelijks vlees eten gedurende {days} dagen heeft een grote milieu-impact (+{impact} kg CO₂)",
+          "electricity-green": "♻️ Uitstekend! {accommodation} met {energy} gedurende {nights} nachten, {occupancy} houdt de uitstoot laag op {impact} kg CO₂",
+          "electricity-conventional": "🏨 {accommodation} met {energy} gedurende {nights} nachten, {occupancy} voegt {impact} kg CO₂ aan je voetafdruk toe",
+          "car-type-electric": "🔋 Uitstekend! Elektrische auto's stoten 75% minder uit!",
+          "car-type-car": "⛽ Een conventionele auto vergroot je voetafdruk",
+          "car-passengers-solo": "🚗 Overweeg de volgende keer te carpoolen! Ritten delen kan de uitstoot met maar liefst 75% verminderen.",
+          "car-passengers-shared": "👥 Goed gecarpooled! Je vermindert uitstoot door te delen met {count} andere{plural} passagier{plural}.",
+          "default-low": "✅ Deze keuze heeft geen invloed op je CO₂-voetafdruk",
+          "default": "+{impact} kg CO₂ toegevoegd"
+        }
+      }
+    }
+  },
+  "project": {
+    "details": {
+      "title": "Projectdetails",
+      "start-date": "Startdatum",
+      "end-date": "Einddatum",
+      "location": "Locatie",
+      "country": "Land",
+      "welcome-message": "Welkomstbericht",
+      "participants": "Deelnemers",
+      "participants-description": "Deelnemers worden hier weergegeven.",
+      "activities": "Activiteiten",
+      "activities-description": "Projectactiviteiten worden hier weergegeven.",
+      "loading": "Projectdetails laden…",
+      "people-joined": "mensen hebben zich al aangemeld",
+      "no-participants-yet": "Nog geen deelnemers",
+      "share-the-participation-link": "Deel de deelnamelink om mensen uit te nodigen voor dit project.",
+      "tabs": {
+        "details": "Projectdetails",
+        "activities": "Projectactiviteiten",
+        "participants": "Projectdeelnemers"
+      },
+      "statistics": {
+        "participants": "Deelnemers",
+        "activities": "Activiteiten",
+        "total-distance": "Totale afstand",
+        "duration": "Duur",
+        "km": "km",
+        "days": "dagen",
+        "co2-emissions": "Uitstoot"
+      },
+      "errors": {
+        "default-error": "Projectdetails laden mislukt.",
+        "project-not-found": "Het project dat je zoekt bestaat niet.",
+        "project-access-denied": "Je hebt geen toegang tot dit project."
+      },
+      "joined-on": "aangemeld op"
+    },
+    "activities": {
+      "title": "Projectactiviteiten",
+      "description": "Reisactiviteiten bijgehouden voor de berekening van de koolstofvoetafdruk",
+      "empty": {
+        "title": "Nog geen activiteiten",
+        "description": "Dit project heeft geen geregistreerde activiteiten. Voeg activiteiten toe om de koolstofvoetafdruk bij te houden."
+      },
+      "types": {
+        "boat": "Boot",
+        "bus": "Bus",
+        "train": "Trein",
+        "car": "Auto"
+      },
+      "form": {
+        "title": "Activiteit toevoegen",
+        "edit-title": "Activiteit bewerken",
+        "activity-type": "Type activiteit",
+        "activity-type-placeholder": "Type activiteit selecteren",
+        "distance": "Afstand (km)",
+        "distance-placeholder": "Voer afstand in kilometers in",
+        "description": "Beschrijving (optioneel)",
+        "description-placeholder": "Voeg een beschrijving toe voor deze activiteit",
+        "activity-date": "Datum activiteit (optioneel)",
+        "submit": "Activiteit toevoegen",
+        "update": "Activiteit bijwerken",
+        "cancel": "Annuleren",
+        "adding": "Toevoegen…",
+        "updating": "Bijwerken…",
+        "validation": {
+          "distanceKm": {
+            "min": "Afstand moet minimaal {min} km zijn",
+            "max": "Afstand mag niet meer dan {max} km zijn",
+            "step": "Afstand moet in stappen van {step} km worden opgegeven"
+          }
+        }
+      },
+      "delete": {
+        "confirm-title": "Activiteit verwijderen?",
+        "confirm-description": "Hiermee wordt deze activiteit definitief verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm-button": "Verwijderen",
+        "cancel-button": "Annuleren",
+        "deleting": "Verwijderen..."
+      },
+      "toast": {
+        "create-success": "Activiteit succesvol toegevoegd",
+        "create-error": "Activiteit toevoegen mislukt",
+        "update-success": "Activiteit succesvol bijgewerkt",
+        "update-error": "Activiteit bijwerken mislukt",
+        "delete-success": "Activiteit succesvol verwijderd",
+        "delete-error": "Activiteit verwijderen mislukt"
+      },
+      "table": {
+        "type": "Type",
+        "distance": "Afstand",
+        "description": "Beschrijving",
+        "date": "Datum",
+        "actions": "Acties",
+        "edit": "Bewerken",
+        "delete": "Verwijderen",
+        "km": "km"
+      },
+      "error": {
+        "load-failed": "Activiteiten laden mislukt. Probeer het opnieuw."
+      }
+    }
+  },
+  "authentication": {
+    "common": {
+      "emailPlaceholder": "m@voorbeeld.nl",
+      "fullNamePlaceholder": "Jan de Vries",
+      "backToLogin": "Terug naar inloggen",
+      "orContinueWith": "Of ga verder met",
+      "signingUp": "Account aanmaken…",
+      "sending": "Verzenden…",
+      "failedSignIn": "Inloggen mislukt",
+      "failedCreate": "Account aanmaken mislukt",
+      "failedSend": "Versturen van herstel-e-mail mislukt"
+    },
+    "login": {
+      "title": "Welkom terug, Greendexer!",
+      "description": "Log in op je account om door te gaan met je Erasmus+-project",
+      "lastUsed": "Laatst gebruikt",
+      "tabs": {
+        "password": "Wachtwoord",
+        "magicLink": "Magische link"
+      },
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "forgotPassword": "Wachtwoord vergeten?",
+      "loginButton": "Inloggen",
+      "logOut": "Uitloggen",
+      "settings": "Instellingen",
+      "signingIn": "Inloggen…",
+      "sendMagicLink": "Magische link versturen",
+      "verifyEmail": "Bevestig je e-mailadres om door te gaan",
+      "magicLinkSent": "Magische link verstuurd! Controleer je e-mail.",
+      "failedMagicLink": "Versturen van magische link mislukt",
+      "footer": {
+        "noAccount": "Heb je nog geen account?",
+        "signUp": "Registreren"
+      }
+    },
+    "magicLink": {
+      "title": "Inloggen met magische link",
+      "description": "Voer je e-mailadres in en we sturen je een magische link om in te loggen."
+    },
+    "signup": {
+      "title": "Maak je account aan",
+      "description": "Vul het onderstaande formulier in om je account aan te maken",
+      "fullName": "Volledige naam",
+      "email": "E-mail",
+      "emailDescription": "We gebruiken dit om contact met je op te nemen. We delen je e-mail niet met anderen.",
+      "password": "Wachtwoord",
+      "passwordDescription": "Moet minimaal 8 tekens lang zijn.",
+      "confirmPassword": "Wachtwoord bevestigen",
+      "confirmPasswordDescription": "Bevestig je wachtwoord.",
+      "signUpButton": "Account aanmaken",
+      "footer": {
+        "haveAccount": "Heb je al een account?",
+        "signIn": "Inloggen"
+      }
+    },
+    "forgotPassword": {
+      "title": "Wachtwoord vergeten?",
+      "description": "Voer je e-mailadres in en we sturen je een link om je wachtwoord opnieuw in te stellen.",
+      "email": "E-mail",
+      "sendResetLink": "Herstelkoppeling versturen",
+      "resetLinkSent": "Wachtwoordherstelkoppeling verstuurd! Controleer je e-mail."
+    },
+    "resetPassword": {
+      "title": "Wachtwoord opnieuw instellen",
+      "description": "Voer hieronder je nieuwe wachtwoord in om het wachtwoord van je account opnieuw in te stellen.",
+      "newPassword": "Nieuw wachtwoord",
+      "newPasswordDescription": "Moet minimaal 8 tekens lang zijn.",
+      "confirmPassword": "Nieuw wachtwoord bevestigen",
+      "confirmPasswordDescription": "Bevestig je nieuwe wachtwoord.",
+      "resetPasswordButton": "Wachtwoord opnieuw instellen",
+      "resetting": "Opnieuw instellen…",
+      "resetSuccess": "Wachtwoord succesvol opnieuw ingesteld! Log in.",
+      "resetFailed": "Wachtwoord opnieuw instellen mislukt. De link is mogelijk verlopen."
+    },
+    "validation": {
+      "emailInvalid": "Voer een geldig e-mailadres in.",
+      "passwordRequired": "Wachtwoord is verplicht.",
+      "passwordMinLength": "Wachtwoord moet minimaal 8 tekens lang zijn.",
+      "passwordConfirmRequired": "Bevestig je wachtwoord.",
+      "passwordsNoMatch": "Wachtwoorden komen niet overeen.",
+      "fullNameRequired": "Volledige naam is verplicht."
+    },
+    "brand": {
+      "badge": "Greendex Klimaatcalculator",
+      "tagline": "Greendex · Klimaatcalculator",
+      "headline": "Breng transparantie in de reizen van je Erasmus+-project",
+      "description": "Coördineer je team, vier successen en houd de voetafdruk laag zonder te jongleren met spreadsheets.",
+      "values": {
+        "one": "Live dashboards met groene KPI's",
+        "two": "Deel impactverhalen met elk team",
+        "three": "Automatiseer uitnodigen, inspireren en verbeteren"
+      },
+      "heroBadge": "Greendex Live",
+      "heroTitle": "Zie de impactpuls door elk team heen",
+      "heroCaption": "Greendex houdt het klimaatverhaal zichtbaar zodat jij je op het werk kunt richten.",
+      "heroStatOne": "24% snellere impactrapporten",
+      "heroStatTwo": "88% planeetpositieve check-ins"
+    },
+    "verifyEmail": {
+      "emailRequired": {
+        "title": "E-mail vereist",
+        "description": "Er is geen e-mailadres opgegeven. Registreer je of log opnieuw in.",
+        "goToSignUp": "Naar registratie"
+      },
+      "title": "Bevestig je e-mail",
+      "description": "We hebben een bevestigingsmail gestuurd naar",
+      "steps": {
+        "title": "Wat gebeurt er nu?",
+        "checkInbox": "Controleer je inbox op de bevestigingsmail",
+        "clickLink": "Klik op de bevestigingslink in de e-mail",
+        "autoSignIn": "Je wordt automatisch ingelogd en doorgestuurd"
+      },
+      "important": {
+        "label": "Belangrijk:",
+        "text": "Je moet je e-mail bevestigen voordat je kunt inloggen."
+      },
+      "resend": {
+        "sending": "Verzenden…",
+        "button": "Bevestigingsmail opnieuw versturen",
+        "disabled": "Opnieuw versturen over {countdown}s",
+        "footer": "Geen e-mail ontvangen? Controleer je spammap of probeer opnieuw te versturen."
+      },
+      "toast": {
+        "emailRequired": "E-mailadres is verplicht",
+        "waitBeforeResend": "Wacht {countdown} seconden voor opnieuw versturen",
+        "success": "Bevestigingsmail succesvol verstuurd!",
+        "error": "Versturen van bevestigingsmail mislukt"
+      }
+    }
+  }
+}
