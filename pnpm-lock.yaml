@@ -256,8 +256,8 @@ importers:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       nodemailer:
-        specifier: ^7.0.12
-        version: 7.0.13
+        specifier: ^8.0.4
+        version: 8.0.4
       nuqs:
         specifier: ^2.8.6
         version: 2.8.6(next@16.1.6(@babel/core@7.28.6)(@playwright/test@1.58.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
@@ -497,8 +497,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       nodemailer:
-        specifier: ^7.0.12
-        version: 7.0.13
+        specifier: ^8.0.4
+        version: 8.0.4
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -4452,8 +4452,8 @@ packages:
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
 
-  nodemailer@7.0.13:
-    resolution: {integrity: sha512-PNDFSJdP+KFgdsG3ZzMXCgquO7I6McjY2vlqILjtJd0hy8wEvtugS9xKRF2NWlPNGxvLCXlTNIae4serI7dinw==}
+  nodemailer@8.0.4:
+    resolution: {integrity: sha512-k+jf6N8PfQJ0Fe8ZhJlgqU5qJU44Lpvp2yvidH3vp1lPnVQMgi4yEEMPXg5eJS1gFIJTVq1NHBk7Ia9ARdSBdQ==}
     engines: {node: '>=6.0.0'}
 
   npm-to-yarn@3.0.1:
@@ -9169,7 +9169,7 @@ snapshots:
 
   node-releases@2.0.27: {}
 
-  nodemailer@7.0.13: {}
+  nodemailer@8.0.4: {}
 
   npm-to-yarn@3.0.1: {}
 
