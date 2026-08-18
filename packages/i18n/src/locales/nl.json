@@ -422,6 +422,10 @@
         "locale": "Taal",
         "localeDescription": "Kies je voorkeurstaal"
       }
+    },
+    "localeSwitcher": {
+      "searchPlaceholder": "Zoek taal...",
+      "noLanguageFound": "Geen taal gevonden."
     }
   },
   "organization": {

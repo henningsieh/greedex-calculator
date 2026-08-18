@@ -422,6 +422,10 @@
         "locale": "Language",
         "localeDescription": "Choose your preferred language"
       }
+    },
+    "localeSwitcher": {
+      "searchPlaceholder": "Search language...",
+      "noLanguageFound": "No language found."
     }
   },
   "organization": {

@@ -1,18 +1,19 @@
 "use client";
 
-import { useLocale } from "@greendex/i18n/client";
-import { CheckIcon, ChevronDownIcon } from "lucide-react";
-import { useTransition } from "react";
+import { useLocale, useTranslations } from "@greendex/i18n/client";
+import { useMemo, useTransition } from "react";
 
-import type { LanguageCode } from "@/lib/i18n/types";
+import type { LanguageCode, LocaleData } from "@/lib/i18n/types";
 
-import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxTrigger,
+} from "@/components/ui/combobox";
 import { getLocaleData } from "@/lib/i18n/locales";
 import { usePathname, useRouter } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -22,75 +23,74 @@ export function LocaleSwitcher({ className }: { className?: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("app");
 
-  const locales = getLocaleData();
-  const currentLocale = locales.find((entry) => entry.code === locale);
+  const locales = useMemo(() => getLocaleData(), []);
+  const currentLocale = useMemo(
+    () => locales.find((entry) => entry.code === locale),
+    [locales, locale],
+  );
 
-  function handleLocaleChange(newLocale: LanguageCode) {
-    if (newLocale === locale || isPending) {
+  function handleLocaleChange(newLocale: LocaleData | null) {
+    if (!newLocale || newLocale.code === locale || isPending) {
       return;
     }
 
     startTransition(() => {
       router.replace(pathname, {
-        locale: newLocale,
+        locale: newLocale.code as LanguageCode,
       });
     });
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild className="border border-muted">
-        <Button
-          aria-label={`Select language, current: ${currentLocale?.englishName || locale}`}
-          className={cn(
-            "hover:text-accent-accent-foreground gap-2 rounded-full border-none bg-transparent p-1 ring-1 ring-border hover:bg-accent/40 hover:ring-primary",
-            isPending && "opacity-70",
-            className,
-          )}
-          disabled={isPending}
-          size="sm"
-          variant="ghost"
-        >
-          {currentLocale?.Flag && (
-            <currentLocale.Flag className="size-6 rounded-sm border-none" />
-          )}
-          <ChevronDownIcon
-            aria-hidden
-            className={cn("size-4", isPending && "animate-pulse")}
-          />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-60" side="bottom">
-        {locales.map((entry) => (
-          <DropdownMenuItem
-            className="group flex items-center justify-between gap-3"
-            disabled={entry.code === locale}
-            key={entry.code}
-            onSelect={(event) => {
-              event.preventDefault();
-              handleLocaleChange(entry.code);
-            }}
-          >
-            <span className="flex items-center gap-2">
-              {entry.Flag && (
-                <entry.Flag className="h-4 w-6 rounded-sm border border-border/20" />
-              )}
-              <span className="flex flex-col gap-0.5 leading-tight">
-                <span className="text-sm font-semibold">
-                  {entry.englishName} | {entry.code}
-                </span>
-                <span className="text-xs text-muted-foreground group-hover:text-accent-foreground">
-                  {entry.label}
+    <Combobox
+      items={locales}
+      itemToStringValue={(entry: LocaleData) =>
+        `${entry.englishName} ${entry.label} ${entry.code}`
+      }
+      value={currentLocale ?? null}
+      onValueChange={handleLocaleChange}
+    >
+      <ComboboxTrigger
+        aria-label={`Select language, current: ${currentLocale?.englishName || locale}`}
+        className={cn(
+          "hover:text-accent-accent-foreground flex items-center gap-1 rounded-full bg-transparent p-1 ring-1 ring-border hover:bg-accent/40 hover:ring-primary",
+          isPending && "opacity-70",
+          className,
+        )}
+        disabled={isPending}
+      >
+        {currentLocale?.Flag && (
+          <currentLocale.Flag className="size-6 rounded-sm border-none" />
+        )}
+      </ComboboxTrigger>
+      <ComboboxContent align="end" className="w-60">
+        <ComboboxInput
+          placeholder={t("localeSwitcher.searchPlaceholder")}
+          showTrigger={false}
+        />
+        <ComboboxEmpty>{t("localeSwitcher.noLanguageFound")}</ComboboxEmpty>
+        <ComboboxList>
+          {(entry: LocaleData) => (
+            <ComboboxItem key={entry.code} value={entry}>
+              <span className="flex items-center gap-2">
+                {entry.Flag && (
+                  <entry.Flag className="h-4 w-6 rounded-sm border border-border/20" />
+                )}
+                <span className="flex flex-col gap-0.5 leading-tight">
+                  <span className="text-sm font-semibold">
+                    {entry.englishName} | {entry.code}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {entry.label}
+                  </span>
                 </span>
               </span>
-            </span>
-            {locale === entry.code && (
-              <CheckIcon aria-hidden className="size-4 text-primary" />
-            )}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
   );
 }

@@ -422,6 +422,10 @@
         "locale": "Jezik",
         "localeDescription": "Izberite želeni jezik"
       }
+    },
+    "localeSwitcher": {
+      "searchPlaceholder": "Išči jezik...",
+      "noLanguageFound": "Noben jezik ni bil najden."
     }
   },
   "organization": {
