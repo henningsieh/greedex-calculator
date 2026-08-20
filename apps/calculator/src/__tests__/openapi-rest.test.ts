@@ -574,22 +574,29 @@ describe("API Documentation UI", () => {
       throw new Error("Server not available");
     }
 
-    // Check that the aria-label is added after JavaScript loads
+    // Verify the docs page is available and the Scalar UI actually renders.
+    // Uses stable markers from the plugin's own HTML template (#app[data-config],
+    // the <main> landmark Scalar mounts, and the page title) instead of a
+    // Scalar-internal aria-label, which changes between Scalar versions.
     const browser = await chromium.launch({
       headless: process.env.HEADED !== "true",
     });
     try {
       const page = await browser.newPage();
-      const OpenAPIDocumentationString =
-        "Open API Documentation for Greedex Calculator API";
-      await page.goto(docsUrl);
-      await page.waitForSelector(
-        `main[aria-label="${OpenAPIDocumentationString}"]`,
-      );
-      const element = page.locator(
-        `main[aria-label="${OpenAPIDocumentationString}"]`,
-      );
-      expect(await element.isVisible()).toBe(true);
+      await page.goto(docsUrl, { timeout: 10_000 });
+      await page.waitForSelector("div#app[data-config]", {
+        timeout: 10_000,
+      });
+      // Scalar mounts its UI once the bundle executes
+      await page.waitForSelector("main", { timeout: 10_000 });
+      // The docs heading shows the API title from specGenerateOptions.info.title
+      await page.waitForSelector("h1.section-header-label", {
+        timeout: 10_000,
+      });
+      expect(
+        await page.locator("h1.section-header-label").textContent(),
+      ).toContain("Greedex Calculator API");
+      expect(await page.title()).toContain("API Reference");
     } finally {
       await browser.close();
     }
