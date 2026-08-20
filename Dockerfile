@@ -74,4 +74,6 @@ FROM base AS runner
 COPY --from=builder /app /app
 WORKDIR /app
 EXPOSE 3000 3001 4000
+HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=3 \
+  CMD curl -fs http://localhost:3000/api/rpc/health || exit 1
 CMD ["pnpm", "run", "start"]
