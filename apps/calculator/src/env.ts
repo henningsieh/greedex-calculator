@@ -73,9 +73,11 @@ export const env = createEnv({
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.url(),
+    NEXT_PUBLIC_SOCKET_URL: z.url(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+    NEXT_PUBLIC_SOCKET_URL: process.env.NEXT_PUBLIC_SOCKET_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
