@@ -16,7 +16,7 @@
   "dependencies": {
     "@greendex/database": "workspace:*",
     "@greendex/email": "workspace:*",
-    "better-auth": "^1.4.18"
+    "better-auth": "^1.6.22"
   },
   "devDependencies": {
     "oxfmt": "^0.26.0",
