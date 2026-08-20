@@ -1,24 +1,11 @@
-import { config } from "dotenv";
-import { existsSync } from "node:fs";
 import { createServer } from "node:http";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
 import { Server } from "socket.io";
 
-// Load environment variables from monorepo root BEFORE importing env.ts
-// In Turborepo, the .env file is at the repository root, not in apps/calculator
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const envPath = resolve(__dirname, "../../../.env");
-
-if (!existsSync(envPath)) {
-  console.error(`❌ .env file not found at: ${envPath}`);
-  process.exit(1);
-}
-
-config({ path: envPath });
-
-// Import env AFTER dotenv is configured (dynamic import to avoid hoisting)
+// Environment variables are injected into the process by the environment:
+// - locally, the dev/start scripts load the monorepo root `.env` via dotenv-cli;
+// - on Coolify, the platform injects them into the container.
+// This module never touches .env files itself — it reads the validated process
+// environment through the shared `@/env` module.
 const { env } = await import("@/env");
 
 const socketPort = env.SOCKET_PORT;
