@@ -1,5 +1,5 @@
 import { ACTIVITY_EMISSION_FACTORS } from "@greendex/config/activities";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import type { ProjectParticipantWithUser } from "@/features/participants/types";
 
@@ -89,19 +89,33 @@ describe("getProjectStatistics", () => {
       { activityType: "bus", distanceKm: -5 },
     ];
 
-    const stats = getProjectStatistics(project, participants, activities as any);
+    const errorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
 
-    expect(stats.participantsCount).toBe(3);
-    expect(stats.activitiesCount).toBe(4);
-    // total distance sums numeric positive distances regardless of activity type
-    // 10 + 20.5 + 15 = 45.5 (bus negative value ignored)
-    expect(stats.totalDistanceKm).toBeCloseTo(45.5);
-    expect(stats.durationDays).toBe(4);
+    try {
+      const stats = getProjectStatistics(
+        project,
+        participants,
+        activities as any,
+      );
 
-    // CO2: car 10 * carFactor + train 20.5 * trainFactor (unknown ignored, negative ignored)
-    const expectedCO2 =
-      10 * ACTIVITY_EMISSION_FACTORS.car + 20.5 * ACTIVITY_EMISSION_FACTORS.train;
-    expect(stats.activitiesCO2Kg).toBeCloseTo(expectedCO2);
+      expect(stats.participantsCount).toBe(3);
+      expect(stats.activitiesCount).toBe(4);
+      // total distance sums numeric positive distances regardless of activity type
+      // 10 + 20.5 + 15 = 45.5 (bus negative value ignored)
+      expect(stats.totalDistanceKm).toBeCloseTo(45.5);
+      expect(stats.durationDays).toBe(4);
+
+      // CO2: car 10 * carFactor + train 20.5 * trainFactor (unknown ignored, negative ignored)
+      const expectedCO2 =
+        10 * ACTIVITY_EMISSION_FACTORS.car +
+        20.5 * ACTIVITY_EMISSION_FACTORS.train;
+      expect(stats.activitiesCO2Kg).toBeCloseTo(expectedCO2);
+      expect(errorSpy).toHaveBeenCalledWith("Unknown activity type: unknown");
+    } finally {
+      errorSpy.mockRestore();
+    }
   });
 
   it("handles missing or empty inputs safely", () => {
