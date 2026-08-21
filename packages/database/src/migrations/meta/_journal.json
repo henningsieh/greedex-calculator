@@ -64,6 +64,13 @@
       "when": 1766738719520,
       "tag": "0008_stormy_mister_sinister",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1787306088681,
+      "tag": "0009_abandoned_black_panther",
+      "breakpoints": true
     }
   ]
 }
