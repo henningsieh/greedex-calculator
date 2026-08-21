@@ -2,6 +2,8 @@ import "./globals.css"; // Global CSS import
 import "@/lib/orpc/client.server"; // Initialize server-side oRPC client for pre-rendering
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/json-ld";
+
 import {
   ANDROID_PACKAGE,
   APP_NAME,
@@ -80,7 +82,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // The actual HTML structure is in [locale]/layout.tsx
-  // This root layout just passes through to support the routing structure
-  return children;
+  return (
+    <html suppressHydrationWarning>
+      <body className="antialiased">
+        <JsonLd />
+        {children}
+      </body>
+    </html>
+  );
 }

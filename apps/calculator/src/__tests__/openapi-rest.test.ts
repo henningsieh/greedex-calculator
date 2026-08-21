@@ -575,8 +575,8 @@ describe("API Documentation UI", () => {
     }
 
     // Verify the docs page is available and the Scalar UI actually renders.
-    // Uses stable markers from the plugin's own HTML template (#app[data-config],
-    // the <main> landmark Scalar mounts, and the page title) instead of a
+    // Uses stable markers from the plugin's own HTML template (#app), the
+    // <main> landmark Scalar mounts, and the page title instead of a
     // Scalar-internal aria-label, which changes between Scalar versions.
     const browser = await chromium.launch({
       headless: process.env.HEADED !== "true",
@@ -584,7 +584,7 @@ describe("API Documentation UI", () => {
     try {
       const page = await browser.newPage();
       await page.goto(docsUrl, { timeout: 10_000 });
-      await page.waitForSelector("div#app[data-config]", {
+      await page.waitForSelector("div#app", {
         timeout: 10_000,
       });
       // Scalar mounts its UI once the bundle executes

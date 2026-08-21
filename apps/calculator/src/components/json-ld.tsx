@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 import {
   APP_NAME,
   BASE_URL,
@@ -51,11 +53,12 @@ const jsonLd = {
  */
 export function JsonLd() {
   return (
-    <script
+    <Script
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(jsonLd),
       }}
       id="json-ld"
+      strategy="beforeInteractive"
       type="application/ld+json"
     />
   );
