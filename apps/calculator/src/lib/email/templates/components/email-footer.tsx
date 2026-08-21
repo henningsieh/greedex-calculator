@@ -1,4 +1,4 @@
-import { Hr, Section, Text } from "@react-email/components";
+import { Hr, Section, Text } from "react-email";
 
 import { emailColors, emailSpacing } from "../../config/styles";
 
