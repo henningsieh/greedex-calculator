@@ -285,9 +285,6 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
-      '@better-auth/utils':
-        specifier: 0.4.2
-        version: 0.4.2
       '@noble/hashes':
         specifier: ^2.3.0
         version: 2.3.0
