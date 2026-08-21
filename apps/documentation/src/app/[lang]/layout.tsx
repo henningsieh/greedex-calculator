@@ -10,8 +10,9 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const { provider } = defineI18nUI(i18n, {
-  translations: SUPPORTED_LANGUAGES.reduce(
+const { provider } = defineI18nUI(
+  i18n,
+  SUPPORTED_LANGUAGES.reduce(
     (acc, locale) => {
       acc[locale.code] = {
         displayName: locale.label,
@@ -24,7 +25,7 @@ const { provider } = defineI18nUI(i18n, {
       }>;
     },
   ),
-});
+);
 
 // export default function Layout({ children }: LayoutProps<"">) {
 export default async function RootLayout({

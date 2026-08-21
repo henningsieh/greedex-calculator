@@ -10,18 +10,13 @@ export default async function Layout({
   children,
 }: LayoutProps<"/[lang]/docs">) {
   const { lang } = await params;
+  const options = baseOptions();
 
-  const options = baseOptions(lang);
   return (
     <DocsLayout
       {...options}
       tree={source.getPageTree(lang)}
-      // Option 1: Add language toggle to sidebar footer (replaces default)
-      i18n={true}
-      // sidebar={{
-      //   footer: <LanguageToggle />,
-      // }}
-      // Option 2: Add language toggle to navbar (inline version)
+      i18n={false}
       nav={{
         ...options.nav, // ✅ Keeps existing nav config (title, links, etc.)
         children: <LanguageToggleInline />,
