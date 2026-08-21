@@ -14,7 +14,7 @@
     "clean": "rm -rf node_modules .turbo"
   },
   "dependencies": {
-    "lucide-react": "0.563.0"
+    "lucide-react": "1.33.0"
   },
   "devDependencies": {
     "@types/node": "26.2.0",
