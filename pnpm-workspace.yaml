@@ -2,8 +2,21 @@ packages:
   - apps/*
   - packages/*
 
+catalog:
+  react: 19.2.8
+  react-dom: 19.2.8
+  react-email: 6.9.2
+  next: 16.3.1
+  next-intl: 4.13.7
+  typescript: 5.9.3
+  "@types/react": 19.2.18
+  "@types/react-dom": 19.2.4
+
 hoistPattern:
   - typescript
+  - react
+  - drizzle-orm
+  - pg
 
 onlyBuiltDependencies:
   - "@parcel/watcher"
