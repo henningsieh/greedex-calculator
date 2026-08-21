@@ -14,8 +14,8 @@
     "clean": "rm -rf node_modules .turbo"
   },
   "dependencies": {
-    "react-email": "catalog:",
-    "nodemailer": "^7.0.12"
+    "nodemailer": "^9.0.5",
+    "react-email": "catalog:"
   },
   "devDependencies": {
     "@types/nodemailer": "^8.0.1",
