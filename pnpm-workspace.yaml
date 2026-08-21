@@ -2,6 +2,9 @@ packages:
   - apps/*
   - packages/*
 
+linkWorkspacePackages: true
+networkConcurrency: 16
+
 catalog:
   react: 19.2.8
   react-dom: 19.2.8
