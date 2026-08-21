@@ -438,7 +438,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                     return (
                       <TableHead
                         className={
-                          "h-12 px-3 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:px-2"
+                          "h-12 px-3 text-left align-middle font-medium text-muted-foreground has-[[role=checkbox]]:px-2"
                         }
                         key={header.id}
                       >
