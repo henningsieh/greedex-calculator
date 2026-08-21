@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "fumadocs-mdx && next build",
     "build:cloudenv": "SKIP_ENV_VALIDATION=true next build",
     "dev": "PORT=3001 next dev",
     "start": "next start --port 3001",
