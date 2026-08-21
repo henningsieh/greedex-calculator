@@ -18,11 +18,13 @@
     "@greendex/config": "workspace:*"
   },
   "devDependencies": {
+    "next": "catalog:",
+    "next-intl": "catalog:",
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0"
   },
   "peerDependencies": {
-    "next": "^16.0.0",
-    "next-intl": "^4.0.0"
+    "next": "catalog:",
+    "next-intl": "catalog:"
   }
 }
