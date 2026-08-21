@@ -20,6 +20,9 @@ docs/greendex-clickdummy/
 .next/
 /out/
 
+# next-agents-md
+.next-docs/
+
 # production
 /build
 

@@ -261,9 +261,20 @@ Client: `apps/calculator/src/lib/better-auth/auth-client.ts`
 
 A POC for **Socket.IO** is implemented in `apps/calculator/src/socket-server.ts` (decoupled from the Next.js server):
 
-- Run both servers in dev with `pnpm run dev` from `apps/calculator/` (starts Next.js on 3000 and Socket.IO on 4000)
-- Use `pnpm run dev:inspect` to run an inspect/dev instance on `3001` and a socket server on `4001` (helps avoid port collisions while debugging)
-- Production requires `pnpm turbo run build` then `pnpm --filter @greendex/calculator start` (both Next.js and Socket.IO will be launched)
+- Run both servers in dev with `pnpm run dev` from `apps/calculator/` — starts Next.js (calculator UI) on `3000`, the documentation app on `3001`, and Socket.IO on `4000`.
+- Production requires `pnpm turbo run build` then `pnpm --filter @greendex/calculator start` (both Next.js and Socket.IO will be launched).
+
+### Debugging with `dev:inspect` / `dev:inspect-brk`
+
+These scripts are **memory / debugger inspection sandboxes**, not a second documentation instance. They were introduced (commit `b723740`) to reproduce and fix a **server-side memory leak** in the Socket.IO server that could crash the container after ~1 hour at ~2 GB heap.
+
+- `pnpm run dev:inspect` runs an **isolated copy** of the calculator UI + socket server on spare ports so you can inspect the server's behavior without colliding with the main dev stack:
+  - calculator web UI on **`3010`** (uses a separate `.next-inspect` build dir to avoid lock conflicts)
+  - its dedicated Socket.IO server on **`4001`**
+- `pnpm run dev:inspect-brk` is the **"break on start"** variant: the process pauses at launch so you can attach a debugger before execution begins (useful for catching memory growth from the very start).
+- In dev mode the socket server logs `RSS` and `Heap` usage every 60 s, which makes the memory growth visible while inspecting.
+
+> Note: the inspect instance runs on **3010**, not 3001 — port 3001 belongs to the documentation app.
 
 To add real-time features (e.g., live team updates), attach Socket.IO event handlers in `apps/calculator/src/socket-server.ts` and import the client in your React components.
 
