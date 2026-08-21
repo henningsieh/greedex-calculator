@@ -1,6 +1,17 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
+import {
+  columnFilteringFeature,
+  type ColumnDef,
+  columnVisibilityFeature,
+  createFilteredRowModel,
+  createPaginatedRowModel,
+  createSortedRowModel,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  tableFeatures,
+} from "@tanstack/react-table";
 
 import { useFormatter, useTranslations } from "@greendex/i18n/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -41,6 +52,17 @@ import {
   EditProjectFormSkeleton,
 } from "@/features/projects/components/edit-project-form";
 import { SortableHeader } from "@/features/projects/components/sortable-header";
+
+export const projectsTableFeatures = tableFeatures({
+  columnFilteringFeature,
+  columnVisibilityFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  filteredRowModel: createFilteredRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  sortedRowModel: createSortedRowModel(),
+});
 import {
   getColumnDisplayName,
   getProjectDetailPath,
@@ -81,7 +103,7 @@ function DateCell({ date }: { date: Date }) {
 export function ProjectTableColumns(
   t: (key: string) => string,
   locale: string,
-): ColumnDef<ProjectType>[] {
+): ColumnDef<typeof projectsTableFeatures, ProjectType>[] {
   return [
     {
       id: "select",
@@ -115,7 +137,7 @@ export function ProjectTableColumns(
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
-          table={table}
+          sorting={table.store.state.sorting}
           title={getColumnDisplayName(column.id, t)}
           buttonVariant="secondaryghost"
         />
@@ -129,7 +151,7 @@ export function ProjectTableColumns(
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
-          table={table}
+          sorting={table.store.state.sorting}
           title={getColumnDisplayName(column.id, t)}
           buttonVariant="secondaryghost"
         />
@@ -141,7 +163,7 @@ export function ProjectTableColumns(
           showFlag={true}
         />
       ),
-      sortingFn: (rowA, rowB, _columnId) => {
+      sortFn: (rowA, rowB, _columnId) => {
         const countryA = rowA.original.country;
         const countryB = rowB.original.country;
         const nameA = getCountryData(countryA, locale)?.name || countryA;
@@ -154,7 +176,7 @@ export function ProjectTableColumns(
       header: ({ column, table }) => (
         <SortableHeader
           column={column}
-          table={table}
+          sorting={table.store.state.sorting}
           title={getColumnDisplayName(column.id, t)}
           buttonVariant="secondaryghost"
         />
@@ -162,7 +184,7 @@ export function ProjectTableColumns(
       cell: ({ row }) => (
         <div className="font-medium">{row.getValue("location")}</div>
       ),
-      sortingFn: (rowA, rowB, _columnId) => {
+      sortFn: (rowA, rowB, _columnId) => {
         const locationA = rowA.original.location;
         const locationB = rowB.original.location;
         return locationA.localeCompare(locationB);
@@ -174,7 +196,7 @@ export function ProjectTableColumns(
         <SortableHeader
           column={column}
           isNumeric
-          table={table}
+          sorting={table.store.state.sorting}
           title={getColumnDisplayName(column.id, t)}
           buttonVariant="secondaryghost"
         />
@@ -183,7 +205,7 @@ export function ProjectTableColumns(
         const date = row.getValue("startDate") as Date;
         return <DateCell date={date} />;
       },
-      sortingFn: (rowA, rowB, columnId) => {
+      sortFn: (rowA, rowB, columnId) => {
         const dateA = new Date(rowA.getValue(columnId));
         const dateB = new Date(rowB.getValue(columnId));
         return dateA.getTime() - dateB.getTime();
@@ -196,7 +218,7 @@ export function ProjectTableColumns(
         <SortableHeader
           column={column}
           isNumeric
-          table={table}
+          sorting={table.store.state.sorting}
           title={getColumnDisplayName(column.id, t)}
           buttonVariant="secondaryghost"
         />
@@ -205,7 +227,7 @@ export function ProjectTableColumns(
         const date = row.getValue("createdAt") as Date;
         return <DateCell date={date} />;
       },
-      sortingFn: (rowA, rowB, columnId) => {
+      sortFn: (rowA, rowB, columnId) => {
         const dateA = new Date(rowA.getValue(columnId));
         const dateB = new Date(rowB.getValue(columnId));
         return dateA.getTime() - dateB.getTime();
@@ -219,7 +241,7 @@ export function ProjectTableColumns(
           // className="justify-end w-full text-right bg-red-600"
           column={column}
           isNumeric
-          table={table}
+          sorting={table.store.state.sorting}
           title={getColumnDisplayName(column.id, t)}
           buttonVariant="secondaryghost"
         />
@@ -228,7 +250,7 @@ export function ProjectTableColumns(
         const date = row.getValue("updatedAt") as Date;
         return <DateCell date={date} />;
       },
-      sortingFn: (rowA, rowB, columnId) => {
+      sortFn: (rowA, rowB, columnId) => {
         const dateA = new Date(rowA.getValue(columnId));
         const dateB = new Date(rowB.getValue(columnId));
         return dateA.getTime() - dateB.getTime();

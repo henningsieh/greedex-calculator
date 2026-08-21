@@ -1,4 +1,4 @@
-import type { Column, Table } from "@tanstack/react-table";
+import type { SortingState } from "@tanstack/react-table";
 import type { VariantProps } from "class-variance-authority";
 
 import {
@@ -12,9 +12,15 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface SortableHeaderProps<TData, TValue> {
-  column: Column<TData, TValue>;
-  table: Table<TData>;
+interface SortableColumn {
+  id: string;
+  getIsSorted: () => "asc" | "desc" | false;
+  toggleSorting: (desc: boolean) => void;
+}
+
+interface SortableHeaderProps {
+  column: SortableColumn;
+  sorting: SortingState;
   title: string;
   isNumeric?: boolean;
   className?: string;
@@ -51,16 +57,15 @@ const getSortIcon = (state: "asc" | "desc" | false, numeric: boolean) => {
  * @param className - Optional additional CSS classes applied to the header button.
  * @returns A button element that shows the header title and appropriate sort icon and toggles the column's sort state when clicked.
  */
-export function SortableHeader<TData, TValue>({
+export function SortableHeader({
   column,
-  table,
+  sorting,
   title,
   isNumeric = false,
   className,
   buttonVariant,
-}: SortableHeaderProps<TData, TValue>) {
+}: SortableHeaderProps) {
   // Get the current sorting state for this column
-  const sorting = table.getState().sorting;
   const currentSort = sorting.find((sort) => sort.id === column.id);
   let sortState: "asc" | "desc" | false = false;
   if (currentSort) {
