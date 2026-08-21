@@ -1,4 +1,4 @@
-import { render } from "@react-email/components";
+import { render } from "react-email";
 
 import { sendEmail } from "@/lib/email/nodemailer";
 import { EmailVerification } from "@/lib/email/templates/email-verification";

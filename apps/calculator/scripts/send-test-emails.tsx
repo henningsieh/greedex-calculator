@@ -1,4 +1,4 @@
-import { render } from "@react-email/components";
+import { render } from "react-email";
 import nodemailer from "nodemailer";
 
 import { EmailVerification } from "../src/lib/email/templates/email-verification";

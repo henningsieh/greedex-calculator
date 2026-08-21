@@ -6,6 +6,7 @@ import { asc, desc, type SQL, sql } from "drizzle-orm";
 import React from "react";
 
 import type { ProjectActivityType } from "@/features/project-activities/types";
+import type { ProjectParticipantWithUser } from "@/features/participants/types";
 import type {
   ListProjectsInput,
   ProjectStatistics,
@@ -209,7 +210,7 @@ export function getProjectStatistics(
     | { startDate?: string | Date; endDate?: string | Date }
     | null
     | undefined,
-  participants?: Array<unknown> | null,
+  participants?: ProjectParticipantWithUser[] | null,
   activities?: ProjectActivityType[] | null,
 ): ProjectStatistics {
   const participantsCount = participants?.length ?? 0;

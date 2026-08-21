@@ -13,10 +13,13 @@
     "type-check": "tsc --noEmit",
     "clean": "rm -rf node_modules .turbo"
   },
+  "dependencies": {
+    "lucide-react": "1.33.0"
+  },
   "devDependencies": {
-    "@types/node": "25.1.0",
-    "next": "16.1.6",
-    "oxfmt": "^0.26.0",
-    "oxlint": "^1.41.0"
+    "@types/node": "26.2.0",
+    "next": "catalog:",
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0"
   }
 }

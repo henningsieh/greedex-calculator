@@ -12,14 +12,10 @@ import {
 } from "@tanstack/react-query";
 import {
   type ColumnFiltersState,
+  type ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   type SortingState,
-  useReactTable,
-  type VisibilityState,
+  useTable,
 } from "@tanstack/react-table";
 import {
   ChevronLeftIcon,
@@ -74,7 +70,10 @@ import {
 } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { MEMBER_ROLES } from "@/features/organizations/types";
-import { ProjectTableColumns } from "@/features/projects/components/dashboard/projects-table-columns";
+import {
+  ProjectTableColumns,
+  projectsTableFeatures,
+} from "@/features/projects/components/dashboard/projects-table-columns";
 import {
   getProjectDetailPath,
   getProjectsDefaultSorting,
@@ -121,14 +120,16 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
     getProjectsDefaultSorting(),
   );
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    name: true,
-    country: true,
-    location: true,
-    startDate: true,
-    createdAt: true,
-    updatedAt: false,
-  });
+  const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>(
+    {
+      name: true,
+      country: true,
+      location: true,
+      startDate: true,
+      createdAt: true,
+      updatedAt: false,
+    },
+  );
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState<{
     pageIndex: number;
@@ -159,15 +160,12 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
     });
   };
 
-  const table = useReactTable({
+  const table = useTable({
+    features: projectsTableFeatures,
     data: projects,
     columns: projectTableColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onPaginationChange: handlePaginationChange,
@@ -233,7 +231,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
   // Generate page numbers for pagination
   const getPageNumbers = () => {
     const totalPages = table.getPageCount();
-    const currentPage = table.getState().pagination.pageIndex;
+    const currentPage = table.state.pagination.pageIndex;
     const pages: (number | "ellipsis")[] = [];
 
     if (totalPages <= 7) {
@@ -440,7 +438,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                     return (
                       <TableHead
                         className={
-                          "h-12 px-3 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:px-2"
+                          "h-12 px-3 text-left align-middle font-medium text-muted-foreground has-[[role=checkbox]]:px-2"
                         }
                         key={header.id}
                       >
@@ -538,7 +536,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
               const selectedCount =
                 table.getFilteredSelectedRowModel().rows.length;
               const totalCount = table.getFilteredRowModel().rows.length;
-              const { pageIndex, pageSize } = table.getState().pagination;
+              const { pageIndex, pageSize } = table.state.pagination;
 
               if (selectedCount > 0) {
                 return (
@@ -632,13 +630,13 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
                     ) : (
                       <button
                         aria-current={
-                          page === table.getState().pagination.pageIndex
+                          page === table.state.pagination.pageIndex
                             ? "page"
                             : undefined
                         }
                         className={buttonVariants({
                           variant:
-                            page === table.getState().pagination.pageIndex
+                            page === table.state.pagination.pageIndex
                               ? "secondaryoutline"
                               : "secondaryghost",
                           size: "icon",

@@ -10,7 +10,7 @@
  * Uses its own DB pool and will exit the process when finished. For local/dev use only — do not run in production.
  */
 
-import { hex } from "@better-auth/utils/hex";
+import { Buffer } from "node:buffer";
 import { projectActivitiesTable, projectsTable } from "@greendex/database/schema";
 import * as schema from "@greendex/database/schema";
 import { account, member, organization, user } from "@greendex/database/schema";
@@ -81,14 +81,16 @@ const LOCATIONS = [
 ] as const;
 
 async function hashPassword(password: string): Promise<string> {
-  const salt = hex.encode(crypto.getRandomValues(new Uint8Array(16)));
+  const salt = Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString(
+    "hex",
+  );
   const key = await scryptAsync(password.normalize("NFKC"), salt, {
     N: 16_384,
     r: 16,
     p: 1,
     dkLen: 64,
   });
-  return `${salt}:${hex.encode(key)}`;
+  return `${salt}:${Buffer.from(key).toString("hex")}`;
 }
 
 function getRandomElement<T>(array: readonly T[] | T[]): T {
@@ -154,6 +156,7 @@ async function seed() {
     await db.insert(account).values({
       id: createId(),
       userId,
+      issuer: "local:credential",
       accountId: userId,
       providerId: "credential",
       accessToken: null,

@@ -1,6 +1,6 @@
 "use client";
 
-import createGlobe from "cobe";
+import createGlobe, { type COBEOptions } from "cobe";
 import { useTheme } from "next-themes";
 import { useEffect, useRef } from "react";
 
@@ -21,7 +21,7 @@ export interface GlobeProps {
   markerColor?: [number, number, number];
   glowColor?: [number, number, number];
   markers?: { location: [number, number]; size: number }[];
-  onRender?: ((state: Record<string, any>) => void) | null;
+  onRender?: ((state: Partial<COBEOptions>) => void) | null;
 }
 
 /**
@@ -111,13 +111,24 @@ export function Globe({
       markers: cityMarkers,
     } as Parameters<typeof createGlobe>[1];
 
+    const globe = createGlobe(canvasRef.current, globeConfig);
+    let animationFrame: number | undefined;
+
     if (onRender) {
-      globeConfig.onRender = onRender;
+      const render = () => {
+        const state: Partial<COBEOptions> = {};
+        onRender(state);
+        globe.update(state);
+        animationFrame = requestAnimationFrame(render);
+      };
+
+      animationFrame = requestAnimationFrame(render);
     }
 
-    const globe = createGlobe(canvasRef.current, globeConfig);
-
     return () => {
+      if (animationFrame !== undefined) {
+        cancelAnimationFrame(animationFrame);
+      }
       globe.destroy();
     };
   }, [

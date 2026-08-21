@@ -44,14 +44,14 @@
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   // "typescript.experimental.useTsgo": false,
-  "typescript.format.enable": true,
-  "typescript.preferences.autoImportFileExcludePatterns": [
+  "js/ts.format.enable": true,
+  "js/ts.preferences.autoImportFileExcludePatterns": [
     "**/node_modules/@radix-ui/**",
     "**/node_modules/lucide-react/dist/esm/icons/*[^Icon].js"
   ],
-  "typescript.preferences.importModuleSpecifier": "non-relative",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.updateImportsOnFileMove.enabled": "always",
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "js/ts.tsdk": "node_modules/typescript/lib",
+  "js/ts.updateImportsOnFileMove.enabled": "always",
 
   // ============================================================================
   // TAILWIND CSS SETTINGS
@@ -117,6 +117,7 @@
   "search.exclude": {
     "**/node_modules/@radix-ui": true
   },
-  "typescript.tsserver.enableTracing": true,
-  "typescript.tsserver.experimental.enableProjectDiagnostics": true
+  "js/ts.tsserver.tracing.enabled": true,
+  "js/ts.tsserver.experimental.enableProjectDiagnostics": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }

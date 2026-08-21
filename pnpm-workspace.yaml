@@ -2,8 +2,25 @@ packages:
   - apps/*
   - packages/*
 
+linkWorkspacePackages: true
+networkConcurrency: 16
+
+catalog:
+  react: 19.2.8
+  react-dom: 19.2.8
+  react-email: 6.9.2
+  next: 16.3.2
+  next-intl: 4.13.7
+  better-auth: 1.7.1
+  typescript: 7.0.2
+  "@types/react": 19.2.18
+  "@types/react-dom": 19.2.4
+
 hoistPattern:
   - typescript
+  - react
+  - drizzle-orm
+  - pg
 
 onlyBuiltDependencies:
   - "@parcel/watcher"

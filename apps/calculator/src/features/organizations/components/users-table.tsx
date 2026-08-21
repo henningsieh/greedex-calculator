@@ -6,14 +6,19 @@ import { DEFAULT_PAGE_SIZE } from "@greendex/config/pagination";
 import { useLocale, useTranslations } from "@greendex/i18n/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
+  columnFilteringFeature,
+  columnVisibilityFeature,
   type ColumnDef,
+  createFilteredRowModel,
+  createPaginatedRowModel,
+  createSortedRowModel,
   flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
   type SortingState,
-  useReactTable,
+  tableFeatures,
+  useTable,
 } from "@tanstack/react-table";
 import { FilterXIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -50,6 +55,17 @@ import { SortableHeader } from "@/features/projects/components/sortable-header";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
 import { InviteEmployeeDialog } from "./invite-employee-dialog";
+
+const usersTableFeatures = tableFeatures({
+  columnFilteringFeature,
+  columnVisibilityFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  filteredRowModel: createFilteredRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  sortedRowModel: createSortedRowModel(),
+});
 
 interface TeamTableProps {
   organizationId: string;
@@ -119,7 +135,7 @@ export function UsersTable({
 
   type MemberWithUser = z.infer<typeof MemberWithUserSchema>;
 
-  const columns = useMemo<ColumnDef<MemberWithUser, string | Date | undefined>[]>(
+  const columns = useMemo<ColumnDef<typeof usersTableFeatures, MemberWithUser>[]>(
     () => [
       {
         id: "select",
@@ -209,7 +225,8 @@ export function UsersTable({
     [t, tRoles, locale],
   );
 
-  const table = useReactTable({
+  const table = useTable({
+    features: usersTableFeatures,
     data: members,
     columns,
     state: {
@@ -223,10 +240,6 @@ export function UsersTable({
     manualPagination: true,
     pageCount: Math.ceil(total / pageSize) || 0,
     manualSorting: true,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
     onPaginationChange: (updater) => {
@@ -321,7 +334,7 @@ export function UsersTable({
                             <SortableHeader
                               column={header.column}
                               isNumeric={header.id === "createdAt"}
-                              table={table}
+                              sorting={table.state.sorting}
                               title={String(
                                 flexRender(
                                   header.column.columnDef.header,
