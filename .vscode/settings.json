@@ -1,17 +1,21 @@
 {
   // ============================================================================
-  // CORE EDITOR SETTINGS
+  // EDITOR — GENERAL
   // ============================================================================
+  "editor.rulers": [82],
+
+  // ============================================================================
+  // EDITOR — FORMAT ON SAVE / CODE ACTIONS
+  // ============================================================================
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "source.fixAll.oxc": "explicit"
   },
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "editor.rulers": [82],
 
   // ============================================================================
-  // LANGUAGE-SPECIFIC FORMATTERS
+  // EDITOR — LANGUAGE-SPECIFIC FORMATTERS
   // ============================================================================
   "[css]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
@@ -43,19 +47,30 @@
   "[yaml]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
-  // "typescript.experimental.useTsgo": false,
-  "js/ts.format.enable": true,
+
+  // ============================================================================
+  // TYPESCRIPT / JAVASCRIPT LANGUAGE SERVICE
+  // ----------------------------------------------------------------------------
+  // TypeScript 7 has a native (Go) language service rather than the legacy
+  // JavaScript tsserver. Requires the TypeScript Native Preview extension.
+  // ============================================================================
+  "js/ts.experimental.useTsgo": true,
+  "js/ts.format.enabled": true,
   "js/ts.preferences.autoImportFileExcludePatterns": [
     "**/node_modules/@radix-ui/**",
     "**/node_modules/lucide-react/dist/esm/icons/*[^Icon].js"
   ],
   "js/ts.preferences.importModuleSpecifier": "non-relative",
-  "js/ts.tsdk": "node_modules/typescript/lib",
+  // Keep the native editor service on the version pinned by the pnpm catalog.
+  "js/ts.tsdk.path": "./node_modules/typescript",
   "js/ts.updateImportsOnFileMove.enabled": "always",
+  "js/ts.tsserver.tracing.enabled": true,
+  "js/ts.tsserver.experimental.enableProjectDiagnostics": true,
 
   // ============================================================================
-  // TAILWIND CSS SETTINGS
+  // TAILWIND CSS
   // ============================================================================
+  "tailwindCSS.validate": true,
   "tailwindCSS.codeActions": true,
   "tailwindCSS.lint.cssConflict": "error",
   "tailwindCSS.lint.invalidApply": "error",
@@ -65,13 +80,10 @@
   "tailwindCSS.lint.invalidVariant": "error",
   "tailwindCSS.lint.recommendedVariantOrder": "error",
   "tailwindCSS.lint.suggestCanonicalClasses": "warning",
-  "tailwindCSS.validate": true,
 
   // ============================================================================
-  // EXTENSION-SPECIFIC SETTINGS
+  // EXTENSION — CHAT
   // ============================================================================
-
-  // Chat
   "chat.promptFilesRecommendations": {
     "speckit.constitution": true,
     "speckit.implement": true,
@@ -92,32 +104,31 @@
     "**/*.{code-workspace,csproj,fsproj,vbproj,vcxproj,proj,targets,props}": false
   },
 
-  // GitLens
-  // "gitlens.ai.model": "vscode",
-  // "gitlens.ai.vscode.model": "xai:grok-code-fast-1",
-
-  // i18n Ally
+  // ============================================================================
+  // EXTENSION — I18N ALLY
+  // ============================================================================
+  "i18n-ally.sourceLanguage": "en",
   "i18n-ally.displayLanguage": "de",
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.enabledFrameworks": ["next-intl"],
+  "i18n-ally.localesPaths": ["packages/i18n/src/locales"],
+  "i18n-ally.ignoreFiles": ["src/test/**"],
   "i18n-ally.extract.ignoredByFiles": {
     "src/test/orpc-error-type-safety.test.ts": true
   },
-  "i18n-ally.keystyle": "nested",
-  "i18n-ally.ignoreFiles": ["src/test/**"],
-  "i18n-ally.enabledFrameworks": ["next-intl"],
-  "i18n-ally.localesPaths": ["packages/i18n/src/locales"],
-  "i18n-ally.sourceLanguage": "en",
 
-  // JSON
+  // ============================================================================
+  // EXTENSION — JSON
+  // ============================================================================
   "json.schemaDownload.trustedDomains": {
     "https://turborepo.dev": true,
     "https://ui.shadcn.com": true
   },
 
-  // Search
+  // ============================================================================
+  // EXTENSION — SEARCH
+  // ============================================================================
   "search.exclude": {
     "**/node_modules/@radix-ui": true
-  },
-  "js/ts.tsserver.tracing.enabled": true,
-  "js/ts.tsserver.experimental.enableProjectDiagnostics": true,
-  "js/ts.tsdk.path": "node_modules/typescript/lib"
+  }
 }
