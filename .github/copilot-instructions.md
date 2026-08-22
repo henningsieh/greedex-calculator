@@ -34,6 +34,61 @@ Never execute commands that start processes or builds:
 | **Test Runner**      | Vitest                | Tests in `src/__tests__/`          |
 | **Framework**        | Next.js 16 + React 19 | App Router, React Compiler enabled |
 
+## Coolify Development Deployment
+
+Greendex currently uses **only** Coolify’s `development` environment. Treat this as the shared deployed development system; no separate production environment is configured yet.
+
+### Access and resource identity
+
+| Resource | Identifier / access |
+| --- | --- |
+| Coolify host | `188.245.144.137` (`ssh coolify`) |
+| SSH identity | `~/.ssh/coolify` (already configured by the local `coolify` SSH alias; use the alias, never copy a private key into the repository) |
+| Coolify project | `t40wk84o88wkgcocs80k0wws` (`greendex`) |
+| Coolify environment | `rc04oc8sksggs48ggkwsgsg0` (`development`) |
+| Calculator application | `wokgg0808c8k44cgk480444c` |
+| Calculator URL | `https://greendex.apps.sieh.org` |
+| Health check | `GET /api/rpc/health` on port `3000` |
+
+Coolify API credentials are configured outside this repository. Use the existing local Coolify access rather than placing API tokens in Git, source files, or documentation.
+
+### Databases
+
+Both PostgreSQL resources are private Docker-network services on the host’s external `coolify` network. Connect applications by the database UUID hostname on port `5432`; do not use the host IP/public-port form for application-to-database traffic.
+
+| Purpose | Coolify database UUID | Internal host | Port |
+| --- | --- | --- | --- |
+| Local-development data | `m0w8wog0kgocssg4w4gg4wow` | `m0w8wog0kgocssg4w4gg4wow` | `5432` |
+| Live Greendex data | `a004oogs4cwss04cok0wwckk` | `a004oogs4cwss04cok0wwckk` | `5432` |
+
+The deployed calculator currently targets the live database. Its `DATABASE_URL` is managed in Coolify and has this shape (retrieve credentials from Coolify; never commit them):
+
+```text
+postgres://postgres:<password>@a004oogs4cwss04cok0wwckk:5432/postgres
+```
+
+The live database has SSL disabled because Coolify’s generated SSL mount was invalid. It remains private on the Docker network. Its configured public port (`5488`) is not a usable application connection endpoint.
+
+### Deployment and database rules
+
+- Make persistent resource, environment-variable, database, and lifecycle changes through Coolify’s UI/API. Coolify regenerates `/data/coolify/.../docker-compose.y*ml`; never hand-edit those generated files.
+- Deployments can take up to **10 minutes**. After requesting one, wait for it to reach a terminal status before requesting another; check the Coolify deployment UUID/status instead of inferring completion from an old healthy container.
+- The live database was initialized with Drizzle migrations. For a new/empty database, apply migrations before testing Better Auth. The migration tool reads `DATABASE_URL`; when executing inside the running container, pass it explicitly because Turbo does not forward it automatically:
+
+  ```bash
+  docker exec <greendex-container> sh -lc \
+    'cd /app/packages/database && DATABASE_URL="$DATABASE_URL" pnpm exec drizzle-kit migrate'
+  ```
+
+- Confirm a migration by checking that the `verification` table exists; Better Auth social sign-in writes its OAuth state there before redirecting.
+
+### Google OAuth
+
+- Authorized callback URL: `https://greendex.apps.sieh.org/api/auth/callback/google`
+- Local callback URL: `http://localhost:3000/api/auth/callback/google`
+- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `BETTER_AUTH_SECRET` are Coolify-managed secrets. Do not expose or replace them in repository files.
+- A `POST /api/auth/sign-in/social` 500 before the Google redirect is usually a database/schema failure. Check Greendex container logs and the `verification` table first. A successful initiation creates a verification row and redirects to `accounts.google.com` with the deployed callback URL.
+
 ### Architecture Layers
 
 | Layer              | Location               | Entry Point                            |
