@@ -595,7 +595,7 @@ describe("API Documentation UI", () => {
       });
       expect(
         await page.locator("h1.section-header-label").textContent(),
-      ).toContain("Greedex Calculator API");
+      ).toContain("Greendex Calculator API");
       expect(await page.title()).toContain("API Reference");
     } finally {
       await browser.close();

@@ -81,7 +81,7 @@ The server-side client must be imported **before** any code that uses it. If the
 ## Project Structure Deep Dive
 
 ```
-greedex-calculator/
+greendex-calculator/
 ├── src/
 │   ├── app/                        # Next.js App Router
 │   │   ├── [locale]/              # Internationalized routes

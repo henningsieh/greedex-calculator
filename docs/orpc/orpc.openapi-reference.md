@@ -11,9 +11,9 @@ This plugin serves both an **interactive API documentation UI** and the **OpenAP
 
 **For architecture overview**, see [DUAL-SETUP.md](./DUAL-SETUP.md) — this document covers plugin-specific details.
 
-## Usage in Greedex
+## Usage in Greendex
 
-This is the standard approach used by Greedex Calculator for API documentation.
+This is the standard approach used by Greendex Calculator for API documentation.
 
 **File**: [`src/lib/orpc/openapi-handler.ts`](../../src/lib/orpc/openapi-handler.ts)
 
@@ -37,7 +37,7 @@ export const openapiHandler = new OpenAPIHandler(router, {
       specPath: "/api/openapi-spec", // Where OpenAPI spec JSON is served
       specGenerateOptions: {
         info: {
-          title: "Greedex Calculator API",
+          title: "Greendex Calculator API",
           version: "1.0.0",
         },
       },
@@ -73,11 +73,11 @@ http://localhost:3000/api/docs
 
 ---
 
-## Project notes (Greedex)
+## Project notes (Greendex)
 
 ### SRI Security for Scalar Bundle
 
-Greedex uses **Subresource Integrity (SRI)** to ensure the Scalar bundle loaded from CDN matches the expected version.
+Greendex uses **Subresource Integrity (SRI)** to ensure the Scalar bundle loaded from CDN matches the expected version.
 
 **How it works:**
 1. Version defined in [`package.json`](../../package.json):

@@ -7,7 +7,7 @@ description: Create a beautiful API documentation UI using Scalar
 
 [Scalar](https://github.com/scalar/scalar) is a modern alternative to Swagger UI for browsing OpenAPI specifications.
 
-**⚠️ For Greedex**: Use the [`OpenAPIReferencePlugin`](./orpc.openapi-reference.md) instead of this manual setup. The plugin is simpler and handles SRI security automatically.
+**⚠️ For Greendex**: Use the [`OpenAPIReferencePlugin`](./orpc.openapi-reference.md) instead of this manual setup. The plugin is simpler and handles SRI security automatically.
 
 ---
 
@@ -65,9 +65,9 @@ export function GET() {
 
 ---
 
-## Greedex Approach (Recommended)
+## Greendex Approach (Recommended)
 
-Greedex uses the `OpenAPIReferencePlugin` to avoid manual setup:
+Greendex uses the `OpenAPIReferencePlugin` to avoid manual setup:
 
 ```typescript
 // src/lib/orpc/openapi-handler.ts

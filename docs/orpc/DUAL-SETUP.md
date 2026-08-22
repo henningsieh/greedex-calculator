@@ -149,7 +149,7 @@ export const openapiHandler = new OpenAPIHandler(router, {
       specPath: "/api/openapi-spec", ← Where spec is served
       specGenerateOptions: {
         info: {
-          title: "Greedex Calculator API",
+          title: "Greendex Calculator API",
           version: "1.0.0",
         },
       },

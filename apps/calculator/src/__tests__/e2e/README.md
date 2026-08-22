@@ -1,6 +1,6 @@
 # End-to-End Tests
 
-This directory contains Playwright-based end-to-end tests for the Greedex Calculator application.
+This directory contains Playwright-based end-to-end tests for the Greendex Calculator application.
 
 ## Location
 

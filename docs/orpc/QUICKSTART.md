@@ -1,6 +1,6 @@
 ---
 title: "oRPC Quick Start for AI Agents"
-description: "Five-minute guide to understanding the oRPC dual-endpoint setup in Greedex"
+description: "Five-minute guide to understanding the oRPC dual-endpoint setup in Greendex"
 ---
 
 # oRPC Quick Start Guide
@@ -9,7 +9,7 @@ description: "Five-minute guide to understanding the oRPC dual-endpoint setup in
 
 ## 30-Second Summary
 
-Greedex has **two API endpoints**:
+Greendex has **two API endpoints**:
 
 1. **`/api/rpc`** — Fast binary protocol for internal Next.js app
 2. **`/api/openapi`** — Standard HTTP REST for external tools

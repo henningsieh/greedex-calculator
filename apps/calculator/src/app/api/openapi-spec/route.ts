@@ -13,10 +13,10 @@ export async function GET() {
 
   const spec = await generator.generate(router, {
     info: {
-      title: "Greedex Calculator API",
+      title: "Greendex Calculator API",
       version: "1.0.0",
       description:
-        "API for the Greedex Calculator application. This API provides endpoints for project management, organization management, and user authentication.",
+        "API for the Greendex Calculator application. This API provides endpoints for project management, organization management, and user authentication.",
     },
     servers: [
       {

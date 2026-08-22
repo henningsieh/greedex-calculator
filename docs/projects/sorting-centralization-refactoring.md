@@ -7,7 +7,7 @@ description: 'Centralized project sorting configuration with type-safe implement
 
 ## Executive Summary
 
-This document describes a comprehensive refactoring of project sorting configuration in greedex-calculator. The work established a **single source of truth** for all project sorting logic across UI (grid and table) and backend RPC procedures through:
+This document describes a comprehensive refactoring of project sorting configuration in greendex-calculator. The work established a **single source of truth** for all project sorting logic across UI (grid and table) and backend RPC procedures through:
 
 1. **Centralized Configuration** (`src/config/projects.ts`) — Single object-based sorting defaults
 2. **Type-Safe Field Validation** (`src/features/projects/types.ts`) — Compile-time validation of sort fields

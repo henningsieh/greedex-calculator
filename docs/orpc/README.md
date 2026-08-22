@@ -1,6 +1,6 @@
 ---
 title: "oRPC Documentation Index"
-description: "Complete guide to Greedex's oRPC dual-endpoint architecture"
+description: "Complete guide to Greendex's oRPC dual-endpoint architecture"
 ---
 
 # oRPC Documentation Index

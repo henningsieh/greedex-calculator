@@ -25,7 +25,7 @@ export const openapiHandler = new OpenAPIHandler(router, {
       specPath: "/api/openapi-spec",
       specGenerateOptions: {
         info: {
-          title: "Greedex Calculator API",
+          title: "Greendex Calculator API",
           version: "1.0.0",
         },
         // The OpenAPI `servers` property sets the base URL used by the

@@ -56,8 +56,8 @@ Learn more at [greendex.world](https://greendex.world) and [calculator.greendex.
 
 ```bash
 # Clone the repository
-git clone https://github.com/henningsieh/greedex-calculator.git
-cd greedex-calculator
+git clone https://github.com/henningsieh/greendex-calculator.git
+cd greendex-calculator
 
 # Install dependencies (Turborepo will install all workspace packages)
 pnpm install

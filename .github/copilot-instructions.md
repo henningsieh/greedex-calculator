@@ -1,6 +1,6 @@
 # Agent Instructions
 
-**Greedex Calculator** — A Next.js 16 app for carbon footprint calculations with organization management, questionnaires, and internationalization.
+**Greendex Calculator** — A Next.js 16 app for carbon footprint calculations with organization management, questionnaires, and internationalization.
 
 ---
 
@@ -40,15 +40,15 @@ Greendex currently uses **only** Coolify’s `development` environment. Treat th
 
 ### Access and resource identity
 
-| Resource | Identifier / access |
-| --- | --- |
-| Coolify host | `188.245.144.137` (`ssh coolify`) |
-| SSH identity | `~/.ssh/coolify` (already configured by the local `coolify` SSH alias; use the alias, never copy a private key into the repository) |
-| Coolify project | `t40wk84o88wkgcocs80k0wws` (`greendex`) |
-| Coolify environment | `rc04oc8sksggs48ggkwsgsg0` (`development`) |
-| Calculator application | `wokgg0808c8k44cgk480444c` |
-| Calculator URL | `https://greendex.apps.sieh.org` |
-| Health check | `GET /api/rpc/health` on port `3000` |
+| Resource               | Identifier / access                                                                                                                 |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Coolify host           | `188.245.144.137` (`ssh coolify`)                                                                                                   |
+| SSH identity           | `~/.ssh/coolify` (already configured by the local `coolify` SSH alias; use the alias, never copy a private key into the repository) |
+| Coolify project        | `t40wk84o88wkgcocs80k0wws` (`greendex`)                                                                                             |
+| Coolify environment    | `rc04oc8sksggs48ggkwsgsg0` (`development`)                                                                                          |
+| Calculator application | `wokgg0808c8k44cgk480444c`                                                                                                          |
+| Calculator URL         | `https://greendex.apps.sieh.org`                                                                                                    |
+| Health check           | `GET /api/rpc/health` on port `3000`                                                                                                |
 
 Coolify API credentials are configured outside this repository. Use the existing local Coolify access rather than placing API tokens in Git, source files, or documentation.
 
@@ -56,10 +56,10 @@ Coolify API credentials are configured outside this repository. Use the existing
 
 Both PostgreSQL resources are private Docker-network services on the host’s external `coolify` network. Connect applications by the database UUID hostname on port `5432`; do not use the host IP/public-port form for application-to-database traffic.
 
-| Purpose | Coolify database UUID | Internal host | Port |
-| --- | --- | --- | --- |
+| Purpose                | Coolify database UUID      | Internal host              | Port   |
+| ---------------------- | -------------------------- | -------------------------- | ------ |
 | Local-development data | `m0w8wog0kgocssg4w4gg4wow` | `m0w8wog0kgocssg4w4gg4wow` | `5432` |
-| Live Greendex data | `a004oogs4cwss04cok0wwckk` | `a004oogs4cwss04cok0wwckk` | `5432` |
+| Live Greendex data     | `a004oogs4cwss04cok0wwckk` | `a004oogs4cwss04cok0wwckk` | `5432` |
 
 The deployed calculator currently targets the live database. Its `DATABASE_URL` is managed in Coolify and has this shape (retrieve credentials from Coolify; never commit them):
 
