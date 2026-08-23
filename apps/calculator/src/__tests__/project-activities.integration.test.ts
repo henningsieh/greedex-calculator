@@ -1,5 +1,6 @@
-import type { EUCountryCode } from "@greendex/config/eu-countries";
+import { randomUUID } from "node:crypto";
 
+import type { EUCountryCode } from "@greendex/config/eu-countries";
 import { db } from "@greendex/database";
 import {
   member,
@@ -9,7 +10,6 @@ import {
   user,
 } from "@greendex/database/schema";
 import { eq, like, sql } from "drizzle-orm";
-import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import type { ProjectActivityType } from "@/features/project-activities/types";

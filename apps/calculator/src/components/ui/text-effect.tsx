@@ -5,7 +5,6 @@ import type {
   Variant,
   Variants,
 } from "motion/react";
-
 import { AnimatePresence, motion } from "motion/react";
 import { memo } from "react";
 

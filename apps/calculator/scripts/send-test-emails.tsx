@@ -1,80 +1,77 @@
-import { render } from "react-email";
-import nodemailer from "nodemailer";
+import { resolve } from "node:path";
 
-import { EmailVerification } from "../src/lib/email/templates/email-verification";
-import { OrganizationInvitation } from "../src/lib/email/templates/organization-invitation";
-import { PasswordResetEmail } from "../src/lib/email/templates/password-reset";
+import { createEmailSender, createTransporter } from "@greendex/email";
+import { config } from "dotenv";
 
-// SMTP configuration from .env
-const transporter = nodemailer.createTransport({
-  host: "mail.sieh.org",
-  port: 587,
-  secure: false,
-  auth: {
-    user: "henning@sieh.org",
-    pass: "15,%,aniFtSMu",
-  },
+config({ path: resolve(import.meta.dirname, "../../../.env") });
+
+const getRequiredEnvironmentVariable = (name: string): string => {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`${name} must be set to send test emails.`);
+  }
+  return value;
+};
+
+const MIN_SMTP_PORT = 1;
+const MAX_SMTP_PORT = 65_535;
+const smtpPortString = getRequiredEnvironmentVariable("SMTP_PORT");
+const smtpPort = Number.parseInt(smtpPortString, 10);
+
+if (
+  Number.isNaN(smtpPort) ||
+  smtpPortString !== String(smtpPort) ||
+  smtpPort < MIN_SMTP_PORT ||
+  smtpPort > MAX_SMTP_PORT
+) {
+  throw new Error("SMTP_PORT must be a number.");
+}
+
+const baseUrl = getRequiredEnvironmentVariable("NEXT_PUBLIC_BASE_URL");
+
+const emailSender = createEmailSender({
+  baseUrl,
+  transporter: createTransporter({
+    host: getRequiredEnvironmentVariable("SMTP_HOST"),
+    port: smtpPort,
+    secure: process.env.SMTP_SECURE === "true",
+    auth: {
+      user: getRequiredEnvironmentVariable("SMTP_USERNAME"),
+      pass: getRequiredEnvironmentVariable("SMTP_PASSWORD"),
+    },
+  }),
+  sender: getRequiredEnvironmentVariable("SMTP_SENDER"),
 });
 
 async function sendTestEmails() {
-  const testRecipient = "henning@sieh.org";
+  const testRecipient =
+    process.env.TEST_EMAIL_RECIPIENT ??
+    getRequiredEnvironmentVariable("SMTP_SENDER");
 
-  try {
-    // Test 1: Email Verification
-    console.log("Sending email verification test...");
-    const verificationHtml = await render(
-      <EmailVerification
-        userName="Henning Sieh"
-        verificationUrl="https://greendex.world/verify?token=test123"
-      />,
-    );
+  console.log("Sending email verification test...");
+  await emailSender.sendEmailVerificationEmail({
+    user: { email: testRecipient, name: "Henning Sieh" },
+    url: new URL("/verify?token=test123", baseUrl).toString(),
+  });
 
-    await transporter.sendMail({
-      from: "greendex@sieh.org",
-      to: testRecipient,
-      subject: "Test: Verify Your Greendex Email Address",
-      html: verificationHtml,
-    });
+  console.log("Sending password reset test...");
+  await emailSender.sendPasswordResetEmail({
+    user: { email: testRecipient, name: "Henning Sieh" },
+    url: new URL("/reset-password?token=test456", baseUrl).toString(),
+  });
 
-    // Test 2: Password Reset
-    console.log("Sending password reset test...");
-    const resetHtml = await render(
-      <PasswordResetEmail
-        resetUrl="https://greendex.world/reset-password?token=test456"
-        userName="Henning Sieh"
-      />,
-    );
+  console.log("Sending organization invitation test...");
+  await emailSender.sendOrganizationInvitation({
+    email: testRecipient,
+    inviteLink: new URL("/invite/accept?token=test789", baseUrl).toString(),
+    inviterName: "Anna Schmidt",
+    organizationName: "GreenTech Solutions",
+  });
 
-    await transporter.sendMail({
-      from: "greendex@sieh.org",
-      to: testRecipient,
-      subject: "Test: Reset Your Greendex Password",
-      html: resetHtml,
-    });
-
-    // Test 3: Organization Invitation
-    console.log("Sending organization invitation test...");
-    const invitationHtml = await render(
-      <OrganizationInvitation
-        inviteLink="https://greendex.world/invite/accept?token=test789"
-        inviterName="Anna Schmidt"
-        organizationName="GreenTech Solutions"
-      />,
-    );
-
-    await transporter.sendMail({
-      from: "greendex@sieh.org",
-      to: testRecipient,
-      subject: "Test: Join GreenTech Solutions on Greendex",
-      html: invitationHtml,
-    });
-
-    console.log("✅ All test emails sent successfully!");
-    console.log(`📧 Check your inbox at ${testRecipient}`);
-  } catch (error) {
-    console.error("❌ Error sending test emails:", error);
-    process.exit(1);
-  }
+  console.log(`All test emails sent successfully to ${testRecipient}.`);
 }
 
-sendTestEmails();
+sendTestEmails().catch((error: unknown) => {
+  console.error("Error sending test emails:", error);
+  process.exitCode = 1;
+});

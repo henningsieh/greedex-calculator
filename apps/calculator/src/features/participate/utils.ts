@@ -16,7 +16,6 @@ import {
 } from "@greendex/config/participate";
 
 import type { ProjectActivityType } from "@/features/project-activities/types";
-
 import { calculateActivitiesCO2 } from "@/features/projects/utils";
 
 import {

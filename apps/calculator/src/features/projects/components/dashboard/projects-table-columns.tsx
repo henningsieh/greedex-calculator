@@ -1,5 +1,7 @@
 "use client";
 
+import { useFormatter, useTranslations } from "@greendex/i18n/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   columnFilteringFeature,
   type ColumnDef,
@@ -12,9 +14,6 @@ import {
   rowSortingFeature,
   tableFeatures,
 } from "@tanstack/react-table";
-
-import { useFormatter, useTranslations } from "@greendex/i18n/client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ArchiveIcon,
   Columns3CogIcon,
@@ -25,8 +24,6 @@ import {
 } from "lucide-react";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
-
-import type { ProjectType } from "@/features/projects/types";
 
 import { useConfirmDialog } from "@/components/confirm-dialog";
 import { Location } from "@/components/location";
@@ -52,6 +49,7 @@ import {
   EditProjectFormSkeleton,
 } from "@/features/projects/components/edit-project-form";
 import { SortableHeader } from "@/features/projects/components/sortable-header";
+import type { ProjectType } from "@/features/projects/types";
 
 export const projectsTableFeatures = tableFeatures({
   columnFilteringFeature,

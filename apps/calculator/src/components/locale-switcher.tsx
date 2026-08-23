@@ -4,8 +4,6 @@ import { useLocale, useTranslations } from "@greendex/i18n/client";
 import { CheckIcon } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 
-import type { LanguageCode, LocaleData } from "@/lib/i18n/types";
-
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,6 +16,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { getLocaleData } from "@/lib/i18n/locales";
 import { usePathname, useRouter } from "@/lib/i18n/routing";
+import type { LanguageCode, LocaleData } from "@/lib/i18n/types";
 import { cn } from "@/lib/utils";
 
 export function LocaleSwitcher({ className }: { className?: string }) {

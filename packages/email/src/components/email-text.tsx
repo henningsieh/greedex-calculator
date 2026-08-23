@@ -1,5 +1,4 @@
-import type { CSSProperties } from "react";
-
+import React, { type CSSProperties } from "react";
 import { Text } from "react-email";
 
 import { emailTypography } from "../config/styles";

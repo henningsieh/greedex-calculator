@@ -1,13 +1,11 @@
 "use client";
 
-import type { ComponentType } from "react";
-
 import { useTranslations } from "@greendex/i18n/client";
 import { PanelRightCloseIcon, PanelRightOpenIcon } from "lucide-react";
+import type { ComponentType } from "react";
 import { Suspense } from "react";
 
 import type { AppRoute } from "@/app/routes";
-
 import {
   DASHBOARD_PATH,
   PARTICIPANTS_PATH,

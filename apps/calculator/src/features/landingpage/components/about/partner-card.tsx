@@ -2,8 +2,6 @@ import { getLocale, getTranslations } from "@greendex/i18n/server";
 import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 
-import type { Partner } from "@/features/landingpage/types";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { Partner } from "@/features/landingpage/types";
 import { getCountryData } from "@/lib/i18n/countries";
 import { Link } from "@/lib/i18n/routing";
 

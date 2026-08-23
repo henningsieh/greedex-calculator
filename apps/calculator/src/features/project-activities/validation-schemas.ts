@@ -1,7 +1,6 @@
+import { projectActivitiesTable, projectsTable } from "@greendex/database/schema";
 import type { useTranslations } from "@greendex/i18n/client";
 import type { getTranslations } from "@greendex/i18n/server";
-
-import { projectActivitiesTable, projectsTable } from "@greendex/database/schema";
 import {
   createInsertSchema,
   createSelectSchema,

@@ -1,7 +1,5 @@
 "use client";
 
-import type z from "zod";
-
 import {
   ACTIVITY_VALUES,
   DISTANCE_KM_STEP,
@@ -13,8 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-import type { ProjectActivityType } from "@/features/project-activities/types";
+import type z from "zod";
 
 import { DatePickerWithInput } from "@/components/date-picker-with-input";
 import { Button } from "@/components/ui/button";
@@ -28,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import type { ProjectActivityType } from "@/features/project-activities/types";
 import {
   activityInputSchema,
   activityUpdateSchema,

@@ -1,7 +1,5 @@
 "use client";
 
-import type { z } from "zod";
-
 import {
   ACTIVITY_VALUES,
   DISTANCE_KM_STEP,
@@ -16,8 +14,7 @@ import { ArrowLeft, ArrowRight, Check, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-import type { CreateProjectWithActivities } from "@/features/projects/validation-schemas";
+import type { z } from "zod";
 
 import { CountrySelect } from "@/components/country-select";
 import { DatePickerWithInput } from "@/components/date-picker-with-input";
@@ -52,6 +49,7 @@ import {
   getProjectDetailPath,
   MILLISECONDS_PER_DAY,
 } from "@/features/projects/utils";
+import type { CreateProjectWithActivities } from "@/features/projects/validation-schemas";
 import { CreateProjectWithActivitiesSchema } from "@/features/projects/validation-schemas";
 import { useRouter } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";

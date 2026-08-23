@@ -5,8 +5,6 @@ import { CheckIcon, ChevronDownIcon, GlobeIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
-import type { LanguageCode } from "@/lib/types";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getFlagComponent } from "@/lib/i18n";
 import { buildLocalizedPath } from "@/lib/navigation";
+import type { LanguageCode } from "@/lib/types";
 
 /**
  * Inline Language Toggle for Navbar

@@ -9,14 +9,13 @@ import {
 } from "@greendex/config/participate";
 import { describe, expect, it } from "vitest";
 
-import type { ProjectActivityType } from "@/features/project-activities/types";
-
 import {
   ACCOMMODATION_FACTORS,
   FOOD_FACTORS,
   type ParticipantAnswers,
 } from "@/features/participate/types";
 import { calculateEmissions } from "@/features/participate/utils";
+import type { ProjectActivityType } from "@/features/project-activities/types";
 import { calculateActivitiesCO2 } from "@/features/projects/utils";
 
 describe("Questionnaire Types and Calculations", () => {

@@ -5,9 +5,15 @@ description: Comprehensive documentation index for all libraries and features in
 
 # Documentation Index
 
+## Agent navigation
+
+- [Task routes for agents](agent-workflows.md)
+- Repository-wide rules and scoped instruction index: [`AGENTS.md`](../AGENTS.md)
+
 ## All Files in docs/
 
 - [README.md](README.md)
+- [agent-workflows.md](agent-workflows.md)
 - [Hydration & Suspense Analysis](orpc/orpc.Optimize-Server-Side-Rendering.SSR.md)
 - [Permissions & Access Control](permissions/README.md)
 

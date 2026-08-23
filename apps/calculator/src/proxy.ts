@@ -1,6 +1,5 @@
-import type { NextRequest, NextResponse } from "next/server";
-
 import { createMiddleware } from "@greendex/i18n/server";
+import type { NextRequest, NextResponse } from "next/server";
 
 import { routing } from "@/lib/i18n/routing";
 

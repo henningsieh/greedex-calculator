@@ -3,10 +3,9 @@
 import { WORKSHOPS } from "@greendex/config/workshops";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 
-import type { WorkshopType } from "@/features/landingpage/types";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WorkshopDetails } from "@/features/landingpage/components/workshops/workshop-details";
+import type { WorkshopType } from "@/features/landingpage/types";
 
 /**
  * Render a three-tab workshop interface synchronized with the URL `type` query parameter.

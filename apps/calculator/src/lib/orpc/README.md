@@ -285,7 +285,7 @@ export const router = {
 
 ## Environment Requirements
 
-- Node.js 18+ (20+ recommended)
+- Node.js 22+
 - Next.js 16+ with App Router
 - Better Auth configured
 - TypeScript strict mode recommended

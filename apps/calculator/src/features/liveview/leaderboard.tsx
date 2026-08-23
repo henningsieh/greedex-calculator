@@ -2,9 +2,8 @@
 
 import { Leaf, Trophy } from "lucide-react";
 
-import type { Participant } from "@/features/participate/types";
-
 import { Card } from "@/components/ui/card";
+import type { Participant } from "@/features/participate/types";
 import { cn } from "@/lib/utils";
 
 interface LeaderboardProps {

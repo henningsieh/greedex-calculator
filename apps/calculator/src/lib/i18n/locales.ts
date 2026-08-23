@@ -1,10 +1,9 @@
-import type { ComponentType, SVGProps } from "react";
-
 import { LANGUAGE_CODES, SUPPORTED_LANGUAGES } from "@greendex/config/languages";
 import * as Flags from "country-flag-icons/react/3x2";
 import countries from "i18n-iso-countries";
 import deCountries from "i18n-iso-countries/langs/de.json";
 import enCountries from "i18n-iso-countries/langs/en.json";
+import type { ComponentType, SVGProps } from "react";
 
 import { LocaleData, type LanguageCode } from "@/lib/i18n/types";
 

@@ -1,201 +1,74 @@
 ---
-name: "Architecture Overview"
-description: "System design, critical patterns, and file organization"
-applyTo: "src/**/*.{ts,tsx}"
+name: "Architecture"
+description: "Monorepo boundaries, Next.js layers, and critical SSR initialization"
+applyTo: "apps/*/src/**/*.ts,apps/*/src/**/*.tsx,packages/*/src/**/*.ts,packages/*/src/**/*.tsx"
 ---
 
-# Architecture Overview
+# Architecture
 
-This document describes the system architecture, critical patterns, and file organization.
+Use this instruction when placing code, crossing workspace boundaries, or changing server/client data flow. Read [`docs/README.md`](../../docs/README.md) and the topic-specific documentation before changing an integration.
 
----
+## Workspace boundaries
 
-## Technology Stack
+| Area              | Source of truth           | Responsibility                                                                |
+| ----------------- | ------------------------- | ----------------------------------------------------------------------------- |
+| Calculator app    | `apps/calculator/src/`    | Next.js routes, feature modules, oRPC adapters, Better Auth wiring, Socket.IO |
+| Documentation app | `apps/documentation/src/` | Fumadocs application                                                          |
+| Auth package      | `packages/auth/src/`      | Shared Better Auth client types and utilities                                 |
+| Config package    | `packages/config/src/`    | Shared domain and locale configuration                                        |
+| Database package  | `packages/database/src/`  | Drizzle client, schemas, migrations                                           |
+| Email package     | `packages/email/src/`     | Transactional templates, rendering, delivery primitives                       |
+| i18n package      | `packages/i18n/src/`      | next-intl exports and locale messages                                         |
 
-| Layer          | Technology               | Location               | Notes                                    |
-| -------------- | ------------------------ | ---------------------- | ---------------------------------------- |
-| Frontend       | Next.js 16 + React 19    | `src/app/`             | App Router with Server/Client Components |
-| API            | oRPC                     | `src/lib/orpc/`        | Type-safe RPC with HTTP adapter          |
-| Authentication | Better Auth              | `src/lib/better-auth/` | Session-based auth with organizations    |
-| Database       | Drizzle ORM + Postgres   | `src/lib/drizzle/`     | Migrations in `migrations/`              |
-| Real-time      | Socket.IO                | `src/socket-server.ts` | Separate process (manual start only)     |
-| Email          | React Email + Nodemailer | `src/lib/email/`       | Transactional email templates            |
-| i18n           | next-intl                | `src/lib/i18n/`        | Multi-language support                   |
-| UI Components  | shadcn/ui                | `src/components/ui/`   | Radix + Tailwind CSS                     |
-| Formatting     | Oxc                      | `.oxfmtrc.json`        | See `docs/oxc/oxfmt`                     |
-| Linting        | Oxc                      | `.oxlintrc.json`       | See `docs/oxc/oxlint`                    |
-| Testing        | Vitest                   | `src/__tests__/`       | Unit/integration tests                   |
+Keep environment-specific integration in the consuming app. For example, `apps/calculator/src/lib/email.ts` injects SMTP and application URL configuration into `@greendex/email`.
 
----
+## Calculator layers
 
-## Critical Pattern: SSR Client Split
+- Routes and layouts: `apps/calculator/src/app/`
+- Feature behavior: `apps/calculator/src/features/<feature>/`
+- Shared app components: `apps/calculator/src/components/`
+- Integration libraries: `apps/calculator/src/lib/`
+- Unit/integration tests: `apps/calculator/src/__tests__/` and feature-local `__tests__/`
+- Browser tests: `apps/calculator/src/__tests__/e2e/`
 
-**Problem**: In SSR contexts, we can't make HTTP calls back to the same server (self-referential calls).
+Add business procedures to the owning feature, then register them in `apps/calculator/src/lib/orpc/router.ts`. Put reusable cross-app behavior in a workspace package only when it has a clear package-level API.
 
-**Solution**: Dual oRPC client setup:
+## Critical SSR oRPC invariant
 
-- **Server-side client**: Direct procedure calls (no HTTP), initialized in `src/instrumentation.ts`
-- **Client-side client**: HTTP transport via `/api/rpc`
+The universal client in `apps/calculator/src/lib/orpc/orpc.ts` reads `globalThis.$client` when its module is evaluated. Preserve both initialization paths:
 
-### File Responsibilities
+1. `apps/calculator/src/instrumentation.ts` dynamically imports `@/lib/orpc/client.server` in the Node.js runtime.
+2. `apps/calculator/src/app/[locale]/layout.tsx` side-effect-imports `@/lib/orpc/client.server` before local imports that can load the universal oRPC client.
 
-```
-src/instrumentation.ts          # Initializes server client FIRST
-src/lib/orpc/client.server.ts   # Server-side client (direct calls)
-src/lib/orpc/client.browser.ts  # Browser client (HTTP)
-src/lib/orpc/orpc.ts            # Unified export (auto-detects environment)
-```
+`apps/calculator/src/lib/orpc/client.server.ts` installs the direct router client on `globalThis.$client`. Removing or delaying either initialization path makes SSR fall back to the browser-only `RPCLink`; existing project routes can then render misleading 404 pages.
 
-### ⚠️ CRITICAL CONSTRAINT
+Preserve the imports and their effective evaluation order. Validate changes with `apps/calculator/src/__tests__/e2e/project-routing.spec.ts`. Read [`docs/orpc/DUAL-SETUP.md`](../../docs/orpc/DUAL-SETUP.md) before editing this seam.
 
-**Never reorder imports in `src/instrumentation.ts`**
+## Server and client data flow
 
-The server-side client must be imported **before** any code that uses it. If the order changes, SSR will attempt HTTP self-calls and fail.
+- Server Components call `orpc` directly or prefetch `orpcQuery` query options into the request query client.
+- Client Components use `orpcQuery` with TanStack Query and `orpc` for mutations.
+- Prefer Server Components. Add `"use client"` only for hooks, browser APIs, or interaction.
+- Pass request-specific headers through the server oRPC context; do not store request data in global reusable context.
+- Public REST/OpenAPI traffic enters through `apps/calculator/src/app/api/openapi/`; internal RPC traffic enters through `apps/calculator/src/app/api/rpc/`.
 
-**Key files that depend on this:**
+## Placement guide
 
-- `src/app/` (Server Components)
-- `src/lib/orpc/procedures.ts` (oRPC handlers)
-- Any server-side prefetching code
+| Change                                      | Location                                                      |
+| ------------------------------------------- | ------------------------------------------------------------- |
+| Project or organization procedure           | Owning `apps/calculator/src/features/<feature>/procedures.ts` |
+| Procedure registration or shared middleware | `apps/calculator/src/lib/orpc/`                               |
+| Database schema or migration                | `packages/database/src/`                                      |
+| Transactional email template                | `packages/email/src/templates/`                               |
+| Email transport configuration               | `apps/calculator/src/lib/email.ts`                            |
+| Translation message                         | Every file in `packages/i18n/src/locales/`                    |
+| Shared UI primitive                         | `apps/calculator/src/components/ui/`                          |
+| Feature UI                                  | `apps/calculator/src/features/<feature>/components/`          |
 
-**Verification**: Check that `globalThis.$client` exists before SSR starts.
+## Constraints
 
----
-
-## Common Changes by Task
-
-| What You're Doing       | Where to Edit                | Key Files                                         |
-| ----------------------- | ---------------------------- | ------------------------------------------------- |
-| Add API endpoint        | `src/lib/orpc/`              | Register in `router.ts`                           |
-| Add protected procedure | `src/lib/orpc/middleware.ts` | Use `requireAuth` middleware                      |
-| Database schema change  | `src/lib/drizzle/schema/`    | Run `pnpm run db:generate`, `pnpm run db:migrate` |
-| Add auth hook           | `src/lib/better-auth/`       | Configure in `auth.ts`                            |
-| Add socket event        | `src/socket-server.ts`       | Define handler + emit pattern                     |
-| Add UI component        | `src/components/ui/`         | Use `bunx shadcn@latest add <name>`               |
-| Add translation         | `messages/<locale>/*.json`   | Follow namespace structure                        |
-| Add email template      | `src/lib/email/templates/`   | Use React Email components                        |
-| Add questionnaire step  | `src/features/participate/`  | See `docs/participate/flow.md`                    |
-
----
-
-## Project Structure Deep Dive
-
-```
-greendex-calculator/
-├── src/
-│   ├── app/                        # Next.js App Router
-│   │   ├── [locale]/              # Internationalized routes
-│   │   ├── api/
-│   │   │   ├── auth/[...all]/     # Better Auth endpoints
-│   │   │   └── rpc/[[...rest]]/   # oRPC HTTP adapter
-│   │   └── (auth)/                # Route groups
-│   │
-│   ├── lib/                        # Core libraries
-│   │   ├── better-auth/           # Authentication config
-│   │   ├── drizzle/               # Database ORM
-│   │   ├── email/                 # Email templates
-│   │   ├── i18n/                  # Internationalization
-│   │   └── orpc/                  # API procedures
-│   │       ├── procedures/        # Individual procedures
-│   │       ├── router.ts          # Main router
-│   │       ├── middleware.ts      # Auth/validation middleware
-│   │       ├── client.server.ts   # Server-side client
-│   │       ├── client.browser.ts  # Browser client
-│   │       └── orpc.ts            # Unified export
-│   │
-│   ├── components/                 # React components
-│   │   ├── ui/                    # shadcn components
-│   │   └── ...                    # Feature components
-│   │
-│   ├── features/                   # Feature modules
-│   │   ├── participate/           # Questionnaire feature
-│   │   └── projects/              # Project management
-│   │
-│   ├── hooks/                      # Custom React hooks
-│   ├── config/                     # App configuration
-│   ├── __tests__/                  # Test files
-│   ├── instrumentation.ts          # Next.js instrumentation (SSR client init)
-│   └── env.ts                      # Environment validation
-│
-├── docs/                           # Comprehensive documentation
-├── messages/                       # i18n translation files
-├── migrations/                     # Database migrations
-├── public/                         # Static assets
-└── scripts/                        # Utility scripts
-```
-
----
-
-## Data Flow Patterns
-
-### Server Component → Data Fetching
-
-```typescript
-// src/app/[locale]/projects/page.tsx
-import { orpc } from "@/lib/orpc/orpc"; // Server-side client
-
-export default async function ProjectsPage() {
-  const projects = await orpc.projects.list(); // Direct call (no HTTP)
-  return <ProjectList projects={projects} />;
-}
-```
-
-### Client Component → Data Fetching with TanStack Query
-
-```typescript
-// src/components/ProjectList.tsx
-"use client";
-import { orpc } from "@/lib/orpc/orpc"; // Browser client
-
-export function ProjectList() {
-  const { data: projects } = orpc.projects.list.useQuery(); // HTTP call
-  return <div>{/* ... */}</div>;
-}
-```
-
-### SSR Prefetch → Hydration
-
-```typescript
-// src/app/[locale]/projects/page.tsx
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { getQueryClient } from "@/lib/tanstack-query/server";
-import { orpc } from "@/lib/orpc/orpc";
-
-export default async function ProjectsPage() {
-  const queryClient = getQueryClient();
-
-  // Prefetch on server (direct call)
-  await queryClient.prefetchQuery({
-    queryKey: orpc.projects.list.getQueryKey(),
-    queryFn: () => orpc.projects.list(),
-  });
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProjectListClient />
-    </HydrationBoundary>
-  );
-}
-```
-
----
-
-## Key Constraints & Gotchas
-
-| Constraint             | Reason                                         | Impact                                     |
-| ---------------------- | ---------------------------------------------- | ------------------------------------------ |
-| ESM-only               | `package.json` has `"type": "module"`          | No `require()`, use `import`               |
-| React Compiler enabled | `next.config.ts` has `reactCompiler: true`     | Don't disable or modify                    |
-| Direct socket server   | Socket.IO runs separately                      | Must start manually for WebSocket features |
-| Client import order    | `instrumentation.ts` initializes server client | Breaking order breaks SSR                  |
-| Barrel file avoidance  | Performance optimization                       | Import specific paths, not `index.ts`      |
-
----
-
-## For More Details
-
-- **oRPC deep dive**: `docs/orpc/DUAL-SETUP.md`
-- **SSR optimization**: `docs/orpc/Optimize-Server-Side-Rendering.SSR.md`
-- **Database schema**: `src/lib/drizzle/README.md` (if exists) or `docs/database/`
-- **Better Auth config**: `docs/better-auth/better-auth.options.md`
-- **File organization**: Project structure is documented via this file
+- Workspace modules are ESM.
+- Read validated environment values from `apps/calculator/src/env.ts`; direct `process.env` access is limited to that file and `apps/calculator/src/instrumentation.ts`.
+- Preserve React Compiler configuration in `apps/calculator/next.config.ts`.
+- Socket.IO remains a separate process in `apps/calculator/src/socket-server.ts`.
+- Import app modules through `@/` and workspace modules through `@greendex/*`; avoid new app-level barrel files.

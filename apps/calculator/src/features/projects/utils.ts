@@ -1,25 +1,23 @@
-import type z from "zod";
-
 import { ACTIVITY_EMISSION_FACTORS } from "@greendex/config/activities";
 import { projectsTable } from "@greendex/database/schema";
 import { asc, desc, type SQL, sql } from "drizzle-orm";
 import React from "react";
+import type z from "zod";
 
-import type { ProjectActivityType } from "@/features/project-activities/types";
+import { type AppRoute, PROJECT_DETAIL_PATH } from "@/app/routes";
 import type { ProjectParticipantWithUser } from "@/features/participants/types";
+import { PROJECT_ACTIVITIES_ICONS } from "@/features/project-activities/activities-icons";
+import type { ProjectActivityType } from "@/features/project-activities/types";
 import type {
   ListProjectsInput,
   ProjectStatistics,
   ProjectType,
 } from "@/features/projects/types";
-import type { ProjectSortFieldSchema } from "@/features/projects/validation-schemas";
-
-import { type AppRoute, PROJECT_DETAIL_PATH } from "@/app/routes";
-import { PROJECT_ACTIVITIES_ICONS } from "@/features/project-activities/activities-icons";
 import {
   DEFAULT_PROJECT_SORT,
   ProjectSortField,
 } from "@/features/projects/types";
+import type { ProjectSortFieldSchema } from "@/features/projects/validation-schemas";
 import { orpc } from "@/lib/orpc/orpc";
 
 /**

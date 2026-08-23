@@ -7,9 +7,8 @@
  * Note: For server-side or dynamic role checks, use auth.api.hasPermission instead.
  */
 
-import type { ProjectPermission } from "@/features/projects/permissions";
-
 import { MEMBER_ROLES, type MemberRole } from "@/features/organizations/types";
+import type { ProjectPermission } from "@/features/projects/permissions";
 import { authClient } from "@/lib/better-auth/auth-client";
 
 /**

@@ -26,13 +26,14 @@ Never execute commands that start processes or builds:
 
 ## Essential Context
 
-| What                 | Value                 | Notes                              |
-| -------------------- | --------------------- | ---------------------------------- |
-| **Package Manager**  | `pnpm`                | Use pnpm for all installs/scripts  |
-| **Node Modules**     | ESM only              | `"type": "module"` in package.json |
-| **Linter/Formatter** | Oxc                   | See `docs/oxc/` for standards      |
-| **Test Runner**      | Vitest                | Tests in `src/__tests__/`          |
-| **Framework**        | Next.js 16 + React 19 | App Router, React Compiler enabled |
+| What                 | Value                 | Notes                                          |
+| -------------------- | --------------------- | ---------------------------------------------- |
+| **Package Manager**  | `pnpm`                | Use pnpm for all installs/scripts              |
+| **Node.js**          | 22+                   | `.node-version` and root `engines.node`        |
+| **Node Modules**     | ESM only              | Workspace manifests declare `"type": "module"` |
+| **Linter/Formatter** | Oxc                   | Root `.oxlintrc.json` and `.oxfmtrc.json`      |
+| **Test Runner**      | Vitest + Playwright   | Calculator tests under `apps/calculator/src/`  |
+| **Framework**        | Next.js 16 + React 19 | App Router, React Compiler enabled             |
 
 ## Coolify Development Deployment
 
@@ -73,7 +74,7 @@ The live database has SSL disabled because Coolify’s generated SSL mount was i
 
 - Make persistent resource, environment-variable, database, and lifecycle changes through Coolify’s UI/API. Coolify regenerates `/data/coolify/.../docker-compose.y*ml`; never hand-edit those generated files.
 - Deployments can take up to **10 minutes**. After requesting one, wait for it to reach a terminal status before requesting another; check the Coolify deployment UUID/status instead of inferring completion from an old healthy container.
-- The live database was initialized with Drizzle migrations. For a new/empty database, apply migrations before testing Better Auth. The migration tool reads `DATABASE_URL`; when executing inside the running container, pass it explicitly because Turbo does not forward it automatically:
+- The live database was initialized with Drizzle migrations. For a new/empty database, apply migrations before testing Better Auth. When executing the migration inside the running container, pass `DATABASE_URL` explicitly because the database task does not declare the build/start task's environment forwarding:
 
   ```bash
   docker exec <greendex-container> sh -lc \
@@ -91,54 +92,59 @@ The live database has SSL disabled because Coolify’s generated SSL mount was i
 
 ### Architecture Layers
 
-| Layer              | Location               | Entry Point                            |
-| ------------------ | ---------------------- | -------------------------------------- |
-| Next.js App Router | `src/app/`             | `page.tsx`/`layout.tsx` patterns       |
-| oRPC API           | `src/lib/orpc/`        | `src/app/api/rpc/[[...rest]]/route.ts` |
-| Better Auth        | `src/lib/better-auth/` | `src/app/api/auth/[...all]/route.ts`   |
-| Database           | `src/lib/drizzle/`     | Drizzle ORM, Postgres                  |
-| Socket.IO          | `src/socket-server.ts` | Manual start only                      |
+| Layer                | Location                               | Entry point / ownership                                  |
+| -------------------- | -------------------------------------- | -------------------------------------------------------- |
+| Calculator routes    | `apps/calculator/src/app/`             | Next.js pages, layouts, route handlers                   |
+| Calculator features  | `apps/calculator/src/features/`        | Domain procedures, components, schemas                   |
+| oRPC                 | `apps/calculator/src/lib/orpc/`        | Router plus internal RPC/OpenAPI adapters                |
+| Better Auth          | `apps/calculator/src/lib/better-auth/` | `apps/calculator/src/app/api/auth/[...all]/route.ts`     |
+| Database             | `packages/database/`                   | Drizzle client, schemas, migrations                      |
+| Email                | `packages/email/`                      | Templates and reusable delivery; app injects SMTP config |
+| Internationalization | `packages/i18n/`                       | Messages/exports; calculator owns route integration      |
+| Documentation        | `apps/documentation/`                  | Fumadocs application                                     |
+| Socket.IO            | `apps/calculator/src/socket-server.ts` | Separate manually started process                        |
 
-**⚠️ Critical**: The server-side oRPC client is initialized in `src/instrumentation.ts` and attached to `globalThis.$client`. **Never reorder imports in this file** — SSR breaks if the client isn't initialized first.
+**Critical oRPC invariant:** preserve both imports of `@/lib/orpc/client.server`: the dynamic import in `apps/calculator/src/instrumentation.ts` and the side-effect import in `apps/calculator/src/app/[locale]/layout.tsx`. The layout import must evaluate before local SSR consumers can load `apps/calculator/src/lib/orpc/orpc.ts`. Removing or delaying either path can make existing project pages render misleading 404s.
 
 ---
 
-## When Working on Features
+## Task Routing
 
-### Documentation-First Approach
+1. Check [`docs/README.md`](../docs/README.md) for the topic index.
+2. For an unfamiliar or cross-cutting task, follow [`docs/agent-workflows.md`](../docs/agent-workflows.md).
+3. Before editing a matching concern, read every required scoped instruction below. GitHub Copilot applies matching files through `applyTo`; other agents must use this table as the router.
+4. Read the linked topic documentation before changing an integration.
 
-1. **Check** `/docs/README.md` for the topic index
-2. **Read** relevant docs in `/docs/<topic>/` before implementing
-3. **Reference** detailed agent guidance below only if needed
+### Scoped instruction index
 
-### Quick Navigation via Instruction Files
+<!-- AGENT-INSTRUCTION-INDEX-START -->
 
-VS Code will auto-apply instruction files from `.github/instructions/` based on the file type being edited:
+| Instruction                                                                                                 | Read before changing                                              | Scope summary                         |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------- |
+| [`architecture.instructions.md`](instructions/architecture.instructions.md)                                 | Module placement, workspace boundaries, SSR/server-client flow    | App and package source files          |
+| [`better-auth.instructions.md`](instructions/better-auth.instructions.md)                                   | Authentication, organizations, sessions, permissions, auth schema | Auth/organization implementation      |
+| [`code-standards.instructions.md`](instructions/code-standards.instructions.md)                             | TypeScript, React, persistence, errors, tests                     | App and package source files          |
+| [`conventions.instructions.md`](instructions/conventions.instructions.md)                                   | Manifests, configuration, environment, quality workflow           | Repository configuration              |
+| [`i18n.instructions.md`](instructions/i18n.instructions.md)                                                 | Messages, locale routing/navigation, country presentation         | i18n package and localized app routes |
+| [`orpc.instructions.md`](instructions/orpc.instructions.md)                                                 | Procedures, middleware, router, OpenAPI, SSR clients              | oRPC, feature procedures, app routes  |
+| [`shadcn.instructions.md`](instructions/shadcn.instructions.md)                                             | Shared/feature components, forms, accessibility                   | Calculator component files            |
+| [`turborepo-package-management.instructions.md`](instructions/turborepo-package-management.instructions.md) | Dependencies, catalog, workspace packages, Turbo tasks/env        | Manifests, workspace and Turbo config |
 
-| Instruction File                 | Context                                         | Auto-Applied To               |
-| -------------------------------- | ----------------------------------------------- | ----------------------------- |
-| `architecture.instructions.md`   | System design, SSR patterns, file locations     | `.ts`, `.tsx` files in `src/` |
-| `code-standards.instructions.md` | TypeScript, React, async/await best practices   | All source files              |
-| `conventions.instructions.md`    | Project setup, linting, git workflow            | All files                     |
-| `quick-start.instructions.md`    | Task-based learning paths                       | All files                     |
-| `better-auth.instructions.md`    | Auth patterns, oRPC SSR integration             | Auth-related files            |
-| `i18n.instructions.md`           | Locale routing, translations, country selection | i18n and locale files         |
-| `orpc.instructions.md`           | API procedures, routers, middleware, SSR        | oRPC and API files            |
-| `shadcn.instructions.md`         | UI components, forms, accessibility             | UI component files            |
+<!-- AGENT-INSTRUCTION-INDEX-END -->
 
-For primary documentation references, also consult:
+### Primary documentation
 
-| Task                              | Primary Documentation                                 |
-| --------------------------------- | ----------------------------------------------------- |
-| API endpoints, procedures         | `docs/orpc/QUICKSTART.md` → `docs/orpc/DUAL-SETUP.md` |
-| Authentication, organizations     | `docs/better-auth/`                                   |
-| UI components, forms              | `docs/shadcn/`                                        |
-| Internationalization              | `docs/i18n/`                                          |
-| Database schema, migrations       | `docs/database/`                                      |
-| Questionnaire flows, calculations | `docs/participate/`                                   |
-| Permissions, access control       | `docs/projects/permissions.md`                        |
-| Email templates                   | `docs/react-email/`                                   |
-| Code standards, linting           | `docs/oxc/`                                           |
+| Task                                 | Primary documentation                                                      |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| API endpoints and procedures         | `docs/orpc/QUICKSTART.md` → `docs/orpc/DUAL-SETUP.md`                      |
+| Authentication and organizations     | `docs/better-auth/`                                                        |
+| UI components and forms              | `docs/shadcn/`                                                             |
+| Internationalization                 | `docs/i18n/`                                                               |
+| Database schemas and migrations      | `docs/database/` and `packages/database/`                                  |
+| Questionnaire flows and calculations | `docs/participate/`                                                        |
+| Permissions and access control       | `docs/projects/permissions.md`                                             |
+| Email templates and transport        | `docs/react-email/`, `packages/email/`, `apps/calculator/src/lib/email.ts` |
+| Code standards and tooling           | `docs/oxc/`                                                                |
 
 ---
 
@@ -147,10 +153,11 @@ For primary documentation references, also consult:
 Before submitting work:
 
 - [ ] No forbidden commands were executed
-- [ ] `src/instrumentation.ts` import ordering preserved
+- [ ] Both server-side oRPC initialization paths preserved
 - [ ] Tests updated for changed functionality
 - [ ] `pnpm run format && pnpm run lint` executed and passing
-- [ ] Documentation consulted before integration changes (use `.github/instructions/` files)
+- [ ] `pnpm run check:agent-instructions` passes after instruction changes
+- [ ] Matching scoped instructions and topic documentation consulted
 - [ ] Git commits are focused and well-described
 
 **The developer is always in control. Agents are assistants, not controllers.**

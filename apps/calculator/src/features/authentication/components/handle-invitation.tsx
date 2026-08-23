@@ -2,8 +2,6 @@
 
 import { useTranslations } from "@greendex/i18n/client";
 
-import type { auth } from "@/lib/better-auth";
-
 import {
   Card,
   CardContent,
@@ -15,6 +13,7 @@ import {
 import { AcceptInvitationButton } from "@/features/organizations/components/accept-invitation-button";
 import { CancelInvitationButton } from "@/features/organizations/components/cancel-invitation-button";
 import { ORGANIZATION_ICONS } from "@/features/organizations/organization-icons";
+import type { auth } from "@/lib/better-auth";
 
 interface HandleInvitationProps {
   invitation: Awaited<ReturnType<typeof auth.api.getInvitation>>;

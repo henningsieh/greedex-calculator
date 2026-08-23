@@ -1,3 +1,4 @@
+import React from "react";
 import { Hr, Section, Text } from "react-email";
 
 import { emailColors, emailSpacing } from "../../config/styles";
@@ -58,7 +59,13 @@ const footerStyles = {
   },
 } as const;
 
-export function EmailFooter() {
+interface EmailFooterProps {
+  websiteUrl: string;
+}
+
+export function EmailFooter({ websiteUrl }: EmailFooterProps) {
+  const websiteHost = new URL(websiteUrl).host;
+
   return (
     <>
       <Hr className="email-hr" style={emailSpacing.hr} />
@@ -80,8 +87,8 @@ export function EmailFooter() {
             info@greendex.world
           </a>
           {" · "}
-          <a href="https://greendex.world" style={footerStyles.contactLinkAccent}>
-            greendex.world
+          <a href={websiteUrl} style={footerStyles.contactLinkAccent}>
+            {websiteHost}
           </a>
         </Text>
         <Text style={footerStyles.quote}>

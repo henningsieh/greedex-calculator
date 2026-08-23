@@ -1,6 +1,7 @@
-import { config } from "dotenv";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+
+import { config } from "dotenv";
 
 // Load environment variables from monorepo root BEFORE any tests run
 // In Turborepo, the .env file is at the repository root, not in apps/calculator

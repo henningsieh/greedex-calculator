@@ -1,7 +1,5 @@
 "use client";
 
-import type z from "zod";
-
 import { DEFAULT_PAGE_SIZE } from "@greendex/config/pagination";
 import { useLocale, useTranslations } from "@greendex/i18n/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -22,8 +20,7 @@ import {
 } from "@tanstack/react-table";
 import { FilterXIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-
-import type { MemberWithUserSchema } from "@/features/organizations/validation-schemas";
+import type z from "zod";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -51,6 +48,7 @@ import {
   type MemberRole,
   type MemberSortField,
 } from "@/features/organizations/types";
+import type { MemberWithUserSchema } from "@/features/organizations/validation-schemas";
 import { SortableHeader } from "@/features/projects/components/sortable-header";
 import { orpcQuery } from "@/lib/orpc/orpc";
 

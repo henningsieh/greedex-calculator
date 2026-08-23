@@ -4,8 +4,16 @@
  */
 
 // Export email sending utilities
-export { sendEmail, type SendEmailOptions } from "./send";
 export { createTransporter, type SmtpConfig } from "./config";
+export {
+  createEmailSender,
+  type CreateEmailSenderOptions,
+  type EmailSender,
+  type SendEmailVerificationEmailParams,
+  type SendMagicLinkEmailParams,
+  type SendOrganizationInvitationParams,
+  type SendPasswordResetEmailParams,
+} from "./email-sender";
 
 // Export utility functions
 export { maskEmail } from "./utils";

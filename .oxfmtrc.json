@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "$schema": "node_modules/oxfmt/configuration_schema.json",
   "printWidth": 82,
   "ignorePatterns": [
     "node_modules/**",
@@ -9,17 +9,37 @@
     "docs/**",
     ".specify/**",
     "specs/**",
-    "packages/**/dist/**"
+    "packages/**/dist/**",
+    "apps/documentation/src/components/ui/**"
   ],
-  "experimentalSortImports": {
+  "sortImports": {
     "ignoreCase": true,
     "newlinesBetween": true
   },
-  "experimentalTailwindcss": {
-    "stylesheet": "apps/calculator/src/app/globals.css",
-    "attributes": ["class", "className"],
-    "functions": ["clsx", "cn", "cva", "twMerge"],
-    "preserveDuplicates": false,
-    "preserveWhitespace": false
-  }
+  "overrides": [
+    {
+      "files": ["apps/calculator/**"],
+      "options": {
+        "sortTailwindcss": {
+          "stylesheet": "apps/calculator/src/app/globals.css",
+          "attributes": ["class", "className"],
+          "functions": ["clsx", "cn", "cva", "twMerge"],
+          "preserveDuplicates": false,
+          "preserveWhitespace": false
+        }
+      }
+    },
+    {
+      "files": ["apps/documentation/**"],
+      "options": {
+        "sortTailwindcss": {
+          "stylesheet": "apps/documentation/src/app/globals.css",
+          "attributes": ["class", "className"],
+          "functions": ["clsx", "cn", "cva", "twMerge"],
+          "preserveDuplicates": false,
+          "preserveWhitespace": false
+        }
+      }
+    }
+  ]
 }

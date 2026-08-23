@@ -1,8 +1,7 @@
-import type { InferSelectModel } from "drizzle-orm";
-import type { z } from "zod";
-
 import { PAGE_SIZE_OPTIONS } from "@greendex/config/pagination";
 import { projectsTable } from "@greendex/database";
+import type { InferSelectModel } from "drizzle-orm";
+import type { z } from "zod";
 
 import type {
   ProjectSortFieldSchema,

@@ -1,3 +1,4 @@
+import React from "react";
 import { Section } from "react-email";
 
 import { EmailButton } from "../components/email-button";
@@ -8,16 +9,21 @@ import { emailSpacing } from "../config/styles";
 import { EmailLayout } from "./components/email-layout";
 
 interface PasswordResetEmailProps {
+  baseUrl: string;
   userName?: string;
   resetUrl: string;
 }
 
 export function PasswordResetEmail({
+  baseUrl,
   userName,
   resetUrl,
 }: PasswordResetEmailProps) {
   return (
-    <EmailLayout previewText="Reset your Greendex password - link expires in 24 hours">
+    <EmailLayout
+      previewText="Reset your Greendex password - link expires in 24 hours"
+      websiteUrl={baseUrl}
+    >
       <EmailHeading>Reset Your Password</EmailHeading>
       <EmailText>{userName ? `Hi ${userName},` : "Hi there,"}</EmailText>
       <EmailText>
