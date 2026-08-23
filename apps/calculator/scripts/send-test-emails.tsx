@@ -12,8 +12,14 @@ function getRequiredEnvironmentVariable(name: string): string {
   return value;
 }
 
-const smtpPort = Number.parseInt(getRequiredEnvironmentVariable("SMTP_PORT"), 10);
-if (Number.isNaN(smtpPort)) {
+const smtpPortString = getRequiredEnvironmentVariable("SMTP_PORT");
+const smtpPort = Number.parseInt(smtpPortString, 10);
+if (
+  Number.isNaN(smtpPort) ||
+  smtpPortString !== String(smtpPort) ||
+  smtpPort < 1 ||
+  smtpPort > 65535
+) {
   throw new Error("SMTP_PORT must be a number.");
 }
 
