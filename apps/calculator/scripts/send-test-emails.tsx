@@ -1,6 +1,7 @@
+import { resolve } from "node:path";
+
 import { createEmailSender, createTransporter } from "@greendex/email";
 import { config } from "dotenv";
-import { resolve } from "node:path";
 
 config({ path: resolve(import.meta.dirname, "../../../.env") });
 
@@ -12,13 +13,16 @@ const getRequiredEnvironmentVariable = (name: string): string => {
   return value;
 };
 
+const MIN_SMTP_PORT = 1;
+const MAX_SMTP_PORT = 65_535;
 const smtpPortString = getRequiredEnvironmentVariable("SMTP_PORT");
 const smtpPort = Number.parseInt(smtpPortString, 10);
+
 if (
   Number.isNaN(smtpPort) ||
   smtpPortString !== String(smtpPort) ||
-  smtpPort < 1 ||
-  smtpPort > 65535
+  smtpPort < MIN_SMTP_PORT ||
+  smtpPort > MAX_SMTP_PORT
 ) {
   throw new Error("SMTP_PORT must be a number.");
 }
