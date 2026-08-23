@@ -4,21 +4,21 @@
 >
 > **Repository:** `henningsieh/greendex-calculator`
 >
-> **Branch:** `migrate-email-to-package`
+> **Branch:** `main`
 >
-> **HEAD:** `d08842ae95c8a3414092744e50b95290933267d1`
+> **HEAD:** `320c3819cf23fe579fcc190fa1beef70f9a4a9f2`
 
-This report extends the August 20–22 snapshot through the current email-package
-migration branch. It records the current state after reviewing every commit
-from `6bbd947` through `d08842a`, including all changes since `dc5a3cc`.
+This report extends the August 20–22 snapshot through the merge of the
+email-package migration into `main`. It records the current state after
+reviewing every commit from `6bbd947` through `320c381`, including all changes
+since `dc5a3cc`.
 
 ---
 
 ## 1. Executive snapshot
 
-- `origin/main` remains at `5e9da4b`; the current
-  `migrate-email-to-package` branch is **seven commits ahead** and is published
-  as open PR #57.
+- `main` includes the seven-commit email-package migration through merge commit
+  `320c381`; PR #57 is the corresponding branch integration.
 - The project is a pnpm/Turborepo monorepo with two Next.js applications and
   five shared workspace packages.
 - Transactional templates, rendering, and delivery are centralized in
@@ -49,11 +49,11 @@ the open branch relative to `origin/main` and specifically the six commits after
 `dc5a3cc`:
 
 ```bash
-git diff 5e9da4b...d08842a
-git log 5e9da4b..d08842a --oneline
+git diff 5e9da4b...320c381
+git log 5e9da4b..320c381 --oneline
 
-git diff dc5a3cc...d08842a
-git log dc5a3cc..d08842a --oneline
+git diff dc5a3cc...320c381
+git log dc5a3cc..320c381 --oneline
 ```
 
 ### Net branch change since `origin/main`
@@ -143,8 +143,8 @@ These commits were developed on
 
 ### August 23 — email migration, SSR repair, and tooling
 
-These commits are on `migrate-email-to-package`, seven commits ahead of
-`origin/main`, and are represented by open PR #57.
+These commits were integrated into `main` by merge commit `320c381`; PR #57 is
+the corresponding branch integration.
 
 | Commit    | Change                                                          | Final effect                                                                                            |
 | --------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -155,6 +155,7 @@ These commits are on `migrate-email-to-package`, seven commits ahead of
 | `17d3537` | Centralized Oxfmt import sorting and restored SSR oRPC setup    | Root formatter config replaces per-app configs; locale layout initializes the server oRPC client        |
 | `a14731a` | Enforced Node.js 22+                                            | Root `engines.node` is `>=22`, `.node-version` is `22`, and oRPC guidance names the runtime requirement |
 | `d08842a` | Added project-routing E2E regressions                           | Playwright guards authenticated project details and public participation routes against misleading 404s |
+| `320c381` | Merged the email-package branch into `main`                     | Integrates the seven commits above into the mainline                                                    |
 
 ---
 
@@ -315,7 +316,7 @@ backfill/migration strategy before applying it. Deployment state of migration
 | PR  | State    | Note                                                                                         |
 | --- | -------- | -------------------------------------------------------------------------------------------- |
 | #11 | **OPEN** | Stale CodeRabbit unit-test PR; base is old `copilot/update-breadcrumb-component`, not `main` |
-| #57 | **OPEN** | Current `migrate-email-to-package` branch; seven commits ahead of `main`                     |
+| #57 | Merged   | Email-package migration integrated into `main` by `320c381`                                  |
 | #35 | Closed   | Docker/bun containerization experiment; branch deleted                                       |
 | #50 | Closed   | pnpm-to-bun migration rejected; branch deleted                                               |
 | #54 | Closed   | Superseded Dependabot update; branch deleted                                                 |
@@ -347,23 +348,20 @@ removed locally and remotely.
    - `.vscode/mcp.json` uses `bunx` to launch an MCP server.
      These conflict with the project's pnpm-only convention. Documentation examples
      from upstream libraries are not runtime dependencies and are less urgent.
-2. **Email migration is pending merge:** duplicate app-level templates and sender
-   logic are removed on `migrate-email-to-package`, but this state remains in open
-   PR #57 rather than `main`.
-3. **Migration `0009`:** confirm live schema/application status and backfill safety.
-4. **OpenAPI integration tests are not hermetic:** `openapi-rest.test.ts` expects a
+2. **Migration `0009`:** confirm live schema/application status and backfill safety.
+3. **OpenAPI integration tests are not hermetic:** `openapi-rest.test.ts` expects a
    server on `localhost:3000`. Its collection/skip behavior still depends on server
    availability and should be separated from the hermetic unit suite.
-5. **Stale PR/branches/stashes:** #11, `bun-runtime`, the merged dependency branch,
+4. **Stale PR/branches/stashes:** #11, `bun-runtime`, the merged dependency branch,
    the orphaned Dependabot branch, and eight stashes remain cleanup candidates.
-6. **No license selected:** the repository still has no finalized license.
+5. **No license selected:** the repository still has no finalized license.
 
 ---
 
 ## 11. Documentation-sync validation
 
-- Commit history and final diffs were inspected through `d08842a`, including all
-  seven commits on the current branch and all six commits after `dc5a3cc`.
+- Commit history and final diffs were inspected through merge commit `320c381`,
+  including all seven integrated commits and all six commits after `dc5a3cc`.
 - Current package manifests, Node runtime pins, formatter configuration, email
   package boundaries, SSR oRPC initialization, E2E fixtures, branches, PRs, and
   stashes were cross-checked.
