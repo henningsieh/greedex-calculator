@@ -1,176 +1,61 @@
 ---
-name: "Better Auth Integration"
-description: "Authentication patterns, organizations, and oRPC integration"
-applyTo: "**/auth/**/*.ts,**/better-auth/**/*.ts,**/middleware.ts"
+name: "Better Auth"
+description: "Authentication, organizations, permissions, and auth persistence"
+applyTo: "apps/calculator/src/lib/better-auth/**/*.ts,apps/calculator/src/features/authentication/**/*.ts,apps/calculator/src/features/authentication/**/*.tsx,apps/calculator/src/features/organizations/**/*.ts,apps/calculator/src/features/organizations/**/*.tsx,apps/calculator/src/features/projects/permissions.ts,apps/calculator/src/lib/orpc/middleware.ts,apps/calculator/src/lib/orpc/procedures.ts,apps/calculator/src/app/api/auth/**/*.ts,packages/database/src/schemas/auth-schema.ts"
 ---
 
-# Better Auth Integration Guide
+# Better Auth
 
-**Context**: When working with authentication, organizations, or user management features.
+Read the relevant Better Auth documentation before changing authentication or organization behavior:
 
----
+- [Options](../../docs/better-auth/better-auth.options.md)
+- [Email/password](../../docs/better-auth/better-auth.credentials.email_password.md)
+- [Organizations](../../docs/better-auth/better-auth.organizations.md)
+- [oRPC integration](../../docs/orpc/orpc.better-auth.md)
+- [Project permissions](../../docs/projects/permissions.md)
 
-## Comprehensive Documentation
+## Sources of truth
 
-For detailed configuration options, integration patterns, and examples, **always consult** `/docs/better-auth/` first:
+| Concern              | Location                                               |
+| -------------------- | ------------------------------------------------------ |
+| Server configuration | `apps/calculator/src/lib/better-auth/index.ts`         |
+| Browser client       | `apps/calculator/src/lib/better-auth/auth-client.ts`   |
+| Auth route           | `apps/calculator/src/app/api/auth/[...all]/route.ts`   |
+| Auth database schema | `packages/database/src/schemas/auth-schema.ts`         |
+| oRPC auth procedures | `apps/calculator/src/lib/orpc/procedures.ts`           |
+| Auth middleware      | `apps/calculator/src/lib/orpc/middleware.ts`           |
+| Permission model     | `apps/calculator/src/features/projects/permissions.ts` |
 
-- **Options & Configuration**: [docs/better-auth/better-auth.options.md](../../docs/better-auth/better-auth.options.md) — Complete reference for all Better Auth configuration options
-- **Organizations**: [docs/better-auth/better-auth.organizations.md](../../docs/better-auth/better-auth.organizations.md) — Organization features and permissions
-- **Credentials (Email/Password)**: [docs/better-auth/better-auth.credentials.email_password.md](../../docs/better-auth/better-auth.credentials.email_password.md) — Email/password authentication setup
-- **LastLoginMethod Utility**: [docs/better-auth/better-auth.utility.LastLoginMethod.md](../../docs/better-auth/better-auth.utility.LastLoginMethod.md) — Track user login methods
+## Server/client rule
 
-For oRPC integration patterns, see [docs/orpc/orpc.better-auth.md](../../docs/orpc/orpc.better-auth.md).
+- Server Components and protected procedures use `auth.api` or the server-side oRPC client with request headers.
+- Client Components use the Better Auth browser client or hydrated `orpcQuery` data.
+- Do not call client hooks from Server Components.
+- Preserve request headers through the oRPC context; authentication is request-specific.
 
----
+## Organization access
 
-## Official Resources
+- Treat `session.activeOrganizationId` as the tenant boundary.
+- Organization-owned reads and writes must constrain database queries by that ID.
+- Apply `authorized` before permission middleware.
+- Use `requireProjectPermissions` for project operations and keep role semantics aligned with `apps/calculator/src/features/projects/permissions.ts`.
+- Distinguish unauthenticated (`UNAUTHORIZED`) from authenticated-but-disallowed (`FORBIDDEN`) behavior.
 
-- Official docs: https://www.better-auth.com/llms.txt
-- Google OAuth and other providers setup instructions available there
+## Email and providers
 
----
+- Provider credentials come from `apps/calculator/src/env.ts`.
+- Better Auth callbacks call the configured calculator `emailSender`; reusable templates and delivery live in `@greendex/email`.
+- Preserve the deployed OAuth callback paths when changing provider configuration.
+- Never log or commit OAuth secrets, session secrets, invitation tokens, or verification tokens.
 
-## Application-Specific Pattern: Better Auth + oRPC SSR
+## Schema changes
 
-This section contains **repository-specific** instructions for using Better Auth with oRPC in SSR contexts.
+When a Better Auth model changes:
 
-### Why This Pattern Exists
+1. Update `apps/calculator/src/lib/better-auth/index.ts`.
+2. Run `pnpm --filter @greendex/calculator auth:generate`.
+3. Inspect the generated change in `packages/database/src/schemas/auth-schema.ts`.
+4. Generate and inspect the Drizzle migration.
+5. Add or update auth integration tests.
 
-The Better Auth client provides client-side hooks (e.g., `authClient.useSession()`), which **cannot** be used in:
-
-- Server components
-- Prefetchable Suspense boundaries
-
-**Solution**: This repository wraps Better Auth APIs in oRPC procedures and passes request headers through the oRPC context. This allows:
-
-- Auth data to be **prefetched on the server** (no HTTP calls)
-- Client components to consume via **TanStack Query** (hydrated)
-
-### Implementation Example
-
-#### 1. Define oRPC Context with Headers
-
-```typescript
-// src/lib/orpc/context.ts
-import { os } from "@orpc/server";
-
-export const base = os.$context<{ headers: Headers }>();
-```
-
-#### 2. Create Auth Procedures
-
-```typescript
-// src/lib/orpc/procedures/auth.ts
-import { auth } from "@/lib/better-auth";
-import { base } from "../context";
-
-export const getSession = base.handler(async ({ context }) => {
-  return await auth.api.getSession({ headers: context.headers });
-});
-
-export const listOrganizations = base.handler(async ({ context }) => {
-  return await auth.api.listOrganizations({ headers: context.headers });
-});
-```
-
-#### 3. Register in Router
-
-```typescript
-// src/lib/orpc/router.ts
-import { os } from "@orpc/server";
-import { getSession, listOrganizations } from "./procedures/auth";
-
-export const router = os.router({
-  auth: {
-    getSession,
-    listOrganizations,
-  },
-  // ... other procedures
-});
-```
-
-#### 4. Prefetch in Server Component
-
-```typescript
-// src/app/[locale]/dashboard/page.tsx
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { getQueryClient } from "@/lib/tanstack-query/server";
-import { orpc } from "@/lib/orpc/orpc";
-
-export default async function DashboardPage() {
-  const queryClient = getQueryClient();
-
-  // Prefetch session on server (direct call, no HTTP)
-  await queryClient.prefetchQuery({
-    queryKey: orpc.auth.getSession.getQueryKey(),
-    queryFn: () => orpc.auth.getSession(),
-  });
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <DashboardClient />
-    </HydrationBoundary>
-  );
-}
-```
-
-#### 5. Consume in Client Component
-
-```typescript
-// src/components/DashboardClient.tsx
-"use client";
-import { orpc } from "@/lib/orpc/orpc";
-
-export function DashboardClient() {
-  const { data: session } = orpc.auth.getSession.useQuery();
-
-  if (!session) {
-    return <div>Not authenticated</div>;
-  }
-
-  return <div>Welcome, {session.user.name}!</div>;
-}
-```
-
----
-
-## Usage & Decision Guidance
-
-| Scenario                               | Use                                                           |
-| -------------------------------------- | ------------------------------------------------------------- |
-| **Server-rendered page**               | oRPC + prefetch (see example above)                           |
-| **Component inside Suspense**          | oRPC + prefetch                                               |
-| **Interactive, client-only component** | Better Auth hooks (`authClient.useSession()`)                 |
-| **Middleware (Next.js)**               | Better Auth API directly (`auth.api.getSession({ headers })`) |
-
----
-
-## Common Tasks
-
-| Task                               | Implementation                                                                                      |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Check if user is authenticated** | Use `orpc.auth.getSession()` in server components or `authClient.useSession()` in client components |
-| **Protect a route**                | Add middleware or check session in layout/page                                                      |
-| **List user's organizations**      | Use `orpc.auth.listOrganizations()`                                                                 |
-| **Track last login method**        | Use `LastLoginMethod` utility (see docs)                                                            |
-| **Add OAuth provider**             | Configure in `src/lib/better-auth/auth.ts` (see official docs)                                      |
-
----
-
-## File Locations
-
-| Purpose                    | Location                             |
-| -------------------------- | ------------------------------------ |
-| **Better Auth config**     | `src/lib/better-auth/auth.ts`        |
-| **Auth procedures (oRPC)** | `src/lib/orpc/procedures/auth.ts`    |
-| **HTTP endpoint**          | `src/app/api/auth/[...all]/route.ts` |
-| **Middleware**             | `src/middleware.ts`                  |
-
----
-
-## For More Details
-
-- **Comprehensive Better Auth docs**: `/docs/better-auth/`
-- **oRPC integration**: `/docs/orpc/orpc.better-auth.md`
-- **TanStack Query SSR**: `/docs/tanstack-react-query/ssr.md`
-- **oRPC patterns**: `.github/instructions/orpc.instructions.md`
+A new database must be migrated before auth testing. OAuth initiation writes state to the `verification` table; a failure before provider redirect usually warrants checking schema and database logs first.

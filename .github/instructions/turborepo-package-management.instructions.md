@@ -1,95 +1,61 @@
 ---
-name: "Turborepo Package Management"
-description: "Industry-standard dependency management for Turborepo monorepos"
-applyTo: "**/package.json,turbo.json"
+name: "Workspace and Turborepo"
+description: "pnpm catalog, workspace dependencies, Turbo tasks, and environment forwarding"
+applyTo: "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version"
 ---
 
-# Turborepo Package Management Standards
+# Workspace and Turborepo
 
-## Dependency Organization
+Use this instruction whenever changing a manifest, dependency version, workspace package, or Turbo task.
 
-### Root Package Management
+## Sources of truth
 
-- **Root `package.json`**: Contains only shared utilities and build tools
-- **Framework dependencies**: Never declare React, Next.js, or other framework packages in root
-- **Version enforcement**: Use `pnpm.overrides` in root to enforce consistent versions across workspace
+- Workspaces and shared versions: `pnpm-workspace.yaml`
+- Root task entrypoints and runtime pins: `package.json`
+- Task graph, caching, outputs, and forwarded environment: `turbo.json`
+- Package ownership: the nearest workspace `package.json`
+- Resolved dependency graph: `pnpm-lock.yaml`
 
-### App-Level Dependencies
+## Dependency ownership
 
-- **Apps declare frameworks**: Each Next.js/React app explicitly declares its framework dependencies
-- **Peer dependencies**: Packages declare framework dependencies as peer dependencies when needed
-- **No duplication**: Framework packages are only declared where they're directly used
+- Declare a dependency in every workspace that imports it directly.
+- Use `workspace:*` for internal `@greendex/*` packages.
+- Put shared framework/tool versions in the `catalog` section of `pnpm-workspace.yaml` and consume them with `"catalog:"`.
+- Keep package-specific libraries in the owning workspace manifest.
+- Shared packages declare React or framework peer dependencies when their public API requires the consumer to supply them.
+- Root dev dependencies are limited to repository-wide orchestration and quality tools.
+- Use an override only for a deliberate transitive-resolution fix that the catalog cannot express; document why it exists.
 
-### Version Consistency
+## Adding or updating a dependency
 
-- **Root overrides**: Enforce exact versions for critical dependencies via `pnpm.overrides`
-- **Semantic versioning**: Use exact versions for framework packages, caret ranges for utilities
-- **Regular updates**: Keep framework versions in sync across all apps
+1. Identify every workspace that imports the package.
+2. Decide whether the version belongs in the shared catalog or the owning manifest.
+3. Use a workspace-targeted pnpm command, for example `pnpm --filter <workspace> add <package>`.
+4. Inspect all manifest and `pnpm-lock.yaml` changes.
+5. Run type checking and the affected tests.
 
-## Implementation Pattern
+Do not edit `pnpm-lock.yaml` manually.
 
-### Root package.json Structure
+## Turbo tasks
 
-```json
-{
-  "dependencies": {
-    // Only shared utilities and build tools
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.4",
-    "zod": "^4.3.6"
-    // NO: react, next, next-intl, etc.
-  },
-  "pnpm": {
-    "overrides": {
-      // Enforce versions across workspace
-      "next": "16.1.6",
-      "react": "19.2.4",
-      "react-dom": "19.2.4"
-    }
-  }
-}
-```
+- Define reusable root task entrypoints in `package.json`; define workspace implementations in workspace manifests.
+- Declare generated outputs so Turbo can cache only reproducible artifacts.
+- Mark persistent processes and non-cacheable lifecycle/database tasks appropriately.
+- Keep dependency ordering explicit with `dependsOn`.
+- Do not add a task merely to alias a single command unless it is part of the repository workflow.
 
-### App package.json Structure
+## Critical environment forwarding
+
+Coolify and local shells provide environment variables to Turbo. The `build` and `start` tasks in `turbo.json` require:
 
 ```json
-{
-  "dependencies": {
-    // Framework dependencies declared here
-    "next": "16.1.6",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "next-intl": "4.8.1"
-  }
-}
+"env": ["*"]
 ```
 
-### Package Structure
+This setting is critical: without it, workspace processes do not receive the injected environment expected by application validation and build/start code. Preserve it when editing the task graph.
 
-```json
-{
-  "peerDependencies": {
-    // Framework packages as peers when needed
-    "next": "^16.1.6",
-    "next-intl": "^4.7.0"
-  }
-}
-```
+## Runtime consistency
 
-## Benefits
-
-- **Clear ownership**: Each app/package owns its framework dependencies
-- **Version control**: Root overrides ensure consistency without duplication
-- **Reduced conflicts**: No version resolution conflicts between root and apps
-- **Maintainability**: Easier to update individual apps without affecting others
-- **Industry standard**: Follows patterns used by major monorepo projects
-
-## Migration Guide
-
-When setting up new apps or packages:
-
-1. Add framework dependencies to the app/package that uses them
-2. Add critical versions to root `pnpm.overrides`
-3. Remove framework dependencies from root if they exist
-4. Run `pnpm install` to verify resolution
-5. Run `pnpm run type-check` to ensure no type conflicts
+- Node.js must satisfy the root `engines.node`; `.node-version` provides the local baseline.
+- Use the pnpm version declared by `packageManager`.
+- Keep core package versions synchronized through the catalog rather than repeating numeric versions across manifests.

@@ -6,7 +6,8 @@
     "build": "turbo run build",
     "build:cloudenv": "turbo run build:cloudenv",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint && pnpm run check:agent-instructions",
+    "check:agent-instructions": "node scripts/check-agent-instructions.mjs",
     "start": "turbo run start",
     "format": "turbo run format",
     "test": "turbo run test --",
@@ -34,8 +35,8 @@
     "turbo": "^2.10.11",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.28.2",
   "engines": {
     "node": ">=22"
-  }
+  },
+  "packageManager": "pnpm@10.28.2"
 }

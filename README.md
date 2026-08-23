@@ -1,365 +1,415 @@
-# Greendex v2 — Carbon Footprint Calculator Portal
+# Greendex Calculator
 
-**Greendex v2** is a specialized web application and participant portal for managing and calculating the carbon footprint of **Erasmus+ projects** (youth exchanges, training courses, and mobility events). Built for educators, organizers, and participants to raise environmental awareness and inspire sustainable action.
+Greendex Calculator is a multilingual participant and organization portal for
+measuring the carbon footprint of Erasmus+ mobility projects. It combines
+project administration, participant journeys, emissions calculations,
+workshops, and sustainability education in one application.
 
-## Overview
+> **Current stage:** active development. The only shared deployment is the
+> Coolify `development` environment at
+> [greendex.apps.sieh.org](https://greendex.apps.sieh.org). No separate
+> production environment is configured yet.
 
-Greendex v2 provides a modern, user-friendly portal where project organizers can:
+## What the application supports
 
-- 🏢 **Create and manage organizations** for their Erasmus+ projects
-- 🧒 **Invite participants** and track team members across mobility events
-- 👥 **Team member invitations** (Organization Owners and Employees)
-- 🔐 **role-based access** (Owner / Employee / Participant)
-- 🌍 **Calculate CO₂ emissions** from participant journeys (transport modes, accommodation, energy)
-- 📊 **Visualize sustainability impact** with individual and group-level analytics
-- 🌱 **Organize sustainability challenges** to reduce carbon footprint during projects
-- 🌳 **Plant trees** to offset calculated emissions and join the Greendex movement
-- 🕒 **Support workflows** including Green Moment (30 min), Green Deal (60 min), and Green Day (180 min) workshop formats
+- Organization onboarding, membership, invitations, and role-based permissions
+- Project creation, editing, filtering, sorting, archiving, and batch actions
+- Participant management and a public participation/questionnaire flow
+- Project activities, travel distances, and CO₂ statistics
+- Email/password, magic-link, and Google/GitHub/Discord authentication
+- Transactional verification, reset-password, and invitation emails
+- Seven UI locales with a searchable language switcher
+- Internal type-safe oRPC plus REST/OpenAPI and interactive Scalar documentation
+- A separate Socket.IO proof of concept for future real-time features
+- A Fumadocs application for project/user documentation
 
-This next iteration (v2) redesigns the carbon calculator experience as a **multi-tenant SaaS portal** with:
-
-- Real-time organization and team management via Better Auth
-- Secure role-based access control (owner, admin, member)
-- Ready-to-scale WebSocket infrastructure for real-time collaboration
-- Database-first approach with Drizzle ORM + PostgreSQL
-
-Learn more at [greendex.world](https://greendex.world) and [calculator.greendex.world](https://app.greendex.world/).
-
----
-
-## Tech Stack
-
-| Layer                | Technology                         | Purpose                                             |
-| -------------------- | ---------------------------------- | --------------------------------------------------- |
-| **Frontend**         | Next.js 16 (App Router) + React 19 | Server & client components, type-safe UI            |
-| **Language**         | TypeScript 6.x                     | Type safety across the stack                        |
-| **UI Framework**     | shadcn/ui + Tailwind CSS 4         | Component library + responsive design               |
-| **Authentication**   | Better Auth + Organization Plugin  | Multi-tenant auth, org/member management            |
-| **State Management** | nuqs                               | URL-based tab persistence (no extra backend state)  |
-| **Database**         | PostgreSQL + Drizzle ORM           | Type-safe migrations and queries                    |
-| **Server**           | Node.js + Socket.IO                | Custom server for WebSocket POC, real-time features |
-| **Monorepo**         | Turborepo + pnpm workspaces        | Build system, caching, task orchestration           |
-| **Code Quality**     | Oxc (oxlint + oxfmt)               | Rust-based linting & formatting                     |
-| **Package Manager**  | pnpm                               | Fast, efficient workspace management                |
+The broader Greendex initiative also includes workshop formats, educational
+resources, sustainability challenges, and the Greendex E-Forest. Learn more at
+[greendex.world](https://greendex.world).
 
 ---
 
-## Getting Started
+## Current technology
+
+| Area                 | Technology                                                    |
+| -------------------- | ------------------------------------------------------------- |
+| Web applications     | Next.js `16.3.2`, React `19.2.8`, App Router, React Compiler  |
+| Language             | TypeScript `7.0.2`                                            |
+| Monorepo             | Turborepo `2.10.11`, pnpm workspaces/catalog                  |
+| Package manager      | pnpm `10.28.2`                                                |
+| UI                   | shadcn/ui, Radix UI, cmdk, Tailwind CSS `4.3.3`               |
+| Authentication       | Better Auth `1.7.1` with organization and social-auth plugins |
+| API                  | oRPC `1.15.x`, TanStack Query, OpenAPI/Scalar                 |
+| Database             | PostgreSQL, Drizzle ORM/Kit                                   |
+| Tables               | TanStack Table `9.1.2`                                        |
+| Internationalization | next-intl `4.13.7`                                            |
+| Email                | React Email `6.9.2`, Nodemailer `9.0.5`                       |
+| Real-time POC        | Socket.IO `4.8.3`                                             |
+| Documentation        | Fumadocs + Next.js                                            |
+| Tests                | Vitest `4.1.11`, Playwright `1.62.1`                          |
+| Quality              | Oxlint `1.79.0`, Oxfmt `0.64.0`                               |
+
+Core framework versions are centralized in the catalog in
+`pnpm-workspace.yaml`. Formatter behavior — including import sorting — is
+centralized in the root `.oxfmtrc.json`; per-app formatter configs were
+removed.
+
+---
+
+## Repository layout
+
+```text
+.
+├── apps/
+│   ├── calculator/          # Main Next.js app, APIs, auth integration, tests, Socket.IO
+│   └── documentation/       # Fumadocs app (local port 3001)
+├── packages/
+│   ├── auth/                # Shared Better Auth client types/utilities
+│   ├── config/              # Domain, locale, metadata, and UI configuration
+│   ├── database/            # Drizzle client, schemas, and migrations
+│   ├── email/               # Shared React Email templates and SMTP helpers
+│   └── i18n/                # next-intl exports and locale JSON files
+├── docs/                    # Developer/reference documentation
+├── .env.example             # Canonical environment-variable inventory
+├── pnpm-workspace.yaml      # Workspaces and shared dependency catalog
+├── turbo.json               # Task graph, caching, and env forwarding
+└── package.json             # Root task entrypoints
+```
+
+The calculator's business features live under
+`apps/calculator/src/features/`; framework/integration code lives under
+`apps/calculator/src/lib/`.
+
+### Important architecture constraint
+
+Server-side oRPC initialization must happen before SSR consumers use the client.
+The locale layout (`apps/calculator/src/app/[locale]/layout.tsx`) must
+side-effect-import `@/lib/orpc/client.server`, alongside the import in
+`src/instrumentation.ts`. If that import is missing, Server Components fall
+back to the browser-only RPC link and existing project pages render as
+spurious Next.js 404s — a regression diagnosed and fixed in August 2026. Do
+not reorder these initialization imports. See
+`AGENTS.md` and `docs/orpc/DUAL-SETUP.md` before
+changing this area.
+
+---
+
+## Getting started
 
 ### Prerequisites
 
-- [Node.js 18+](https://nodejs.org/) and [pnpm](https://pnpm.io/)
-- PostgreSQL database
-- Environment variables (see `.env` setup below)
+Use the current project toolchain where possible:
 
-### Installation
+- Node.js 22+ (Node.js 24 recommended) — enforced via `engines.node >= 22` in
+  the root `package.json` and pinned to `22` in `.node-version`
+- Corepack
+- pnpm `10.28.2` (declared by `packageManager`)
+- PostgreSQL
+
+### Install
 
 ```bash
-# Clone the repository
 git clone https://github.com/henningsieh/greendex-calculator.git
 cd greendex-calculator
-
-# Install dependencies (Turborepo will install all workspace packages)
+corepack enable
 pnpm install
 ```
 
-### Environment Setup
+### Configure the environment
 
-**Important**: This is a **Turborepo monorepo**. The `.env` file must be placed at the **repository root** (not inside `apps/calculator/`).
-
-Create a `.env` file at the root of the repository:
-
-```bash
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/greendex
-
-# Next.js
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-PORT=3000
-NODE_ENV=development
-ORPC_DEV_DELAY_MS=0
-NEXT_DIST_DIR=.next
-
-# Socket.IO
-SOCKET_PORT=4000
-
-# Authentication (Better Auth)
-BETTER_AUTH_SECRET=your-secret-key
-
-# Email (Nodemailer)
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_SENDER=your-email@example.com
-SMTP_USERNAME=your-email@example.com
-SMTP_PASSWORD=your-password
-SMTP_SECURE=false
-
-# OAuth (optional)
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
-DISCORD_CLIENT_ID=your-discord-client-id
-DISCORD_CLIENT_SECRET=your-discord-client-secret
-```
-
-**Why at root?**
-
-- The `apps/calculator/` app and future `packages/` both need these variables
-- `next.config.ts` and `socket-server.ts` are configured to load `.env` from the repository root
-- This follows Turborepo best practices for shared environment configuration
-
-### Development
-
-Run the development server with Socket.IO support (runs both Next.js and Socket.IO servers):
+The project uses one repository-root `.env` file for local development. Do not
+put the canonical environment file inside an individual app.
 
 ```bash
-# Run dev server for calculator app
-pnpm run dev
-
-# Run all workspace tasks (if you have multiple apps)
-pnpm turbo run dev
-
-# Run type checking across all packages
-pnpm turbo run type-check
+cp .env.example .env
 ```
 
-Visit your configured `NEXT_PUBLIC_BASE_URL` in your browser (default: `http://localhost:3000`). The Socket.IO server runs separately on port 4000.
+Fill every required value in `.env.example`. The calculator validates variables
+with `@t3-oss/env-nextjs`, including:
 
-### Build & Production
+- Application URLs and ports
+- `DATABASE_URL`
+- `BETTER_AUTH_SECRET`
+- Google, GitHub, and Discord OAuth credentials
+- SMTP connection credentials
+- `NEXT_PUBLIC_SOCKET_URL`
+
+Local scripts load the root file where needed. In Coolify, values are injected
+by the platform and remain outside Git.
+
+### Prepare the database
+
+Drizzle schemas and migrations live in `packages/database/`.
 
 ```bash
-# Build all packages and apps
-pnpm turbo run build
+# Apply committed migrations
+pnpm run db:migrate
 
-# Build only the calculator app
-pnpm --filter @greendex/calculator build
+# Optional: seed local development data
+pnpm run db:seed
 
-# Start production server
-pnpm --filter @greendex/calculator start
-
-# Lint & format
-pnpm turbo run lint
-pnpm turbo run format
+# Optional: inspect with Drizzle Studio
+pnpm run db:studio
 ```
 
----
-
-## Project Structure (Turborepo Monorepo)
-
-```
-├── apps/
-│   ├── calculator/                   # Main Next.js application
-│   │   ├── src/
-│   │   │   ├── app/                  # Next.js App Router
-│   │   │   │   ├── (app)/           # Protected routes (authenticated users)
-│   │   │   │   │   ├── dashboard/   # Org dashboard with tabs
-│   │   │   │   │   ├── org/create/  # Organization creation onboarding
-│   │   │   │   │   └── layout.tsx   # Auth guard, redirect to /org/create if no org
-│   │   │   │   ├── (auth)/          # Auth routes (login, signup, verify email)
-│   │   │   │   ├── api/auth/[...all]/ # Better Auth API route
-│   │   │   │   └── layout.tsx       # Root layout + metadata
-│   │   │   ├── lib/
-│   │   │   │   ├── better-auth/     # Auth config, client initialization
-│   │   │   │   ├── drizzle/         # Database schema, migrations
-│   │   │   │   ├── email/           # Email templates & Nodemailer config
-│   │   │   │   └── validations/     # Zod schemas (shared client/server)
-│   │   │   ├── components/
-│   │   │   │   ├── features/        # Feature-specific components
-│   │   │   │   │   ├── authentication/ # Login, signup, session UI
-│   │   │   │   │   └── organizations/  # Org creation forms, modals
-│   │   │   │   └── ui/              # shadcn/ui + custom components
-│   │   │   ├── hooks/               # React hooks (e.g., use-mobile)
-│   │   │   └── socket-server.ts     # Socket.IO server
-│   │   └── package.json
-│   └── docs/                         # Fumadocs documentation (placeholder)
-├── packages/
-│   ├── types/                        # Shared TypeScript types
-│   ├── config/                       # Shared configuration constants
-│   ├── database/                     # Drizzle ORM schemas + client factory
-│   ├── i18n/                         # next-intl config + translations
-│   ├── auth/                         # Better Auth client utilities
-│   └── email/                        # React Email templates + Nodemailer
-├── .env                              # ⚠️ Environment variables (root level, not in apps/calculator/)
-├── turbo.json                        # Turborepo pipeline configuration
-├── pnpm-workspace.yaml               # pnpm workspace configuration
-└── package.json                      # Root package.json (delegates to turbo)
-```
-
----
-
-## Key Features — Phase 1 (Organization Registration & Dashboard)
-
-✅ **Organization Onboarding** (US1)
-
-- New verified users are redirected to create their first organization
-- Only one org required to access the dashboard
-- Unique slug validation with clear error handling
-
-✅ **Dashboard Navigation** (US2)
-
-- Sidebar navigation separating organization and project concerns
-- Archive functionality for projects
-- URL-based persistence (via `nuqs`)
-- Responsive layout ready for mobile
-
-✅ **Team Members Overview** (US3)
-
-- Display all organization members in a table
-- Show name, email, role (owner/admin/member), and join date
-- Real-time integration with Better Auth organization schema
-
-✅ **Projects Grid** (US4)
-
-- Empty state with shadcn Empty component
-- Placeholder for future project creation & management
-- Responsive grid layout
-
----
-
-## Database & Migrations
-
-The project uses **Drizzle ORM** with **PostgreSQL**. Better Auth automatically manages its own tables (user, session, account, verification, organization, member, invitation) and generates the schema in `apps/calculator/src/lib/drizzle/schemas/auth-schema.ts`.
-
-**Important:** Never edit `auth-schema.ts` manually. To add custom fields to Better Auth tables, use the `additionalFields` option in the Better Auth configuration (see `apps/calculator/src/lib/better-auth/index.ts`). Custom database schema (e.g., projects, participants) are combined in `apps/calculator/src/lib/drizzle/schema.ts`.
-
-### Run migrations
+Generate schema/migration changes with:
 
 ```bash
-# Generate Better Auth schema (auto-generates auth-schema.ts)
+pnpm run db:generate
+
+# Regenerate Better Auth's schema when its model changes
 pnpm --filter @greendex/calculator auth:generate
-
-# Generate migration files for custom schema
-pnpm --filter @greendex/calculator db:generate
-
-# Apply migrations
-pnpm --filter @greendex/calculator db:migrate
-
-# Open Drizzle Studio (database GUI)
-pnpm --filter @greendex/calculator db:studio
 ```
 
-Migrations are stored in `apps/calculator/src/lib/drizzle/migrations/`.
+Do not manually edit generated Better Auth schema output unless the generation
+workflow explicitly requires it.
 
----
-
-## Authentication & Authorization
-
-This project uses **Better Auth** with the **Organization Plugin** for:
-
-- Email/password + OAuth (GitHub, Discord, Google) authentication
-- Multi-tenant organization management
-- Role-based access control (owner, admin, member)
-- Invitation workflows for adding team members
-
-Configuration: `apps/calculator/src/lib/better-auth/index.ts`  
-Client: `apps/calculator/src/lib/better-auth/auth-client.ts`
-
----
-
-## WebSocket & Real-Time (Socket.IO)
-
-A POC for **Socket.IO** is implemented in `apps/calculator/src/socket-server.ts` (decoupled from the Next.js server):
-
-- Run both servers in dev with `pnpm run dev` from `apps/calculator/` — starts Next.js (calculator UI) on `3000`, the documentation app on `3001`, and Socket.IO on `4000`.
-- Production requires `pnpm turbo run build` then `pnpm --filter @greendex/calculator start` (both Next.js and Socket.IO will be launched).
-
-### Debugging with `dev:inspect` / `dev:inspect-brk`
-
-These scripts are **memory / debugger inspection sandboxes**, not a second documentation instance. They were introduced (commit `b723740`) to reproduce and fix a **server-side memory leak** in the Socket.IO server that could crash the container after ~1 hour at ~2 GB heap.
-
-- `pnpm run dev:inspect` runs an **isolated copy** of the calculator UI + socket server on spare ports so you can inspect the server's behavior without colliding with the main dev stack:
-  - calculator web UI on **`3010`** (uses a separate `.next-inspect` build dir to avoid lock conflicts)
-  - its dedicated Socket.IO server on **`4001`**
-- `pnpm run dev:inspect-brk` is the **"break on start"** variant: the process pauses at launch so you can attach a debugger before execution begins (useful for catching memory growth from the very start).
-- In dev mode the socket server logs `RSS` and `Heap` usage every 60 s, which makes the memory growth visible while inspecting.
-
-> Note: the inspect instance runs on **3010**, not 3001 — port 3001 belongs to the documentation app.
-
-To add real-time features (e.g., live team updates), attach Socket.IO event handlers in `apps/calculator/src/socket-server.ts` and import the client in your React components.
-
----
-
-## Code Quality & Linting
-
-This project uses **Oxc** for extremely fast linting and formatting (Rust-based).
+### Run locally
 
 ```bash
-# Lint all packages
-pnpm turbo run lint
-
-# Format all packages
-pnpm turbo run format
-
-# Lint only calculator app
-pnpm --filter @greendex/calculator lint
-
-# Format only calculator app
-pnpm --filter @greendex/calculator format
+pnpm run dev
 ```
 
-Configuration: `apps/calculator/.oxlintrc.json` and formatting rules in `docs/oxc/`
+The root Turbo task starts:
+
+| Service           | Default URL/port        |
+| ----------------- | ----------------------- |
+| Calculator        | <http://localhost:3000> |
+| Documentation app | <http://localhost:3001> |
+| Socket.IO         | <http://localhost:4000> |
+
+The calculator also provides an isolated memory/debug setup:
+
+- `pnpm --filter @greendex/calculator dev:inspect` — calculator `3010`, socket `4001`
+- `pnpm --filter @greendex/calculator dev:inspect-brk` — same isolated ports, debugger break at startup
+
+In development, the socket process logs RSS and heap usage every 60 seconds.
+
+---
+
+## Common commands
+
+Run these from the repository root:
+
+| Command                                            | Purpose                                       |
+| -------------------------------------------------- | --------------------------------------------- |
+| `pnpm run dev`                                     | Start all development tasks                   |
+| `pnpm run build`                                   | Build all apps/packages                       |
+| `pnpm run start`                                   | Start persistent workspace services           |
+| `pnpm run type-check`                              | Run workspace type checks                     |
+| `pnpm run lint`                                    | Run Oxlint and agent-instruction drift checks |
+| `pnpm run format`                                  | Format workspaces with Oxfmt                  |
+| `pnpm run check:agent-instructions`                | Validate scoped agent instructions            |
+| `pnpm run test:run`                                | Run Vitest once                               |
+| `pnpm --filter @greendex/calculator test:coverage` | Run calculator coverage                       |
+| `pnpm run test:e2e`                                | Run Playwright tests                          |
+| `pnpm run db:generate`                             | Generate Drizzle migrations                   |
+| `pnpm run db:migrate`                              | Apply Drizzle migrations                      |
+| `pnpm run db:seed`                                 | Seed local development data                   |
+
+> **Build side effect:** the calculator's `prebuild` currently generates/checks
+> Scalar SRI data and runs database migrations. Before `pnpm run build`, verify
+> that `DATABASE_URL` points at the database you intend to migrate.
+
+---
+
+## Application architecture
+
+### Calculator routes and features
+
+The calculator uses locale-prefixed App Router routes under
+`apps/calculator/src/app/[locale]/`, including:
+
+- Public landing, workshop, library, E-Forest, and educational pages
+- Login, signup, verification, password reset, and OAuth flows
+- Organization onboarding, dashboard, team, projects, archive, and settings
+- Project details, participants, activities, and live-view areas
+- Public project participation/questionnaire routes
+
+Feature modules cover authentication, organizations, projects, participants,
+project activities, participation, landing pages, live view, and user settings.
+
+### API surfaces
+
+| Endpoint             | Purpose                                        |
+| -------------------- | ---------------------------------------------- |
+| `/api/rpc`           | Internal oRPC endpoint used by the application |
+| `/api/openapi`       | REST/OpenAPI endpoint for external consumers   |
+| `/api/docs`          | Interactive Scalar API documentation           |
+| `/api/openapi-spec`  | Generated OpenAPI JSON                         |
+| `/api/rpc/health`    | Deployment health check                        |
+| `/api/auth/[...all]` | Better Auth route                              |
+
+Server Components call the server-side oRPC client directly; browser consumers
+use the HTTP client and TanStack Query. See `docs/orpc/QUICKSTART.md` and
+`docs/orpc/DUAL-SETUP.md`.
+
+### Authentication and authorization
+
+The app-specific Better Auth configuration is in:
+
+```text
+apps/calculator/src/lib/better-auth/index.ts
+```
+
+It provides:
+
+- Email/password with mandatory verification
+- Password reset and magic-link flows
+- Google, GitHub, and Discord OAuth
+- Organization membership and invitations
+- Owner/admin/member access control
+- Active organization/project session fields
+
+The database schema generated for Better Auth is stored in
+`packages/database/src/schemas/auth-schema.ts`.
+
+### Database and migrations
+
+The database package exports the PostgreSQL/Drizzle client and combines auth,
+project, participant, and project-activity schemas. Migrations are stored in:
+
+```text
+packages/database/src/migrations/
+```
+
+Migration `0009_abandoned_black_panther.sql` adds Better Auth's account issuer
+model and fixes project-activity distance precision. Review migration/backfill
+safety before applying it to a database that already contains account rows.
+
+### Internationalization
+
+Translations live in `packages/i18n/src/locales/` for:
+
+- English (`en`)
+- German (`de`)
+- Spanish (`es`)
+- Italian (`it`)
+- French (`fr`)
+- Dutch (`nl`)
+- Slovenian (`si`)
+
+The UI language menu is searchable by English language name, native label, and
+locale code.
+
+### Email
+
+The repository contains a reusable `@greendex/email` workspace package and
+calculator-specific email orchestration under
+`apps/calculator/src/lib/email/`. Templates use the current `react-email`
+package API; transport uses Nodemailer.
+
+### Real-time proof of concept
+
+`apps/calculator/src/socket-server.ts` is a separate Socket.IO process. It reads
+validated process environment from `@/env`; local scripts inject the root `.env`
+through `dotenv-cli`, while Coolify injects runtime values directly.
+
+Clients connect through `NEXT_PUBLIC_SOCKET_URL`, so local ports and the deployed
+socket hostname do not need URL-rewriting logic.
+
+---
+
+## Testing and quality
+
+- Unit/integration tests: `apps/calculator/src/__tests__/`
+- Feature tests: feature-local `__tests__/` directories
+- End-to-end tests: `apps/calculator/src/__tests__/e2e/`
+- Test runner: Vitest
+- Browser runner: Playwright
+- Lint/format: Oxlint and Oxfmt
+
+Recent compatibility work strengthened OpenAPI/Scalar UI checks, project
+statistics typing, invalid activity diagnostics, Next.js layout semantics, and
+TanStack Table v9 behavior. A dedicated Playwright regression spec
+(`src/__tests__/e2e/project-routing.spec.ts`) guards the SSR oRPC routing fix:
+an authenticated user can open an existing internal project page, and a public
+participation page loads for an existing project instead of returning 404.
+The full Playwright suite (12 tests) is currently green when run against a
+seeded local development server.
+
+> **Current test-suite caveat:** `openapi-rest.test.ts` is an integration suite
+> that expects the calculator server on `localhost:3000`. Its no-server skip
+> path is not compatible with Vitest 4 yet. The remaining tests can be run with
+> `pnpm --filter @greendex/calculator exec vitest run --exclude
+src/__tests__/openapi-rest.test.ts`.
 
 ---
 
 ## Deployment
 
-### Recommended: Vercel
+Greendex currently deploys only to a shared **Coolify development environment**:
 
-1. Push your code to GitHub
-2. Connect the repo to Vercel
-3. Set environment variables in Vercel dashboard
-4. Deploy (Vercel automatically runs `pnpm run build` and `pnpm run start`)
+- Calculator: <https://greendex.apps.sieh.org>
+- Health check: `GET /api/rpc/health`
+- App port: `3000`
+- Socket port: `4000`, exposed through the configured public socket URL
 
-### Self-Hosted (Docker / VPS)
+There is intentionally **no repository Dockerfile**. The deployment relies on
+Coolify injecting environment variables and Turborepo forwarding them to the
+application processes. The `"env": ["*"]` setting on the `build` and `start`
+tasks in [`turbo.json`](turbo.json) is critical for forwarding those variables
+to workspace processes.
 
-1. Build locally or in CI/CD: `pnpm run build`
-2. Set production env vars
-3. Run: `pnpm run start` (expects `out/server.js` from build step)
-4. Use a process manager (PM2, systemd) to keep the server running
+Deployment secrets, database credentials, and infrastructure identifiers are
+managed outside source control. Operational details for authorized maintainers
+are documented in `AGENTS.md`.
+
+---
+
+## Documentation
+
+Start with [`docs/README.md`](docs/README.md) for the developer-documentation
+index. Agents can use [`docs/agent-workflows.md`](docs/agent-workflows.md) to
+route cross-cutting tasks to the required scoped instructions and topic docs.
+Important areas include:
+
+- `docs/orpc/` — RPC/OpenAPI architecture
+- `docs/better-auth/` — authentication and organizations
+- `docs/database/` — Drizzle/PostgreSQL notes
+- `docs/i18n/` — locale and country handling
+- `docs/participate/` — questionnaire and emissions flows
+- `docs/projects/` — permissions and project behavior
+- `docs/react-email/` — templates and transport
+- `docs/shadcn/` — UI patterns
+- `docs/oxc/` — linting and formatting
+
+`PROJECT_STATE_REPORT.md` contains the detailed August 20–23 commit ledger,
+current branch/PR state, deployment model, and remaining cleanup decisions.
+
+---
+
+## Known follow-ups
+
+- Close or resolve stale PR #11, which targets an old Copilot branch.
+- Remove merged/orphaned dependency branches after review.
+- Decide whether to delete the old `bun-runtime` branch.
+- Replace the remaining executable `bunx` references to make the pnpm-only
+  decision fully consistent.
+- Merge or further review open PR #57 (`migrate-email-to-package`), which
+  centralizes transactional email in `@greendex/email`.
+- Verify migration `0009` against the shared database before relying on it.
+- Make the OpenAPI integration suite select/skip tests correctly when no server
+  is running.
+- Select and add a project license.
 
 ---
 
 ## Contributing
 
-1. Create a feature branch: `git checkout -b feature/my-feature`
-2. Make changes and test locally with `pnpm run dev`
-3. Lint & format: `pnpm run lint && pnpm run format`
-4. Commit with descriptive messages
-5. Push and open a PR
+1. Create a focused branch from `main`.
+2. Read `AGENTS.md` and the relevant topic docs.
+3. Make the smallest coherent change.
+4. Run formatting, linting, tests, and type checks appropriate to the change.
+5. Review `git diff`, commit with a descriptive message, and open a PR.
 
-For detailed development guidance, see `.github/copilot-instructions.md`.
+Do not commit `.env`, OAuth credentials, SMTP passwords, database passwords, or
+Coolify credentials.
 
----
+## Maintainer
 
-## Roadmap
-
-- **Phase 2**: Carbon Calculator Integration — mobility & accommodation CO₂ calculation
-- **Phase 3**: Sustainability Challenges & Leaderboards
-- **Phase 4**: Tree Planting Integration & E-Forest
-- **Phase 5**: Social Impact & Analytics Dashboard
-
----
-
-## Support & Resources
-
-- **Greendex Main Site**: [greendex.world](https://greendex.world/)
-- **Carbon Calculator Workshops**: [greendex.world/calculator](https://greendex.world/calculator/)
-- **Erasmus+**: [erasmus-plus.ec.europa.eu](https://erasmus-plus.ec.europa.eu/)
-
----
+- **Henning Sieh** ([@henningsieh](https://github.com/henningsieh))
 
 ## License
 
-(Add your license here, e.g., MIT, GPL-3.0, etc.)
-
----
-
-## Maintainers
-
-- **Henning Sieh** (@henningsieh) — Project lead
-- Greendex team
-
----
-
-**Join the movement. Calculate. Offset. Inspire. 🌱 #greendex**
+No license has been selected yet.
