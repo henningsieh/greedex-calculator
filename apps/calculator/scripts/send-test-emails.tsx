@@ -4,13 +4,13 @@ import { resolve } from "node:path";
 
 config({ path: resolve(import.meta.dirname, "../../../.env") });
 
-function getRequiredEnvironmentVariable(name: string): string {
+const getRequiredEnvironmentVariable = (name: string): string => {
   const value = process.env[name];
   if (!value) {
     throw new Error(`${name} must be set to send test emails.`);
   }
   return value;
-}
+};
 
 const smtpPortString = getRequiredEnvironmentVariable("SMTP_PORT");
 const smtpPort = Number.parseInt(smtpPortString, 10);
