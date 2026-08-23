@@ -1,3 +1,4 @@
+import React from "react";
 import { Section } from "react-email";
 
 import { EmailButton } from "../components/email-button";
@@ -8,16 +9,21 @@ import { emailSpacing } from "../config/styles";
 import { EmailLayout } from "./components/email-layout";
 
 interface EmailVerificationProps {
+  baseUrl: string;
   userName?: string;
   verificationUrl: string;
 }
 
 export function EmailVerification({
+  baseUrl,
   userName,
   verificationUrl,
 }: EmailVerificationProps) {
   return (
-    <EmailLayout previewText="Verify your email address to complete your Greendex registration">
+    <EmailLayout
+      previewText="Verify your email address to complete your Greendex registration"
+      websiteUrl={baseUrl}
+    >
       <EmailHeading>Verify Your Email Address</EmailHeading>
       <EmailText>{userName ? `Hi ${userName},` : "Hi there,"}</EmailText>
       <EmailText>

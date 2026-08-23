@@ -1,3 +1,4 @@
+import React from "react";
 import { Text } from "react-email";
 
 import { emailTypography } from "../config/styles";

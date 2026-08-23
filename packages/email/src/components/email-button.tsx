@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "react-email";
 
 import { emailButton } from "../config/styles";

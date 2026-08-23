@@ -18,12 +18,7 @@ import {
   member as memberRole,
   owner,
 } from "@/features/projects/permissions";
-import {
-  sendEmailVerificationEmail,
-  sendOrganizationInvitation,
-  sendPasswordResetEmail,
-} from "@/lib/email";
-import { sendEmail } from "@/lib/email/nodemailer";
+import { emailSender } from "@/lib/email";
 
 export const auth = betterAuth({
   appName: "Next WebSocket Server",
@@ -42,7 +37,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true, // Must be true to block login until verified
     sendResetPassword: async ({ user, url }) => {
-      await sendPasswordResetEmail({
+      await emailSender.sendPasswordResetEmail({
         user,
         url,
       });
@@ -53,7 +48,7 @@ export const auth = betterAuth({
     sendOnSignUp: true, // This triggers email verification on signup
     sendOnSignIn: false, // Don't send on every sign-in, only on signup
     sendVerificationEmail: async ({ user, url }) => {
-      await sendEmailVerificationEmail({
+      await emailSender.sendEmailVerificationEmail({
         user,
         url,
       });
@@ -99,7 +94,7 @@ export const auth = betterAuth({
       async sendInvitationEmail(data) {
         try {
           const inviteLink = `${env.NEXT_PUBLIC_BASE_URL}/accept-invitation/${data.id}`;
-          await sendOrganizationInvitation({
+          await emailSender.sendOrganizationInvitation({
             email: data.email,
             inviterName: data.inviter?.user?.name,
             inviteLink,
@@ -113,12 +108,7 @@ export const auth = betterAuth({
     }),
     magicLink({
       sendMagicLink: async ({ email, url }) => {
-        await sendEmail({
-          to: email,
-          subject: "Sign in to your account",
-          html: `<p>Click the link below to sign in:</p><a href="${url}">Sign in</a>`,
-          text: `Click the link below to sign in: ${url}`,
-        });
+        await emailSender.sendMagicLinkEmail({ email, url });
       },
     }),
     lastLoginMethod({

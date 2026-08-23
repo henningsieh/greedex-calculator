@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Body,
   Container,
@@ -18,9 +19,14 @@ import { EmailFooter } from "./email-footer";
 interface EmailLayoutProps {
   children: React.ReactNode;
   previewText?: string;
+  websiteUrl: string;
 }
 
-export function EmailLayout({ children, previewText }: EmailLayoutProps) {
+export function EmailLayout({
+  children,
+  previewText,
+  websiteUrl,
+}: EmailLayoutProps) {
   return (
     <Html dir="ltr" lang="en">
       <Tailwind config={getTailwindConfig()}>
@@ -37,7 +43,7 @@ export function EmailLayout({ children, previewText }: EmailLayoutProps) {
           >
             <Section>{children}</Section>
             <Section>
-              <EmailFooter />
+              <EmailFooter websiteUrl={websiteUrl} />
             </Section>
           </Container>
         </Body>

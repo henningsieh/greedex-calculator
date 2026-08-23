@@ -3,7 +3,6 @@
  * Creates and manages SMTP transporter
  */
 import type { Transporter } from "nodemailer";
-
 import nodemailer from "nodemailer";
 
 /**
