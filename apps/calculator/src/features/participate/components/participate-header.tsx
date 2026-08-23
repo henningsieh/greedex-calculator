@@ -3,12 +3,11 @@
 import { useLocale, useTranslations } from "@greendex/i18n/client";
 import { LeafIcon } from "lucide-react";
 
-import type { Project } from "@/features/participate/types";
-
 import { Location } from "@/components/location";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import type { Project } from "@/features/participate/types";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 import { calculateActivitiesCO2 } from "@/features/projects/utils";
 

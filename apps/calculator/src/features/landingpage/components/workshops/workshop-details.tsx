@@ -4,8 +4,6 @@ import { WORKSHOP_LINKS } from "@greendex/config/workshops";
 import { useTranslations } from "@greendex/i18n/client";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 
-import type { WorkshopType } from "@/features/landingpage/types";
-
 import { DASHBOARD_PATH } from "@/app/routes";
 import {
   Accordion,
@@ -23,6 +21,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import type { WorkshopType } from "@/features/landingpage/types";
 import { Link } from "@/lib/i18n/routing";
 
 /**

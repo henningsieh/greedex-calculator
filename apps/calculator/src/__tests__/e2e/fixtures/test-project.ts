@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 import { db } from "@greendex/database";
 import {
   member,
@@ -7,7 +9,6 @@ import {
   user,
 } from "@greendex/database/schema";
 import { eq } from "drizzle-orm";
-import { randomUUID } from "node:crypto";
 
 import type { ProjectActivityType } from "@/features/project-activities/types";
 

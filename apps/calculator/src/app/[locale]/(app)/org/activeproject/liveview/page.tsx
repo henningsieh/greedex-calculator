@@ -75,12 +75,11 @@ import {
 import { MapPinnedIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import type { Participant, ProjectStats } from "@/features/participate/types";
-
 import { Leaderboard } from "@/features/liveview/leaderboard";
 import { LiveIndicator } from "@/features/liveview/live-indicator";
 import { StatsOverview } from "@/features/liveview/stats-overview";
 import { TransportBreakdown } from "@/features/liveview/transport-breakdown";
+import type { Participant, ProjectStats } from "@/features/participate/types";
 
 /**
  * Create an array of mock Participant records for the demo/live-view UI.

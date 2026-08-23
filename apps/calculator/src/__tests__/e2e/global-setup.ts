@@ -1,6 +1,7 @@
+import { mkdirSync } from "fs";
+
 import en from "@greendex/i18n/locales/en.json" with { type: "json" };
 import { chromium, type FullConfig } from "@playwright/test";
-import { mkdirSync } from "fs";
 
 import { SEED_USER } from "../../../scripts/seed";
 

@@ -1,7 +1,6 @@
-import type { MetadataRoute } from "next";
-
 import { LANGUAGE_CODES } from "@greendex/config/languages";
 import { BASE_URL } from "@greendex/config/metadata";
+import type { MetadataRoute } from "next";
 
 // Regex for removing trailing slash - moved to top level for performance
 const TRAILING_SLASH_REGEX = /\/$/;

@@ -10,8 +10,6 @@ import { EditIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import type { ProjectActivityType } from "@/features/project-activities/types";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,6 +45,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { ProjectActivityType } from "@/features/project-activities/types";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 import { getProjectActivityIcon } from "@/features/projects/utils";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";

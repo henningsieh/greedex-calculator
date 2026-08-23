@@ -1,9 +1,5 @@
 import "./globals.css"; // Global CSS import
 import "@/lib/orpc/client.server"; // Initialize server-side oRPC client for pre-rendering
-import type { Metadata } from "next";
-
-import { JsonLd } from "@/components/json-ld";
-
 import {
   ANDROID_PACKAGE,
   APP_NAME,
@@ -15,6 +11,9 @@ import {
   LOGO_PATH,
   TITLE,
 } from "@greendex/config/metadata";
+import type { Metadata } from "next";
+
+import { JsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,

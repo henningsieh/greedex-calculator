@@ -3,7 +3,9 @@ import { getMessages, setRequestLocale } from "@greendex/i18n/server";
 import { Comfortaa, DM_Sans, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { notFound } from "next/navigation";
+
 import { NuqsProvider } from "@/components/providers/nuqs-adapter";
+import "@/lib/orpc/client.server";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { isSupportedLocale } from "@/lib/i18n/locales";

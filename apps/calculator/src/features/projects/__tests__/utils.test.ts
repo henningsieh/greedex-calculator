@@ -2,7 +2,6 @@ import { ACTIVITY_EMISSION_FACTORS } from "@greendex/config/activities";
 import { describe, expect, it, vi } from "vitest";
 
 import type { ProjectParticipantWithUser } from "@/features/participants/types";
-
 import {
   calculateProjectDuration,
   getProjectStatistics,

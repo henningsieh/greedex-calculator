@@ -1,7 +1,5 @@
 "use client";
 
-import type { z } from "zod";
-
 import {
   ACTIVITY_VALUES,
   DISTANCE_KM_STEP,
@@ -19,8 +17,7 @@ import { ArrowLeft, ArrowRight, Check, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-import type { ProjectType } from "@/features/projects/types";
+import type { z } from "zod";
 
 import { CountrySelect } from "@/components/country-select";
 import { DatePickerWithInput } from "@/components/date-picker-with-input";
@@ -50,6 +47,7 @@ import {
   PROJECT_FORM_STEPS,
   PROJECT_FORM_TOTAL_STEPS,
 } from "@/features/projects/project-form-steps";
+import type { ProjectType } from "@/features/projects/types";
 import { EditProjectWithActivitiesSchema } from "@/features/projects/validation-schemas";
 import { orpcQuery } from "@/lib/orpc/orpc";
 

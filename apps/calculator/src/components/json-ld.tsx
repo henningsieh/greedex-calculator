@@ -1,11 +1,10 @@
-import Script from "next/script";
-
 import {
   APP_NAME,
   BASE_URL,
   DESCRIPTION,
   LOGO_PATH,
 } from "@greendex/config/metadata";
+import Script from "next/script";
 
 // JSON-LD structured data for SEO
 const jsonLd = {

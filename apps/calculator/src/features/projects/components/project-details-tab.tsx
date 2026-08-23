@@ -1,11 +1,10 @@
 import { useFormatter, useTranslations } from "@greendex/i18n/client";
 import { Calendar1Icon, CalendarXIcon, MessageSquareIcon } from "lucide-react";
 
-import type { ProjectWithRelationsType } from "@/features/projects/types";
-
 import { Blockquote, BlockquoteAuthor } from "@/components/block-quote";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
+import type { ProjectWithRelationsType } from "@/features/projects/types";
 
 interface ProjectDetailsProps {
   project: ProjectWithRelationsType;

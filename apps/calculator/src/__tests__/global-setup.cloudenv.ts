@@ -1,6 +1,7 @@
-import { config } from "dotenv";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+
+import { config } from "dotenv";
 
 /**
  * Cloud environment global setup for tests

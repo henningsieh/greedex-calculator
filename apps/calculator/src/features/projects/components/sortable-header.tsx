@@ -1,6 +1,5 @@
 import type { SortingState } from "@tanstack/react-table";
 import type { VariantProps } from "class-variance-authority";
-
 import {
   ArrowDown10Icon,
   ArrowDownZAIcon,

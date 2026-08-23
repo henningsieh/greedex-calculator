@@ -1,6 +1,7 @@
 import { SUPPORTED_LANGUAGES } from "@greendex/config/languages";
 import { defineI18nUI } from "fumadocs-ui/i18n";
 import { RootProvider } from "fumadocs-ui/provider/next";
+
 import "src/app/globals.css";
 import { Inter } from "next/font/google";
 

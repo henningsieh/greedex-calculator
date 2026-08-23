@@ -1,6 +1,4 @@
 import type { ParticipantActivityValueType } from "@greendex/config/activities";
-import type { z } from "zod";
-
 import {
   ACCOMMODATION_DATA,
   FOOD_DATA,
@@ -11,6 +9,7 @@ import {
   type GENDER_VALUES,
   type ROOM_OCCUPANCY_VALUES,
 } from "@greendex/config/participate";
+import type { z } from "zod";
 
 import type { ParticipantSchema } from "@/features/participants/validation-schemas";
 import type { ProjectWithActivitiesType } from "@/features/projects/types";

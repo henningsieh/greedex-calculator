@@ -29,8 +29,6 @@ import {
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import type { PageSizeOption, ProjectType } from "@/features/projects/types";
-
 import { useConfirmDialog } from "@/components/confirm-dialog";
 import { Location } from "@/components/location";
 import { Badge } from "@/components/ui/badge";
@@ -74,6 +72,7 @@ import {
   ProjectTableColumns,
   projectsTableFeatures,
 } from "@/features/projects/components/dashboard/projects-table-columns";
+import type { PageSizeOption, ProjectType } from "@/features/projects/types";
 import {
   getProjectDetailPath,
   getProjectsDefaultSorting,

@@ -12,8 +12,6 @@ import {
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
 
-import type { ProjectType } from "@/features/projects/types";
-
 import { useConfirmDialog } from "@/components/confirm-dialog";
 import { Location } from "@/components/location";
 import { Badge } from "@/components/ui/badge";
@@ -44,6 +42,7 @@ import {
   EditProjectForm,
   EditProjectFormSkeleton,
 } from "@/features/projects/components/edit-project-form";
+import type { ProjectType } from "@/features/projects/types";
 import { getProjectDetailPath } from "@/features/projects/utils";
 import { useProjectPermissions } from "@/lib/better-auth/permissions-utils";
 import { Link } from "@/lib/i18n/routing";

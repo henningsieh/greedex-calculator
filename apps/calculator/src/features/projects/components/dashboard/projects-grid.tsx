@@ -4,8 +4,6 @@ import { useTranslations } from "@greendex/i18n/client";
 import { ArrowUpDown, ChevronDownIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 
-import type { ProjectType } from "@/features/projects/types";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,6 +16,7 @@ import {
 import { Empty, EmptyDescription } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { ProjectCard } from "@/features/projects/components/project-card";
+import type { ProjectType } from "@/features/projects/types";
 import {
   DEFAULT_PROJECT_SORT,
   ProjectSortField,

@@ -1,9 +1,8 @@
 import { SUPPORTED_LANGUAGES } from "@greendex/config/languages";
 import { createFromSource } from "fumadocs-core/search/server";
 
-import type { LanguageCode } from "@/lib/types";
-
 import { source } from "@/lib/source";
+import type { LanguageCode } from "@/lib/types";
 
 // Create Orama search server with locale-specific configurations
 

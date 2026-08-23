@@ -1,6 +1,5 @@
-import type { ReactNode } from "react";
-
 import { getTranslations } from "@greendex/i18n/server";
+import type { ReactNode } from "react";
 
 import { BackToHome } from "@/features/authentication/components/back-to-home";
 import { RightSideImage } from "@/features/authentication/components/right-side-image";
