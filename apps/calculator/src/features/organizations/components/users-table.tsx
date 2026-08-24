@@ -3,29 +3,11 @@
 import { DEFAULT_PAGE_SIZE } from "@greendex/config/pagination";
 import { useLocale, useTranslations } from "@greendex/i18n/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {
-  columnFilteringFeature,
-  columnVisibilityFeature,
-  type ColumnDef,
-  createFilteredRowModel,
-  createPaginatedRowModel,
-  createSortedRowModel,
-  flexRender,
-  rowPaginationFeature,
-  rowSelectionFeature,
-  rowSortingFeature,
-  type SortingState,
-  tableFeatures,
-  useTable,
-} from "@tanstack/react-table";
+import { flexRender, type SortingState, useTable } from "@tanstack/react-table";
 import { FilterXIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import type z from "zod";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Empty,
   EmptyDescription,
@@ -43,27 +25,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { UserTableColumns } from "@/features/organizations/components/users-table-columns";
+import { usersTableFeatures } from "@/features/organizations/components/users-table-features";
 import {
   USERS_SORT_FIELDS,
   type MemberRole,
   type MemberSortField,
 } from "@/features/organizations/types";
-import type { MemberWithUserSchema } from "@/features/organizations/validation-schemas";
-import { SortableHeader } from "@/features/projects/components/sortable-header";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
 import { InviteEmployeeDialog } from "./invite-employee-dialog";
-
-const usersTableFeatures = tableFeatures({
-  columnFilteringFeature,
-  columnVisibilityFeature,
-  rowPaginationFeature,
-  rowSelectionFeature,
-  rowSortingFeature,
-  filteredRowModel: createFilteredRowModel(),
-  paginatedRowModel: createPaginatedRowModel(),
-  sortedRowModel: createSortedRowModel(),
-});
 
 interface TeamTableProps {
   organizationId: string;
@@ -131,95 +102,8 @@ export function UsersTable({
   const members = membersResult?.members ?? [];
   const total = membersResult?.total ?? 0;
 
-  type MemberWithUser = z.infer<typeof MemberWithUserSchema>;
-
-  const columns = useMemo<ColumnDef<typeof usersTableFeatures, MemberWithUser>[]>(
-    () => [
-      {
-        id: "select",
-        header: ({ table }) => (
-          <Checkbox
-            aria-label="Select all"
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            aria-label="Select row"
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-        size: 50,
-      },
-      {
-        id: "member",
-        header: t("name"),
-        accessorFn: (row: MemberWithUser) => row.user?.name ?? undefined,
-        enableSorting: true,
-        size: 250,
-        cell: (info) => (
-          <div className="flex items-center gap-3">
-            <Avatar className="size-5">
-              <AvatarImage src={info.row.original.user.image || undefined} />
-              <AvatarFallback>
-                {info.row.original.user.name?.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <span className="font-medium">{String(info.getValue() ?? "")}</span>
-          </div>
-        ),
-      },
-      {
-        id: "email",
-        header: t("email"),
-        accessorFn: (row: MemberWithUser) => row.user?.email ?? undefined,
-        enableSorting: true,
-        size: 300,
-        cell: (info) => <>{String(info.getValue() ?? "")}</>,
-      },
-      {
-        id: "role",
-        header: t("role"),
-        accessorFn: (row: MemberWithUser) => row.role ?? undefined,
-        enableSorting: true,
-        size: 120,
-        cell: (info) => (
-          <Badge
-            variant={
-              String(info.getValue()) === "owner" ? "default" : "secondary"
-            }
-          >
-            {tRoles(String(info.getValue()))}
-          </Badge>
-        ),
-      },
-      {
-        id: "createdAt",
-        header: t("joined"),
-        accessorFn: (row: MemberWithUser) => row.createdAt as Date | undefined,
-        enableSorting: true,
-        size: 150,
-        cell: (info) => {
-          const val = info.getValue();
-          if (!val) {
-            return "";
-          }
-          const date = typeof val === "string" ? new Date(val) : (val as Date);
-          return new Intl.DateTimeFormat(locale, {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          }).format(date as Date);
-        },
-      },
-    ],
+  const columns = useMemo(
+    () => UserTableColumns(t, tRoles, locale),
     [t, tRoles, locale],
   );
 
@@ -323,31 +207,12 @@ export function UsersTable({
                       className={getColumnWidth(header.id, true)}
                       key={header.id}
                     >
-                      {(() => {
-                        if (header.isPlaceholder) {
-                          return null;
-                        }
-                        if (header.column.getCanSort()) {
-                          return (
-                            <SortableHeader
-                              column={header.column}
-                              isNumeric={header.id === "createdAt"}
-                              sorting={table.state.sorting}
-                              title={String(
-                                flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                ),
-                              )}
-                              buttonVariant="ghost"
-                            />
-                          );
-                        }
-                        return flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        );
-                      })()}
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   );
                 })}

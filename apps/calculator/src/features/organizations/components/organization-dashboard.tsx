@@ -6,12 +6,9 @@ import { Suspense } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { OrganizationDashboardStats } from "@/features/organizations/components/organization-dashboard-stats";
-import {
-  TeamTableSkeleton,
-  UsersTable,
-} from "@/features/organizations/components/users-table";
+import { TeamTableSkeleton } from "@/features/organizations/components/users-table";
 import { ORGANIZATION_ICONS } from "@/features/organizations/organization-icons";
-import { MEMBER_ROLES } from "@/features/organizations/types";
+import { ParticipantsTable } from "@/features/participants/components/participants-table";
 import { ProjectsTab } from "@/features/projects/components/dashboard/projects-tab";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 
@@ -81,13 +78,7 @@ export function OrganizationDashboard({
 
       <TabsContent value="participants">
         <Suspense fallback={<TeamTableSkeleton />}>
-          <UsersTable
-            emptyDescription={t("participants.emptyState.description")}
-            emptyTitle={t("participants.emptyState.title")}
-            organizationId={organizationId}
-            roles={[MEMBER_ROLES.Participant]}
-            showInviteButton={false}
-          />
+          <ParticipantsTable organizationId={organizationId} />
         </Suspense>
       </TabsContent>
     </Tabs>

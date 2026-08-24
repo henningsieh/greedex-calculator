@@ -2,6 +2,15 @@
   "name": "greendex-monorepo",
   "version": "0.1.0",
   "private": true,
+  "intent": {
+    "skills": [
+      "workspace:@greendex/auth",
+      "workspace:@greendex/config",
+      "@tanstack/react-table",
+      "@tanstack/table-core",
+      "dotenv"
+    ]
+  },
   "scripts": {
     "build": "turbo run build",
     "build:cloudenv": "turbo run build:cloudenv",
