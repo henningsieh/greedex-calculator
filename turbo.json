@@ -6,10 +6,6 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
       "env": ["*"]
     },
-    "build:cloudenv": {
-      "dependsOn": ["^build:cloudenv"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
     "dev": {
       "cache": false,
       "persistent": true
@@ -19,10 +15,6 @@
     },
     "format": {},
     "test": {
-      "cache": false,
-      "persistent": true
-    },
-    "test:cloudenv": {
       "cache": false,
       "persistent": true
     },

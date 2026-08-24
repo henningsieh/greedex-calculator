@@ -42,7 +42,6 @@ vi.mock("@/env", () => ({
       PORT: 3000,
       ORPC_DEV_DELAY_MS: 0,
       SOCKET_PORT: 4000,
-      NEXT_DIST_DIR: ".next",
     };
   },
 }));
