@@ -16,23 +16,30 @@ describe("projectsTableFeatures", () => {
     let sortedNames: string[] = [];
 
     function TableProbe() {
-      const table = useTable({
+      const filteredTable = useTable({
         features: projectsTableFeatures,
         data: [{ name: "Zulu" }, { name: "Alpha" }],
         columns: [{ accessorKey: "name" }],
         state: {
           columnFilters: [{ id: "name", value: "alpha" }],
+        },
+      });
+      const unfilteredTable = useTable({
+        features: projectsTableFeatures,
+        data: [{ name: "Zulu" }, { name: "Alpha" }],
+        columns: [{ accessorKey: "name" }],
+        state: {
           sorting: [{ id: "name", desc: false }],
         },
       });
 
-      const nameColumn = table.getColumn("name");
+      const nameColumn = filteredTable.getColumn("name");
       nameFilterFn = nameColumn?.getFilterFn();
-      nameSortFn = nameColumn?.getSortFn();
-      filteredNames = table
+      nameSortFn = unfilteredTable.getColumn("name")?.getSortFn();
+      filteredNames = filteredTable
         .getFilteredRowModel()
         .rows.map((row) => row.original.name);
-      sortedNames = table
+      sortedNames = unfilteredTable
         .getSortedRowModel()
         .rows.map((row) => row.original.name);
 
@@ -44,6 +51,6 @@ describe("projectsTableFeatures", () => {
     expect(nameFilterFn).toBe(filterFn_includesString);
     expect(nameSortFn).toBe(sortFn_text);
     expect(filteredNames).toEqual(["Alpha"]);
-    expect(sortedNames).toEqual(["Alpha"]);
+    expect(sortedNames).toEqual(["Alpha", "Zulu"]);
   });
 });
