@@ -122,7 +122,11 @@ const parseFrontmatter = (content, fileName) => {
   return values;
 };
 
-const validateMarkdownLinks = async (filePath, content) => {
+const validateMarkdownLinks = async (
+  filePath,
+  content,
+  baseDirectory = path.dirname(filePath),
+) => {
   const linkPattern = /\[[^\]]*\]\(([^)]+)\)/gu;
   for (const match of content.matchAll(linkPattern)) {
     const rawTarget = match[1].trim().split(/\s+"/u)[0];
@@ -137,7 +141,10 @@ const validateMarkdownLinks = async (filePath, content) => {
 
     const withoutAnchor = rawTarget.split("#", 1)[0];
     const decodedTarget = decodeURIComponent(withoutAnchor);
-    const absoluteTarget = path.resolve(path.dirname(filePath), decodedTarget);
+    // Resolve root-relative Markdown URLs against the repository root.
+    const absoluteTarget = decodedTarget.startsWith("/")
+      ? path.resolve(root, `.${decodedTarget}`)
+      : path.resolve(baseDirectory, decodedTarget);
     if (!(await pathExists(absoluteTarget))) {
       addError(
         `${path.relative(root, filePath)}: broken link ${JSON.stringify(rawTarget)}`,
@@ -201,6 +208,13 @@ try {
   }
 } catch {
   addError("AGENTS.md is missing");
+}
+
+// AGENTS.md is a root-level symlink, so resolve its links from the path
+// agents read rather than from the physical .github/ target.
+if (await pathExists(agentPath)) {
+  const agentContent = await readUtf8(agentPath);
+  await validateMarkdownLinks(agentPath, agentContent, root);
 }
 
 const scannedFiles = [routerPath, workflowPath];
