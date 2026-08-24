@@ -2,6 +2,9 @@
   "name": "@greendex/auth",
   "version": "0.0.0",
   "private": true,
+  "keywords": [
+    "tanstack-intent"
+  ],
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
@@ -25,5 +28,10 @@
   },
   "peerDependencies": {
     "react": "^19.0.0"
+  },
+  "intent": {
+    "version": 1,
+    "repo": "henningsieh/greendex-calculator",
+    "docs": "https://github.com/henningsieh/greendex-calculator/tree/main/docs/better-auth"
   }
 }

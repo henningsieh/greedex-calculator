@@ -2,6 +2,9 @@
   "name": "@greendex/config",
   "version": "0.0.0",
   "private": true,
+  "keywords": [
+    "tanstack-intent"
+  ],
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
@@ -22,5 +25,10 @@
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0",
     "typescript": "catalog:"
+  },
+  "intent": {
+    "version": 1,
+    "repo": "henningsieh/greendex-calculator",
+    "docs": "https://github.com/henningsieh/greendex-calculator"
   }
 }
