@@ -147,4 +147,4 @@ The table controls `sorting`, filters, visibility, selection, and pagination thr
 ## References
 
 - [Sorting architecture](./sorting-centralization-refactoring.md)
-- [TanStack Table React V9 migration guide](https://tanstack.com/table/latest/docs/framework/react/guide/migrating.md)
+- [TanStack Table React V9 migration guide](https://tanstack.com/table/v9/docs/framework/react/guide/migrating.md)

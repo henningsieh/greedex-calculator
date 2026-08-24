@@ -25,7 +25,7 @@ Use these documents when changing project-list sorting or authorization.
 
 ## External references
 
-- [TanStack Table React V9 migration guide](https://tanstack.com/table/latest/docs/framework/react/guide/migrating.md)
+- [TanStack Table React V9 migration guide](https://tanstack.com/table/v9/docs/framework/react/guide/migrating.md)
 - [oRPC documentation](../orpc/)
 - [UI component documentation](../shadcn/)
 - [Internationalization documentation](../i18n/)
