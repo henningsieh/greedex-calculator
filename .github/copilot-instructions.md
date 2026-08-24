@@ -110,25 +110,27 @@ The live database has SSL disabled because Coolify’s generated SSL mount was i
 
 ## Task Routing
 
-1. Check [`docs/README.md`](../docs/README.md) for the topic index.
-2. For an unfamiliar or cross-cutting task, follow [`docs/agent-workflows.md`](../docs/agent-workflows.md).
+1. Check the repository-root file [`docs/README.md`](/docs/README.md) for the topic index.
+2. For an unfamiliar or cross-cutting task, follow the repository-root file [`docs/agent-workflows.md`](/docs/agent-workflows.md).
 3. Before editing a matching concern, read every required scoped instruction below. GitHub Copilot applies matching files through `applyTo`; other agents must use this table as the router.
 4. Read the linked topic documentation before changing an integration.
 
 ### Scoped instruction index
 
+The instruction files below live under the repository-root [`.github/instructions/`](/.github/instructions/) directory.
+
 <!-- AGENT-INSTRUCTION-INDEX-START -->
 
-| Instruction                                                                                                 | Read before changing                                              | Scope summary                         |
-| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------- |
-| [`architecture.instructions.md`](instructions/architecture.instructions.md)                                 | Module placement, workspace boundaries, SSR/server-client flow    | App and package source files          |
-| [`better-auth.instructions.md`](instructions/better-auth.instructions.md)                                   | Authentication, organizations, sessions, permissions, auth schema | Auth/organization implementation      |
-| [`code-standards.instructions.md`](instructions/code-standards.instructions.md)                             | TypeScript, React, persistence, errors, tests                     | App and package source files          |
-| [`conventions.instructions.md`](instructions/conventions.instructions.md)                                   | Manifests, configuration, environment, quality workflow           | Repository configuration              |
-| [`i18n.instructions.md`](instructions/i18n.instructions.md)                                                 | Messages, locale routing/navigation, country presentation         | i18n package and localized app routes |
-| [`orpc.instructions.md`](instructions/orpc.instructions.md)                                                 | Procedures, middleware, router, OpenAPI, SSR clients              | oRPC, feature procedures, app routes  |
-| [`shadcn.instructions.md`](instructions/shadcn.instructions.md)                                             | Shared/feature components, forms, accessibility                   | Calculator component files            |
-| [`turborepo-package-management.instructions.md`](instructions/turborepo-package-management.instructions.md) | Dependencies, catalog, workspace packages, Turbo tasks/env        | Manifests, workspace and Turbo config |
+| Instruction                                    | Read before changing                                              | Scope summary                         |
+| ---------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------- |
+| `architecture.instructions.md`                 | Module placement, workspace boundaries, SSR/server-client flow    | App and package source files          |
+| `better-auth.instructions.md`                  | Authentication, organizations, sessions, permissions, auth schema | Auth/organization implementation      |
+| `code-standards.instructions.md`               | TypeScript, React, persistence, errors, tests                     | App and package source files          |
+| `conventions.instructions.md`                  | Manifests, configuration, environment, quality workflow           | Repository configuration              |
+| `i18n.instructions.md`                         | Messages, locale routing/navigation, country presentation         | i18n package and localized app routes |
+| `orpc.instructions.md`                         | Procedures, middleware, router, OpenAPI, SSR clients              | oRPC, feature procedures, app routes  |
+| `shadcn.instructions.md`                       | Shared/feature components, forms, accessibility                   | Calculator component files            |
+| `turborepo-package-management.instructions.md` | Dependencies, catalog, workspace packages, Turbo tasks/env        | Manifests, workspace and Turbo config |
 
 <!-- AGENT-INSTRUCTION-INDEX-END -->
 
