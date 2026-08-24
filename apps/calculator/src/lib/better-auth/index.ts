@@ -10,6 +10,7 @@ import {
   organization as organizationPlugin,
 } from "better-auth/plugins";
 import { desc, eq } from "drizzle-orm";
+import { after } from "next/server";
 
 import { env } from "@/env";
 import {
@@ -48,9 +49,12 @@ export const auth = betterAuth({
     sendOnSignUp: true, // This triggers email verification on signup
     sendOnSignIn: false, // Don't send on every sign-in, only on signup
     sendVerificationEmail: async ({ user, url }) => {
-      await emailSender.sendEmailVerificationEmail({
-        user,
-        url,
+      after(async () => {
+        try {
+          await emailSender.sendEmailVerificationEmail({ user, url });
+        } catch (error) {
+          console.error("Failed to send verification email:", error);
+        }
       });
     },
   },
