@@ -9,7 +9,6 @@ import createNextIntlPlugin from "next-intl/plugin";
 config({ path: resolve(__dirname, "../../.env") });
 
 const nextConfig = {
-  distDir: process.env.NEXT_DIST_DIR || ".next",
   typedRoutes: true,
   reactCompiler: true,
   devIndicators: {
@@ -52,9 +51,6 @@ const nextConfig = {
     turbopackFileSystemCacheForDev: true,
     // Enable filesystem caching for `next build`
     turbopackFileSystemCacheForBuild: true,
-
-    // Reduce initial memory footprint
-    preloadEntriesOnStart: false,
   },
 } satisfies NextConfig;
 

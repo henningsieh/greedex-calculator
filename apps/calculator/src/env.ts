@@ -2,12 +2,6 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 export const env = createEnv({
-  /**
-   * Skip environment variable validation when SKIP_ENV_VALIDATION is set.
-   * This is useful for cloud build environments like GitHub Copilot agents
-   * where .env files are not available.
-   */
-  skipValidation: process.env.SKIP_ENV_VALIDATION === "true",
   server: {
     NODE_ENV: z.enum(["development", "production", "test"]),
     PORT: z.preprocess(
@@ -69,7 +63,6 @@ export const env = createEnv({
       (val) => (typeof val === "string" ? Number(val) : val),
       z.number().int().min(1).max(65_535),
     ),
-    NEXT_DIST_DIR: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.url(),
@@ -96,6 +89,5 @@ export const env = createEnv({
     PORT: process.env.PORT,
     ORPC_DEV_DELAY_MS: process.env.ORPC_DEV_DELAY_MS,
     SOCKET_PORT: process.env.SOCKET_PORT,
-    NEXT_DIST_DIR: process.env.NEXT_DIST_DIR,
   },
 });

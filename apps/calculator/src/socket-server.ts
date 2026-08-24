@@ -47,20 +47,6 @@ io.on("connection", (socket) => {
     console.log(`Client disconnected: ${socket.id}, reason: ${reason}`);
   });
 });
-if (env.NODE_ENV === "development") {
-  const intervalId = setInterval(() => {
-    const mem = process.memoryUsage();
-    console.log(
-      `[${new Date().toISOString()}] RSS: ${Math.round(mem.rss / 1024 / 1024)}MB, Heap: ${Math.round(mem.heapUsed / 1024 / 1024)}MB`,
-    );
-  }, 60_000);
-
-  const stopLogging = () => clearInterval(intervalId);
-  process.on("exit", stopLogging);
-  process.on("SIGINT", stopLogging);
-  process.on("SIGTERM", stopLogging);
-  process.on("beforeExit", stopLogging);
-}
 
 httpServer
   .listen(socketPort, () => {

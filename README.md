@@ -178,13 +178,6 @@ The root Turbo task starts:
 | Documentation app | <http://localhost:3001> |
 | Socket.IO         | <http://localhost:4000> |
 
-The calculator also provides an isolated memory/debug setup:
-
-- `pnpm --filter @greendex/calculator dev:inspect` — calculator `3010`, socket `4001`
-- `pnpm --filter @greendex/calculator dev:inspect-brk` — same isolated ports, debugger break at startup
-
-In development, the socket process logs RSS and heap usage every 60 seconds.
-
 ---
 
 ## Common commands
