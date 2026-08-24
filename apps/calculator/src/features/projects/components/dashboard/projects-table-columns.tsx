@@ -2,18 +2,7 @@
 
 import { useFormatter, useTranslations } from "@greendex/i18n/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  columnFilteringFeature,
-  type ColumnDef,
-  columnVisibilityFeature,
-  createFilteredRowModel,
-  createPaginatedRowModel,
-  createSortedRowModel,
-  rowPaginationFeature,
-  rowSelectionFeature,
-  rowSortingFeature,
-  tableFeatures,
-} from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import {
   ArchiveIcon,
   Columns3CogIcon,
@@ -44,23 +33,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { projectsTableFeatures } from "@/features/projects/components/dashboard/projects-table-features";
 import {
   EditProjectForm,
   EditProjectFormSkeleton,
 } from "@/features/projects/components/edit-project-form";
 import { SortableHeader } from "@/features/projects/components/sortable-header";
 import type { ProjectType } from "@/features/projects/types";
-
-export const projectsTableFeatures = tableFeatures({
-  columnFilteringFeature,
-  columnVisibilityFeature,
-  rowPaginationFeature,
-  rowSelectionFeature,
-  rowSortingFeature,
-  filteredRowModel: createFilteredRowModel(),
-  paginatedRowModel: createPaginatedRowModel(),
-  sortedRowModel: createSortedRowModel(),
-});
 import {
   getColumnDisplayName,
   getProjectDetailPath,

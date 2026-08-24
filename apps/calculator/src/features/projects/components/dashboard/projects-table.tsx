@@ -68,10 +68,8 @@ import {
 } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { MEMBER_ROLES } from "@/features/organizations/types";
-import {
-  ProjectTableColumns,
-  projectsTableFeatures,
-} from "@/features/projects/components/dashboard/projects-table-columns";
+import { ProjectTableColumns } from "@/features/projects/components/dashboard/projects-table-columns";
+import { projectsTableFeatures } from "@/features/projects/components/dashboard/projects-table-features";
 import type { PageSizeOption, ProjectType } from "@/features/projects/types";
 import {
   getProjectDetailPath,
