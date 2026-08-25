@@ -12,11 +12,11 @@
     ]
   },
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "build": "dotenv -v NODE_ENV=production -e .env -- turbo run build",
+    "dev": "dotenv -v NODE_ENV=development -e .env -- turbo run dev",
     "lint": "turbo run lint && pnpm run check:agent-instructions",
     "check:agent-instructions": "node scripts/check-agent-instructions.mjs",
-    "start": "turbo run start",
+    "start": "dotenv -v NODE_ENV=production -e .env -- turbo run start",
     "format": "turbo run format",
     "test": "turbo run test --",
     "test:run": "turbo run test:run --",
@@ -33,6 +33,10 @@
     "test:e2e:headed": "turbo run test:e2e:headed --",
     "test:e2e:report": "turbo run test:e2e:report --"
   },
+  "dependencies": {
+    "dotenv-cli": "^11.0.0",
+    "turbo": "^2.10.11"
+  },
   "devDependencies": {
     "@types/node": "26.2.0",
     "@types/react": "catalog:",
@@ -40,7 +44,6 @@
     "husky": "^9.1.7",
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0",
-    "turbo": "^2.10.11",
     "typescript": "catalog:"
   },
   "engines": {

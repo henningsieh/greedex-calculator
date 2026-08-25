@@ -31,7 +31,8 @@
       "cache": false
     },
     "db:migrate": {
-      "cache": false
+      "cache": false,
+      "env": ["DATABASE_URL"]
     },
     "db:seed": {
       "cache": false
