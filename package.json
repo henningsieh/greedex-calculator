@@ -33,15 +33,17 @@
     "test:e2e:headed": "turbo run test:e2e:headed --",
     "test:e2e:report": "turbo run test:e2e:report --"
   },
+  "dependencies": {
+    "dotenv-cli": "^11.0.0",
+    "turbo": "^2.10.11"
+  },
   "devDependencies": {
     "@types/node": "26.2.0",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "dotenv-cli": "^11.0.0",
     "husky": "^9.1.7",
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0",
-    "turbo": "^2.10.11",
     "typescript": "catalog:"
   },
   "engines": {

@@ -3,14 +3,19 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+type PackageManifest = {
+  scripts: Record<string, string>;
+  dependencies?: Record<string, string>;
+};
+
 describe("environment entrypoints", () => {
   const content = readFileSync(path.resolve("src/socket-server.ts"), "utf8");
   const calculatorPackage = JSON.parse(
     readFileSync(path.resolve("package.json"), "utf8"),
-  ) as { scripts: Record<string, string> };
+  ) as PackageManifest;
   const rootPackage = JSON.parse(
     readFileSync(path.resolve("../../package.json"), "utf8"),
-  ) as { scripts: Record<string, string> };
+  ) as PackageManifest;
   const nextConfig = readFileSync(path.resolve("next.config.ts"), "utf8");
   const turboConfig = JSON.parse(
     readFileSync(path.resolve("../../turbo.json"), "utf8"),
@@ -44,6 +49,17 @@ describe("environment entrypoints", () => {
     expect(rootPackage.scripts.start).toBe(
       "dotenv -v NODE_ENV=production -e .env -- turbo run start",
     );
+  });
+
+  it("keeps runtime CLI dependencies available to the production start commands", () => {
+    expect(rootPackage.dependencies).toMatchObject({
+      "dotenv-cli": expect.any(String),
+      turbo: expect.any(String),
+    });
+    expect(calculatorPackage.dependencies).toMatchObject({
+      concurrently: expect.any(String),
+      tsx: expect.any(String),
+    });
   });
 
   it("forwards only Calculator's required environment variables to its dev task", () => {
