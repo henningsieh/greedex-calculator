@@ -12,11 +12,11 @@
     ]
   },
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "build": "NODE_ENV=production dotenv -e .env -- turbo run build",
+    "dev": "NODE_ENV=development dotenv -e .env -- turbo run dev",
     "lint": "turbo run lint && pnpm run check:agent-instructions",
     "check:agent-instructions": "node scripts/check-agent-instructions.mjs",
-    "start": "turbo run start",
+    "start": "NODE_ENV=production dotenv -e .env -- turbo run start",
     "format": "turbo run format",
     "test": "turbo run test --",
     "test:run": "turbo run test:run --",
@@ -37,6 +37,7 @@
     "@types/node": "26.2.0",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "dotenv-cli": "^11.0.0",
     "husky": "^9.1.7",
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0",
