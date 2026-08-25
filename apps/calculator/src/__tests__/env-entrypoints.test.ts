@@ -45,7 +45,13 @@ describe("environment entrypoints", () => {
   });
 
   it("does not load dotenv inside calculator processes", () => {
+    // Reject all direct dotenv loading forms
     expect(nextConfig).not.toContain('from "dotenv"');
+    expect(nextConfig).not.toContain("from 'dotenv'");
+    expect(nextConfig).not.toContain('import "dotenv/config"');
+    expect(nextConfig).not.toContain("import 'dotenv/config'");
+    expect(nextConfig).not.toContain('require("dotenv")');
+    expect(nextConfig).not.toContain("require('dotenv')");
     expect(calculatorPackage.scripts["dev:socket"]).not.toContain("dotenv");
     expect(calculatorPackage.scripts.start).not.toContain("dotenv");
   });
