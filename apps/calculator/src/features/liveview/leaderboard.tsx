@@ -3,11 +3,11 @@
 import { Leaf, Trophy } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import type { Participant } from "@/features/participate/types";
+import type { LiveViewParticipant } from "@/features/liveview/types";
 import { cn } from "@/lib/utils";
 
 interface LeaderboardProps {
-  participants: Participant[];
+  participants: LiveViewParticipant[];
 }
 
 export function Leaderboard({ participants }: LeaderboardProps) {
@@ -65,8 +65,8 @@ export function Leaderboard({ participants }: LeaderboardProps) {
                       </span>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {participant.activities.length}{" "}
-                      {participant.activities.length === 1
+                      {participant.participantTravelLegs.length}{" "}
+                      {participant.participantTravelLegs.length === 1
                         ? "journey"
                         : "journeys"}
                     </p>

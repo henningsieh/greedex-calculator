@@ -3,10 +3,10 @@
 import { Leaf, TreePine, TrendingDown, Users } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import type { ProjectStats } from "@/features/participate/types";
+import type { LiveViewProjectStats } from "@/features/liveview/types";
 
 interface StatsOverviewProps {
-  stats: ProjectStats;
+  stats: LiveViewProjectStats;
 }
 
 export function StatsOverview({ stats }: StatsOverviewProps) {
