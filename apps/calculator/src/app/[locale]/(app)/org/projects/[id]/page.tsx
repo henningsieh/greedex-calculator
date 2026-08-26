@@ -61,7 +61,7 @@ export default async function ProjectsDetailsPage({
       }),
     ),
     queryClient.prefetchQuery(
-      orpcQuery.projectActivities.list.queryOptions({
+      orpcQuery.projectSharedTravelLegs.list.queryOptions({
         input: { projectId: id },
       }),
     ),

@@ -1,4 +1,3 @@
-import type { ParticipantActivityValueType } from "@greendex/config/activities";
 import {
   ACCOMMODATION_DATA,
   FOOD_DATA,
@@ -9,6 +8,7 @@ import {
   type GENDER_VALUES,
   type ROOM_OCCUPANCY_VALUES,
 } from "@greendex/config/participate";
+import type { ParticipantTransportEmissionProfile } from "@greendex/config/transport-emission-profiles";
 import type { z } from "zod";
 
 import type { ParticipantSchema } from "@/features/participants/validation-schemas";
@@ -143,7 +143,7 @@ export type Project = ProjectWithActivitiesType;
 /**
  * Re-export participant activity value type from config
  */
-export type { ParticipantActivityValueType } from "@greendex/config/activities";
+export type ParticipantActivityValueType = ParticipantTransportEmissionProfile;
 
 /**
  * Participation activity type - computed values for UI display

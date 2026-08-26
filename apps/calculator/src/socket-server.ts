@@ -69,7 +69,7 @@ httpServer
 const shutdown = (signal?: string) => {
   console.log(`Received ${signal ?? "shutdown"}. Closing Socket.IO server...`);
   try {
-    io.close();
+    void io.close();
   } catch (e) {
     console.warn("Error while closing io:", e);
   }

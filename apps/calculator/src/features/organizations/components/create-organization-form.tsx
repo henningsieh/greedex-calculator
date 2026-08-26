@@ -70,9 +70,9 @@ export function CreateOrganizationForm({
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    form.handleSubmit(onSubmit)(e);
+    void form.handleSubmit(onSubmit)(e);
   };
 
   return (

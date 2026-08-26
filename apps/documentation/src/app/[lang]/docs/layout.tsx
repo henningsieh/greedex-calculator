@@ -16,7 +16,6 @@ export default async function Layout({
     <DocsLayout
       {...options}
       tree={source.getPageTree(lang)}
-      i18n={false}
       nav={{
         ...options.nav, // ✅ Keeps existing nav config (title, links, etc.)
         children: <LanguageToggleInline />,

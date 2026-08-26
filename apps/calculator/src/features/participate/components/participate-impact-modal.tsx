@@ -230,7 +230,7 @@ export function ImpactModal({
       setAnimationPhase("counting");
 
       // Phase 2: Animate counter
-      animate(counterValue, newCO2, {
+      void animate(counterValue, newCO2, {
         duration: 2,
         ease: "easeOut",
         onUpdate: (value) => setDisplayCO2(value.toFixed(1)),

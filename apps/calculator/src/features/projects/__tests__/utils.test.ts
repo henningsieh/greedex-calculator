@@ -1,4 +1,4 @@
-import { ACTIVITY_EMISSION_FACTORS } from "@greendex/config/activities";
+import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 import { describe, expect, it, vi } from "vitest";
 
 import type { ProjectParticipantWithUser } from "@/features/participants/types";

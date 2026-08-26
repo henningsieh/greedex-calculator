@@ -44,7 +44,7 @@ export default function ORPCTestPage() {
   }, []);
 
   useEffect(() => {
-    testHealth();
+    void testHealth();
   }, [testHealth]);
 
   const testHello = async () => {

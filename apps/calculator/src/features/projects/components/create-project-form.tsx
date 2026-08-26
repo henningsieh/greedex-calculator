@@ -1,10 +1,7 @@
 "use client";
 
-import {
-  ACTIVITY_VALUES,
-  DISTANCE_KM_STEP,
-  MIN_DISTANCE_KM,
-} from "@greendex/config/activities";
+import { DISTANCE_KM_STEP, MIN_DISTANCE_KM } from "@greendex/config/activities";
+import { PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES as ACTIVITY_VALUES } from "@greendex/config/transport-emission-profiles";
 import { projectActivitiesTable } from "@greendex/database/schema";
 import { useTranslations } from "@greendex/i18n/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -143,12 +140,12 @@ export function CreateProjectForm({
         })
         .parse(params.activity);
 
-      return orpc.projectActivities.create({
+      return orpc.projectSharedTravelLegs.create({
         projectId: params.projectId,
-        activityType: validActivity.activityType,
+        transportEmissionProfile: validActivity.activityType,
         distanceKm: validActivity.distanceKm,
         description: validActivity.description,
-        activityDate: validActivity.activityDate,
+        travelDate: validActivity.activityDate,
       });
     },
   });
@@ -235,7 +232,7 @@ export function CreateProjectForm({
 
       toast.success(t("toast.success"));
       router.push(getProjectDetailPath(result.project.id));
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: orpcQuery.projects.list.queryKey(),
       });
     } catch (err) {

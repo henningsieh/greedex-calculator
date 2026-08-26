@@ -1,6 +1,6 @@
 "use client";
 
-import { ACTIVITY_VALUES } from "@greendex/config/activities";
+import { PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES as ACTIVITY_VALUES } from "@greendex/config/transport-emission-profiles";
 
 import { Card } from "@/components/ui/card";
 import type { ProjectStats } from "@/features/participate/types";
@@ -39,6 +39,7 @@ export function TransportBreakdown({ stats }: TransportBreakdownProps) {
     bus: "Bus",
     train: "Train",
     boat: "Boat",
+    electricCar: "Electric car",
   };
 
   const typeColors = {
@@ -46,6 +47,7 @@ export function TransportBreakdown({ stats }: TransportBreakdownProps) {
     bus: "bg-orange-500",
     train: "bg-green-500",
     boat: "bg-blue-500",
+    electricCar: "bg-emerald-500",
   };
 
   return (

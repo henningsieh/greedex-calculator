@@ -12,7 +12,6 @@ import { z } from "zod";
 
 import { MEMBER_ROLES } from "@/features/organizations/types";
 import { ProjectParticipantWithUserSchema } from "@/features/participants/validation-schemas";
-import { ProjectActivityWithRelationsSchema } from "@/features/project-activities/validation-schemas";
 import { DEFAULT_PROJECT_SORT } from "@/features/projects/types";
 import { computeSortDesc, orderByClauseFor } from "@/features/projects/utils";
 import { auth } from "@/lib/better-auth";
@@ -710,84 +709,6 @@ export const batchDeleteProjects = authorized
       success: true,
       deletedCount: result.rowCount || 0,
     };
-  });
-
-// ============================================================================
-// PROJECT ACTIVITY PROCEDURES
-// ============================================================================
-
-/**
- * Helper to verify project belongs to user's organization
- */
-async function verifyProjectAccess(
-  projectId: string,
-  organizationId: string,
-): Promise<boolean> {
-  const [project] = await db
-    .select()
-    .from(projectsTable)
-    .where(
-      and(
-        eq(projectsTable.id, projectId),
-        eq(projectsTable.organizationId, organizationId),
-      ),
-    )
-    .limit(1);
-
-  return !!project;
-}
-
-/**
- * Get project activities
- *
- * Requires:
- * - Authentication
- * - "read" permission on project resource
- * - Project must belong to user's active organization
- */
-export const getProjectActivities = authorized
-  .use(requireProjectPermissions(["read"]))
-  .route({
-    method: "GET",
-    path: "/projects/:id/activities",
-    summary: "Get project activities",
-    tags: ["project", "activity"],
-  })
-  .input(
-    z.object({
-      projectId: z.string().describe("Project ID"),
-    }),
-  )
-  .output(z.array(ProjectActivityWithRelationsSchema))
-  .handler(async ({ input, context, errors }) => {
-    if (!context.session.activeOrganizationId) {
-      throw errors.BAD_REQUEST({
-        message: "No active organization. Please select an organization first.",
-      });
-    }
-
-    // Verify project belongs to user's organization
-    const hasAccess = await verifyProjectAccess(
-      input.projectId,
-      context.session.activeOrganizationId,
-    );
-
-    if (!hasAccess) {
-      throw errors.FORBIDDEN({
-        message: "You don't have access to this project",
-      });
-    }
-
-    // Get all activities for this project
-    const activities = await db.query.projectActivitiesTable.findMany({
-      where: eq(projectActivitiesTable.projectId, input.projectId),
-      orderBy: [asc(projectActivitiesTable.createdAt)],
-      with: {
-        project: true,
-      },
-    });
-
-    return activities;
   });
 
 // ============================================================================

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, stagger } from "motion/react";
 import Image from "next/image";
 import { useId } from "react";
 
@@ -40,8 +40,7 @@ export function RightSideImage({
           container: {
             visible: {
               transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.2,
+                delayChildren: stagger(0.1, { startDelay: 0.2 }),
               },
             },
           },

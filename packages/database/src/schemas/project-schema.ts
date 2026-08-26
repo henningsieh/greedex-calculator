@@ -1,10 +1,9 @@
-import {
-  ACTIVITY_VALUES,
-  ActivityValueType,
-  DECIMAL_PRECISION,
-  DECIMAL_SCALE,
-} from "@greendex/config/activities";
+import { DECIMAL_PRECISION, DECIMAL_SCALE } from "@greendex/config/activities";
 import { EUCountryCode } from "@greendex/config/eu-countries";
+import {
+  PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES,
+  ProjectSharedTransportEmissionProfile,
+} from "@greendex/config/transport-emission-profiles";
 import { createId } from "@paralleldrive/cuid2";
 import { relations } from "drizzle-orm";
 import {
@@ -95,9 +94,10 @@ export const projectActivitiesTable = pgTable("project_activity", {
     .notNull()
     .references(() => projectsTable.id, { onDelete: "cascade" }),
 
-  // type ActivityType = "boat" | "bus" | "train" | "car"
-  activityType: text("activity_type", { enum: ACTIVITY_VALUES })
-    .$type<ActivityValueType>()
+  activityType: text("activity_type", {
+    enum: PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES,
+  })
+    .$type<ProjectSharedTransportEmissionProfile>()
     .notNull(),
 
   // Distance in kilometers (scale 1 supports 0.1 km increments)

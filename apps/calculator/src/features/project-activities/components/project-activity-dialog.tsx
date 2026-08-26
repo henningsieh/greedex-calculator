@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { ProjectActivityType } from "@/features/project-activities/types";
+import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 
 import { ProjectActivityForm } from "./project-activity-form";
 
@@ -14,7 +14,7 @@ interface ProjectActivityDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   projectId: string;
-  activity?: ProjectActivityType;
+  activity?: ProjectSharedTravelLeg;
   onSuccess?: () => void;
 }
 

@@ -1,6 +1,5 @@
 import { projectActivitiesTable, projectsTable } from "@greendex/database/schema";
 import type { useTranslations } from "@greendex/i18n/client";
-import type { getTranslations } from "@greendex/i18n/server";
 import {
   createInsertSchema,
   createSelectSchema,
@@ -17,9 +16,7 @@ import { createDistanceSchema } from "@/features/project-activities/utils";
  * Unified translation function type that works for both client and server
  * Accepts return types from both useTranslations() and getTranslations()
  */
-type TranslateFn =
-  | ReturnType<typeof useTranslations>
-  | Awaited<ReturnType<typeof getTranslations>>;
+type TranslateFn = ReturnType<typeof useTranslations>;
 
 // ============================================================================
 // UNIFIED SCHEMA FACTORIES (work for both client and server)

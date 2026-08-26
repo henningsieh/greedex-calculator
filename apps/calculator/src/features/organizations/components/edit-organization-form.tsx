@@ -77,10 +77,10 @@ export function EditOrganizationForm() {
           },
           onSuccess: () => {
             toast.success("Organization updated successfully!");
-            queryClient.invalidateQueries(
+            void queryClient.invalidateQueries(
               orpcQuery.organizations.list.queryOptions(),
             );
-            queryClient.invalidateQueries(
+            void queryClient.invalidateQueries(
               orpcQuery.organizations.getActive.queryOptions(),
             );
           },
@@ -93,9 +93,9 @@ export function EditOrganizationForm() {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    form.handleSubmit(onSubmit)(e);
+    void form.handleSubmit(onSubmit)(e);
   };
 
   if (!organization) {

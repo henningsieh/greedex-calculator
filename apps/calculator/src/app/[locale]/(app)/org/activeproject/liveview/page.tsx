@@ -69,9 +69,9 @@
  */
 
 import {
-  ACTIVITY_VALUES,
-  ACTIVITY_EMISSION_FACTORS,
-} from "@greendex/config/activities";
+  PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES as ACTIVITY_VALUES,
+  TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS,
+} from "@greendex/config/transport-emission-profiles";
 import { MapPinnedIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 

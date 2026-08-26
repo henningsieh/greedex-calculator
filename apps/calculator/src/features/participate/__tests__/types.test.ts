@@ -1,19 +1,20 @@
-import { ACTIVITY_EMISSION_FACTORS } from "@greendex/config/activities";
+import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 import { describe, expect, it } from "vitest";
 
 import type {
   ParticipantActivity,
   ParticipantActivityValueType,
 } from "@/features/participate/types";
-import type { ActivityValueType } from "@/features/project-activities/types";
+import type { ProjectSharedTransportEmissionProfile } from "@/features/project-shared-travel-legs/types";
 
 describe("Participant Activity Types", () => {
-  it("should allow all project activity types for ParticipantActivity", () => {
-    const projectActivities: ActivityValueType[] = [
+  it("should allow all Project Shared Travel profiles for ParticipantActivity", () => {
+    const projectActivities: ProjectSharedTransportEmissionProfile[] = [
       "boat",
       "bus",
       "train",
       "car",
+      "electricCar",
     ];
 
     for (const activityType of projectActivities) {
@@ -28,11 +29,8 @@ describe("Participant Activity Types", () => {
     }
   });
 
-  it("should allow plane and electricCar for ParticipantActivity", () => {
-    const participantOnlyActivities: ParticipantActivityValueType[] = [
-      "plane",
-      "electricCar",
-    ];
+  it("should allow the participant-only plane profile", () => {
+    const participantOnlyActivities: ParticipantActivityValueType[] = ["plane"];
 
     for (const activityType of participantOnlyActivities) {
       const activity: ParticipantActivity = {
@@ -82,19 +80,20 @@ describe("Participant Activity Types", () => {
     expect(ACTIVITY_EMISSION_FACTORS.electricCar).toBeGreaterThan(0);
   });
 
-  it("should ensure project activities do not include plane or electricCar", () => {
-    const projectActivities: ActivityValueType[] = [
+  it("should include electric car but not plane for Project Shared Travel", () => {
+    const projectActivities: ProjectSharedTransportEmissionProfile[] = [
       "boat",
       "bus",
       "train",
       "car",
+      "electricCar",
     ];
 
+    expect(projectActivities).toContain("electricCar");
     expect(projectActivities).not.toContain("plane");
-    expect(projectActivities).not.toContain("electricCar");
   });
 
-  it("should ensure participant activities include all project activities plus plane and electricCar", () => {
+  it("should ensure participant activities include all Project Shared Travel profiles plus plane", () => {
     const participantActivities: ParticipantActivityValueType[] = [
       "boat",
       "bus",
@@ -104,15 +103,15 @@ describe("Participant Activity Types", () => {
       "electricCar",
     ];
 
-    // Check all project activities are included
+    // Check every Project Shared Travel profile is included
     expect(participantActivities).toContain("boat");
     expect(participantActivities).toContain("bus");
     expect(participantActivities).toContain("train");
     expect(participantActivities).toContain("car");
-
-    // Check participant-specific activities
-    expect(participantActivities).toContain("plane");
     expect(participantActivities).toContain("electricCar");
+
+    // Check the participant-only profile
+    expect(participantActivities).toContain("plane");
 
     // Total should be 6
     expect(participantActivities.length).toBe(6);

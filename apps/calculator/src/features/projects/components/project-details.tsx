@@ -90,7 +90,7 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
       onSuccess: (result) => {
         if (result.success) {
           toast.success(tProject("form.delete.toast-success"));
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: orpcQuery.projects.list.queryKey(),
           });
         } else {
@@ -119,10 +119,10 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
               ? tProject("form.archive.toast-success")
               : tProject("form.archive.toast-unarchive-success"),
           );
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: orpcQuery.projects.list.queryKey(),
           });
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: orpcQuery.projects.getById.queryKey({
               input: { id: project.id },
             }),
@@ -311,7 +311,7 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
 
   // Fetch activities
   const { data: activities } = useSuspenseQuery(
-    orpcQuery.projectActivities.list.queryOptions({
+    orpcQuery.projectSharedTravelLegs.list.queryOptions({
       input: { projectId: id },
     }),
   );

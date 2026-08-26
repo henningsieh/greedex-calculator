@@ -45,7 +45,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ProjectActivityType } from "@/features/project-activities/types";
+import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 import { getProjectActivityIcon } from "@/features/projects/utils";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
@@ -78,24 +78,25 @@ export function ProjectActivitiesTable({
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState<
-    ProjectActivityType | undefined
+    ProjectSharedTravelLeg | undefined
   >(undefined);
   const [deletingActivityId, setDeletingActivityId] = useState<
     string | undefined
   >(undefined);
 
   const { data: activities } = useSuspenseQuery(
-    orpcQuery.projectActivities.list.queryOptions({
+    orpcQuery.projectSharedTravelLegs.list.queryOptions({
       input: { projectId },
     }),
   );
 
   const deleteActivityMutation = useMutation({
-    mutationFn: (id: string) => orpc.projectActivities.delete({ id }),
+    mutationFn: (id: string) =>
+      orpc.projectSharedTravelLegs.delete({ projectId, id }),
     onSuccess: () => {
       toast.success(t("toast.delete-success"));
-      queryClient.invalidateQueries({
-        queryKey: orpcQuery.projectActivities.list.queryKey({
+      void queryClient.invalidateQueries({
+        queryKey: orpcQuery.projectSharedTravelLegs.list.queryKey({
           input: { projectId },
         }),
       });
@@ -109,8 +110,8 @@ export function ProjectActivitiesTable({
   const handleFormSuccess = () => {
     setIsAddDialogOpen(false);
     setEditingActivity(undefined);
-    queryClient.invalidateQueries({
-      queryKey: orpcQuery.projectActivities.list.queryKey({
+    void queryClient.invalidateQueries({
+      queryKey: orpcQuery.projectSharedTravelLegs.list.queryKey({
         input: { projectId },
       }),
     });
@@ -159,8 +160,12 @@ export function ProjectActivitiesTable({
                   <TableRow key={activity.id}>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        {getProjectActivityIcon(activity.activityType)}
-                        <span>{t(`types.${activity.activityType}`)}</span>
+                        {getProjectActivityIcon(
+                          activity.transportEmissionProfile,
+                        )}
+                        <span>
+                          {t(`types.${activity.transportEmissionProfile}`)}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -170,8 +175,8 @@ export function ProjectActivitiesTable({
                       {activity.description || "-"}
                     </TableCell>
                     <TableCell>
-                      {activity.activityDate
-                        ? format.dateTime(new Date(activity.activityDate), {
+                      {activity.travelDate
+                        ? format.dateTime(new Date(activity.travelDate), {
                             year: "numeric",
                             month: "short",
                             day: "numeric",

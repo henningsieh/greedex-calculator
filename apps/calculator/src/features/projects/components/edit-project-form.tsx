@@ -1,10 +1,7 @@
 "use client";
 
-import {
-  ACTIVITY_VALUES,
-  DISTANCE_KM_STEP,
-  MIN_DISTANCE_KM,
-} from "@greendex/config/activities";
+import { DISTANCE_KM_STEP, MIN_DISTANCE_KM } from "@greendex/config/activities";
+import { PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES as ACTIVITY_VALUES } from "@greendex/config/transport-emission-profiles";
 import { useTranslations } from "@greendex/i18n/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isDefinedError } from "@orpc/client";
@@ -72,7 +69,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
 
   // Fetch existing activities
   const { data: existingActivities } = useSuspenseQuery(
-    orpcQuery.projectActivities.list.queryOptions({
+    orpcQuery.projectSharedTravelLegs.list.queryOptions({
       input: { projectId: project.id },
     }),
   );
@@ -108,12 +105,10 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       > = existingActivities.map((activity) => ({
         id: activity.id,
         projectId: activity.projectId,
-        activityType: activity.activityType,
+        activityType: activity.transportEmissionProfile,
         distanceKm: activity.distanceKm,
         description: activity.description,
-        activityDate: activity.activityDate
-          ? new Date(activity.activityDate)
-          : null,
+        activityDate: activity.travelDate ? new Date(activity.travelDate) : null,
         isNew: false,
         isDeleted: false,
       }));
@@ -145,15 +140,15 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
     );
 
   const { mutateAsync: createActivityMutation } = useMutation(
-    orpcQuery.projectActivities.create.mutationOptions(),
+    orpcQuery.projectSharedTravelLegs.create.mutationOptions(),
   );
 
   const { mutateAsync: updateActivityMutation } = useMutation(
-    orpcQuery.projectActivities.update.mutationOptions(),
+    orpcQuery.projectSharedTravelLegs.update.mutationOptions(),
   );
 
   const { mutateAsync: deleteActivityMutation } = useMutation(
-    orpcQuery.projectActivities.delete.mutationOptions(),
+    orpcQuery.projectSharedTravelLegs.delete.mutationOptions(),
   );
 
   async function handleNextStep() {
@@ -253,7 +248,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
   ) {
     // Deleted existing activity
     if (activity.isDeleted === true && activity.isNew === false && activity.id) {
-      await deleteActivityMutation({ id: activity.id });
+      await deleteActivityMutation({ projectId: project.id, id: activity.id });
       return;
     }
 
@@ -268,10 +263,10 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
 
       await createActivityMutation({
         projectId: project.id,
-        activityType: activity.activityType,
+        transportEmissionProfile: activity.activityType,
         distanceKm: activity.distanceKm,
         description: activity.description,
-        activityDate: activity.activityDate,
+        travelDate: activity.activityDate,
       });
       return;
     }
@@ -283,12 +278,13 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       }
 
       await updateActivityMutation({
+        projectId: project.id,
         id: activity.id,
         data: {
-          activityType: activity.activityType,
+          transportEmissionProfile: activity.activityType,
           distanceKm: activity.distanceKm,
           description: activity.description,
-          activityDate: activity.activityDate,
+          travelDate: activity.activityDate,
         },
       });
       return;
@@ -303,16 +299,16 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
    * @param projectId - The ID of the project whose list, details, and activities caches should be invalidated
    */
   function invalidateProjectQueries(projectId: string) {
-    queryClient.invalidateQueries({
+    void queryClient.invalidateQueries({
       queryKey: orpcQuery.projects.list.queryKey(),
     });
-    queryClient.invalidateQueries({
+    void queryClient.invalidateQueries({
       queryKey: orpcQuery.projects.getById.queryOptions({
         input: { id: projectId },
       }).queryKey,
     });
-    queryClient.invalidateQueries({
-      queryKey: orpcQuery.projectActivities.list.queryKey({
+    void queryClient.invalidateQueries({
+      queryKey: orpcQuery.projectSharedTravelLegs.list.queryKey({
         input: { projectId },
       }),
     });

@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "options": {
+    "typeAware": true
+  },
   "ignorePatterns": [
     "node_modules/**",
     ".next/**",
@@ -13,9 +16,26 @@
   ],
   "rules": {
     "import/no-relative-parent-imports": "error",
+    "typescript/no-deprecated": [
+      "error",
+      {
+        "allow": [
+          "requestLocale",
+          {
+            "from": "package",
+            "package": "next-intl",
+            "name": "setRequestLocale"
+          }
+        ]
+      }
+    ],
     "complexity": ["warn", 25],
     "curly": "off",
     "react/no-array-index-key": "off",
-    "typescript/array-type": "warn"
+    "typescript/array-type": "warn",
+    "typescript/no-misused-spread": "off",
+    "typescript/no-base-to-string": "off",
+    "typescript/restrict-template-expressions": "off",
+    "no-unsafe-optional-chaining": "off"
   }
 }

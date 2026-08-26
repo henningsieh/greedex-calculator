@@ -1,5 +1,5 @@
 "use client";
-import { motion, type Variants } from "motion/react";
+import { motion, stagger, type Variants } from "motion/react";
 import { Children, type ReactNode, useMemo } from "react";
 
 export type PresetType =
@@ -36,7 +36,7 @@ interface AnimatedGroupProps {
 const defaultContainerVariants: Variants = {
   visible: {
     transition: {
-      staggerChildren: 0.1,
+      delayChildren: stagger(0.1),
     },
   },
 };

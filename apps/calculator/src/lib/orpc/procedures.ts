@@ -97,7 +97,7 @@ export const signIn = base
   })
   .input(
     z.object({
-      email: z.string().email(),
+      email: z.email(),
       password: z.string().min(1),
     }),
   )
@@ -145,7 +145,7 @@ export const signUp = base
   .input(
     z.object({
       name: z.string().min(1),
-      email: z.string().email(),
+      email: z.email(),
       password: z.string().min(8),
     }),
   )

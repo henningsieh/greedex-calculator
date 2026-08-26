@@ -2,6 +2,7 @@ import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { CORSPlugin } from "@orpc/server/plugins";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 
 import { router } from "@/lib/orpc/router";
 
@@ -20,6 +21,7 @@ export const openapiHandler = new OpenAPIHandler(router, {
       credentials: true,
     }),
     new OpenAPIReferencePlugin({
+      schemaConverters: [new ZodToJsonSchemaConverter()],
       docsProvider: "scalar",
       docsPath: "/api/docs",
       specPath: "/api/openapi-spec",

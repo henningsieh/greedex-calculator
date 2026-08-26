@@ -1,4 +1,5 @@
 import { OpenAPIGenerator } from "@orpc/openapi";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { NextResponse } from "next/server";
 
 import { router } from "@/lib/orpc/router";
@@ -9,7 +10,9 @@ import { router } from "@/lib/orpc/router";
  * Used by Scalar UI and other API documentation tools
  */
 export async function GET() {
-  const generator = new OpenAPIGenerator();
+  const generator = new OpenAPIGenerator({
+    schemaConverters: [new ZodToJsonSchemaConverter()],
+  });
 
   const spec = await generator.generate(router, {
     info: {

@@ -5,7 +5,6 @@
  * used in the participant questionnaire flow.
  */
 
-import { ACTIVITY_EMISSION_FACTORS } from "@greendex/config/activities";
 import {
   CO2_PER_TREE_PER_YEAR,
   CONVENTIONAL_ENERGY_FACTOR,
@@ -14,6 +13,7 @@ import {
   ROOM_OCCUPANCY_FACTORS,
   ROUND_TRIP_MULTIPLIER,
 } from "@greendex/config/participate";
+import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 
 import type { ProjectActivityType } from "@/features/project-activities/types";
 import { calculateActivitiesCO2 } from "@/features/projects/utils";

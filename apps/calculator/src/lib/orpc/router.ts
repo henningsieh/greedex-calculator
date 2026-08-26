@@ -8,16 +8,16 @@ import {
   searchMembers,
 } from "@/features/organizations/procedures";
 import {
-  createProjectActivity,
-  deleteProjectActivity,
-  updateProjectActivity,
-} from "@/features/project-activities/procedures";
+  createProjectSharedTravelLeg,
+  deleteProjectSharedTravelLeg,
+  listProjectSharedTravelLegs,
+  updateProjectSharedTravelLeg,
+} from "@/features/project-shared-travel-legs/procedures";
 import {
   archiveProject,
   batchDeleteProjects,
   createProject,
   deleteProject,
-  getProjectActivities,
   getProjectById,
   getProjectForParticipation,
   getProjectParticipants,
@@ -84,12 +84,12 @@ export const router = {
     getParticipants: getProjectParticipants,
   },
 
-  // Project Activity namespace
-  projectActivities: {
-    list: getProjectActivities,
-    create: createProjectActivity,
-    update: updateProjectActivity,
-    delete: deleteProjectActivity,
+  // Project Shared Travel Leg namespace
+  projectSharedTravelLegs: {
+    list: listProjectSharedTravelLegs,
+    create: createProjectSharedTravelLeg,
+    update: updateProjectSharedTravelLeg,
+    delete: deleteProjectSharedTravelLeg,
   },
 };
 

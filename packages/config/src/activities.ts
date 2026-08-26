@@ -1,34 +1,25 @@
-/**
- * Activity types and configuration
- * Type definitions for project and participant activities plus emission factors
- */
+import {
+  PARTICIPANT_TRANSPORT_EMISSION_PROFILES,
+  PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES,
+  TRANSPORT_EMISSION_FACTORS,
+} from "./transport-emission-profiles";
+import type {
+  ParticipantTransportEmissionProfile,
+  ProjectSharedTransportEmissionProfile,
+} from "./transport-emission-profiles";
 
-/**
- * Available activity/transport types for projects
- * Used in database schema, forms, and calculations
- */
-export const ACTIVITY_VALUES = ["boat", "bus", "train", "car"] as const;
+/** @deprecated Use `PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES`. */
+export const ACTIVITY_VALUES = PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES;
 
-/**
- * Type for project activity values
- */
-export type ActivityValueType = (typeof ACTIVITY_VALUES)[number];
+/** @deprecated Use `ProjectSharedTransportEmissionProfile`. */
+export type ActivityValueType = ProjectSharedTransportEmissionProfile;
 
-/**
- * Participant activities extend project activities with plane and electric car
- * These additional transport modes are specific to participant questionnaires
- */
-export const PARTICIPANT_ACTIVITY_VALUES = [
-  ...ACTIVITY_VALUES,
-  "plane",
-  "electricCar",
-] as const;
+/** @deprecated Use `PARTICIPANT_TRANSPORT_EMISSION_PROFILES`. */
+export const PARTICIPANT_ACTIVITY_VALUES =
+  PARTICIPANT_TRANSPORT_EMISSION_PROFILES;
 
-/**
- * Type for participant activity values
- */
-export type ParticipantActivityValueType =
-  (typeof PARTICIPANT_ACTIVITY_VALUES)[number];
+/** @deprecated Use `ParticipantTransportEmissionProfile`. */
+export type ParticipantActivityValueType = ParticipantTransportEmissionProfile;
 
 // ============================================================================
 // DISTANCE CONFIGURATIONS
@@ -74,23 +65,5 @@ export const DECIMAL_PRECISION = 10;
  */
 export const DECIMAL_SCALE = 1;
 
-// ============================================================================
-// EMISSION FACTORS (kg CO₂ per km)
-// ============================================================================
-
-/**
- * CO₂ emission factors for Erasmus+ journeys (kg CO₂ per km)
- * Focused on intra-European travel within typical Erasmus+ distance bands
- * Based on European Environment Agency and Our World in Data transport research
- */
-export const ACTIVITY_EMISSION_FACTORS: Record<
-  ParticipantActivityValueType,
-  number
-> = {
-  plane: 0.154, // Short-haul intra-European flights (typical 500-2000km range)
-  boat: 0.05, // Standard ferry (use 0.115 for fast/long-distance ferry)
-  train: 0.035, // EU electric train average (lower for high-speed rail)
-  bus: 0.032, // Long-distance coach (Erasmus-eligible green travel)
-  car: 0.168, // Real-world EU fleet average (diesel/petrol)
-  electricCar: 0.053, // Electric car (EU grid mix average)
-} as const;
+/** @deprecated Use `TRANSPORT_EMISSION_FACTORS`. */
+export const ACTIVITY_EMISSION_FACTORS = TRANSPORT_EMISSION_FACTORS;

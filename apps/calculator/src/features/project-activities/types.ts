@@ -13,4 +13,4 @@ export type ProjectActivityType = InferSelectModel<typeof projectActivitiesTable
 /**
  * Re-export activity value type from config for convenience
  */
-export type { ActivityValueType } from "@greendex/config/activities";
+export type { ProjectSharedTransportEmissionProfile as ActivityValueType } from "@greendex/config/transport-emission-profiles";

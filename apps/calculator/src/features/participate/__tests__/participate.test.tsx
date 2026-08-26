@@ -1,4 +1,3 @@
-import { ACTIVITY_EMISSION_FACTORS } from "@greendex/config/activities";
 import {
   ACCOMMODATION_DATA,
   CO2_PER_TREE_PER_YEAR,
@@ -7,6 +6,7 @@ import {
   GREEN_ENERGY_REDUCTION_FACTOR,
   ROOM_OCCUPANCY_FACTORS,
 } from "@greendex/config/participate";
+import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 import { describe, expect, it } from "vitest";
 
 import {

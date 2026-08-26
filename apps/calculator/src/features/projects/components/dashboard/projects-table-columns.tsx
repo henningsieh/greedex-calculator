@@ -306,7 +306,7 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
       onSuccess: (result) => {
         if (result.success) {
           toast.success(t("form.delete.toast-success"));
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: orpcQuery.projects.list.queryKey(),
           });
         } else {
@@ -334,7 +334,7 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
               ? t("form.archive.toast-success")
               : t("form.archive.toast-unarchive-success"),
           );
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: orpcQuery.projects.list.queryKey(),
           });
         } else {

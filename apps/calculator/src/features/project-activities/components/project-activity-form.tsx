@@ -1,10 +1,7 @@
 "use client";
 
-import {
-  ACTIVITY_VALUES,
-  DISTANCE_KM_STEP,
-  MIN_DISTANCE_KM,
-} from "@greendex/config/activities";
+import { DISTANCE_KM_STEP, MIN_DISTANCE_KM } from "@greendex/config/activities";
+import { PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES as ACTIVITY_VALUES } from "@greendex/config/transport-emission-profiles";
 import { useTranslations } from "@greendex/i18n/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,18 +22,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import type { ProjectActivityType } from "@/features/project-activities/types";
 import {
   activityInputSchema,
   activityUpdateSchema,
 } from "@/features/project-activities/validation-schemas";
+import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
 
 import { PROJECT_ACTIVITIES_ICONS } from "../activities-icons";
 
 interface ProjectActivityFormProps {
   projectId: string;
-  activity?: ProjectActivityType;
+  activity?: ProjectSharedTravelLeg;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
@@ -86,10 +83,10 @@ export function ProjectActivityForm({
     defaultValues: isEditing
       ? {
           // Update mode: no projectId
-          activityType: activity.activityType,
+          activityType: activity.transportEmissionProfile,
           distanceKm: activity.distanceKm,
           description: activity.description ?? null,
-          activityDate: activity.activityDate ?? null,
+          activityDate: activity.travelDate ?? null,
         }
       : {
           // Create mode: includes projectId
@@ -103,13 +100,19 @@ export function ProjectActivityForm({
 
   const createMutation = useMutation({
     mutationFn: (values: CreateFormValues) =>
-      orpc.projectActivities.create(values),
+      orpc.projectSharedTravelLegs.create({
+        projectId: values.projectId,
+        transportEmissionProfile: values.activityType,
+        distanceKm: values.distanceKm,
+        description: values.description,
+        travelDate: values.activityDate,
+      }),
     onSuccess: (result) => {
       if (result.success) {
         toast.success(t("toast.create-success"));
         reset();
-        queryClient.invalidateQueries({
-          queryKey: orpcQuery.projectActivities.list.queryKey({
+        void queryClient.invalidateQueries({
+          queryKey: orpcQuery.projectSharedTravelLegs.list.queryKey({
             input: { projectId },
           }),
         });
@@ -129,16 +132,22 @@ export function ProjectActivityForm({
       if (!activity?.id) {
         throw new Error("Activity ID is required for update");
       }
-      return orpc.projectActivities.update({
+      return orpc.projectSharedTravelLegs.update({
+        projectId,
         id: activity.id,
-        data: values,
+        data: {
+          transportEmissionProfile: values.activityType,
+          distanceKm: values.distanceKm,
+          description: values.description,
+          travelDate: values.activityDate,
+        },
       });
     },
     onSuccess: (result) => {
       if (result.success) {
         toast.success(t("toast.update-success"));
-        queryClient.invalidateQueries({
-          queryKey: orpcQuery.projectActivities.list.queryKey({
+        void queryClient.invalidateQueries({
+          queryKey: orpcQuery.projectSharedTravelLegs.list.queryKey({
             input: { projectId },
           }),
         });

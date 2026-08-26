@@ -83,7 +83,7 @@ export function ProjectCard({
       onSuccess: (result) => {
         if (result.success) {
           toast.success("Project deleted successfully");
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: orpcQuery.projects.list.queryKey(),
           });
         } else {
@@ -218,7 +218,7 @@ export function ProjectCard({
                           disabled={isDeleting || permissionsPending}
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDelete();
+                            void handleDelete();
                           }}
                         >
                           <Trash2Icon className="mr-2 size-4" />

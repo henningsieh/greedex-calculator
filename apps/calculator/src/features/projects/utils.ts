@@ -1,4 +1,4 @@
-import { ACTIVITY_EMISSION_FACTORS } from "@greendex/config/activities";
+import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 import { projectsTable } from "@greendex/database/schema";
 import { asc, desc, type SQL, sql } from "drizzle-orm";
 import React from "react";
@@ -7,7 +7,6 @@ import type z from "zod";
 import { type AppRoute, PROJECT_DETAIL_PATH } from "@/app/routes";
 import type { ProjectParticipantWithUser } from "@/features/participants/types";
 import { PROJECT_ACTIVITIES_ICONS } from "@/features/project-activities/activities-icons";
-import type { ProjectActivityType } from "@/features/project-activities/types";
 import type {
   ListProjectsInput,
   ProjectStatistics,
@@ -83,7 +82,7 @@ export function getProjectActivityIcon(
  * @returns The localized display name for `columnId`, or `columnId` unchanged if no mapping exists
  */
 export function getColumnDisplayName(
-  columnId: ProjectSortField | string,
+  columnId: string,
   t: (key: string) => string,
 ): string {
   switch (columnId) {
@@ -203,13 +202,17 @@ export const calculateProjectDuration = (
  *
  * The function is tolerant of missing inputs and returns sensible defaults.
  */
+type TransportLegForCalculation = {
+  distanceKm: number;
+} & ({ transportEmissionProfile: string } | { activityType: string });
+
 export function getProjectStatistics(
   project:
     | { startDate?: string | Date; endDate?: string | Date }
     | null
     | undefined,
   participants?: ProjectParticipantWithUser[] | null,
-  activities?: ProjectActivityType[] | null,
+  activities?: TransportLegForCalculation[] | null,
 ): ProjectStatistics {
   const participantsCount = participants?.length ?? 0;
   const activitiesCount = activities?.length ?? 0;
@@ -286,7 +289,7 @@ function calculateSingleActivityCO2(
  * @returns Total CO₂ emissions in kilograms
  */
 export function calculateActivitiesCO2(
-  activities: ProjectActivityType[],
+  activities: TransportLegForCalculation[],
 ): number {
   if (!activities || activities.length === 0) {
     return 0;
@@ -294,8 +297,12 @@ export function calculateActivitiesCO2(
 
   return activities.reduce((total, activity) => {
     const distanceKm = Number(activity.distanceKm);
+    const transportEmissionProfile =
+      "transportEmissionProfile" in activity
+        ? activity.transportEmissionProfile
+        : activity.activityType;
     const emissions = calculateSingleActivityCO2(
-      activity.activityType,
+      transportEmissionProfile,
       distanceKm,
     );
     return total + emissions;

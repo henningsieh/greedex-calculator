@@ -4,6 +4,7 @@ import {
   EU_MEMBER_COUNT,
   type EUCountryCode,
 } from "@greendex/config/eu-countries";
+import { stagger } from "motion/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 import { AnimatedGroup } from "@/components/animated-group";
@@ -96,8 +97,7 @@ export function GlobeSection() {
             container: {
               visible: {
                 transition: {
-                  staggerChildren: 0.05,
-                  delayChildren: 0.1,
+                  delayChildren: stagger(0.05, { startDelay: 0.1 }),
                 },
               },
             },

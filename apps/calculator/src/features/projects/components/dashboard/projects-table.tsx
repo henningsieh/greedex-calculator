@@ -192,7 +192,7 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
               count: result.deletedCount,
             }),
           );
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: orpcQuery.projects.list.queryKey(),
           });
           table.resetRowSelection();
