@@ -76,6 +76,9 @@ export const projectsTable = pgTable("project", {
   // Archived flag - projects can be archived instead of deleted
   archived: boolean("archived").default(false).notNull(),
 
+  // Probe column to verify ongoing drizzle migrations (issue-69 follow-up)
+  testProbe: text("test_probe"),
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
