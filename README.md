@@ -15,7 +15,7 @@ workshops, and sustainability education in one application.
 - Organization onboarding, membership, invitations, and role-based permissions
 - Project creation, editing, filtering, sorting, archiving, and batch actions
 - Participant management and a public participation/questionnaire flow
-- Project activities, travel distances, and CO₂ statistics
+- Project Shared Travel Legs, travel distances, and CO₂ statistics
 - Email/password, magic-link, and Google/GitHub/Discord authentication
 - Transactional verification, reset-password, and invitation emails
 - Seven UI locales with a searchable language switcher
@@ -35,8 +35,8 @@ resources, sustainability challenges, and the Greendex E-Forest. Learn more at
 | -------------------- | ------------------------------------------------------------- |
 | Web applications     | Next.js `16.3.2`, React `19.2.8`, App Router, React Compiler  |
 | Language             | TypeScript `7.0.2`                                            |
-| Monorepo             | Turborepo `2.10.11`, pnpm workspaces/catalog                  |
-| Package manager      | pnpm `10.28.2`                                                |
+| Monorepo             | Turborepo `2.10.12`, pnpm workspaces/catalog                  |
+| Package manager      | pnpm `11.23.0`                                                |
 | UI                   | shadcn/ui, Radix UI, cmdk, Tailwind CSS `4.3.3`               |
 | Authentication       | Better Auth `1.7.1` with organization and social-auth plugins |
 | API                  | oRPC `1.15.x`, TanStack Query, OpenAPI/Scalar                 |
@@ -200,9 +200,15 @@ Run these from the repository root:
 | `pnpm run db:migrate`                              | Apply Drizzle migrations                      |
 | `pnpm run db:seed`                                 | Seed local development data                   |
 
-> **Build side effect:** the calculator's `prebuild` currently generates/checks
-> Scalar SRI data and runs database migrations. Before `pnpm run build`, verify
-> that `DATABASE_URL` points at the database you intend to migrate.
+> **Deployment migration guarantee:** the calculator's `prestart` runs
+> `pnpm --filter @greendex/database run db:migrate` before `start`. This uses
+> the committed Drizzle migration history and the shell `&&` chain stops the
+> application start if migration fails. A Coolify deployment therefore cannot
+> make a new calculator container healthy with a database schema behind its
+> shipped code. Before any local `pnpm run start`, verify that `DATABASE_URL`
+> points at the database you intend to migrate.
+>
+> The calculator's `prebuild` only generates/checks Scalar SRI data.
 
 ---
 
@@ -216,11 +222,12 @@ The calculator uses locale-prefixed App Router routes under
 - Public landing, workshop, library, E-Forest, and educational pages
 - Login, signup, verification, password reset, and OAuth flows
 - Organization onboarding, dashboard, team, projects, archive, and settings
-- Project details, participants, activities, and live-view areas
+- Project details, Project Shared Travel Legs, participants, and live-view areas
 - Public project participation/questionnaire routes
 
-Feature modules cover authentication, organizations, projects, participants,
-project activities, participation, landing pages, live view, and user settings.
+Feature modules cover authentication, organizations, projects, Project Shared
+Travel Legs, participants, participation, landing pages, live view, and user
+settings.
 
 ### API surfaces
 
@@ -260,15 +267,24 @@ The database schema generated for Better Auth is stored in
 ### Database and migrations
 
 The database package exports the PostgreSQL/Drizzle client and combines auth,
-project, participant, and project-activity schemas. Migrations are stored in:
+Project, Project Participant, and Project Shared Travel Leg schemas. Migrations
+are stored in:
 
 ```text
 packages/database/src/migrations/
 ```
 
-Migration `0009_abandoned_black_panther.sql` adds Better Auth's account issuer
-model and fixes project-activity distance precision. Review migration/backfill
-safety before applying it to a database that already contains account rows.
+The canonical Project Shared Travel Leg table is
+`project_shared_travel_leg`. Its `transport_emission_profile` column uses the
+PostgreSQL enum `project_shared_transport_emission_profile`: `boat`, `bus`,
+`train`, `car`, and `electricCar`. `plane` is valid only for non-persisted
+Participant Travel Legs.
+
+Migration `0010_enforce_project_shared_travel_legs.sql` is the historical
+cutover migration. It preserves valid legacy rows while converting the old
+`project_activity` table. Migration `0013_remove_project_activity_compatibility_view.sql`
+removes the temporary legacy view after cutover. Do not edit applied migration
+history; add a new migration for every schema change.
 
 ### Internationalization
 
@@ -344,6 +360,11 @@ application processes. The `"env": ["*"]` setting on the `build` and `start`
 tasks in [`turbo.json`](turbo.json) is critical for forwarding those variables
 to workspace processes.
 
+Every calculator deployment runs the existing Drizzle `db:migrate` command in
+`prestart`, before Next.js and Socket.IO start. If a migration fails, the
+process exits non-zero and Coolify cannot mark the new calculator container
+healthy. This is the repository's database-as-code deployment contract.
+
 Deployment secrets, database credentials, and infrastructure identifiers are
 managed outside source control. Operational details for authorized maintainers
 are documented in `AGENTS.md`.
@@ -381,7 +402,6 @@ current branch/PR state, deployment model, and remaining cleanup decisions.
   decision fully consistent.
 - Merge or further review open PR #57 (`migrate-email-to-package`), which
   centralizes transactional email in `@greendex/email`.
-- Verify migration `0009` against the shared database before relying on it.
 - Make the OpenAPI integration suite select/skip tests correctly when no server
   is running.
 - Select and add a project license.
