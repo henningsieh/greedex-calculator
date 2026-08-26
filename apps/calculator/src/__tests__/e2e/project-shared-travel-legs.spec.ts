@@ -45,11 +45,11 @@ async function createProjectForSeedOrganization() {
 test.describe("Project Shared Travel Legs", () => {
   let projectId: string;
 
-  test.beforeAll(async () => {
+  test.beforeEach(async () => {
     projectId = await createProjectForSeedOrganization();
   });
 
-  test.afterAll(async () => {
+  test.afterEach(async () => {
     await db.delete(projectsTable).where(eq(projectsTable.id, projectId));
   });
 
