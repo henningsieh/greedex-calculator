@@ -498,7 +498,10 @@
             "error": "Fehler beim Aktualisieren des Projekts",
             "failed-activities": "Fehler beim Verarbeiten von {count, plural, one {# Aktivität} other {# Aktivitäten}}: {activities}"
           },
-          "back": "Zurück"
+          "back": "Zurück",
+          "cancel": "Abbrechen",
+          "step": "Schritt {current} von {total}",
+          "validation-error": "Bitte korrigiere die Formularfehler vor dem Absenden"
         },
         "delete": {
           "confirm-title": "Bist du sicher?",
@@ -564,6 +567,7 @@
           "welcome-message-description": "Optional: Füge eine Willkommensnachricht für Teilnehmende hinzu.",
           "organization-description": "Wähle die Organisation, die das Projekt besitzt.",
           "back": "Zurück",
+          "step": "Schritt {current} von {total}",
           "country-placeholder": "Wähle das Land aus"
         }
       },

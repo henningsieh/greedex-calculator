@@ -498,7 +498,10 @@
             "error": "No se pudo actualizar el proyecto",
             "failed-activities": "No se pudieron procesar {count, plural, one {# actividad} other {# actividades}}: {activities}"
           },
-          "back": "Volver"
+          "back": "Volver",
+          "cancel": "Cancelar",
+          "step": "Paso {current} de {total}",
+          "validation-error": "Corrige los errores del formulario antes de enviarlo"
         },
         "delete": {
           "confirm-title": "¿Estás seguro/a?",
@@ -564,6 +567,7 @@
           "welcome-message-description": "Opcional: Añade un mensaje de bienvenida para los participantes.",
           "organization-description": "Elige la organización propietaria de este proyecto.",
           "back": "Volver",
+          "step": "Paso {current} de {total}",
           "country-placeholder": "Seleccionar el país"
         }
       },

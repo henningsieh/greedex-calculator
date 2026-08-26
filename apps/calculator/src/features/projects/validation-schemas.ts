@@ -1,10 +1,5 @@
 import { EU_COUNTRY_CODES } from "@greendex/config/eu-countries";
-import {
-  organization,
-  projectActivitiesTable,
-  projectsTable,
-  user,
-} from "@greendex/database/schema";
+import { organization, projectsTable, user } from "@greendex/database/schema";
 import {
   createInsertSchema,
   createSelectSchema,
@@ -13,6 +8,7 @@ import {
 import { z } from "zod";
 
 import { ProjectActivityWithRelationsSchema } from "@/features/project-activities/validation-schemas";
+import { ProjectSharedTravelLegFormSchema } from "@/features/project-shared-travel-legs/validation-schemas";
 
 import { PROJECT_SORT_FIELDS } from "./types";
 
@@ -44,9 +40,9 @@ export const ProjectSortFieldSchema = z.enum(PROJECT_SORT_FIELDS);
  *
  * Usage:
  * - Use this schema to validate create-request payloads from forms or APIs.
- * - If you need to accept activities at creation time, use
- *   `CreateProjectWithActivitiesSchema` which extends this schema with
- *   an optional `activities` array.
+ * - If you need to accept shared travel at creation time, use
+ *   `CreateProjectWithSharedTravelLegsSchema`, which extends this schema with
+ *   an optional `sharedTravelLegs` array.
  *
  * Note: `responsibleUserId` is intentionally omitted because it should be
  * populated server-side (e.g., based on the authenticated user creating the
@@ -84,9 +80,9 @@ export const ProjectWithRelationsSchema = createSelectSchema(
  *
  * Usage:
  * - Use this schema to validate update/edit request payloads from forms or APIs.
- * - For editing a project together with activities, use
- *   `EditProjectWithActivitiesSchema` which extends this schema with an
- *   optional `activities` array.
+ * - For editing a project together with shared travel, use
+ *   `EditProjectWithSharedTravelLegsSchema`, which extends this schema with
+ *   an optional `sharedTravelLegs` array.
  *
  * Note: `responsibleUserId` is intentionally omitted because it should be
  * managed server-side and not provided by the client during updates.
@@ -104,52 +100,36 @@ export const ProjectUpdateFormSchema = createUpdateSchema(projectsTable)
   });
 
 // ============================================================================
-// COMBINED SCHEMAS WITH ACTIVITIES
+// PROJECT SHARED TRAVEL LEG FORM SCHEMAS
 // ============================================================================
 
-/**
- * Combined form schema with activities for editing projects
- *
- * Activities use inline base schema with batch operation flags (no i18n needed)
- */
-export const EditProjectWithActivitiesSchema = ProjectUpdateFormSchema.extend({
-  activities: z
-    .array(
-      createUpdateSchema(projectActivitiesTable)
-        .omit({
-          createdAt: true,
-          updatedAt: true,
-        })
-        .extend({
-          id: z.string(),
-          projectId: z.string(),
-          isNew: z.boolean().optional(),
-          isDeleted: z.boolean().optional(),
-        }),
-    )
-    .optional(),
+const sharedTravelLegEditFormSchema = ProjectSharedTravelLegFormSchema.extend({
+  id: z.string(),
+  projectId: z.string(),
+  isNew: z.boolean(),
+  isDeleted: z.boolean(),
 });
 
 /**
- * Combined form schema with optional activities for creating projects
- *
- * Activities use inline base schema for batch operations (no i18n needed)
+ * Project editing values, including canonical Project Shared Travel Legs.
+ * Existing leg IDs are retained so the form can update or delete the right row.
  */
-export const CreateProjectWithActivitiesSchema = ProjectCreateFormSchema.extend({
-  activities: z
-    .array(
-      createInsertSchema(projectActivitiesTable).omit({
-        id: true,
-        projectId: true,
-        createdAt: true,
-        updatedAt: true,
-      }),
-    )
-    .optional(),
-});
+export const EditProjectWithSharedTravelLegsSchema =
+  ProjectUpdateFormSchema.extend({
+    sharedTravelLegs: z.array(sharedTravelLegEditFormSchema).optional(),
+  });
 
-export type CreateProjectWithActivities = z.infer<
-  typeof CreateProjectWithActivitiesSchema
+/**
+ * Project creation values, including zero or more canonical Project Shared
+ * Travel Legs. The leg fields intentionally reuse the management form schema.
+ */
+export const CreateProjectWithSharedTravelLegsSchema =
+  ProjectCreateFormSchema.extend({
+    sharedTravelLegs: z.array(ProjectSharedTravelLegFormSchema).optional(),
+  });
+
+export type CreateProjectWithSharedTravelLegs = z.infer<
+  typeof CreateProjectWithSharedTravelLegsSchema
 >;
 
 /**

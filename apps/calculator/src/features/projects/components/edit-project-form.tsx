@@ -3,7 +3,6 @@
 import { DISTANCE_KM_STEP, MIN_DISTANCE_KM } from "@greendex/config/activities";
 import { useTranslations } from "@greendex/i18n/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isDefinedError } from "@orpc/client";
 import {
   useMutation,
   useQueryClient,
@@ -38,7 +37,7 @@ import {
   PROJECT_FORM_TOTAL_STEPS,
 } from "@/features/projects/project-form-steps";
 import type { ProjectType } from "@/features/projects/types";
-import { EditProjectWithActivitiesSchema } from "@/features/projects/validation-schemas";
+import { EditProjectWithSharedTravelLegsSchema } from "@/features/projects/validation-schemas";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
 interface EditProjectFormProps {
@@ -47,21 +46,21 @@ interface EditProjectFormProps {
 }
 
 /**
- * Render a two-step form that edits a project's details and manages its activities, then persists changes.
+ * Render a two-step form that edits a project's details and manages its Project Shared Travel Legs, then persists changes.
  *
  * @param project - Project used to populate initial form values.
- * @param onSuccess - Optional callback invoked after a successful project update and activity processing.
+ * @param onSuccess - Optional callback invoked after a successful project update and shared-travel processing.
  * @returns The rendered edit project form UI.
  */
 export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
-  const tActivities = useTranslations("project.activities");
+  const tSharedTravel = useTranslations("project.activities");
   const t = useTranslations("organization.projects.form");
   const [currentStep, setCurrentStep] = useState<number>(
     PROJECT_FORM_STEPS.PROJECT_DETAILS,
   );
 
-  // Fetch existing activities
-  const { data: existingActivities } = useSuspenseQuery(
+  // Fetch existing Project Shared Travel Legs.
+  const { data: existingSharedTravelLegs } = useSuspenseQuery(
     orpcQuery.projectSharedTravelLegs.list.queryOptions({
       input: { projectId: project.id },
     }),
@@ -75,8 +74,8 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
     trigger,
     setValue,
     getValues,
-  } = useForm<z.infer<typeof EditProjectWithActivitiesSchema>>({
-    resolver: zodResolver(EditProjectWithActivitiesSchema),
+  } = useForm<z.infer<typeof EditProjectWithSharedTravelLegsSchema>>({
+    resolver: zodResolver(EditProjectWithSharedTravelLegsSchema),
     mode: "onChange",
     defaultValues: {
       name: project.name,
@@ -86,32 +85,32 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       country: project.country,
       welcomeMessage: project.welcomeMessage,
       organizationId: project.organizationId,
-      activities: [],
+      sharedTravelLegs: [],
     },
   });
 
-  // Load existing activities into the form when they're fetched
+  // Keep fetched canonical legs (including IDs) in the form for later updates.
   useEffect(() => {
-    if (existingActivities && existingActivities.length > 0) {
-      const formattedActivities: NonNullable<
-        z.infer<typeof EditProjectWithActivitiesSchema>["activities"]
-      > = existingActivities.map((activity) => ({
-        id: activity.id,
-        projectId: activity.projectId,
-        activityType: activity.transportEmissionProfile,
-        distanceKm: activity.distanceKm,
-        description: activity.description,
-        activityDate: activity.travelDate ? new Date(activity.travelDate) : null,
+    setValue(
+      "sharedTravelLegs",
+      existingSharedTravelLegs.map((sharedTravelLeg) => ({
+        id: sharedTravelLeg.id,
+        projectId: sharedTravelLeg.projectId,
+        transportEmissionProfile: sharedTravelLeg.transportEmissionProfile,
+        distanceKm: sharedTravelLeg.distanceKm,
+        description: sharedTravelLeg.description,
+        travelDate: sharedTravelLeg.travelDate
+          ? new Date(sharedTravelLeg.travelDate)
+          : null,
         isNew: false,
         isDeleted: false,
-      }));
-      setValue("activities", formattedActivities);
-    }
-  }, [existingActivities, setValue]);
+      })),
+    );
+  }, [existingSharedTravelLegs, setValue]);
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "activities",
+    name: "sharedTravelLegs",
   });
 
   const queryClient = useQueryClient();
@@ -121,26 +120,20 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       orpcQuery.projects.update.mutationOptions({
         onError: (error) => {
           console.error(error);
-          if (isDefinedError(error)) {
-            // Handle type-safe oRPC errors
-            toast.error(error.message || "An error occurred");
-          } else {
-            // Handle unknown errors
-            toast.error("An unexpected error occurred");
-          }
+          toast.error(t("edit.toast.error"));
         },
       }),
     );
 
-  const { mutateAsync: createActivityMutation } = useMutation(
+  const { mutateAsync: createSharedTravelLegMutation } = useMutation(
     orpcQuery.projectSharedTravelLegs.create.mutationOptions(),
   );
 
-  const { mutateAsync: updateActivityMutation } = useMutation(
+  const { mutateAsync: updateSharedTravelLegMutation } = useMutation(
     orpcQuery.projectSharedTravelLegs.update.mutationOptions(),
   );
 
-  const { mutateAsync: deleteActivityMutation } = useMutation(
+  const { mutateAsync: deleteSharedTravelLegMutation } = useMutation(
     orpcQuery.projectSharedTravelLegs.delete.mutationOptions(),
   );
 
@@ -152,21 +145,13 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       "country",
     ]);
     if (isStepValid) {
-      setCurrentStep(PROJECT_FORM_STEPS.PROJECT_ACTIVITIES);
+      setCurrentStep(PROJECT_FORM_STEPS.PROJECT_SHARED_TRAVEL);
     }
   }
 
-  /**
-   * Submits the edited project and its activities to the server, notifies the user of the outcome, and refreshes related queries.
-   *
-   * Processes the main project update first, then creates, updates, or deletes activities from the provided `values.activities` array. Shows success or error toasts based on results, invalidates cached project queries for the given project, and invokes the optional `onSuccess` callback when complete.
-   *
-   * @param values - Form values validated against `EditProjectWithActivitiesSchema`, including project fields and an `activities` array describing new, updated, or deleted activities
-   */
   async function onSubmit(
-    values: z.infer<typeof EditProjectWithActivitiesSchema>,
+    values: z.infer<typeof EditProjectWithSharedTravelLegsSchema>,
   ) {
-    // Update the project
     const result = await updateProjectMutation({
       id: project.id,
       data: {
@@ -185,111 +170,97 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       return;
     }
 
-    // Process activities in a helper to keep this function simple
-    if (values.activities && values.activities.length > 0) {
-      const failedActivities = await processActivities(values.activities);
+    if (values.sharedTravelLegs && values.sharedTravelLegs.length > 0) {
+      const failedProfiles = await processSharedTravelLegs(
+        values.sharedTravelLegs,
+      );
 
-      if (failedActivities.length > 0) {
+      if (failedProfiles.length > 0) {
         toast.error(
           t("edit.toast.failed-activities", {
-            count: failedActivities.length,
-            activities: failedActivities.join(", "),
+            count: failedProfiles.length,
+            activities: failedProfiles.join(", "),
           }),
         );
       }
     }
 
-    toast.success(t("edit.toast.success") || "Project updated successfully");
+    toast.success(t("edit.toast.success"));
     invalidateProjectQueries(project.id);
     onSuccess?.();
   }
 
-  /**
-   * Processes a list of activity form items, performing the appropriate create/update/delete action for each.
-   *
-   * @param activities - Array of activity form items to process; each item may represent a new, existing, or deleted activity.
-   * @returns An array of activity type identifiers for activities that failed to process (uses `"unknown"` when the activity type is not available).
-   */
-  async function processActivities(
-    activities: NonNullable<
-      z.infer<typeof EditProjectWithActivitiesSchema>["activities"]
+  async function processSharedTravelLegs(
+    sharedTravelLegs: NonNullable<
+      z.infer<typeof EditProjectWithSharedTravelLegsSchema>["sharedTravelLegs"]
     >,
   ) {
-    const failedActivities: string[] = [];
+    const failedProfiles: string[] = [];
 
-    for (const activity of activities) {
+    for (const sharedTravelLeg of sharedTravelLegs) {
       try {
-        await handleSingleActivity(activity);
+        await handleSharedTravelLeg(sharedTravelLeg);
       } catch (error) {
-        console.error("Failed to process activity:", error);
-        failedActivities.push(activity.activityType || "unknown");
+        console.error("Failed to process Project Shared Travel Leg:", error);
+        failedProfiles.push(
+          sharedTravelLeg.transportEmissionProfile || "unknown",
+        );
       }
     }
 
-    return failedActivities;
+    return failedProfiles;
   }
 
-  /**
-   * Apply the appropriate create, update, or delete operation for a single activity based on its form flags.
-   *
-   * @param activity - An activity form item. If `isDeleted` is true for an existing activity, it will be deleted; if `isNew` is true and not deleted, it will be created; if not new and not deleted, it will be updated. Other flag combinations are treated as no-ops.
-   */
-  async function handleSingleActivity(
-    activity: NonNullable<
-      z.infer<typeof EditProjectWithActivitiesSchema>["activities"]
+  async function handleSharedTravelLeg(
+    sharedTravelLeg: NonNullable<
+      z.infer<typeof EditProjectWithSharedTravelLegsSchema>["sharedTravelLegs"]
     >[number],
   ) {
-    // Deleted existing activity
-    if (activity.isDeleted === true && activity.isNew === false && activity.id) {
-      await deleteActivityMutation({ projectId: project.id, id: activity.id });
-      return;
-    }
-
-    // New activity to create
-    if (activity.isNew === true && activity.isDeleted !== true) {
-      if (!activity.activityType) {
-        throw new Error("Activity type is required");
-      }
-      if (activity.distanceKm === undefined) {
-        throw new Error("Distance is required");
-      }
-
-      await createActivityMutation({
+    if (
+      sharedTravelLeg.isDeleted &&
+      !sharedTravelLeg.isNew &&
+      sharedTravelLeg.id
+    ) {
+      await deleteSharedTravelLegMutation({
         projectId: project.id,
-        transportEmissionProfile: activity.activityType,
-        distanceKm: activity.distanceKm,
-        description: activity.description,
-        travelDate: activity.activityDate,
+        id: sharedTravelLeg.id,
       });
       return;
     }
 
-    // Existing activity to update
-    if (activity.isNew === false && activity.isDeleted !== true && activity.id) {
-      if (!activity.activityType) {
-        throw new Error("Activity type is required");
-      }
-
-      await updateActivityMutation({
+    if (sharedTravelLeg.isNew && !sharedTravelLeg.isDeleted) {
+      await createSharedTravelLegMutation({
         projectId: project.id,
-        id: activity.id,
+        transportEmissionProfile: sharedTravelLeg.transportEmissionProfile,
+        distanceKm: sharedTravelLeg.distanceKm,
+        description: sharedTravelLeg.description,
+        travelDate: sharedTravelLeg.travelDate,
+      });
+      return;
+    }
+
+    if (
+      !sharedTravelLeg.isNew &&
+      !sharedTravelLeg.isDeleted &&
+      sharedTravelLeg.id
+    ) {
+      await updateSharedTravelLegMutation({
+        projectId: project.id,
+        id: sharedTravelLeg.id,
         data: {
-          transportEmissionProfile: activity.activityType,
-          distanceKm: activity.distanceKm,
-          description: activity.description,
-          travelDate: activity.activityDate,
+          transportEmissionProfile: sharedTravelLeg.transportEmissionProfile,
+          distanceKm: sharedTravelLeg.distanceKm,
+          description: sharedTravelLeg.description,
+          travelDate: sharedTravelLeg.travelDate,
         },
       });
-      return;
     }
-
-    // Nothing to do for other combinations (e.g., marked deleted while new)
   }
 
   /**
    * Invalidates cached queries related to a project so they will be refetched.
    *
-   * @param projectId - The ID of the project whose list, details, and activities caches should be invalidated
+   * @param projectId - The ID of the project whose list, details, and shared-travel caches should be invalidated
    */
   function invalidateProjectQueries(projectId: string) {
     void queryClient.invalidateQueries({
@@ -307,35 +278,36 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
     });
   }
 
-  const addActivity = () => {
+  const addSharedTravelLeg = () => {
     append({
       id: "",
       projectId: project.id,
-      activityType: "car",
+      transportEmissionProfile: "car",
       distanceKm: MIN_DISTANCE_KM,
       description: null,
-      activityDate: null,
+      travelDate: null,
       isNew: true,
       isDeleted: false,
     });
   };
 
-  const markActivityDeleted = (index: number) => {
-    const activities = getValues("activities") || [];
-    const activity = activities[index]; // Now this is your actual activity data
+  const markSharedTravelLegDeleted = (index: number) => {
+    const sharedTravelLegs = getValues("sharedTravelLegs") || [];
+    const sharedTravelLeg = sharedTravelLegs[index];
 
-    if (activity.isNew) {
+    if (sharedTravelLeg.isNew) {
       remove(index);
     } else {
-      // Update the form values, not the fields metadata
-      const updatedActivities = [...activities];
-      updatedActivities[index] = { ...activity, isDeleted: true };
-      setValue("activities", updatedActivities);
+      const updatedSharedTravelLegs = [...sharedTravelLegs];
+      updatedSharedTravelLegs[index] = {
+        ...sharedTravelLeg,
+        isDeleted: true,
+      };
+      setValue("sharedTravelLegs", updatedSharedTravelLegs);
     }
   };
 
-  // Filter out deleted activities for display
-  const visibleActivities = fields.filter((field) => !field.isDeleted);
+  const visibleSharedTravelLegs = fields.filter((field) => !field.isDeleted);
 
   return (
     <div>
@@ -344,12 +316,15 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
       <form
         onSubmit={handleSubmit(onSubmit, (formErrors) => {
           console.error("Form validation errors:", formErrors);
-          toast.error("Please fix the form errors before submitting");
+          toast.error(t("edit.validation-error"));
         })}
       >
         {/* Step indicator */}
         <p className="mb-4 text-sm text-muted-foreground">
-          Step {currentStep} of {PROJECT_FORM_TOTAL_STEPS}
+          {t("edit.step", {
+            current: currentStep,
+            total: PROJECT_FORM_TOTAL_STEPS,
+          })}
         </p>
 
         {/* Step 1: Project Details */}
@@ -428,7 +403,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
                 type="button"
                 variant="secondaryoutline"
               >
-                Cancel
+                {t("edit.cancel")}
               </Button>
               <Button
                 className="w-1/2"
@@ -436,33 +411,35 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
                 type="button"
                 variant="secondary"
               >
-                {tActivities("title")}
+                {tSharedTravel("title")}
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             </div>
           </FieldGroup>
         )}
 
-        {/* Step 2: Activities */}
-        {currentStep === PROJECT_FORM_STEPS.PROJECT_ACTIVITIES && (
+        {/* Step 2: Project Shared Travel */}
+        {currentStep === PROJECT_FORM_STEPS.PROJECT_SHARED_TRAVEL && (
           <FieldGroup>
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">{tActivities("title")}</CardTitle>
+                <CardTitle className="text-lg">
+                  {tSharedTravel("title")}
+                </CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  {tActivities("description")}
+                  {tSharedTravel("description")}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
-                {visibleActivities.length === 0 ? (
+                {visibleSharedTravelLegs.length === 0 ? (
                   <Empty>
                     <EmptyHeader>
                       <EmptyMedia variant="icon">
                         <Plus className="size-9 text-muted-foreground" />
                       </EmptyMedia>
-                      <EmptyTitle>{tActivities("empty.title")}</EmptyTitle>
+                      <EmptyTitle>{tSharedTravel("empty.title")}</EmptyTitle>
                       <EmptyDescription>
-                        {tActivities("empty.description")}
+                        {tSharedTravel("empty.description")}
                       </EmptyDescription>
                     </EmptyHeader>
                   </Empty>
@@ -478,7 +455,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
                       >
                         <Button
                           className="absolute top-2 right-2"
-                          onClick={() => markActivityDeleted(index)}
+                          onClick={() => markSharedTravelLegDeleted(index)}
                           size="icon"
                           type="button"
                           variant="ghost"
@@ -489,47 +466,60 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
                         <div className="grid gap-4 pr-8 sm:grid-cols-2">
                           <Field
                             data-invalid={
-                              !!errors.activities?.[index]?.activityType
+                              !!errors.sharedTravelLegs?.[index]
+                                ?.transportEmissionProfile
                             }
                           >
-                            <FieldLabel htmlFor={`activities.${index}.type`}>
-                              {tActivities("form.transport-emission-profile")}
+                            <FieldLabel
+                              htmlFor={`sharedTravelLegs.${index}.transportEmissionProfile`}
+                            >
+                              {tSharedTravel("form.transport-emission-profile")}
                             </FieldLabel>
                             <Controller
                               control={control}
-                              name={`activities.${index}.activityType`}
+                              name={`sharedTravelLegs.${index}.transportEmissionProfile`}
                               render={({ field: selectField }) => (
                                 <TransportEmissionProfileSelect
-                                  id={`activities.${index}.type`}
+                                  id={`sharedTravelLegs.${index}.transportEmissionProfile`}
                                   onValueChange={selectField.onChange}
                                   value={selectField.value}
                                 />
                               )}
                             />
+                            <FieldError
+                              errors={[
+                                errors.sharedTravelLegs?.[index]
+                                  ?.transportEmissionProfile,
+                              ]}
+                            />
                           </Field>
 
                           <Field
                             data-invalid={
-                              !!errors.activities?.[index]?.distanceKm
+                              !!errors.sharedTravelLegs?.[index]?.distanceKm
                             }
                           >
-                            <FieldLabel htmlFor={`activities.${index}.distance`}>
-                              {tActivities("form.distance")}
+                            <FieldLabel
+                              htmlFor={`sharedTravelLegs.${index}.distanceKm`}
+                            >
+                              {tSharedTravel("form.distance")}
                             </FieldLabel>
                             <Controller
                               control={control}
-                              name={`activities.${index}.distanceKm`}
+                              name={`sharedTravelLegs.${index}.distanceKm`}
                               render={({ field }) => (
                                 <Input
-                                  id={`activities.${index}.distance`}
+                                  id={`sharedTravelLegs.${index}.distanceKm`}
                                   min={MIN_DISTANCE_KM}
-                                  onChange={(e) =>
+                                  onChange={(event) => {
+                                    const value = Number.parseFloat(
+                                      event.target.value,
+                                    );
                                     field.onChange(
-                                      Number.parseFloat(e.target.value) ||
-                                        MIN_DISTANCE_KM,
-                                    )
-                                  }
-                                  placeholder={tActivities(
+                                      Number.isFinite(value) ? value : undefined,
+                                    );
+                                  }}
+                                  placeholder={tSharedTravel(
                                     "form.distance-placeholder",
                                   )}
                                   step={DISTANCE_KM_STEP}
@@ -538,19 +528,45 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
                                 />
                               )}
                             />
+                            <FieldError
+                              errors={[
+                                errors.sharedTravelLegs?.[index]?.distanceKm,
+                              ]}
+                            />
                           </Field>
                         </div>
 
                         <Field className="mt-4">
-                          <FieldLabel htmlFor={`activities.${index}.description`}>
-                            {tActivities("form.description")}
+                          <FieldLabel
+                            htmlFor={`sharedTravelLegs.${index}.description`}
+                          >
+                            {tSharedTravel("form.description")}
                           </FieldLabel>
                           <Textarea
-                            id={`activities.${index}.description`}
-                            placeholder={tActivities(
+                            id={`sharedTravelLegs.${index}.description`}
+                            placeholder={tSharedTravel(
                               "form.description-placeholder",
                             )}
-                            {...register(`activities.${index}.description`)}
+                            {...register(`sharedTravelLegs.${index}.description`)}
+                          />
+                        </Field>
+
+                        <Field className="mt-4">
+                          <FieldLabel
+                            htmlFor={`sharedTravelLegs.${index}.travelDate`}
+                          >
+                            {tSharedTravel("form.travel-date")}
+                          </FieldLabel>
+                          <Controller
+                            control={control}
+                            name={`sharedTravelLegs.${index}.travelDate`}
+                            render={({ field: travelDateField }) => (
+                              <DatePickerWithInput
+                                id={`sharedTravelLegs.${index}.travelDate`}
+                                onChange={travelDateField.onChange}
+                                value={travelDateField.value ?? undefined}
+                              />
+                            )}
                           />
                         </Field>
                       </div>
@@ -560,13 +576,13 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
 
                 <Button
                   className="w-full"
-                  onClick={addActivity}
+                  onClick={addSharedTravelLeg}
                   size="sm"
                   type="button"
                   variant="outline"
                 >
                   <Plus className="mr-2 size-4" />
-                  {tActivities("form.title")}
+                  {tSharedTravel("form.title")}
                 </Button>
               </CardContent>
             </Card>
@@ -584,7 +600,7 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
 
               <Button className="w-fit" disabled={isUpdating} type="submit">
                 {isUpdating ? (
-                  tActivities("form.updating")
+                  tSharedTravel("form.updating")
                 ) : (
                   <>
                     <Check className="mr-2 size-4" />

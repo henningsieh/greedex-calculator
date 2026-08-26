@@ -44,13 +44,103 @@ async function createProjectForSeedOrganization() {
 
 test.describe("Project Shared Travel Legs", () => {
   let projectId: string;
+  let createdProjectId: string | undefined;
 
   test.beforeEach(async () => {
     projectId = await createProjectForSeedOrganization();
+    createdProjectId = undefined;
   });
 
   test.afterEach(async () => {
+    if (createdProjectId) {
+      await db
+        .delete(projectsTable)
+        .where(eq(projectsTable.id, createdProjectId));
+    }
     await db.delete(projectsTable).where(eq(projectsTable.id, projectId));
+  });
+
+  test("creates a project with an electric-car shared travel leg", async ({
+    page,
+  }) => {
+    const projectName = `Created shared travel ${randomUUID()}`;
+    const description = `Electric transfer ${randomUUID()}`;
+
+    await page.goto("/en/org/create-project");
+    await page
+      .getByLabel(en.organization.projects.form.new.name)
+      .fill(projectName);
+    await page.getByRole("combobox").click();
+    await page.getByRole("option", { name: /Germany/ }).click();
+    await page.getByRole("button", { name: en.project.activities.title }).click();
+
+    await page
+      .getByRole("button", { name: en.project.activities.form.title })
+      .click();
+    await page
+      .getByLabel(en.project.activities.form["transport-emission-profile"])
+      .click();
+    await page
+      .getByRole("option", { name: en.project.activities.types.electricCar })
+      .click();
+    await page.getByLabel(en.project.activities.form.distance).fill("120.5");
+    await page
+      .getByLabel(en.project.activities.form.description)
+      .fill(description);
+    await expect(
+      page.getByLabel(en.project.activities.form["travel-date"]),
+    ).toBeVisible();
+
+    await page
+      .getByRole("button", {
+        name: en.organization.projects.form.new["create-project"],
+      })
+      .click();
+    await page.waitForURL(/\/en\/org\/projects\/[\w-]+$/);
+
+    const url = new URL(page.url());
+    createdProjectId = url.pathname.split("/").at(-1);
+
+    const sharedTravelTab = page.getByRole("tab", {
+      name: en.project.details.tabs.activities,
+    });
+    await sharedTravelTab.click();
+    const sharedTravelLegRow = page
+      .getByRole("row")
+      .filter({ hasText: description });
+    await expect(sharedTravelLegRow).toContainText(
+      en.project.activities.types.electricCar,
+    );
+
+    const editedProjectName = `${projectName} edited`;
+    await page
+      .getByRole("button", {
+        name: en.organization.projects.form.edit.title,
+      })
+      .click();
+    await page
+      .getByRole("menuitem", {
+        name: en.organization.projects.table["edit-project"],
+      })
+      .click();
+
+    const editDialog = page.getByRole("dialog");
+    await editDialog
+      .getByLabel(en.organization.projects.form.new.name)
+      .fill(editedProjectName);
+    await editDialog
+      .getByRole("button", { name: en.project.activities.title })
+      .click();
+    await editDialog
+      .getByRole("button", { name: en.organization.projects.form.edit.update })
+      .click();
+
+    await expect(
+      page.getByRole("heading", { name: editedProjectName }),
+    ).toBeVisible();
+    await expect(sharedTravelLegRow).toContainText(
+      en.project.activities.types.electricCar,
+    );
   });
 
   test("switches project-detail tabs and renders their content", async ({

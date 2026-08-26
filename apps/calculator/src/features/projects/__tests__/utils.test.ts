@@ -26,7 +26,7 @@ describe("calculateProjectDuration", () => {
 });
 
 describe("getProjectStatistics", () => {
-  it("computes counts, total distance, duration and CO2 from activities", () => {
+  it("computes shared-travel-leg counts, distance, duration, and emissions", () => {
     const project = {
       startDate: "2025-01-01",
       endDate: "2025-01-05",
@@ -80,7 +80,7 @@ describe("getProjectStatistics", () => {
       },
     ];
 
-    const activities = [
+    const sharedTravelLegs = [
       { activityType: "car", distanceKm: 10 },
       { activityType: "train", distanceKm: 20.5 },
       // invalid activity should be ignored
@@ -96,11 +96,11 @@ describe("getProjectStatistics", () => {
       const stats = getProjectStatistics(
         project,
         participants,
-        activities as any,
+        sharedTravelLegs as any,
       );
 
       expect(stats.participantsCount).toBe(3);
-      expect(stats.activitiesCount).toBe(4);
+      expect(stats.sharedTravelLegsCount).toBe(4);
       // total distance sums numeric positive distances regardless of activity type
       // 10 + 20.5 + 15 = 45.5 (bus negative value ignored)
       expect(stats.totalDistanceKm).toBeCloseTo(45.5);
@@ -110,7 +110,7 @@ describe("getProjectStatistics", () => {
       const expectedCO2 =
         10 * ACTIVITY_EMISSION_FACTORS.car +
         20.5 * ACTIVITY_EMISSION_FACTORS.train;
-      expect(stats.activitiesCO2Kg).toBeCloseTo(expectedCO2);
+      expect(stats.sharedTravelCO2Kg).toBeCloseTo(expectedCO2);
       expect(errorSpy).toHaveBeenCalledWith("Unknown activity type: unknown");
     } finally {
       errorSpy.mockRestore();
@@ -120,9 +120,9 @@ describe("getProjectStatistics", () => {
   it("handles missing or empty inputs safely", () => {
     const stats = getProjectStatistics(null, null, null);
     expect(stats.participantsCount).toBe(0);
-    expect(stats.activitiesCount).toBe(0);
+    expect(stats.sharedTravelLegsCount).toBe(0);
     expect(stats.totalDistanceKm).toBe(0);
     expect(stats.durationDays).toBe(0);
-    expect(stats.activitiesCO2Kg).toBe(0);
+    expect(stats.sharedTravelCO2Kg).toBe(0);
   });
 });

@@ -187,7 +187,7 @@ export const calculateProjectDuration = (
  *
  * The function is tolerant of missing inputs and returns sensible defaults.
  */
-type TransportLegForCalculation = {
+type SharedTravelLegForCalculation = {
   distanceKm: number;
 } & ({ transportEmissionProfile: string } | { activityType: string });
 
@@ -197,28 +197,33 @@ export function getProjectStatistics(
     | null
     | undefined,
   participants?: ProjectParticipantWithUser[] | null,
-  activities?: TransportLegForCalculation[] | null,
+  sharedTravelLegs?: SharedTravelLegForCalculation[] | null,
 ): ProjectStatistics {
   const participantsCount = participants?.length ?? 0;
-  const activitiesCount = activities?.length ?? 0;
+  const sharedTravelLegsCount = sharedTravelLegs?.length ?? 0;
 
-  const totalDistance = (activities ?? []).reduce((sum, activity) => {
-    const distanceKm = Number(activity.distanceKm);
-    return sum + (Number.isFinite(distanceKm) && distanceKm > 0 ? distanceKm : 0);
-  }, 0);
+  const totalDistance = (sharedTravelLegs ?? []).reduce(
+    (sum, sharedTravelLeg) => {
+      const distanceKm = Number(sharedTravelLeg.distanceKm);
+      return (
+        sum + (Number.isFinite(distanceKm) && distanceKm > 0 ? distanceKm : 0)
+      );
+    },
+    0,
+  );
 
   const durationDays = project
     ? calculateProjectDuration(project.startDate ?? "", project.endDate ?? "")
     : 0;
 
-  const activitiesCO2Kg = calculateActivitiesCO2(activities ?? []);
+  const sharedTravelCO2Kg = calculateActivitiesCO2(sharedTravelLegs ?? []);
 
   return {
     participantsCount,
-    activitiesCount,
+    sharedTravelLegsCount,
     totalDistanceKm: totalDistance,
     durationDays,
-    activitiesCO2Kg,
+    sharedTravelCO2Kg,
   };
 }
 
@@ -274,7 +279,7 @@ function calculateSingleActivityCO2(
  * @returns Total CO₂ emissions in kilograms
  */
 export function calculateActivitiesCO2(
-  activities: TransportLegForCalculation[],
+  activities: SharedTravelLegForCalculation[],
 ): number {
   if (!activities || activities.length === 0) {
     return 0;

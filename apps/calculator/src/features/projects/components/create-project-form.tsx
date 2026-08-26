@@ -1,16 +1,13 @@
 "use client";
 
 import { DISTANCE_KM_STEP, MIN_DISTANCE_KM } from "@greendex/config/activities";
-import { projectActivitiesTable } from "@greendex/database/schema";
 import { useTranslations } from "@greendex/i18n/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createInsertSchema } from "drizzle-zod";
 import { ArrowLeft, ArrowRight, Check, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type { z } from "zod";
 
 import { CountrySelect } from "@/components/country-select";
 import { DatePickerWithInput } from "@/components/date-picker-with-input";
@@ -39,8 +36,8 @@ import {
   getProjectDetailPath,
   MILLISECONDS_PER_DAY,
 } from "@/features/projects/utils";
-import type { CreateProjectWithActivities } from "@/features/projects/validation-schemas";
-import { CreateProjectWithActivitiesSchema } from "@/features/projects/validation-schemas";
+import type { CreateProjectWithSharedTravelLegs } from "@/features/projects/validation-schemas";
+import { CreateProjectWithSharedTravelLegsSchema } from "@/features/projects/validation-schemas";
 import { useRouter } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
 
@@ -49,11 +46,11 @@ interface CreateProjectFormProps {
 }
 
 /**
- * Render a two-step form for creating a project and optional activities.
+ * Render a two-step form for creating a project and optional Project Shared Travel Legs.
  *
  * Step 1 collects project details (name, dates, country, location, welcome message).
- * Step 2 collects zero or more activities (type, distance, description, date).
- * Submitting creates the project and any provided activities, shows success or error toasts, navigates to the created project's detail page on success, and invalidates the projects list cache.
+ * Step 2 collects zero or more shared travel legs using the canonical profile and validation contract.
+ * Submitting creates the project and its provided shared travel legs, then navigates to the project details page.
  *
  * @param activeOrganizationId - ID of the active organization used as the project's organizationId default
  * @returns The CreateProjectForm React element
@@ -61,7 +58,7 @@ interface CreateProjectFormProps {
 export function CreateProjectForm({
   activeOrganizationId,
 }: CreateProjectFormProps) {
-  const tActivities = useTranslations("project.activities");
+  const tSharedTravel = useTranslations("project.activities");
   const t = useTranslations("organization.projects.form.new");
   const [currentStep, setCurrentStep] = useState<number>(
     PROJECT_FORM_STEPS.PROJECT_DETAILS,
@@ -73,8 +70,8 @@ export function CreateProjectForm({
     handleSubmit,
     formState: { errors },
     trigger,
-  } = useForm<CreateProjectWithActivities>({
-    resolver: zodResolver(CreateProjectWithActivitiesSchema),
+  } = useForm<CreateProjectWithSharedTravelLegs>({
+    resolver: zodResolver(CreateProjectWithSharedTravelLegsSchema),
     mode: "onChange",
     defaultValues: {
       name: "",
@@ -83,16 +80,16 @@ export function CreateProjectForm({
         Date.now() + DEFAULT_PROJECT_DURATION_DAYS * MILLISECONDS_PER_DAY,
       ),
       country: undefined,
-      location: undefined,
+      location: "",
       welcomeMessage: undefined,
       organizationId: activeOrganizationId,
-      activities: [],
+      sharedTravelLegs: [],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "activities",
+    name: "sharedTravelLegs",
   });
 
   const queryClient = useQueryClient();
@@ -100,7 +97,7 @@ export function CreateProjectForm({
 
   const { mutateAsync: createProjectMutation, isPending: isCreatingProject } =
     useMutation({
-      mutationFn: (values: CreateProjectWithActivities) =>
+      mutationFn: (values: CreateProjectWithSharedTravelLegs) =>
         orpc.projects.create({
           name: values.name,
           startDate: values.startDate,
@@ -117,30 +114,20 @@ export function CreateProjectForm({
       },
     });
 
-  const { mutateAsync: createActivityMutation } = useMutation({
-    mutationFn: (params: {
+  const { mutateAsync: createSharedTravelLegMutation } = useMutation({
+    mutationFn: ({
+      projectId,
+      sharedTravelLeg,
+    }: {
       projectId: string;
-      activity: NonNullable<
-        z.infer<typeof CreateProjectWithActivitiesSchema>["activities"]
+      sharedTravelLeg: NonNullable<
+        CreateProjectWithSharedTravelLegs["sharedTravelLegs"]
       >[number];
-    }) => {
-      const validActivity = createInsertSchema(projectActivitiesTable)
-        .omit({
-          id: true,
-          projectId: true,
-          createdAt: true,
-          updatedAt: true,
-        })
-        .parse(params.activity);
-
-      return orpc.projectSharedTravelLegs.create({
-        projectId: params.projectId,
-        transportEmissionProfile: validActivity.activityType,
-        distanceKm: validActivity.distanceKm,
-        description: validActivity.description,
-        travelDate: validActivity.activityDate,
-      });
-    },
+    }) =>
+      orpc.projectSharedTravelLegs.create({
+        projectId,
+        ...sharedTravelLeg,
+      }),
   });
 
   /**
@@ -157,48 +144,38 @@ export function CreateProjectForm({
       "country",
     ]);
     if (isStepValid) {
-      setCurrentStep(PROJECT_FORM_STEPS.PROJECT_ACTIVITIES);
+      setCurrentStep(PROJECT_FORM_STEPS.PROJECT_SHARED_TRAVEL);
     }
   }
 
   /**
-   * Attempt to create the given activities for a project and report any failures.
-   *
-   * Attempts to create each activity for the specified project; creation errors are collected but do not abort the whole process.
-   *
-   * @param projectId - The ID of the project to attach activities to.
-   * @param activities - Optional list of activity inputs to create; if `undefined` or empty no creations are attempted.
-   * @returns An array of `activityType` values for activities that failed to be created; returns an empty array if none failed or if no activities were provided.
+   * Create each supplied Project Shared Travel Leg and collect any failures.
    */
-  async function createActivitiesForProject(
+  async function createSharedTravelLegsForProject(
     projectId: string,
-    activities?: CreateProjectWithActivities["activities"],
+    sharedTravelLegs?: CreateProjectWithSharedTravelLegs["sharedTravelLegs"],
   ) {
-    const failedActivities: string[] = [];
-    if (!activities || activities.length === 0) {
-      return failedActivities;
+    const failedProfiles: string[] = [];
+    if (!sharedTravelLegs || sharedTravelLegs.length === 0) {
+      return failedProfiles;
     }
 
-    for (const activity of activities) {
+    for (const sharedTravelLeg of sharedTravelLegs) {
       try {
-        await createActivityMutation({ projectId, activity });
-      } catch (err) {
-        console.error("Failed to create activity:", err);
-        failedActivities.push(activity.activityType);
+        await createSharedTravelLegMutation({ projectId, sharedTravelLeg });
+      } catch (error) {
+        console.error("Failed to create Project Shared Travel Leg:", error);
+        failedProfiles.push(sharedTravelLeg.transportEmissionProfile);
       }
     }
 
-    return failedActivities;
+    return failedProfiles;
   }
 
   /**
-   * Create a project and its associated activities, show success or error toasts, navigate to the created project's detail page, and invalidate the projects list cache.
-   *
-   * Creates the project from `values`, attempts to create each activity, reports any activity-level failures, and handles navigation and cache invalidation on success; shows a generic error toast on unexpected failures.
-   *
-   * @param values - The project fields and an array of activity items to create
+   * Create a project and its associated Project Shared Travel Legs.
    */
-  async function onSubmit(values: CreateProjectWithActivities) {
+  async function onSubmit(values: CreateProjectWithSharedTravelLegs) {
     try {
       // Create the project first
       const result = await createProjectMutation(values);
@@ -208,17 +185,16 @@ export function CreateProjectForm({
         return;
       }
 
-      // Create activities in a helper to keep this function simple
-      const failedActivities = await createActivitiesForProject(
+      const failedProfiles = await createSharedTravelLegsForProject(
         result.project.id,
-        values.activities,
+        values.sharedTravelLegs,
       );
 
-      if (failedActivities.length > 0) {
+      if (failedProfiles.length > 0) {
         toast.error(
           t("toast.failed-activities", {
-            count: failedActivities.length,
-            activities: failedActivities.join(", "),
+            count: failedProfiles.length,
+            activities: failedProfiles.join(", "),
           }),
         );
       }
@@ -234,12 +210,12 @@ export function CreateProjectForm({
     }
   }
 
-  const addActivity = () => {
+  const addSharedTravelLeg = () => {
     append({
-      activityType: "train",
+      transportEmissionProfile: "train",
       distanceKm: MIN_DISTANCE_KM,
-      description: undefined,
-      activityDate: undefined,
+      description: null,
+      travelDate: null,
     });
   };
 
@@ -249,7 +225,10 @@ export function CreateProjectForm({
         <FieldContent>
           <FieldLegend>{t("legend")}</FieldLegend>
           <p className="text-right text-sm text-muted-foreground">
-            Step {currentStep} of {PROJECT_FORM_TOTAL_STEPS}
+            {t("step", {
+              current: currentStep,
+              total: PROJECT_FORM_TOTAL_STEPS,
+            })}
           </p>
         </FieldContent>
 
@@ -342,26 +321,28 @@ export function CreateProjectForm({
               type="button"
               variant="secondary"
             >
-              {tActivities("title")}
+              {tSharedTravel("title")}
               <ArrowRight className="ml-2 size-4" />
             </Button>
           </FieldGroup>
         )}
 
-        {/* Step 2: Activities (Optional) */}
-        {currentStep === PROJECT_FORM_STEPS.PROJECT_ACTIVITIES && (
+        {/* Step 2: Project Shared Travel (Optional) */}
+        {currentStep === PROJECT_FORM_STEPS.PROJECT_SHARED_TRAVEL && (
           <FieldGroup>
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">{tActivities("title")}</CardTitle>
+                <CardTitle className="text-lg">
+                  {tSharedTravel("title")}
+                </CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  {tActivities("description")}
+                  {tSharedTravel("description")}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
                 {fields.length === 0 ? (
                   <p className="text-center text-sm text-muted-foreground">
-                    {tActivities("empty.description")}
+                    {tSharedTravel("empty.description")}
                   </p>
                 ) : (
                   fields.map((field, index) => (
@@ -382,37 +363,50 @@ export function CreateProjectForm({
                       <div className="grid gap-4 pr-8 sm:grid-cols-2">
                         <Field
                           data-invalid={
-                            !!errors.activities?.[index]?.activityType
+                            !!errors.sharedTravelLegs?.[index]
+                              ?.transportEmissionProfile
                           }
                         >
-                          <FieldLabel htmlFor={`activities.${index}.type`}>
-                            {tActivities("form.transport-emission-profile")}
+                          <FieldLabel
+                            htmlFor={`sharedTravelLegs.${index}.transportEmissionProfile`}
+                          >
+                            {tSharedTravel("form.transport-emission-profile")}
                           </FieldLabel>
                           <Controller
                             control={control}
-                            name={`activities.${index}.activityType`}
+                            name={`sharedTravelLegs.${index}.transportEmissionProfile`}
                             render={({ field: selectField }) => (
                               <TransportEmissionProfileSelect
-                                id={`activities.${index}.type`}
+                                id={`sharedTravelLegs.${index}.transportEmissionProfile`}
                                 onValueChange={selectField.onChange}
                                 value={selectField.value}
                               />
                             )}
                           />
+                          <FieldError
+                            errors={[
+                              errors.sharedTravelLegs?.[index]
+                                ?.transportEmissionProfile,
+                            ]}
+                          />
                         </Field>
 
                         <Field
-                          data-invalid={!!errors.activities?.[index]?.distanceKm}
+                          data-invalid={
+                            !!errors.sharedTravelLegs?.[index]?.distanceKm
+                          }
                         >
-                          <FieldLabel htmlFor={`activities.${index}.distance`}>
-                            {tActivities("form.distance")}
+                          <FieldLabel
+                            htmlFor={`sharedTravelLegs.${index}.distanceKm`}
+                          >
+                            {tSharedTravel("form.distance")}
                           </FieldLabel>
                           <Controller
                             control={control}
-                            name={`activities.${index}.distanceKm`}
+                            name={`sharedTravelLegs.${index}.distanceKm`}
                             render={({ field }) => (
                               <Input
-                                id={`activities.${index}.distance`}
+                                id={`sharedTravelLegs.${index}.distanceKm`}
                                 min={MIN_DISTANCE_KM}
                                 onChange={(e) => {
                                   const raw = e.target.value;
@@ -427,7 +421,7 @@ export function CreateProjectForm({
                                     }
                                   }
                                 }}
-                                placeholder={tActivities(
+                                placeholder={tSharedTravel(
                                   "form.distance-placeholder",
                                 )}
                                 step={DISTANCE_KM_STEP}
@@ -436,19 +430,45 @@ export function CreateProjectForm({
                               />
                             )}
                           />
+                          <FieldError
+                            errors={[
+                              errors.sharedTravelLegs?.[index]?.distanceKm,
+                            ]}
+                          />
                         </Field>
                       </div>
 
                       <Field className="mt-4">
-                        <FieldLabel htmlFor={`activities.${index}.description`}>
-                          {tActivities("form.description")}
+                        <FieldLabel
+                          htmlFor={`sharedTravelLegs.${index}.description`}
+                        >
+                          {tSharedTravel("form.description")}
                         </FieldLabel>
                         <Textarea
-                          id={`activities.${index}.description`}
-                          placeholder={tActivities(
+                          id={`sharedTravelLegs.${index}.description`}
+                          placeholder={tSharedTravel(
                             "form.description-placeholder",
                           )}
-                          {...register(`activities.${index}.description`)}
+                          {...register(`sharedTravelLegs.${index}.description`)}
+                        />
+                      </Field>
+
+                      <Field className="mt-4">
+                        <FieldLabel
+                          htmlFor={`sharedTravelLegs.${index}.travelDate`}
+                        >
+                          {tSharedTravel("form.travel-date")}
+                        </FieldLabel>
+                        <Controller
+                          control={control}
+                          name={`sharedTravelLegs.${index}.travelDate`}
+                          render={({ field: travelDateField }) => (
+                            <DatePickerWithInput
+                              id={`sharedTravelLegs.${index}.travelDate`}
+                              onChange={travelDateField.onChange}
+                              value={travelDateField.value ?? undefined}
+                            />
+                          )}
                         />
                       </Field>
                     </div>
@@ -457,13 +477,13 @@ export function CreateProjectForm({
 
                 <Button
                   className="w-full"
-                  onClick={addActivity}
+                  onClick={addSharedTravelLeg}
                   size="sm"
                   type="button"
                   variant="outline"
                 >
                   <Plus className="mr-2 size-4" />
-                  {tActivities("form.title")}
+                  {tSharedTravel("form.title")}
                 </Button>
               </CardContent>
             </Card>

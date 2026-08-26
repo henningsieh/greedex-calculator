@@ -498,7 +498,10 @@
             "error": "Posodobitev projekta ni uspela",
             "failed-activities": "Ni uspelo obdelati {count, plural, one {# aktivnosti} other {# aktivnosti}}: {activities}"
           },
-          "back": "Nazaj"
+          "back": "Nazaj",
+          "cancel": "Prekliči",
+          "step": "Korak {current} od {total}",
+          "validation-error": "Pred oddajo popravite napake v obrazcu"
         },
         "delete": {
           "confirm-title": "Ali ste prepričani?",
@@ -564,6 +567,7 @@
           "welcome-message-description": "Neobvezno: Dodajte pozdravno sporočilo za udeležence.",
           "organization-description": "Izberite organizacijo, ki je lastnica projekta.",
           "back": "Nazaj",
+          "step": "Korak {current} od {total}",
           "country-placeholder": "Izberi državo"
         }
       },

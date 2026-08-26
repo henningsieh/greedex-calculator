@@ -498,7 +498,10 @@
             "error": "Failed to update project",
             "failed-activities": "Failed to process {count, plural, one {# activity} other {# activities}}: {activities}"
           },
-          "back": "Back"
+          "back": "Back",
+          "cancel": "Cancel",
+          "step": "Step {current} of {total}",
+          "validation-error": "Please fix the form errors before submitting"
         },
         "delete": {
           "confirm-title": "Are you sure?",
@@ -564,6 +567,7 @@
           "welcome-message-description": "Optional: Add a welcome message for participants.",
           "organization-description": "Choose the organization that owns this project.",
           "back": "Back",
+          "step": "Step {current} of {total}",
           "country-placeholder": "Select the country"
         }
       },

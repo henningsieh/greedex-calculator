@@ -498,7 +498,10 @@
             "error": "Aggiornamento del progetto non riuscito",
             "failed-activities": "Elaborazione di {count, plural, one {# attività} other {# attività}} non riuscita: {activities}"
           },
-          "back": "Indietro"
+          "back": "Indietro",
+          "cancel": "Annulla",
+          "step": "Passaggio {current} di {total}",
+          "validation-error": "Correggi gli errori del modulo prima di inviarlo"
         },
         "delete": {
           "confirm-title": "Sei sicuro/a?",
@@ -564,6 +567,7 @@
           "welcome-message-description": "Facoltativo: aggiungi un messaggio di benvenuto per i partecipanti.",
           "organization-description": "Scegli l'organizzazione proprietaria di questo progetto.",
           "back": "Indietro",
+          "step": "Passaggio {current} di {total}",
           "country-placeholder": "Seleziona il paese"
         }
       },

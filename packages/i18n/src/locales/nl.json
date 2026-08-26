@@ -498,7 +498,10 @@
             "error": "Project bijwerken mislukt",
             "failed-activities": "Verwerken van {count, plural, one {# activiteit} other {# activiteiten}} mislukt: {activities}"
           },
-          "back": "Terug"
+          "back": "Terug",
+          "cancel": "Annuleren",
+          "step": "Stap {current} van {total}",
+          "validation-error": "Corrigeer de formulierfouten voordat je verzendt"
         },
         "delete": {
           "confirm-title": "Weet je het zeker?",
@@ -564,6 +567,7 @@
           "welcome-message-description": "Optioneel: Voeg een welkomstbericht toe voor deelnemers.",
           "organization-description": "Kies de organisatie die eigenaar is van dit project.",
           "back": "Terug",
+          "step": "Stap {current} van {total}",
           "country-placeholder": "Selecteer het land"
         }
       },

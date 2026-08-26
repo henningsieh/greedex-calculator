@@ -168,7 +168,11 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
   const action: React.ReactNode = (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="icon" variant="secondaryoutline">
+        <Button
+          aria-label={tProject("form.edit.title")}
+          size="icon"
+          variant="secondaryoutline"
+        >
           <MoreHorizontalIcon className="size-4" />
         </Button>
       </DropdownMenuTrigger>
@@ -309,8 +313,8 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
     }),
   );
 
-  // Fetch activities
-  const { data: activities } = useSuspenseQuery(
+  // Fetch canonical Project Shared Travel Legs.
+  const { data: sharedTravelLegs } = useSuspenseQuery(
     orpcQuery.projectSharedTravelLegs.list.queryOptions({
       input: { projectId: id },
     }),
@@ -319,11 +323,11 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
   // Calculate statistics (delegated to utility for consistency and testability)
   const {
     participantsCount,
-    activitiesCount,
+    sharedTravelLegsCount,
     totalDistanceKm,
     durationDays,
-    activitiesCO2Kg,
-  } = getProjectStatistics(project, participants, activities);
+    sharedTravelCO2Kg,
+  } = getProjectStatistics(project, participants, sharedTravelLegs);
 
   return (
     <div className="space-y-6">
@@ -347,7 +351,7 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
           </CardContent>
         </Card>
 
-        {/* Activities Count and Total Distance */}
+        {/* Project Shared Travel Leg count and total distance */}
         <Card className="gap-3">
           <CardHeader>
             <div className="flex items-center gap-2 text-sm text-secondary">
@@ -357,7 +361,7 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2 font-mono text-2xl font-semibold text-foreground">
-              {activitiesCount}
+              {sharedTravelLegsCount}
               <span className="text-sm font-normal text-muted-foreground">
                 ({totalDistanceKm.toFixed(1)} {t("statistics.km")})
               </span>
@@ -375,7 +379,7 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2 font-mono text-2xl font-semibold text-foreground">
-              {activitiesCO2Kg.toFixed(1)}{" "}
+              {sharedTravelCO2Kg.toFixed(1)}{" "}
               <span className="text-sm font-normal text-muted-foreground">
                 kg CO₂
               </span>

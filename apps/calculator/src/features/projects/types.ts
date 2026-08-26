@@ -68,10 +68,10 @@ export type ProjectWithActivitiesType = z.infer<
  */
 export type ProjectStatistics = {
   participantsCount: number;
-  activitiesCount: number;
+  sharedTravelLegsCount: number;
   totalDistanceKm: number;
   durationDays: number;
-  activitiesCO2Kg: number;
+  sharedTravelCO2Kg: number;
 };
 
 // ============================================================================
