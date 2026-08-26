@@ -15,7 +15,7 @@ description: Comprehensive documentation index for all libraries and features in
 - [README.md](README.md)
 - [agent-workflows.md](agent-workflows.md)
 - [Hydration & Suspense Analysis](orpc/orpc.Optimize-Server-Side-Rendering.SSR.md)
-- [Permissions & Access Control](permissions/README.md)
+- [Permissions & Access Control](projects/permissions.md)
 
 ### better-auth/
 - [better-auth.credentials.email_password.md](better-auth/better-auth.credentials.email_password.md)
@@ -25,6 +25,10 @@ description: Comprehensive documentation index for all libraries and features in
 
 ### clickdummy/
 - [App.js](clickdummy/App.js)
+
+### database/
+- [README.md](database/README.md)
+- [Coolify SSL connection](database/coolify-ssl-connection.md)
 
 ### i18n/
 - [Dynamic-Country_Flag-Data.md](i18n/Dynamic-Country_Flag-Data.md)
@@ -53,12 +57,6 @@ description: Comprehensive documentation index for all libraries and features in
 #### Advanced
 - [Optimize Server-Side Rendering (SSR)](orpc/orpc.Optimize-Server-Side-Rendering.SSR.md)
 
-### instructions/tanstack-query/
-- [SSR - Server Rendering and Hydration](instructions/tanstack-query/SSR%20-%20Server%20Rendering%20and%20Hydration.md)
-
-### permissions/
-- [README.md](permissions/README.md)
-
 ### react-email/
 - [setup-React_Email.md](react-email/setup-React_Email.md)
 - [use-HTML_Components.md](react-email/use-HTML_Components.md)
@@ -70,16 +68,16 @@ description: Comprehensive documentation index for all libraries and features in
 - [shadcn-ui.new-field.documentation.md](shadcn/shadcn-ui.new-field.documentation.md)
 - [shadcn.empty.component.md](shadcn/shadcn.empty.component.md)
 
-### tanstack-query/
-- [Advanced Server Rendering](tanstack-query/advanced-ssr.md)
-- [Server Rendering & Hydration](tanstack-query/ssr.md)
-- [Performance & Request Waterfalls](tanstack-query/request-waterfalls.md)
-- [Prefetching & Router Integration](tanstack-query/prefetching.md)
-- [Hydration API Reference](tanstack-query/hydration.md)
+### tanstack-react-query/
+- [Advanced Server Rendering](tanstack-react-query/advanced-ssr.md)
+- [Server Rendering & Hydration](tanstack-react-query/ssr.md)
+- [Performance & Request Waterfalls](tanstack-react-query/request-waterfalls.md)
+- [Prefetching & Router Integration](tanstack-react-query/prefetching.md)
+- [Hydration API Reference](tanstack-react-query/hydration.md)
 
 ### participate/
+- [README.md](participate/README.md)
 - [flow.md](participate/flow.md)
 - [emissions-calculations.md](participate/emissions-calculations.md)
 - [conditional-logic.md](participate/conditional-logic.md)
 - [testing.md](participate/testing.md)
-- [QUESTIONNAIRE_IMPLEMENTATION.md](participate/QUESTIONNAIRE_IMPLEMENTATION.md) — ARCHIVED (now split into the files listed above)
