@@ -5,7 +5,7 @@ import { db } from "@greendex/database";
 import {
   member,
   organization,
-  projectActivitiesTable,
+  projectSharedTravelLegsTable,
   projectsTable,
   user,
 } from "@greendex/database/schema";
@@ -37,8 +37,8 @@ describe("Project Activities Integration Tests", () => {
 
   beforeAll(async () => {
     // Clean up any existing test data that might conflict
-    await db.delete(projectActivitiesTable).where(
-      sql`${projectActivitiesTable.projectId} IN (
+    await db.delete(projectSharedTravelLegsTable).where(
+      sql`${projectSharedTravelLegsTable.projectId} IN (
         SELECT ${projectsTable.id} FROM ${projectsTable}
         WHERE ${projectsTable.organizationId} IN (
           SELECT ${organization.id} FROM ${organization}
@@ -68,8 +68,8 @@ describe("Project Activities Integration Tests", () => {
   afterAll(async () => {
     // Clean up all test data
     try {
-      await db.delete(projectActivitiesTable).where(
-        sql`${projectActivitiesTable.projectId} IN (
+      await db.delete(projectSharedTravelLegsTable).where(
+        sql`${projectSharedTravelLegsTable.projectId} IN (
           SELECT ${projectsTable.id} FROM ${projectsTable}
           WHERE ${projectsTable.organizationId} = ${orgId}
         )`,
@@ -213,10 +213,10 @@ describe("Project Activities Integration Tests", () => {
       const activity1 = {
         id: randomUUID(),
         projectId: projectData.id,
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: 150.5,
         description: "Business trip to Munich",
-        activityDate: new Date("2025-01-15"),
+        travelDate: new Date("2025-01-15"),
         createdAt: new Date(),
         updatedAt: new Date(),
       } satisfies ProjectActivityType;
@@ -224,29 +224,29 @@ describe("Project Activities Integration Tests", () => {
       const activity2 = {
         id: randomUUID(),
         projectId: projectData.id,
-        activityType: "train" as const,
+        transportEmissionProfile: "train" as const,
         distanceKm: 250,
         description: "Conference in Hamburg",
-        activityDate: new Date("2025-02-20"),
+        travelDate: new Date("2025-02-20"),
         createdAt: new Date(),
         updatedAt: new Date(),
       } satisfies ProjectActivityType;
 
-      await db.insert(projectActivitiesTable).values(activity1);
+      await db.insert(projectSharedTravelLegsTable).values(activity1);
 
-      await db.insert(projectActivitiesTable).values(activity2);
+      await db.insert(projectSharedTravelLegsTable).values(activity2);
 
       // Verify activities were created
       const activities = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.projectId, projectData.id))
-        .orderBy(projectActivitiesTable.createdAt);
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.projectId, projectData.id))
+        .orderBy(projectSharedTravelLegsTable.createdAt);
 
       expect(activities).toHaveLength(2);
-      expect(activities[0].activityType).toBe("car");
+      expect(activities[0].transportEmissionProfile).toBe("car");
       expect(activities[0].distanceKm).toBe(150.5); // Rounded to 1 decimal place
-      expect(activities[1].activityType).toBe("train");
+      expect(activities[1].transportEmissionProfile).toBe("train");
       expect(activities[1].distanceKm).toBe(250); // Rounded to 1 decimal place
     });
   });
@@ -286,24 +286,26 @@ describe("Project Activities Integration Tests", () => {
       const activityData = {
         id: randomUUID(),
         projectId,
-        activityType: "bus" as const,
+        transportEmissionProfile: "bus" as const,
         distanceKm: 75.25,
         description: "Team building event",
-        activityDate: new Date("2025-03-10"),
+        travelDate: new Date("2025-03-10"),
         createdAt: new Date(),
         updatedAt: new Date(),
       } satisfies ProjectActivityType;
 
-      await db.insert(projectActivitiesTable).values(activityData);
+      await db.insert(projectSharedTravelLegsTable).values(activityData);
 
       // Verify activity was created
       const result = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.id, activityData.id));
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.id, activityData.id));
 
       expect(result).toHaveLength(1);
-      expect(result[0].activityType).toBe(activityData.activityType);
+      expect(result[0].transportEmissionProfile).toBe(
+        activityData.transportEmissionProfile,
+      );
       expect(result[0].distanceKm).toBe(75.3); // 75.25 rounded to 1 decimal place
       expect(result[0].description).toBe(activityData.description);
 
@@ -313,15 +315,15 @@ describe("Project Activities Integration Tests", () => {
     it("should list activities for a project", async () => {
       const activities = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.projectId, projectId))
-        .orderBy(projectActivitiesTable.createdAt);
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.projectId, projectId))
+        .orderBy(projectSharedTravelLegsTable.createdAt);
 
       expect(activities.length).toBeGreaterThan(0);
 
       const activity = activities.find((a) => a.id === activityId);
       expect(activity).toBeDefined();
-      expect(activity?.activityType).toBe("bus");
+      expect(activity?.transportEmissionProfile).toBe("bus");
     });
 
     it("should update an activity", async () => {
@@ -330,23 +332,23 @@ describe("Project Activities Integration Tests", () => {
       const newDescription = "Updated team event";
 
       await db
-        .update(projectActivitiesTable)
+        .update(projectSharedTravelLegsTable)
         .set({
-          activityType: newType,
+          transportEmissionProfile: newType,
           distanceKm: newDistance,
           description: newDescription,
           updatedAt: new Date(),
         })
-        .where(eq(projectActivitiesTable.id, activityId));
+        .where(eq(projectSharedTravelLegsTable.id, activityId));
 
       // Verify update
       const result = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.id, activityId));
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.id, activityId));
 
       expect(result).toHaveLength(1);
-      expect(result[0].activityType).toBe(newType);
+      expect(result[0].transportEmissionProfile).toBe(newType);
       expect(result[0].distanceKm).toBe(120.8); // 120.75 rounded to 1 decimal place
       expect(result[0].description).toBe(newDescription);
     });
@@ -354,14 +356,14 @@ describe("Project Activities Integration Tests", () => {
     it("should delete an activity", async () => {
       // Delete activity
       await db
-        .delete(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.id, activityId));
+        .delete(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.id, activityId));
 
       // Verify deletion
       const result = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.id, activityId));
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.id, activityId));
 
       expect(result).toHaveLength(0);
     });
@@ -374,23 +376,23 @@ describe("Project Activities Integration Tests", () => {
       const validActivity = {
         id: randomUUID(),
         projectId,
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: 100,
         createdAt: new Date(),
         updatedAt: new Date(),
         description: null,
-        activityDate: null,
+        travelDate: null,
       } satisfies ProjectActivityType;
 
-      await db.insert(projectActivitiesTable).values(validActivity);
+      await db.insert(projectSharedTravelLegsTable).values(validActivity);
 
       // Verify it was inserted
       const result = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.id, validActivity.id));
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.id, validActivity.id));
       expect(result).toHaveLength(1);
-      expect(result[0].activityType).toBe("car");
+      expect(result[0].transportEmissionProfile).toBe("car");
     });
 
     it("should handle decimal precision correctly", async () => {
@@ -399,24 +401,24 @@ describe("Project Activities Integration Tests", () => {
       const activity = {
         id: randomUUID(),
         projectId,
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: testDistance,
         createdAt: new Date(),
         updatedAt: new Date(),
         description: null,
-        activityDate: null,
+        travelDate: null,
       } satisfies ProjectActivityType;
 
-      await db.insert(projectActivitiesTable).values(activity);
+      await db.insert(projectSharedTravelLegsTable).values(activity);
 
       // Check that it was stored with correct precision (should be rounded/truncated)
       const result = await db
         .select()
-        .from(projectActivitiesTable)
+        .from(projectSharedTravelLegsTable)
         .where(
-          sql`${projectActivitiesTable.projectId} = ${projectId} AND ${projectActivitiesTable.activityType} = 'car'`,
+          sql`${projectSharedTravelLegsTable.projectId} = ${projectId} AND ${projectSharedTravelLegsTable.transportEmissionProfile} = 'car'`,
         )
-        .orderBy(sql`${projectActivitiesTable.createdAt} DESC`)
+        .orderBy(sql`${projectSharedTravelLegsTable.createdAt} DESC`)
         .limit(1);
 
       expect(result).toHaveLength(1);
@@ -433,16 +435,16 @@ describe("Project Activities Integration Tests", () => {
       const invalidActivity = {
         id: randomUUID(),
         projectId: fakeProjectId,
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: 100,
         createdAt: new Date(),
         updatedAt: new Date(),
         description: null,
-        activityDate: null,
+        travelDate: null,
       } satisfies ProjectActivityType;
 
       try {
-        await db.insert(projectActivitiesTable).values(invalidActivity);
+        await db.insert(projectSharedTravelLegsTable).values(invalidActivity);
         // If we get here, the constraint didn't work
         expect(true).toBe(false); // Should have failed
       } catch (error) {
@@ -477,21 +479,21 @@ describe("Project Activities Integration Tests", () => {
       const cascadeActivity = {
         id: cascadeActivityId,
         projectId: cascadeProjectId,
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: 50,
         description: null,
-        activityDate: null,
+        travelDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       } satisfies ProjectActivityType;
 
-      await db.insert(projectActivitiesTable).values(cascadeActivity);
+      await db.insert(projectSharedTravelLegsTable).values(cascadeActivity);
 
       // Verify activity exists
       let activities = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.projectId, cascadeProjectId));
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.projectId, cascadeProjectId));
       expect(activities).toHaveLength(1);
 
       // Delete project (should cascade delete activity)
@@ -502,8 +504,8 @@ describe("Project Activities Integration Tests", () => {
       // Verify activity was cascade deleted
       activities = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.projectId, cascadeProjectId));
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.projectId, cascadeProjectId));
       expect(activities).toHaveLength(0);
     });
   });
@@ -515,22 +517,22 @@ describe("Project Activities Integration Tests", () => {
       const testActivity = {
         id: testActivityId,
         projectId,
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: 25,
         description: null,
-        activityDate: null,
+        travelDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       } satisfies ProjectActivityType;
 
       // Insert activity
-      await db.insert(projectActivitiesTable).values(testActivity);
+      await db.insert(projectSharedTravelLegsTable).values(testActivity);
 
       // Get timestamps
       const result = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.id, testActivityId));
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.id, testActivityId));
 
       expect(result).toHaveLength(1);
       expect(result[0].createdAt).toBeDefined();
@@ -549,15 +551,15 @@ describe("Project Activities Integration Tests", () => {
       // Try normal update first (don't set updatedAt explicitly)
       console.time("update-no-explicit-updatedAt");
       await db
-        .update(projectActivitiesTable)
+        .update(projectSharedTravelLegsTable)
         .set({ distanceKm: 30 })
-        .where(eq(projectActivitiesTable.id, testActivityId));
+        .where(eq(projectSharedTravelLegsTable.id, testActivityId));
       console.timeEnd("update-no-explicit-updatedAt");
 
       let updatedRows = await db
         .select()
-        .from(projectActivitiesTable)
-        .where(eq(projectActivitiesTable.id, testActivityId));
+        .from(projectSharedTravelLegsTable)
+        .where(eq(projectSharedTravelLegsTable.id, testActivityId));
 
       const prevUpdatedAt = new Date(result[0].updatedAt).getTime();
       const newUpdatedAt = new Date(updatedRows[0].updatedAt).getTime();
@@ -569,18 +571,18 @@ describe("Project Activities Integration Tests", () => {
         );
         console.time("update-with-explicit-updatedAt");
         await db
-          .update(projectActivitiesTable)
+          .update(projectSharedTravelLegsTable)
           .set({
             distanceKm: 30,
             updatedAt: nextTimestamp,
           })
-          .where(eq(projectActivitiesTable.id, testActivityId));
+          .where(eq(projectSharedTravelLegsTable.id, testActivityId));
         console.timeEnd("update-with-explicit-updatedAt");
 
         updatedRows = await db
           .select()
-          .from(projectActivitiesTable)
-          .where(eq(projectActivitiesTable.id, testActivityId));
+          .from(projectSharedTravelLegsTable)
+          .where(eq(projectSharedTravelLegsTable.id, testActivityId));
       }
 
       const updatedResult = updatedRows;
@@ -602,16 +604,16 @@ describe("Project Activities Integration Tests", () => {
         const concurrentActivity = {
           id: randomUUID(),
           projectId,
-          activityType: "car" as const,
+          transportEmissionProfile: "car" as const,
           distanceKm: (i + 1) * 10,
           description: null,
-          activityDate: null,
+          travelDate: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         } satisfies ProjectActivityType;
 
         operations.push(
-          db.insert(projectActivitiesTable).values(concurrentActivity),
+          db.insert(projectSharedTravelLegsTable).values(concurrentActivity),
         );
       }
 
@@ -620,8 +622,8 @@ describe("Project Activities Integration Tests", () => {
 
       // Verify all activities were created
       const activities = await db.$count(
-        projectActivitiesTable,
-        sql`${projectActivitiesTable.projectId} = ${projectId} AND ${projectActivitiesTable.activityType} = 'car'`,
+        projectSharedTravelLegsTable,
+        sql`${projectSharedTravelLegsTable.projectId} = ${projectId} AND ${projectSharedTravelLegsTable.transportEmissionProfile} = 'car'`,
       );
 
       expect(activities).toBeGreaterThanOrEqual(5);

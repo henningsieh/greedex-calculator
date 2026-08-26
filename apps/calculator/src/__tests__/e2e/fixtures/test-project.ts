@@ -4,7 +4,7 @@ import { db } from "@greendex/database";
 import {
   member,
   organization,
-  projectActivitiesTable,
+  projectSharedTravelLegsTable,
   projectsTable,
   user,
 } from "@greendex/database/schema";
@@ -78,13 +78,13 @@ export class TestProjectFixture {
     ];
 
     for (const sharedTravelLeg of sharedTravelLegs) {
-      await db.insert(projectActivitiesTable).values({
+      await db.insert(projectSharedTravelLegsTable).values({
         id: sharedTravelLeg.id,
         projectId: sharedTravelLeg.projectId,
-        activityType: sharedTravelLeg.transportEmissionProfile,
+        transportEmissionProfile: sharedTravelLeg.transportEmissionProfile,
         distanceKm: sharedTravelLeg.distanceKm,
         description: null,
-        activityDate: null,
+        travelDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       });

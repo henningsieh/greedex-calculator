@@ -1,4 +1,4 @@
-import type { projectActivitiesTable } from "@greendex/database/schema";
+import type { projectSharedTravelLegsTable } from "@greendex/database/schema";
 import type { InferSelectModel } from "drizzle-orm";
 
 // ============================================================================
@@ -8,7 +8,9 @@ import type { InferSelectModel } from "drizzle-orm";
 /**
  * Project activity type inferred from DB schema
  */
-export type ProjectActivityType = InferSelectModel<typeof projectActivitiesTable>;
+export type ProjectActivityType = InferSelectModel<
+  typeof projectSharedTravelLegsTable
+>;
 
 /**
  * Re-export activity value type from config for convenience

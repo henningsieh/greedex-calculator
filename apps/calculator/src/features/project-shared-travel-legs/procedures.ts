@@ -1,11 +1,13 @@
 import { db } from "@greendex/database";
-import { projectActivitiesTable, projectsTable } from "@greendex/database/schema";
+import {
+  projectSharedTravelLegsTable,
+  projectsTable,
+} from "@greendex/database/schema";
 import { and, asc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { authorized, requireProjectPermissions } from "@/lib/orpc/middleware";
 
-import { toProjectSharedTravelLeg } from "./adapters";
 import type {
   CreateProjectSharedTravelLegInput,
   DeleteProjectSharedTravelLegInput,
@@ -87,16 +89,16 @@ async function assertTravelLegAccess(
     .select({
       projectOrganizationId: projectsTable.organizationId,
     })
-    .from(projectActivitiesTable)
+    .from(projectSharedTravelLegsTable)
     .innerJoin(
       projectsTable,
-      eq(projectActivitiesTable.projectId, projectsTable.id),
+      eq(projectSharedTravelLegsTable.projectId, projectsTable.id),
     )
     .where(
       and(
-        eq(projectActivitiesTable.id, input.id),
+        eq(projectSharedTravelLegsTable.id, input.id),
         input.projectId
-          ? eq(projectActivitiesTable.projectId, input.projectId)
+          ? eq(projectSharedTravelLegsTable.projectId, input.projectId)
           : undefined,
       ),
     )
@@ -121,13 +123,13 @@ export async function listProjectSharedTravelLegsHandler(
 ) {
   await assertProjectAccess(input.projectId, context, errors);
 
-  const travelLegs = await db.query.projectActivitiesTable.findMany({
-    where: eq(projectActivitiesTable.projectId, input.projectId),
-    orderBy: [asc(projectActivitiesTable.createdAt)],
+  const travelLegs = await db.query.projectSharedTravelLegsTable.findMany({
+    where: eq(projectSharedTravelLegsTable.projectId, input.projectId),
+    orderBy: [asc(projectSharedTravelLegsTable.createdAt)],
     with: { project: true },
   });
 
-  return travelLegs.map(toProjectSharedTravelLeg);
+  return travelLegs;
 }
 
 export async function createProjectSharedTravelLegHandler(
@@ -138,15 +140,15 @@ export async function createProjectSharedTravelLegHandler(
   await assertProjectAccess(input.projectId, context, errors);
 
   const [createdTravelLeg] = await db
-    .insert(projectActivitiesTable)
+    .insert(projectSharedTravelLegsTable)
     .values({
       projectId: input.projectId,
-      activityType: input.transportEmissionProfile,
+      transportEmissionProfile: input.transportEmissionProfile,
       distanceKm: input.distanceKm,
       description: input.description,
-      activityDate: input.travelDate,
+      travelDate: input.travelDate,
     })
-    .returning({ id: projectActivitiesTable.id });
+    .returning({ id: projectSharedTravelLegsTable.id });
 
   if (!createdTravelLeg) {
     throw errors.INTERNAL_SERVER_ERROR({
@@ -154,10 +156,11 @@ export async function createProjectSharedTravelLegHandler(
     });
   }
 
-  const travelLegWithRelations = await db.query.projectActivitiesTable.findFirst({
-    where: eq(projectActivitiesTable.id, createdTravelLeg.id),
-    with: { project: true },
-  });
+  const travelLegWithRelations =
+    await db.query.projectSharedTravelLegsTable.findFirst({
+      where: eq(projectSharedTravelLegsTable.id, createdTravelLeg.id),
+      with: { project: true },
+    });
 
   if (!travelLegWithRelations) {
     throw errors.INTERNAL_SERVER_ERROR({
@@ -167,7 +170,7 @@ export async function createProjectSharedTravelLegHandler(
 
   return {
     success: true,
-    sharedTravelLeg: toProjectSharedTravelLeg(travelLegWithRelations),
+    sharedTravelLeg: travelLegWithRelations,
   };
 }
 
@@ -180,9 +183,10 @@ export async function updateProjectSharedTravelLegHandler(
 ) {
   await assertTravelLegAccess(input, "update", context, errors);
 
-  const updateData: Partial<typeof projectActivitiesTable.$inferInsert> = {};
+  const updateData: Partial<typeof projectSharedTravelLegsTable.$inferInsert> =
+    {};
   if (input.data.transportEmissionProfile !== undefined) {
-    updateData.activityType = input.data.transportEmissionProfile;
+    updateData.transportEmissionProfile = input.data.transportEmissionProfile;
   }
   if (input.data.distanceKm !== undefined) {
     updateData.distanceKm = input.data.distanceKm;
@@ -191,20 +195,21 @@ export async function updateProjectSharedTravelLegHandler(
     updateData.description = input.data.description;
   }
   if (input.data.travelDate !== undefined) {
-    updateData.activityDate = input.data.travelDate;
+    updateData.travelDate = input.data.travelDate;
   }
 
   if (Object.keys(updateData).length > 0) {
     await db
-      .update(projectActivitiesTable)
+      .update(projectSharedTravelLegsTable)
       .set(updateData)
-      .where(eq(projectActivitiesTable.id, input.id));
+      .where(eq(projectSharedTravelLegsTable.id, input.id));
   }
 
-  const travelLegWithRelations = await db.query.projectActivitiesTable.findFirst({
-    where: eq(projectActivitiesTable.id, input.id),
-    with: { project: true },
-  });
+  const travelLegWithRelations =
+    await db.query.projectSharedTravelLegsTable.findFirst({
+      where: eq(projectSharedTravelLegsTable.id, input.id),
+      with: { project: true },
+    });
 
   if (!travelLegWithRelations) {
     throw errors.INTERNAL_SERVER_ERROR({
@@ -214,7 +219,7 @@ export async function updateProjectSharedTravelLegHandler(
 
   return {
     success: true,
-    sharedTravelLeg: toProjectSharedTravelLeg(travelLegWithRelations),
+    sharedTravelLeg: travelLegWithRelations,
   };
 }
 
@@ -228,8 +233,8 @@ export async function deleteProjectSharedTravelLegHandler(
   await assertTravelLegAccess(input, "delete", context, errors);
 
   await db
-    .delete(projectActivitiesTable)
-    .where(eq(projectActivitiesTable.id, input.id));
+    .delete(projectSharedTravelLegsTable)
+    .where(eq(projectSharedTravelLegsTable.id, input.id));
 
   return { success: true };
 }

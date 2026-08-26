@@ -1,6 +1,6 @@
 import { db } from "@greendex/database";
 import {
-  projectActivitiesTable,
+  projectSharedTravelLegsTable,
   projectParticipantsTable,
   projectsTable,
 } from "@greendex/database/schema";
@@ -319,10 +319,10 @@ export const getOrganizationStats = authorized
     // Count total activities across all projects in the organization
     const activitiesResult = await db
       .select({ count: count() })
-      .from(projectActivitiesTable)
+      .from(projectSharedTravelLegsTable)
       .innerJoin(
         projectsTable,
-        eq(projectActivitiesTable.projectId, projectsTable.id),
+        eq(projectSharedTravelLegsTable.projectId, projectsTable.id),
       )
       .where(
         and(

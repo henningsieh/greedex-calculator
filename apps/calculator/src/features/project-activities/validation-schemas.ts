@@ -1,4 +1,7 @@
-import { projectActivitiesTable, projectsTable } from "@greendex/database/schema";
+import {
+  projectSharedTravelLegsTable,
+  projectsTable,
+} from "@greendex/database/schema";
 import type { useTranslations } from "@greendex/i18n/client";
 import {
   createInsertSchema,
@@ -40,7 +43,7 @@ type TranslateFn = ReturnType<typeof useTranslations>;
  * const schema = activityInputSchema(t);
  */
 export function activityInputSchema(t: TranslateFn) {
-  return createInsertSchema(projectActivitiesTable)
+  return createInsertSchema(projectSharedTravelLegsTable)
     .omit({
       id: true,
       createdAt: true,
@@ -70,7 +73,7 @@ export function activityInputSchema(t: TranslateFn) {
  * const schema = activityUpdateSchema(t);
  */
 export function activityUpdateSchema(t: TranslateFn) {
-  return createUpdateSchema(projectActivitiesTable)
+  return createUpdateSchema(projectSharedTravelLegsTable)
     .omit({
       id: true,
       projectId: true, // Cannot change which project the activity belongs to
@@ -90,7 +93,7 @@ export function activityUpdateSchema(t: TranslateFn) {
  * Schema for project activity with optional project relation
  */
 export const ProjectActivityWithRelationsSchema = createSelectSchema(
-  projectActivitiesTable,
+  projectSharedTravelLegsTable,
 ).extend({
   project: createSelectSchema(projectsTable),
 });

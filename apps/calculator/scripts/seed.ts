@@ -12,7 +12,11 @@
 
 import { Buffer } from "node:buffer";
 
-import { projectActivitiesTable, projectsTable } from "@greendex/database/schema";
+import type { ProjectSharedTransportEmissionProfile } from "@greendex/config/transport-emission-profiles";
+import {
+  projectSharedTravelLegsTable,
+  projectsTable,
+} from "@greendex/database/schema";
 import * as schema from "@greendex/database/schema";
 import { account, member, organization, user } from "@greendex/database/schema";
 import { scryptAsync } from "@noble/hashes/scrypt.js";
@@ -21,8 +25,6 @@ import { config } from "dotenv";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-
-import type { ActivityValueType } from "@/features/project-activities/types";
 
 // Load environment variables from .env file
 config({ path: "../../.env" });
@@ -66,7 +68,13 @@ const PROJECT_NAMES = [
   "Green Technology Conference",
 ] as const;
 
-const ACTIVITY_TYPES: ActivityValueType[] = ["boat", "bus", "train", "car"];
+const TRANSPORT_EMISSION_PROFILES: ProjectSharedTransportEmissionProfile[] = [
+  "boat",
+  "bus",
+  "train",
+  "car",
+  "electricCar",
+];
 
 const LOCATIONS = [
   { city: "Berlin", country: "DE" as const },
@@ -248,34 +256,36 @@ async function seed() {
       );
     }
 
-    // Step 5: Create project activities
-    console.log("🚗 Creating project activities...");
-    let totalActivitiesCreated = 0;
+    // Step 5: Create Project Shared Travel Legs
+    console.log("🚗 Creating Project Shared Travel Legs...");
+    let totalTravelLegsCreated = 0;
 
     for (const projectId of projectIds) {
       const numActivities = getRandomInt(3, 8);
 
       for (let i = 0; i < numActivities; i++) {
-        const activityType = getRandomElement(ACTIVITY_TYPES);
+        const transportEmissionProfile = getRandomElement(
+          TRANSPORT_EMISSION_PROFILES,
+        );
         const distanceKm = getRandomInt(5, 500);
 
-        await db.insert(projectActivitiesTable).values({
+        await db.insert(projectSharedTravelLegsTable).values({
           id: createId(),
           projectId,
-          activityType,
+          transportEmissionProfile,
           distanceKm,
-          description: `${activityType} trip - ${distanceKm} km`,
-          activityDate: new Date(),
+          description: `${transportEmissionProfile} trip - ${distanceKm} km`,
+          travelDate: new Date(),
           createdAt: new Date(),
           updatedAt: new Date(),
         });
 
-        totalActivitiesCreated++;
+        totalTravelLegsCreated++;
       }
     }
 
     console.log(
-      `✅ Created ${totalActivitiesCreated} activities across 10 projects`,
+      `✅ Created ${totalTravelLegsCreated} Project Shared Travel Legs across 10 projects`,
     );
     console.log("\n🎉 SEED COMPLETED SUCCESSFULLY!");
     console.log("=".repeat(60));
@@ -287,7 +297,7 @@ async function seed() {
     console.log(`User ID: ${userId}`);
     console.log(`Organization ID: ${orgId}`);
     console.log(`Projects: ${projectIds.length}`);
-    console.log(`Activities: ${totalActivitiesCreated}`);
+    console.log(`Project Shared Travel Legs: ${totalTravelLegsCreated}`);
     console.log("=".repeat(60));
     console.log("\n✨ You can now sign in at http://localhost:3000\n");
   } catch (error) {

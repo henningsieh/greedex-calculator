@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { db } from "@greendex/database";
 import {
   organization,
-  projectActivitiesTable,
+  projectSharedTravelLegsTable,
   projectsTable,
   user,
 } from "@greendex/database/schema";
@@ -47,13 +47,13 @@ describe("public participation contract", () => {
       responsibleUserId: userId,
       organizationId,
     });
-    await db.insert(projectActivitiesTable).values({
+    await db.insert(projectSharedTravelLegsTable).values({
       id: travelLegId,
       projectId,
-      activityType: "electricCar",
+      transportEmissionProfile: "electricCar",
       distanceKm: 100,
       description: "Public shared transfer",
-      activityDate: new Date("2026-01-02T00:00:00.000Z"),
+      travelDate: new Date("2026-01-02T00:00:00.000Z"),
     });
   });
 

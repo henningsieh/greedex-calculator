@@ -1,6 +1,9 @@
 import { MAX_DISTANCE_KM, MIN_DISTANCE_KM } from "@greendex/config/activities";
 import { PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES } from "@greendex/config/transport-emission-profiles";
-import { projectActivitiesTable, projectsTable } from "@greendex/database/schema";
+import {
+  projectSharedTravelLegsTable,
+  projectsTable,
+} from "@greendex/database/schema";
 import {
   createInsertSchema,
   createSelectSchema,
@@ -8,9 +11,9 @@ import {
 } from "drizzle-zod";
 import { z } from "zod";
 
-const persistedInsertSchema = createInsertSchema(projectActivitiesTable);
-const persistedSelectSchema = createSelectSchema(projectActivitiesTable);
-const persistedUpdateSchema = createUpdateSchema(projectActivitiesTable);
+const persistedInsertSchema = createInsertSchema(projectSharedTravelLegsTable);
+const persistedSelectSchema = createSelectSchema(projectSharedTravelLegsTable);
+const persistedUpdateSchema = createUpdateSchema(projectSharedTravelLegsTable);
 
 export const TransportEmissionProfileSchema = z.enum(
   PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES,
@@ -24,18 +27,14 @@ const distanceKmSchema = z
     message: "Distance must use increments of 0.1 km",
   });
 
-/**
- * Canonical persisted contract derived from the expand-stage Drizzle model.
- * The database still uses legacy physical column names until the contract
- * migration, so canonical names are mapped only at this explicit seam.
- */
+/** Canonical persisted contract derived from the Drizzle model. */
 export const ProjectSharedTravelLegSchema = z.object({
   id: persistedSelectSchema.shape.id,
   projectId: persistedSelectSchema.shape.projectId,
   transportEmissionProfile: TransportEmissionProfileSchema,
   distanceKm: persistedSelectSchema.shape.distanceKm,
   description: persistedSelectSchema.shape.description,
-  travelDate: persistedSelectSchema.shape.activityDate,
+  travelDate: persistedSelectSchema.shape.travelDate,
   createdAt: persistedSelectSchema.shape.createdAt,
   updatedAt: persistedSelectSchema.shape.updatedAt,
 });
@@ -54,7 +53,7 @@ export const CreateProjectSharedTravelLegInputSchema = z.object({
   transportEmissionProfile: TransportEmissionProfileSchema,
   distanceKm: distanceKmSchema,
   description: persistedInsertSchema.shape.description,
-  travelDate: persistedInsertSchema.shape.activityDate,
+  travelDate: persistedInsertSchema.shape.travelDate,
 });
 
 export const ProjectSharedTravelLegFormSchema =
@@ -64,7 +63,7 @@ const projectSharedTravelLegUpdateSchema = z.object({
   transportEmissionProfile: TransportEmissionProfileSchema.optional(),
   distanceKm: distanceKmSchema.optional(),
   description: persistedUpdateSchema.shape.description,
-  travelDate: persistedUpdateSchema.shape.activityDate,
+  travelDate: persistedUpdateSchema.shape.travelDate,
 });
 
 export const UpdateProjectSharedTravelLegInputSchema = z.object({

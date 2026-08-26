@@ -4,7 +4,7 @@ import type { EUCountryCode } from "@greendex/config/eu-countries";
 import { db } from "@greendex/database";
 import {
   organization,
-  projectActivitiesTable,
+  projectSharedTravelLegsTable,
   projectsTable,
   user,
 } from "@greendex/database/schema";
@@ -106,11 +106,11 @@ beforeEach(() => {
 
 afterEach(async () => {
   await db
-    .delete(projectActivitiesTable)
-    .where(eq(projectActivitiesTable.projectId, projectId));
+    .delete(projectSharedTravelLegsTable)
+    .where(eq(projectSharedTravelLegsTable.projectId, projectId));
   await db
-    .delete(projectActivitiesTable)
-    .where(eq(projectActivitiesTable.projectId, foreignProjectId));
+    .delete(projectSharedTravelLegsTable)
+    .where(eq(projectSharedTravelLegsTable.projectId, foreignProjectId));
   vi.clearAllMocks();
 });
 
@@ -147,11 +147,11 @@ describe("canonical Project Shared Travel Leg procedures", () => {
 
     const persisted = await db
       .select()
-      .from(projectActivitiesTable)
-      .where(eq(projectActivitiesTable.id, created.sharedTravelLeg.id));
+      .from(projectSharedTravelLegsTable)
+      .where(eq(projectSharedTravelLegsTable.id, created.sharedTravelLeg.id));
     expect(persisted).toHaveLength(1);
-    expect(persisted[0].activityType).toBe("electricCar");
-    expect(persisted[0].activityDate).toEqual(travelDate);
+    expect(persisted[0].transportEmissionProfile).toBe("electricCar");
+    expect(persisted[0].travelDate).toEqual(travelDate);
 
     await expect(
       client.projectSharedTravelLegs.list({ projectId }),
@@ -242,8 +242,8 @@ describe("canonical Project Shared Travel Leg procedures", () => {
 
     const persisted = await db
       .select()
-      .from(projectActivitiesTable)
-      .where(eq(projectActivitiesTable.projectId, foreignProjectId));
+      .from(projectSharedTravelLegsTable)
+      .where(eq(projectSharedTravelLegsTable.projectId, foreignProjectId));
     expect(persisted).toEqual([]);
   });
 

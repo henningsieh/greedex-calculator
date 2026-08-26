@@ -9,6 +9,7 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   customType,
+  pgEnum,
   pgTable,
   text,
   timestamp,
@@ -80,13 +81,18 @@ export const projectsTable = pgTable("project", {
 });
 
 /**
- * Project Activity table
+ * Project Shared Travel Leg table
  *
- * Tracks travel activities associated with projects for carbon footprint calculation.
- * Each activity is associated directly with a project (optional relation).
- * ProjectActivities are optional - a project without activities is always valid.
+ * Tracks travel owned by a project for carbon-footprint calculation. A project
+ * can exist without shared travel legs.
  */
-export const projectActivitiesTable = pgTable("project_activity", {
+export const projectSharedTransportEmissionProfileEnum = pgEnum(
+  "project_shared_transport_emission_profile",
+  PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES,
+);
+
+/** The database enum is the persistence boundary for the shared profile set. */
+export const projectSharedTravelLegsTable = pgTable("project_shared_travel_leg", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => createId()),
@@ -94,18 +100,17 @@ export const projectActivitiesTable = pgTable("project_activity", {
     .notNull()
     .references(() => projectsTable.id, { onDelete: "cascade" }),
 
-  activityType: text("activity_type", {
-    enum: PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES,
-  })
+  transportEmissionProfile: projectSharedTransportEmissionProfileEnum(
+    "transport_emission_profile",
+  )
     .$type<ProjectSharedTransportEmissionProfile>()
     .notNull(),
 
   // Distance in kilometers (scale 1 supports 0.1 km increments)
   distanceKm: distanceKmType("distance_km").notNull(),
 
-  // Optional fields for additional activity details
   description: text("description"),
-  activityDate: timestamp("activity_date"),
+  travelDate: timestamp("travel_date"),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
@@ -159,16 +164,16 @@ export const projectRelations = relations(projectsTable, ({ one, many }) => ({
     fields: [projectsTable.organizationId],
     references: [organization.id],
   }),
-  activities: many(projectActivitiesTable),
+  sharedTravelLegs: many(projectSharedTravelLegsTable),
   participants: many(projectParticipantsTable),
 }));
 
-// projectActivity - relations
-export const projectActivityRelations = relations(
-  projectActivitiesTable,
+// projectSharedTravelLeg - relations
+export const projectSharedTravelLegRelations = relations(
+  projectSharedTravelLegsTable,
   ({ one }) => ({
     project: one(projectsTable, {
-      fields: [projectActivitiesTable.projectId],
+      fields: [projectSharedTravelLegsTable.projectId],
       references: [projectsTable.id],
     }),
   }),

@@ -3,7 +3,7 @@ import {
   MAX_DISTANCE_KM,
   MIN_DISTANCE_KM,
 } from "@greendex/config/activities";
-import { projectActivitiesTable } from "@greendex/database/schema";
+import { projectSharedTravelLegsTable } from "@greendex/database/schema";
 import { createTranslator } from "@greendex/i18n/client";
 import deMessages from "@greendex/i18n/locales/de.json";
 import { createInsertSchema } from "drizzle-zod";
@@ -210,7 +210,7 @@ describe("Floating-Point Edge Cases", () => {
 describe("Distance Validation Schemas", () => {
   // Base Drizzle schema for testing (type validation only, no custom messages)
   const BaseCreateActivitySchema = createInsertSchema(
-    projectActivitiesTable,
+    projectSharedTravelLegsTable,
   ).omit({
     id: true,
     createdAt: true,
@@ -221,10 +221,10 @@ describe("Distance Validation Schemas", () => {
     it("should accept valid distance values", () => {
       const validData = {
         projectId: "test-project",
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: 0.1,
         description: null,
-        activityDate: null,
+        travelDate: null,
       };
 
       const result = BaseCreateActivitySchema.safeParse(validData);
@@ -237,10 +237,10 @@ describe("Distance Validation Schemas", () => {
       for (const distance of testCases) {
         const data = {
           projectId: "test-project",
-          activityType: "car" as const,
+          transportEmissionProfile: "car" as const,
           distanceKm: distance,
           description: null,
-          activityDate: null,
+          travelDate: null,
         };
 
         const result = BaseCreateActivitySchema.safeParse(data);
@@ -251,10 +251,10 @@ describe("Distance Validation Schemas", () => {
     it("should accept large distances within max", () => {
       const data = {
         projectId: "test-project",
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: 5999.9,
         description: null,
-        activityDate: null,
+        travelDate: null,
       };
 
       const result = BaseCreateActivitySchema.safeParse(data);
@@ -264,10 +264,10 @@ describe("Distance Validation Schemas", () => {
     it("should accept number type for distanceKm", () => {
       const data = {
         projectId: "test-project",
-        activityType: "car" as const,
+        transportEmissionProfile: "car" as const,
         distanceKm: 100,
         description: null,
-        activityDate: null,
+        travelDate: null,
       };
 
       const result = BaseCreateActivitySchema.safeParse(data);
@@ -280,10 +280,10 @@ describe("Distance Validation Schemas", () => {
       const validData = {
         id: "test-id",
         projectId: "test-project-id",
-        activityType: "bus" as const,
+        transportEmissionProfile: "bus" as const,
         distanceKm: 5.5,
         description: "Test activity",
-        activityDate: new Date(),
+        travelDate: new Date(),
         isNew: false,
         isDeleted: false,
       };
@@ -296,10 +296,10 @@ describe("Distance Validation Schemas", () => {
       const validData = {
         id: "test-id",
         projectId: "test-project-id",
-        activityType: "train" as const,
+        transportEmissionProfile: "train" as const,
         distanceKm: 100.5,
         description: "Test activity",
-        activityDate: new Date(),
+        travelDate: new Date(),
         isNew: false,
         isDeleted: false,
       };

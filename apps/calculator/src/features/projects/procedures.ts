@@ -1,6 +1,6 @@
 import { db } from "@greendex/database";
 import {
-  projectActivitiesTable,
+  projectSharedTravelLegsTable,
   projectParticipantsTable,
   projectsTable,
   session as sessionTable,
@@ -12,7 +12,6 @@ import { z } from "zod";
 
 import { MEMBER_ROLES } from "@/features/organizations/types";
 import { ProjectParticipantWithUserSchema } from "@/features/participants/validation-schemas";
-import { toProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/adapters";
 import { DEFAULT_PROJECT_SORT } from "@/features/projects/types";
 import { computeSortDesc, orderByClauseFor } from "@/features/projects/utils";
 import { auth } from "@/lib/better-auth";
@@ -742,8 +741,8 @@ export const getProjectForParticipation = base
       with: {
         responsibleUser: true,
         organization: true,
-        activities: {
-          orderBy: [asc(projectActivitiesTable.createdAt)],
+        sharedTravelLegs: {
+          orderBy: [asc(projectSharedTravelLegsTable.createdAt)],
           with: {
             project: true,
           },
@@ -757,7 +756,7 @@ export const getProjectForParticipation = base
       });
     }
 
-    const sharedTravelLegs = project.activities.map(toProjectSharedTravelLeg);
+    const sharedTravelLegs = project.sharedTravelLegs;
 
     return {
       ...project,
