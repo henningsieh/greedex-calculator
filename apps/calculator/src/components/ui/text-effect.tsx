@@ -5,7 +5,7 @@ import type {
   Variant,
   Variants,
 } from "motion/react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, stagger } from "motion/react";
 import { memo } from "react";
 
 import { cn } from "@/lib/utils";
@@ -47,11 +47,11 @@ const defaultContainerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.05,
+      delayChildren: stagger(0.05),
     },
   },
   exit: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    transition: { delayChildren: stagger(0.05, { from: "last" }) },
   },
 };
 
@@ -174,7 +174,7 @@ const createVariantsWithTransition = (
 ): Variants => {
   if (!transition) return baseVariants;
 
-  const { exit: _, ...mainTransition } = transition;
+  const { exit, ...mainTransition } = transition;
 
   return {
     ...baseVariants,
@@ -192,7 +192,7 @@ const createVariantsWithTransition = (
       transition: {
         ...(hasTransition(baseVariants.exit) ? baseVariants.exit.transition : {}),
         ...mainTransition,
-        staggerDirection: -1,
+        ...exit,
       },
     },
   };
@@ -223,30 +223,25 @@ export function TextEffect({
     ? presetVariants[preset]
     : { container: defaultContainerVariants, item: defaultItemVariants };
 
-  const stagger = defaultStaggerTimes[per] / speedReveal;
+  const staggerInterval = defaultStaggerTimes[per] / speedReveal;
 
   const baseDuration = 0.3 / speedSegment;
 
-  const customStagger = hasTransition(variants?.container?.visible ?? {})
-    ? (variants?.container?.visible as TargetAndTransition).transition
-        ?.staggerChildren
-    : undefined;
+  const visibleContainerTransition = variants?.container?.visible;
 
-  const customDelay = hasTransition(variants?.container?.visible ?? {})
-    ? (variants?.container?.visible as TargetAndTransition).transition
-        ?.delayChildren
+  const customDelay = hasTransition(visibleContainerTransition)
+    ? visibleContainerTransition.transition?.delayChildren
     : undefined;
 
   const computedVariants = {
     container: createVariantsWithTransition(
       variants?.container || baseVariants.container,
       {
-        staggerChildren: customStagger ?? stagger,
-        delayChildren: customDelay ?? delay,
+        delayChildren:
+          customDelay ?? stagger(staggerInterval, { startDelay: delay }),
         ...containerTransition,
         exit: {
-          staggerChildren: customStagger ?? stagger,
-          staggerDirection: -1,
+          delayChildren: stagger(staggerInterval, { from: "last" }),
         },
       },
     ),
