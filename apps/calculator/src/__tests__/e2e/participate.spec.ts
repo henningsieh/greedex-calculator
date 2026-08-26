@@ -277,8 +277,8 @@ test.describe("Questionnaire Form E2E Tests", () => {
       timeout: 5000,
     });
 
-    // Verify the summary shows CO2 breakdown sections
-    await expect(page.locator("text=Transport").first()).toBeVisible();
+    // Verify the summary shows participant and project-shared travel separately.
+    await expect(page.locator("text=Your travel").first()).toBeVisible();
     await expect(page.locator("text=Accommodation").first()).toBeVisible();
     await expect(page.locator("text=Food").first()).toBeVisible();
     await expect(page.locator("text=Total").first()).toBeVisible();
@@ -714,10 +714,15 @@ test.describe("Questionnaire Form E2E Tests", () => {
     await expect(completeBtn).toBeEnabled({ timeout: 5000 });
     await completeBtn.click();
 
-    // Should show breakdown labels
-    await expect(page.locator("text=Transport").first()).toBeVisible();
+    // Should show breakdown labels, including the public Project Shared Travel
+    // contribution seeded by the unauthenticated fixture.
+    await expect(page.locator("text=Your travel").first()).toBeVisible();
     await expect(page.locator("text=Accommodation").first()).toBeVisible();
     await expect(page.locator("text=Food").first()).toBeVisible();
+    await expect(
+      page.getByText("Project Shared Travel:", { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText("5.3 kg CO₂", { exact: true })).toBeVisible();
     await expect(page.locator("text=Total").first()).toBeVisible();
 
     // Should show CO2 values (numbers with "kg CO₂")

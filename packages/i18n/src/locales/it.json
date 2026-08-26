@@ -780,21 +780,22 @@
         "complete": "Completa"
       },
       "project-activities": {
-        "title": "Attività del progetto",
-        "description": "Questo progetto include attività organizzate che si aggiungono alle emissioni di base:",
-        "note": "Queste saranno incluse nel calcolo delle emissioni personali del progetto.",
+        "title": "Viaggi condivisi del progetto",
+        "description": "Questo progetto include viaggi condivisi che contribuiscono all'impronta di ogni partecipante:",
+        "note": "Questo importo viene incluso una volta nel calcolo delle emissioni personali del progetto.",
         "empty": {
-          "title": "Nessuna attività del progetto",
-          "description": "Non ci sono attività associate a questo progetto."
+          "title": "Nessun viaggio condiviso del progetto",
+          "description": "Non ci sono tragitti condivisi associati a questo progetto."
         }
       },
       "results": {
         "trees-needed": "Anni-albero (alberi × anni)",
         "summary-title": "Riepilogo della tua impronta di carbonio",
         "transport": "Trasporto:",
+        "participant-travel": "Il tuo viaggio:",
         "accommodation": "Alloggio:",
         "food": "Alimentazione:",
-        "project-activities": "Attività del progetto:",
+        "project-shared-travel": "Viaggi condivisi del progetto:",
         "total": "Totale:",
         "console-note": "I dati sono stati registrati nella console (controlla gli strumenti per sviluppatori del browser)",
         "co2-footprint": "Emissioni di CO₂"

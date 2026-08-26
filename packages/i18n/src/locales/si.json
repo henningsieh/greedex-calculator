@@ -780,21 +780,22 @@
         "complete": "Zaključi"
       },
       "project-activities": {
-        "title": "Projektne aktivnosti",
-        "description": "Ta projekt vključuje organizirane aktivnosti, ki povečajo osnovne emisije:",
-        "note": "To bo vključeno v vaš osebni izračun emisij projekta.",
+        "title": "Skupna potovanja projekta",
+        "description": "Ta projekt vključuje skupna potovanja, ki prispevajo k odtisu vsakega udeleženca:",
+        "note": "Ta znesek je enkrat vključen v vaš osebni izračun emisij projekta.",
         "empty": {
-          "title": "Ni projektnih aktivnosti",
-          "description": "S tem projektom niso povezane nobene aktivnosti."
+          "title": "Ni skupnih potovanj projekta",
+          "description": "S tem projektom niso povezani nobeni skupni potovalni odseki."
         }
       },
       "results": {
         "trees-needed": "Drevesna leta (drevesa x leta)",
         "summary-title": "Povzetek vašega ogljičnega odtisa",
         "transport": "Transport:",
+        "participant-travel": "Vaše potovanje:",
         "accommodation": "Nastanitev:",
         "food": "Prehrana:",
-        "project-activities": "Projektne aktivnosti:",
+        "project-shared-travel": "Skupna potovanja projekta:",
         "total": "Skupaj:",
         "console-note": "Podatki so bili zapisani v konzolo (preverite orodja za razvijalce v brskalniku)",
         "co2-footprint": "Emisije CO₂"

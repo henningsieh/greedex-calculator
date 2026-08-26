@@ -16,16 +16,19 @@ interface ParticipateHeaderProps {
 }
 
 /**
- * Render the participation header for a project, showing a badge, localized titles, the project name with optional location, and an activities CO₂ baseline when present.
+ * Render the participation header for a project, including its Project Shared
+ * Travel contribution when present.
  *
- * @param project - Project to display; this component reads `project.name`, optional `project.location`, and `project.activities` to compute and present the emissions baseline.
- * @returns The header JSX element containing the badge, title/subtitle, project name (and inline or badge location) and, when activities produce CO₂, a card showing the calculated baseline value and per-activity breakdown.
+ * @param project - Project to display; this component reads its canonical
+ * `sharedTravelLegs` to compute and present the emissions contribution.
+ * @returns The header JSX element containing the badge, title/subtitle, project
+ * name, and a shared-travel contribution with a per-leg breakdown when present.
  */
 export function ParticipateHeader({ project }: ParticipateHeaderProps) {
   const tActivities = useTranslations("project.activities");
   const t = useTranslations("participation.questionnaire");
   const locale = useLocale();
-  const projectActivitiesCO2 = calculateActivitiesCO2(project.activities);
+  const projectSharedTravelCO2 = calculateActivitiesCO2(project.sharedTravelLegs);
 
   return (
     <div className="space-y-4 pb-4">
@@ -72,7 +75,7 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
 
           {/* Right Side: Metrics/Activities */}
           <div className="flex flex-col border-t border-border/50 bg-muted/10 md:w-70 md:border-t-0 md:border-l lg:w-[320px]">
-            {projectActivitiesCO2 > 0 ? (
+            {projectSharedTravelCO2 > 0 ? (
               <div className="flex flex-1 flex-col justify-center p-4">
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -88,7 +91,7 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
                       </div>
                       <div className="flex items-baseline gap-2">
                         <span className="font-mono text-2xl font-bold tracking-tight text-primary">
-                          +{projectActivitiesCO2.toFixed(1)}
+                          +{projectSharedTravelCO2.toFixed(1)}
                         </span>
                         <span className="text-sm font-medium text-muted-foreground">
                           kg CO₂
@@ -103,15 +106,17 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
                     <div className="max-w-xs">
                       <p className="mb-2 font-medium">{tActivities("title")}</p>
                       <div className="space-y-1">
-                        {project.activities.map((activity) => (
+                        {project.sharedTravelLegs.map((sharedTravelLeg) => (
                           <div
                             className="flex justify-between text-sm"
-                            key={activity.id}
+                            key={sharedTravelLeg.id}
                           >
                             <span>
-                              {tActivities(`types.${activity.activityType}`)}
+                              {tActivities(
+                                `types.${sharedTravelLeg.transportEmissionProfile}`,
+                              )}
                             </span>
-                            <span>{activity.distanceKm} km</span>
+                            <span>{sharedTravelLeg.distanceKm} km</span>
                           </div>
                         ))}
                       </div>

@@ -15,8 +15,7 @@ import {
   type ParticipantAnswers,
 } from "@/features/participate/types";
 import { calculateEmissions } from "@/features/participate/utils";
-import type { ProjectActivityType } from "@/features/project-activities/types";
-import { calculateActivitiesCO2 } from "@/features/projects/utils";
+import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 
 describe("Questionnaire Types and Calculations", () => {
   describe("CO₂ Emission Factors", () => {
@@ -62,7 +61,7 @@ describe("Questionnaire Types and Calculations", () => {
           50 * ACTIVITY_EMISSION_FACTORS.train +
           20 * ACTIVITY_EMISSION_FACTORS.bus) *
         2; // round trip
-      expect(emissions.transportCO2).toBeCloseTo(expected, 1);
+      expect(emissions.participantTravelCO2).toBeCloseTo(expected, 1);
     });
 
     it("should calculate car emissions with passengers correctly", () => {
@@ -76,7 +75,7 @@ describe("Questionnaire Types and Calculations", () => {
 
       // Calculate expected value using config factor
       const expected = ((100 * ACTIVITY_EMISSION_FACTORS.car) / 4) * 2; // round trip
-      expect(emissions.transportCO2).toBeCloseTo(expected, 1);
+      expect(emissions.participantTravelCO2).toBeCloseTo(expected, 1);
     });
 
     it("should calculate electric car emissions correctly", () => {
@@ -90,7 +89,7 @@ describe("Questionnaire Types and Calculations", () => {
 
       // Calculate expected value using config factor
       const expected = ((100 * ACTIVITY_EMISSION_FACTORS.electricCar) / 1) * 2; // round trip
-      expect(emissions.transportCO2).toBeCloseTo(expected, 1);
+      expect(emissions.participantTravelCO2).toBeCloseTo(expected, 1);
     });
 
     it("should calculate accommodation emissions correctly with green energy", () => {
@@ -194,214 +193,83 @@ describe("Questionnaire Types and Calculations", () => {
     });
   });
 
-  describe("Project Activities Calculations", () => {
-    it("should calculate project activities CO2 correctly", () => {
-      const activities: ProjectActivityType[] = [
-        {
-          id: "1",
-          projectId: "project1",
-          activityType: "bus",
-          distanceKm: 50,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "2",
-          projectId: "project1",
-          activityType: "train",
-          distanceKm: 100,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
-
-      const activitiesCO2 = calculateActivitiesCO2(activities);
-
-      // Calculate expected value using config factors
-      const expected =
-        50 * ACTIVITY_EMISSION_FACTORS.bus +
-        100 * ACTIVITY_EMISSION_FACTORS.train;
-      expect(activitiesCO2).toBeCloseTo(expected, 2);
+  describe("Project Shared Travel calculations", () => {
+    const sharedTravelLeg = (
+      id: string,
+      transportEmissionProfile: ProjectSharedTravelLeg["transportEmissionProfile"],
+      distanceKm: number,
+    ): ProjectSharedTravelLeg => ({
+      id,
+      projectId: "project-1",
+      transportEmissionProfile,
+      distanceKm,
+      description: null,
+      travelDate: null,
+      createdAt: new Date("2026-01-01T00:00:00.000Z"),
+      updatedAt: new Date("2026-01-01T00:00:00.000Z"),
     });
 
-    it("should include project activities in total emissions", () => {
-      const answers: Partial<ParticipantAnswers> = {
-        days: 5,
-        accommodationCategory: "Hostel",
-        roomOccupancy: "2 people",
-        electricity: "conventional energy",
-        food: "sometimes",
-        flightKm: 200,
-        trainKm: 0,
-        busKm: 0,
-        boatKm: 0,
-        carKm: 0,
-      };
+    it("returns no project shared travel emissions for an empty leg list", () => {
+      const emissions = calculateEmissions({}, []);
 
-      const projectActivities: ProjectActivityType[] = [
-        {
-          id: "1",
-          projectId: "project1",
-          activityType: "car",
-          distanceKm: 30,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
+      expect(emissions.projectSharedTravelCO2).toBe(0);
+      expect(emissions.totalCO2).toBe(0);
+      expect(emissions.treesNeeded).toBe(0);
+    });
+
+    it("adds an electric-car shared leg once without participant travel adjustments", () => {
+      const answers: Partial<ParticipantAnswers> = {
+        flightKm: 100,
+        carKm: 100,
+        carType: "car",
+        carPassengers: 4,
+      };
+      const sharedTravelLegs = [
+        sharedTravelLeg("electric-leg", "electricCar", 100),
       ];
 
-      const emissionsWithoutActivities = calculateEmissions(answers);
-      const emissionsWithActivities = calculateEmissions(
-        answers,
-        projectActivities,
-      );
+      const emissions = calculateEmissions(answers, sharedTravelLegs);
+      const expectedParticipantTravel =
+        (100 * ACTIVITY_EMISSION_FACTORS.plane +
+          (100 * ACTIVITY_EMISSION_FACTORS.car) / 4) *
+        2;
+      const expectedSharedTravel = 100 * ACTIVITY_EMISSION_FACTORS.electricCar;
 
-      // Calculate expected value using config factor
-      const expectedProjectCO2 = 30 * ACTIVITY_EMISSION_FACTORS.car;
-      expect(emissionsWithActivities.projectActivitiesCO2).toBeCloseTo(
-        expectedProjectCO2,
+      expect(emissions.participantTravelCO2).toBeCloseTo(
+        expectedParticipantTravel,
         2,
       );
-      expect(emissionsWithActivities.totalCO2).toBeCloseTo(
-        emissionsWithoutActivities.totalCO2 + expectedProjectCO2,
-        1,
+      expect(emissions.projectSharedTravelCO2).toBeCloseTo(
+        expectedSharedTravel,
+        2,
+      );
+      expect(emissions.totalCO2).toBeCloseTo(
+        expectedParticipantTravel + expectedSharedTravel,
+        2,
       );
     });
 
-    it("should handle multiple project activities", () => {
-      const activities: ProjectActivityType[] = [
-        {
-          id: "1",
-          projectId: "project1",
-          activityType: "boat",
-          distanceKm: 20,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "2",
-          projectId: "project1",
-          activityType: "bus",
-          distanceKm: 40,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "3",
-          projectId: "project1",
-          activityType: "train",
-          distanceKm: 15,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "4",
-          projectId: "project1",
-          activityType: "car",
-          distanceKm: 25,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
+    it("sums multiple shared legs while preserving total and tree calculations", () => {
+      const sharedTravelLegs = [
+        sharedTravelLeg("boat-leg", "boat", 20),
+        sharedTravelLeg("bus-leg", "bus", 40),
+        sharedTravelLeg("train-leg", "train", 15),
       ];
 
-      const activitiesCO2 = calculateActivitiesCO2(activities);
-
-      // Calculate expected value using config factors
-      const expected =
+      const emissions = calculateEmissions({}, sharedTravelLegs);
+      const expectedSharedTravel =
         20 * ACTIVITY_EMISSION_FACTORS.boat +
         40 * ACTIVITY_EMISSION_FACTORS.bus +
-        15 * ACTIVITY_EMISSION_FACTORS.train +
-        25 * ACTIVITY_EMISSION_FACTORS.car;
-      expect(activitiesCO2).toBeCloseTo(expected, 2);
-    });
+        15 * ACTIVITY_EMISSION_FACTORS.train;
 
-    it("should handle empty project activities", () => {
-      const activities: ProjectActivityType[] = [];
-      const activitiesCO2 = calculateActivitiesCO2(activities);
-      expect(activitiesCO2).toBe(0);
-    });
-
-    it("should handle invalid distance values in project activities", () => {
-      const activities: ProjectActivityType[] = [
-        {
-          id: "1",
-          projectId: "project1",
-          activityType: "bus",
-          distanceKm: 0,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "2",
-          projectId: "project1",
-          activityType: "train",
-          distanceKm: -10,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "3",
-          projectId: "project1",
-          activityType: "car",
-          distanceKm: Number.NaN,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "4",
-          projectId: "project1",
-          activityType: "boat",
-          distanceKm: 50,
-          description: null,
-          activityDate: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
-
-      const activitiesCO2 = calculateActivitiesCO2(activities);
-
-      // Only boat should be counted (calculate using config factor)
-      const expected = 50 * ACTIVITY_EMISSION_FACTORS.boat;
-      expect(activitiesCO2).toBeCloseTo(expected, 2);
-    });
-
-    it("should return 0 for project activities CO2 when no activities provided", () => {
-      const answers: Partial<ParticipantAnswers> = {
-        days: 5,
-        accommodationCategory: "Camping",
-        roomOccupancy: "alone",
-        electricity: "green energy",
-        food: "never",
-        flightKm: 100,
-        trainKm: 0,
-        busKm: 0,
-        boatKm: 0,
-        carKm: 0,
-      };
-
-      const emissions = calculateEmissions(answers);
-
-      expect(emissions.projectActivitiesCO2).toBe(0);
+      expect(emissions.projectSharedTravelCO2).toBeCloseTo(
+        expectedSharedTravel,
+        2,
+      );
+      expect(emissions.totalCO2).toBeCloseTo(expectedSharedTravel, 2);
+      expect(emissions.treesNeeded).toBe(
+        Math.ceil(expectedSharedTravel / CO2_PER_TREE_PER_YEAR),
+      );
     });
   });
 });

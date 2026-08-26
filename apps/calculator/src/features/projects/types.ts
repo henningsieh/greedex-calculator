@@ -5,7 +5,7 @@ import type { z } from "zod";
 
 import type {
   ProjectSortFieldSchema,
-  ProjectWithActivitiesSchema,
+  ProjectForParticipationSchema,
   ProjectWithRelationsSchema,
 } from "./validation-schemas";
 
@@ -58,9 +58,9 @@ export type ProjectType = InferSelectModel<typeof projectsTable>;
 // Type inferred from schema with relations (user, organization)
 export type ProjectWithRelationsType = z.infer<typeof ProjectWithRelationsSchema>;
 
-// Type inferred from schema with relations and activities
-export type ProjectWithActivitiesType = z.infer<
-  typeof ProjectWithActivitiesSchema
+// Type inferred from the public participation contract.
+export type ProjectForParticipationType = z.infer<
+  typeof ProjectForParticipationSchema
 >;
 
 /**

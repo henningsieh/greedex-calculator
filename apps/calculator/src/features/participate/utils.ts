@@ -15,7 +15,7 @@ import {
 } from "@greendex/config/participate";
 import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 
-import type { ProjectActivityType } from "@/features/project-activities/types";
+import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 import { calculateActivitiesCO2 } from "@/features/projects/utils";
 
 import {
@@ -59,35 +59,30 @@ export function getElectricityFactor(
  * Calculate CO₂ emissions from participant answers and estimate the number of trees required to offset the total.
  *
  * @param answers - Partial participant responses. Uses fields: `flightKm`, `boatKm`, `trainKm`, `busKm`, `carKm`, `carType`, `carPassengers`, `days`, `accommodationCategory`, `roomOccupancy`, `electricity`, and `food`
- * @param projectActivities - Optional array of project-level activities that contribute baseline CO₂ emissions
- * @returns An EmissionCalculation object containing:
- * - `transportCO2` — total transport emissions in kilograms of CO₂ (includes round trip and per-passenger car allocation),
- * - `accommodationCO2` — accommodation emissions in kilograms of CO₂ (adjusted by room occupancy and electricity type),
- * - `foodCO2` — food-related emissions in kilograms of CO₂,
- * - `projectActivitiesCO2` — CO₂ from provided project-level activities in kilograms of CO₂,
- * - `totalCO2` — sum of all above emissions in kilograms of CO₂,
- * - `treesNeeded` — number of trees required to offset `totalCO2` (rounded up)
+ * @param sharedTravelLegs - Optional Project Shared Travel Legs that contribute their full emissions once
+ * @returns An EmissionCalculation object containing participant travel, project
+ * shared travel, accommodation, food, total, and required-tree emissions.
  */
 export function calculateEmissions(
   answers: Partial<ParticipantAnswers>,
-  projectActivities?: ProjectActivityType[],
+  sharedTravelLegs?: ProjectSharedTravelLeg[],
 ): EmissionCalculation {
-  let transportCO2 = 0;
+  let participantTravelCO2 = 0;
   let accommodationCO2 = 0;
   let foodCO2 = 0;
 
   // Calculate transport emissions (round trip: TO and FROM project)
   if (answers.flightKm) {
-    transportCO2 += answers.flightKm * ACTIVITY_EMISSION_FACTORS.plane;
+    participantTravelCO2 += answers.flightKm * ACTIVITY_EMISSION_FACTORS.plane;
   }
   if (answers.boatKm) {
-    transportCO2 += answers.boatKm * ACTIVITY_EMISSION_FACTORS.boat;
+    participantTravelCO2 += answers.boatKm * ACTIVITY_EMISSION_FACTORS.boat;
   }
   if (answers.trainKm) {
-    transportCO2 += answers.trainKm * ACTIVITY_EMISSION_FACTORS.train;
+    participantTravelCO2 += answers.trainKm * ACTIVITY_EMISSION_FACTORS.train;
   }
   if (answers.busKm) {
-    transportCO2 += answers.busKm * ACTIVITY_EMISSION_FACTORS.bus;
+    participantTravelCO2 += answers.busKm * ACTIVITY_EMISSION_FACTORS.bus;
   }
   if (answers.carKm) {
     const carFactor =
@@ -95,11 +90,11 @@ export function calculateEmissions(
         ? ACTIVITY_EMISSION_FACTORS.electricCar
         : ACTIVITY_EMISSION_FACTORS.car;
     const passengers = answers.carPassengers || DEFAULT_CAR_PASSENGERS;
-    transportCO2 += (answers.carKm * carFactor) / passengers;
+    participantTravelCO2 += (answers.carKm * carFactor) / passengers;
   }
 
-  // Double transport emissions for round trip (to and from project)
-  transportCO2 *= ROUND_TRIP_MULTIPLIER;
+  // Participant travel is a round trip; shared travel is not.
+  participantTravelCO2 *= ROUND_TRIP_MULTIPLIER;
 
   // Calculate accommodation emissions
   if (answers.days && answers.accommodationCategory) {
@@ -116,20 +111,19 @@ export function calculateEmissions(
     foodCO2 = answers.days * FOOD_FACTORS[answers.food];
   }
 
-  // Calculate project activities emissions (baseline CO₂)
-  const projectActivitiesCO2 = projectActivities
-    ? calculateActivitiesCO2(projectActivities)
+  const projectSharedTravelCO2 = sharedTravelLegs
+    ? calculateActivitiesCO2(sharedTravelLegs)
     : 0;
 
   const totalCO2 =
-    transportCO2 + accommodationCO2 + foodCO2 + projectActivitiesCO2;
+    participantTravelCO2 + projectSharedTravelCO2 + accommodationCO2 + foodCO2;
   const treesNeeded = Math.ceil(totalCO2 / CO2_PER_TREE_PER_YEAR);
 
   return {
-    transportCO2,
+    participantTravelCO2,
+    projectSharedTravelCO2,
     accommodationCO2,
     foodCO2,
-    projectActivitiesCO2,
     totalCO2,
     treesNeeded,
   };

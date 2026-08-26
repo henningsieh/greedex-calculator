@@ -780,21 +780,22 @@
         "complete": "Completar"
       },
       "project-activities": {
-        "title": "Actividades del proyecto",
-        "description": "Este proyecto incluye actividades organizadas que se añaden a las emisiones de referencia:",
-        "note": "Estas se incluirán en el cálculo de emisiones personal del proyecto.",
+        "title": "Viajes compartidos del proyecto",
+        "description": "Este proyecto incluye viajes compartidos que contribuyen a la huella de cada participante:",
+        "note": "Esta cantidad se incluye una vez en el cálculo de emisiones personal del proyecto.",
         "empty": {
-          "title": "No hay actividades del proyecto",
-          "description": "No hay actividades asociadas a este proyecto."
+          "title": "No hay viajes compartidos del proyecto",
+          "description": "No hay trayectos compartidos asociados a este proyecto."
         }
       },
       "results": {
         "trees-needed": "Años-árbol (árboles x años)",
         "summary-title": "Resumen de tu huella de carbono",
         "transport": "Transporte:",
+        "participant-travel": "Tu viaje:",
         "accommodation": "Alojamiento:",
         "food": "Alimentación:",
-        "project-activities": "Actividades del proyecto:",
+        "project-shared-travel": "Viajes compartidos del proyecto:",
         "total": "Total:",
         "console-note": "Los datos se han registrado en la consola (comprueba las herramientas de desarrollo del navegador)",
         "co2-footprint": "Emisiones de CO₂"

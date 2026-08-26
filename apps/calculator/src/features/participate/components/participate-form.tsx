@@ -45,20 +45,20 @@ interface QuestionnaireFormProps {
  * Render an interactive questionnaire UI for a specific project.
  *
  * Renders a multi-step form that collects participant answers, calculates emissions
- * from inputs and project activities, shows step-by-step progress and optional
- * impact modals for emission-affecting answers, and displays a final emissions summary.
+ * from inputs and Project Shared Travel Legs, shows step-by-step progress and
+ * optional impact modals for emission-affecting answers, and displays a final emissions summary.
  * The component persists form state (answers and current step and confirmedEmissions) to localStorage per
  * project.id and clears that data on submission.
  *
- * @param project - Project data (dates, activities, welcome message, id) used to
- *   initialize defaults, compute project duration, and calculate emissions.
+ * @param project - Project data (dates, shared travel, welcome message, id) used
+ *   to initialize defaults, compute project duration, and calculate emissions.
  * @returns The questionnaire UI as a JSX element.
  */
 
 /**
  * Renders the multi-step participant questionnaire UI, managing form state, localStorage persistence, conditional step flow, emission calculations, and impact confirmation modals.
  *
- * @param project - Project data used to initialize default answers, provide activities for emissions calculations, and display project-specific text (e.g., welcome message).
+ * @param project - Project data used to initialize default answers, provide canonical shared travel for emissions calculations, and display project-specific text (e.g., welcome message).
  * @returns The questionnaire form React element.
  */
 
@@ -287,18 +287,18 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
       }
       const previousEmissions = calculateEmissions(
         answersWithoutCurrent,
-        project.activities,
+        project.sharedTravelLegs,
       );
       const previousCO2 =
-        previousEmissions.transportCO2 +
+        previousEmissions.participantTravelCO2 +
         previousEmissions.accommodationCO2 +
         previousEmissions.foodCO2;
 
       // Calculate new CO₂ WITH the current answer (participant-only)
       const currentValue = answers[stepKey as keyof ParticipantAnswers];
-      const newEmissions = calculateEmissions(answers, project.activities);
+      const newEmissions = calculateEmissions(answers, project.sharedTravelLegs);
       const newCO2 =
-        newEmissions.transportCO2 +
+        newEmissions.participantTravelCO2 +
         newEmissions.accommodationCO2 +
         newEmissions.foodCO2;
       const impact = newCO2 - previousCO2;
@@ -317,9 +317,9 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   };
 
   const handleImpactModalClose = () => {
-    const fullEmissions = calculateEmissions(answers, project.activities);
+    const fullEmissions = calculateEmissions(answers, project.sharedTravelLegs);
     const participantCO2 =
-      fullEmissions.transportCO2 +
+      fullEmissions.participantTravelCO2 +
       fullEmissions.accommodationCO2 +
       fullEmissions.foodCO2;
     setConfirmedEmissions({
@@ -350,20 +350,20 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
   };
 
   const handleSubmit = () => {
-    const emissions = calculateEmissions(answers, project.activities);
+    const emissions = calculateEmissions(answers, project.sharedTravelLegs);
 
     // Complete data structure as requested
     const completeData = {
       answers, // Discrete answers object
-      emissions, // Calculated results (includes project activities in totals)
+      emissions, // Calculated results, including Project Shared Travel once
       summary: {
         totalCO2: emissions.totalCO2,
         treesNeeded: emissions.treesNeeded,
         breakdown: {
-          transport: emissions.transportCO2,
+          participantTravel: emissions.participantTravelCO2,
+          projectSharedTravel: emissions.projectSharedTravelCO2,
           accommodation: emissions.accommodationCO2,
           food: emissions.foodCO2,
-          projectActivities: emissions.projectActivitiesCO2,
         },
       },
     };
@@ -417,7 +417,7 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
     }
   };
 
-  const emissions = calculateEmissions(answers, project.activities);
+  const emissions = calculateEmissions(answers, project.sharedTravelLegs);
   /**
    * Adjust step display number when car questions are conditionally skipped.
    * If user enters 0 car km, we skip carType and carPassengers steps,
@@ -964,10 +964,10 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
               <div className="space-y-3 text-sm sm:text-base">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
-                    {t("results.transport")}
+                    {t("results.participant-travel")}
                   </span>
                   <span className="font-semibold text-foreground">
-                    {emissions.transportCO2.toFixed(1)} kg CO₂
+                    {emissions.participantTravelCO2.toFixed(1)} kg CO₂
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -986,13 +986,13 @@ export function QuestionnaireForm({ project }: QuestionnaireFormProps) {
                     {emissions.foodCO2.toFixed(1)} kg CO₂
                   </span>
                 </div>
-                {emissions.projectActivitiesCO2 > 0 && (
+                {emissions.projectSharedTravelCO2 > 0 && (
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">
-                      {t("results.project-activities")}
+                      {t("results.project-shared-travel")}
                     </span>
                     <span className="font-semibold text-foreground">
-                      {emissions.projectActivitiesCO2.toFixed(1)} kg CO₂
+                      {emissions.projectSharedTravelCO2.toFixed(1)} kg CO₂
                     </span>
                   </div>
                 )}

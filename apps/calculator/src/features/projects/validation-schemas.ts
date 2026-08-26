@@ -7,8 +7,10 @@ import {
 } from "drizzle-zod";
 import { z } from "zod";
 
-import { ProjectActivityWithRelationsSchema } from "@/features/project-activities/validation-schemas";
-import { ProjectSharedTravelLegFormSchema } from "@/features/project-shared-travel-legs/validation-schemas";
+import {
+  ProjectSharedTravelLegFormSchema,
+  ProjectSharedTravelLegWithRelationsSchema,
+} from "@/features/project-shared-travel-legs/validation-schemas";
 
 import { PROJECT_SORT_FIELDS } from "./types";
 
@@ -133,14 +135,15 @@ export type CreateProjectWithSharedTravelLegs = z.infer<
 >;
 
 /**
- * Schema for Project with Activities included
+ * Public participation contract. `activities` remains a deprecated alias for
+ * `sharedTravelLegs` while external consumers complete their migration.
  */
-export const ProjectWithActivitiesSchema = createSelectSchema(
+export const ProjectForParticipationSchema = createSelectSchema(
   projectsTable,
 ).extend({
   responsibleUser: createSelectSchema(user),
   organization: createSelectSchema(organization),
-  // Ensure `country` is properly typed as enum
   country: z.enum(EU_COUNTRY_CODES),
-  activities: z.array(ProjectActivityWithRelationsSchema),
+  sharedTravelLegs: z.array(ProjectSharedTravelLegWithRelationsSchema),
+  activities: z.array(ProjectSharedTravelLegWithRelationsSchema),
 });

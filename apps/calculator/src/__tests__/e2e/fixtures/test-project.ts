@@ -10,7 +10,7 @@ import {
 } from "@greendex/database/schema";
 import { eq } from "drizzle-orm";
 
-import type { ProjectActivityType } from "@/features/project-activities/types";
+import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 
 /**
  * Test fixture for creating a project that can be used in e2e tests
@@ -64,28 +64,27 @@ export class TestProjectFixture {
       updatedAt: new Date(),
     });
 
-    // Add some project activities (baseline emissions)
-    const activities: Omit<
-      ProjectActivityType,
-      "createdAt" | "updatedAt" | "activityDate" | "description"
+    // Add canonical Project Shared Travel for participant-visible coverage.
+    const sharedTravelLegs: Omit<
+      ProjectSharedTravelLeg,
+      "createdAt" | "updatedAt" | "travelDate" | "description"
     >[] = [
       {
         id: randomUUID(),
         projectId: this.projectId,
-        activityType: "bus",
-        distanceKm: 50,
-      },
-      {
-        id: randomUUID(),
-        projectId: this.projectId,
-        activityType: "train",
+        transportEmissionProfile: "electricCar",
         distanceKm: 100,
       },
     ];
 
-    for (const activity of activities) {
+    for (const sharedTravelLeg of sharedTravelLegs) {
       await db.insert(projectActivitiesTable).values({
-        ...activity,
+        id: sharedTravelLeg.id,
+        projectId: sharedTravelLeg.projectId,
+        activityType: sharedTravelLeg.transportEmissionProfile,
+        distanceKm: sharedTravelLeg.distanceKm,
+        description: null,
+        activityDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       });

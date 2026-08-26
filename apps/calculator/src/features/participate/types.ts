@@ -12,7 +12,7 @@ import type { ParticipantTransportEmissionProfile } from "@greendex/config/trans
 import type { z } from "zod";
 
 import type { ParticipantSchema } from "@/features/participants/validation-schemas";
-import type { ProjectWithActivitiesType } from "@/features/projects/types";
+import type { ProjectForParticipationType } from "@/features/projects/types";
 
 // ============================================================================
 // PARTICIPATE ANSWER TYPES
@@ -108,10 +108,10 @@ export interface ParticipantAnswers {
  * Emission calculation result with breakdown by category
  */
 export interface EmissionCalculation {
-  transportCO2: number;
+  participantTravelCO2: number;
+  projectSharedTravelCO2: number;
   accommodationCO2: number;
   foodCO2: number;
-  projectActivitiesCO2: number;
   totalCO2: number;
   treesNeeded: number;
 }
@@ -134,7 +134,7 @@ export const FOOD_FACTORS: Record<FoodFrequency, number> = Object.fromEntries(
 /**
  * Re-export Project type for use in questionnaire components
  */
-export type Project = ProjectWithActivitiesType;
+export type Project = ProjectForParticipationType;
 
 // ============================================================================
 // PARTICIPANT ACTIVITY TYPES

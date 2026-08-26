@@ -12,6 +12,7 @@ import { z } from "zod";
 
 import { MEMBER_ROLES } from "@/features/organizations/types";
 import { ProjectParticipantWithUserSchema } from "@/features/participants/validation-schemas";
+import { toProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/adapters";
 import { DEFAULT_PROJECT_SORT } from "@/features/projects/types";
 import { computeSortDesc, orderByClauseFor } from "@/features/projects/utils";
 import { auth } from "@/lib/better-auth";
@@ -22,7 +23,7 @@ import {
   ProjectCreateFormSchema,
   ProjectSortFieldSchema,
   ProjectUpdateFormSchema,
-  ProjectWithActivitiesSchema,
+  ProjectForParticipationSchema,
   ProjectWithRelationsSchema,
 } from "./validation-schemas";
 
@@ -719,7 +720,7 @@ export const batchDeleteProjects = authorized
  * Get project for public participation (no auth required)
  *
  * This is a public endpoint used by the participation form.
- * Returns project details with activities for calculating the baseline CO2.
+ * Returns project details with canonical Project Shared Travel Legs.
  */
 export const getProjectForParticipation = base
   .route({
@@ -733,7 +734,7 @@ export const getProjectForParticipation = base
       id: z.string().describe("Project ID"),
     }),
   )
-  .output(ProjectWithActivitiesSchema)
+  .output(ProjectForParticipationSchema)
   .handler(async ({ input, errors }) => {
     // Fetch project (no organization check needed for public participation)
     const project = await db.query.projectsTable.findFirst({
@@ -756,5 +757,13 @@ export const getProjectForParticipation = base
       });
     }
 
-    return project;
+    const sharedTravelLegs = project.activities.map(toProjectSharedTravelLeg);
+
+    return {
+      ...project,
+      sharedTravelLegs,
+      // Compatibility alias; both properties intentionally contain the same
+      // canonical records until public consumers migrate.
+      activities: sharedTravelLegs,
+    };
   });

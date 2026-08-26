@@ -780,21 +780,22 @@
         "complete": "Complete"
       },
       "project-activities": {
-        "title": "Project Activities",
-        "description": "This project includes organized activities that add to the baseline emissions:",
-        "note": "These will be included in your personal project emission calculation.",
+        "title": "Project Shared Travel",
+        "description": "This project includes shared travel that contributes to every participant's footprint:",
+        "note": "This amount is included once in your personal project emission calculation.",
         "empty": {
-          "title": "No project activities",
-          "description": "There are no activities associated with this project."
+          "title": "No project shared travel",
+          "description": "There are no shared travel legs associated with this project."
         }
       },
       "results": {
         "trees-needed": "Tree years (trees x years)",
         "summary-title": "Your Carbon Footprint Summary",
         "transport": "Transport:",
+        "participant-travel": "Your travel:",
         "accommodation": "Accommodation:",
         "food": "Food:",
-        "project-activities": "Project Activities:",
+        "project-shared-travel": "Project Shared Travel:",
         "total": "Total:",
         "console-note": "Data has been logged to the console (check browser developer tools)",
         "co2-footprint": "CO₂ Emissions"

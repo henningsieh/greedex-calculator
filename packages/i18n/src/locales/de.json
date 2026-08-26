@@ -780,21 +780,22 @@
         "complete": "Abschließen"
       },
       "project-activities": {
-        "title": "Projektaktivitäten",
-        "description": "Dieses Projekt beinhaltet organisierte Aktivitäten, die zu den Basis-Emissionen beitragen:",
-        "note": "Diese fließen in deine persönliche Projekt-Emissionsberechnung ein.",
+        "title": "Gemeinsame Projektreisen",
+        "description": "Dieses Projekt enthält gemeinsame Reisen, die zum Fußabdruck aller Teilnehmenden beitragen:",
+        "note": "Dieser Betrag wird einmal in deine persönliche Projekt-Emissionsberechnung einbezogen.",
         "empty": {
-          "title": "Keine Projektaktivitäten",
-          "description": "Mit diesem Projekt sind keine Aktivitäten verbunden."
+          "title": "Keine gemeinsamen Projektreisen",
+          "description": "Mit diesem Projekt sind keine gemeinsamen Reiseabschnitte verbunden."
         }
       },
       "results": {
         "trees-needed": "Baumjahre (Bäume x Jahre)",
         "summary-title": "Deine CO₂-Fußabdruck-Zusammenfassung",
         "transport": "Transport:",
+        "participant-travel": "Deine Reise:",
         "accommodation": "Unterkunft:",
         "food": "Essen:",
-        "project-activities": "Projektaktivitäten:",
+        "project-shared-travel": "Gemeinsame Projektreisen:",
         "total": "Gesamt:",
         "console-note": "Daten wurden in die Konsole protokolliert (siehe Browser-Entwicklertools)",
         "co2-footprint": "CO₂-Emissionen"

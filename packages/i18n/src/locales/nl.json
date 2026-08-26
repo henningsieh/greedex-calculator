@@ -780,21 +780,22 @@
         "complete": "Voltooien"
       },
       "project-activities": {
-        "title": "Projectactiviteiten",
-        "description": "Dit project bevat georganiseerde activiteiten die bovenop de basisuitstoot komen:",
-        "note": "Deze worden opgenomen in de berekening van jouw persoonlijke projectuitstoot.",
+        "title": "Gedeelde projectreizen",
+        "description": "Dit project bevat gedeelde reizen die bijdragen aan de voetafdruk van elke deelnemer:",
+        "note": "Dit bedrag wordt eenmaal opgenomen in de berekening van jouw persoonlijke projectuitstoot.",
         "empty": {
-          "title": "Geen projectactiviteiten",
-          "description": "Er zijn geen activiteiten gekoppeld aan dit project."
+          "title": "Geen gedeelde projectreizen",
+          "description": "Er zijn geen gedeelde trajecten gekoppeld aan dit project."
         }
       },
       "results": {
         "trees-needed": "Boomjaren (bomen × jaren)",
         "summary-title": "Samenvatting van je koolstofvoetafdruk",
         "transport": "Vervoer:",
+        "participant-travel": "Jouw reis:",
         "accommodation": "Accommodatie:",
         "food": "Voeding:",
-        "project-activities": "Projectactiviteiten:",
+        "project-shared-travel": "Gedeelde projectreizen:",
         "total": "Totaal:",
         "console-note": "Gegevens zijn naar de console gestuurd (controleer de ontwikkelaarstools van de browser)",
         "co2-footprint": "CO₂-uitstoot"
