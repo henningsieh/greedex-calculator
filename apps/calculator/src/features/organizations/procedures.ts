@@ -261,14 +261,14 @@ export const searchMembers = authorized
 
 /**
  * Get organization statistics
- * Returns total projects, participants, and activities for an organization
+ * Returns total projects, Project Participants, and Project Shared Travel Legs for an organization
  */
 export const getOrganizationStats = authorized
   .route({
     method: "POST",
     path: "/organizations/stats",
     description:
-      "Get organization statistics including total projects, participants, and activities",
+      "Get organization statistics including total projects, Project Participants, and Project Shared Travel Legs",
     tags: ["Organizations"],
   })
   .input(
@@ -280,7 +280,7 @@ export const getOrganizationStats = authorized
     z.object({
       totalProjects: z.number(),
       totalParticipants: z.number(),
-      totalActivities: z.number(),
+      totalSharedTravelLegs: z.number(),
     }),
   )
   .handler(async ({ input }) => {
@@ -316,8 +316,8 @@ export const getOrganizationStats = authorized
 
     const totalParticipants = participantsResult[0]?.count ?? 0;
 
-    // Count total activities across all projects in the organization
-    const activitiesResult = await db
+    // Count Project Shared Travel Legs across all projects in the organization.
+    const sharedTravelLegsResult = await db
       .select({ count: count() })
       .from(projectSharedTravelLegsTable)
       .innerJoin(
@@ -331,11 +331,11 @@ export const getOrganizationStats = authorized
         ),
       );
 
-    const totalActivities = activitiesResult[0]?.count ?? 0;
+    const totalSharedTravelLegs = sharedTravelLegsResult[0]?.count ?? 0;
 
     return {
       totalProjects,
       totalParticipants,
-      totalActivities,
+      totalSharedTravelLegs,
     };
   });

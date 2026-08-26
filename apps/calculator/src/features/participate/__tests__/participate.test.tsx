@@ -6,7 +6,7 @@ import {
   GREEN_ENERGY_REDUCTION_FACTOR,
   ROOM_OCCUPANCY_FACTORS,
 } from "@greendex/config/participate";
-import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
+import { TRANSPORT_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -21,12 +21,12 @@ describe("Questionnaire Types and Calculations", () => {
   describe("CO₂ Emission Factors", () => {
     it("should have correct transport emission factors", () => {
       // Verify all factors are defined and positive (values from config)
-      expect(ACTIVITY_EMISSION_FACTORS.plane).toBeGreaterThan(0);
-      expect(ACTIVITY_EMISSION_FACTORS.boat).toBeGreaterThan(0);
-      expect(ACTIVITY_EMISSION_FACTORS.train).toBeGreaterThan(0);
-      expect(ACTIVITY_EMISSION_FACTORS.bus).toBeGreaterThan(0);
-      expect(ACTIVITY_EMISSION_FACTORS.car).toBeGreaterThan(0);
-      expect(ACTIVITY_EMISSION_FACTORS.electricCar).toBeGreaterThan(0);
+      expect(TRANSPORT_EMISSION_FACTORS.plane).toBeGreaterThan(0);
+      expect(TRANSPORT_EMISSION_FACTORS.boat).toBeGreaterThan(0);
+      expect(TRANSPORT_EMISSION_FACTORS.train).toBeGreaterThan(0);
+      expect(TRANSPORT_EMISSION_FACTORS.bus).toBeGreaterThan(0);
+      expect(TRANSPORT_EMISSION_FACTORS.car).toBeGreaterThan(0);
+      expect(TRANSPORT_EMISSION_FACTORS.electricCar).toBeGreaterThan(0);
     });
 
     it("should have accommodation factors for all types", () => {
@@ -57,9 +57,9 @@ describe("Questionnaire Types and Calculations", () => {
 
       // Calculate expected value using config factors
       const expected =
-        (100 * ACTIVITY_EMISSION_FACTORS.plane +
-          50 * ACTIVITY_EMISSION_FACTORS.train +
-          20 * ACTIVITY_EMISSION_FACTORS.bus) *
+        (100 * TRANSPORT_EMISSION_FACTORS.plane +
+          50 * TRANSPORT_EMISSION_FACTORS.train +
+          20 * TRANSPORT_EMISSION_FACTORS.bus) *
         2; // round trip
       expect(emissions.participantTravelCO2).toBeCloseTo(expected, 1);
     });
@@ -74,7 +74,7 @@ describe("Questionnaire Types and Calculations", () => {
       const emissions = calculateEmissions(answers);
 
       // Calculate expected value using config factor
-      const expected = ((100 * ACTIVITY_EMISSION_FACTORS.car) / 4) * 2; // round trip
+      const expected = ((100 * TRANSPORT_EMISSION_FACTORS.car) / 4) * 2; // round trip
       expect(emissions.participantTravelCO2).toBeCloseTo(expected, 1);
     });
 
@@ -88,7 +88,7 @@ describe("Questionnaire Types and Calculations", () => {
       const emissions = calculateEmissions(answers);
 
       // Calculate expected value using config factor
-      const expected = ((100 * ACTIVITY_EMISSION_FACTORS.electricCar) / 1) * 2; // round trip
+      const expected = ((100 * TRANSPORT_EMISSION_FACTORS.electricCar) / 1) * 2; // round trip
       expect(emissions.participantTravelCO2).toBeCloseTo(expected, 1);
     });
 
@@ -160,7 +160,7 @@ describe("Questionnaire Types and Calculations", () => {
       const emissions = calculateEmissions(answers);
 
       // Calculate expected values using config factors
-      const expectedTransport = 500 * ACTIVITY_EMISSION_FACTORS.plane * 2; // round trip
+      const expectedTransport = 500 * TRANSPORT_EMISSION_FACTORS.plane * 2; // round trip
       const expectedAccommodation =
         7 *
         ACCOMMODATION_FACTORS.Camping *
@@ -230,10 +230,10 @@ describe("Questionnaire Types and Calculations", () => {
 
       const emissions = calculateEmissions(answers, sharedTravelLegs);
       const expectedParticipantTravel =
-        (100 * ACTIVITY_EMISSION_FACTORS.plane +
-          (100 * ACTIVITY_EMISSION_FACTORS.car) / 4) *
+        (100 * TRANSPORT_EMISSION_FACTORS.plane +
+          (100 * TRANSPORT_EMISSION_FACTORS.car) / 4) *
         2;
-      const expectedSharedTravel = 100 * ACTIVITY_EMISSION_FACTORS.electricCar;
+      const expectedSharedTravel = 100 * TRANSPORT_EMISSION_FACTORS.electricCar;
 
       expect(emissions.participantTravelCO2).toBeCloseTo(
         expectedParticipantTravel,
@@ -258,9 +258,9 @@ describe("Questionnaire Types and Calculations", () => {
 
       const emissions = calculateEmissions({}, sharedTravelLegs);
       const expectedSharedTravel =
-        20 * ACTIVITY_EMISSION_FACTORS.boat +
-        40 * ACTIVITY_EMISSION_FACTORS.bus +
-        15 * ACTIVITY_EMISSION_FACTORS.train;
+        20 * TRANSPORT_EMISSION_FACTORS.boat +
+        40 * TRANSPORT_EMISSION_FACTORS.bus +
+        15 * TRANSPORT_EMISSION_FACTORS.train;
 
       expect(emissions.projectSharedTravelCO2).toBeCloseTo(
         expectedSharedTravel,

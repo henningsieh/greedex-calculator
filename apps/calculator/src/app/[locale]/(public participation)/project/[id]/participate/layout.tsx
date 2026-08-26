@@ -9,7 +9,7 @@ import { getProjectData } from "@/features/projects/utils";
  * This layout ensures that new invited participants can access this by public link.
  * No authentication is required.
  * - Unauthenticated users -> can access (public participation) pages
- * - Participants will be onboarded by sending their activities for arrival and departure
+ * - Project Participants provide Participant Travel Legs for arrival and departure
  */
 export default async function PublicParticipateLayout({
   children,

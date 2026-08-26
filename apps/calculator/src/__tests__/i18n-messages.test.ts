@@ -69,6 +69,30 @@ describe("i18n message catalogs", () => {
     }
   });
 
+  it("uses canonical shared-travel namespaces", async () => {
+    for (const locale of LANGUAGE_CODES) {
+      const messageLeaves = collectMessageLeaves(await loadMessages(locale));
+
+      expect(messageLeaves.has("project.shared-travel.title"), locale).toBe(true);
+      expect(
+        messageLeaves.has("project.details.tabs.shared-travel"),
+        locale,
+      ).toBe(true);
+      expect(
+        messageLeaves.has(
+          "participation.questionnaire.project-shared-travel.title",
+        ),
+        locale,
+      ).toBe(true);
+      expect(messageLeaves.has("project.activities.title"), locale).toBe(false);
+      expect(messageLeaves.has("project.details.activities"), locale).toBe(false);
+      expect(
+        messageLeaves.has("participation.questionnaire.project-activities.title"),
+        locale,
+      ).toBe(false);
+    }
+  });
+
   it("keeps ICU placeholders aligned with the default catalog", async () => {
     const referenceLeaves = collectMessageLeaves(
       await loadMessages(DEFAULT_LANGUAGE),

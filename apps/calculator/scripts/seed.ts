@@ -3,7 +3,7 @@
 /**
  * Development DB seeder
  *
- * - Purpose: Insert a seed user, organization, projects and activities for local development and tests.
+ * - Purpose: Insert a seed user, organization, projects, and Project Shared Travel Legs for local development and tests.
  * - Warning: Stop the Next.js dev server (or any process using the database) before running to avoid connection conflicts.
  * - Run: pnpm run db:seed (uses tsx)
  *
@@ -261,9 +261,9 @@ async function seed() {
     let totalTravelLegsCreated = 0;
 
     for (const projectId of projectIds) {
-      const numActivities = getRandomInt(3, 8);
+      const numSharedTravelLegs = getRandomInt(3, 8);
 
-      for (let i = 0; i < numActivities; i++) {
+      for (let i = 0; i < numSharedTravelLegs; i++) {
         const transportEmissionProfile = getRandomElement(
           TRANSPORT_EMISSION_PROFILES,
         );

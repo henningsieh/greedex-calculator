@@ -2,25 +2,31 @@ import {
   DISTANCE_KM_STEP,
   MAX_DISTANCE_KM,
   MIN_DISTANCE_KM,
-} from "@greendex/config/activities";
+} from "@greendex/config/project-shared-travel";
 import { projectSharedTravelLegsTable } from "@greendex/database/schema";
 import { createTranslator } from "@greendex/i18n/client";
 import deMessages from "@greendex/i18n/locales/de.json";
+import enMessages from "@greendex/i18n/locales/en.json";
 import { createInsertSchema } from "drizzle-zod";
 import { describe, expect, it } from "vitest";
 
 import {
-  createDistanceSchema,
-  isMultipleOfStep,
+  createProjectSharedTravelLegDistanceSchema,
+  isMultipleOfDistanceStep,
   validateDistanceStep,
-} from "@/features/project-activities/utils";
-import { activityUpdateSchema } from "@/features/project-activities/validation-schemas";
+} from "@/features/project-shared-travel-legs/distance-validation";
+import { ProjectSharedTravelLegFormSchema } from "@/features/project-shared-travel-legs/validation-schemas";
 
 /**
- * Create real next-intl translator for German
+ * Create real next-intl translators for both English and German
  * No namespace needed - validation schemas use full paths like
- * "project.activities.form.validation.distanceKm.min"
+ * "project.shared-travel.form.validation.distanceKm.min"
  */
+const tEn = createTranslator({
+  locale: "en",
+  messages: enMessages,
+});
+
 const tDe = createTranslator({
   locale: "de",
   messages: deMessages,
@@ -33,28 +39,28 @@ describe("Distance Constants", () => {
     expect(DISTANCE_KM_STEP).toBe(0.1);
   });
 
-  describe("isMultipleOfStep", () => {
+  describe("isMultipleOfDistanceStep", () => {
     it("should validate correct multiples of 0.1", () => {
-      expect(isMultipleOfStep(0.1)).toBe(true);
-      expect(isMultipleOfStep(0.2)).toBe(true);
-      expect(isMultipleOfStep(0.5)).toBe(true);
-      expect(isMultipleOfStep(1.0)).toBe(true);
-      expect(isMultipleOfStep(1.5)).toBe(true);
-      expect(isMultipleOfStep(10.3)).toBe(true);
-      expect(isMultipleOfStep(100.0)).toBe(true);
+      expect(isMultipleOfDistanceStep(0.1)).toBe(true);
+      expect(isMultipleOfDistanceStep(0.2)).toBe(true);
+      expect(isMultipleOfDistanceStep(0.5)).toBe(true);
+      expect(isMultipleOfDistanceStep(1.0)).toBe(true);
+      expect(isMultipleOfDistanceStep(1.5)).toBe(true);
+      expect(isMultipleOfDistanceStep(10.3)).toBe(true);
+      expect(isMultipleOfDistanceStep(100.0)).toBe(true);
     });
 
     it("should reject invalid multiples", () => {
-      expect(isMultipleOfStep(0.15)).toBe(false);
-      expect(isMultipleOfStep(0.05)).toBe(false);
-      expect(isMultipleOfStep(1.25)).toBe(false);
-      expect(isMultipleOfStep(10.33)).toBe(false);
-      expect(isMultipleOfStep(0.001)).toBe(false);
+      expect(isMultipleOfDistanceStep(0.15)).toBe(false);
+      expect(isMultipleOfDistanceStep(0.05)).toBe(false);
+      expect(isMultipleOfDistanceStep(1.25)).toBe(false);
+      expect(isMultipleOfDistanceStep(10.33)).toBe(false);
+      expect(isMultipleOfDistanceStep(0.001)).toBe(false);
     });
 
     it("should handle edge cases", () => {
-      expect(isMultipleOfStep(0)).toBe(true); // 0 is a multiple of 0.1
-      expect(isMultipleOfStep(0.0)).toBe(true);
+      expect(isMultipleOfDistanceStep(0)).toBe(true); // 0 is a multiple of 0.1
+      expect(isMultipleOfDistanceStep(0.0)).toBe(true);
     });
   });
 
@@ -74,17 +80,17 @@ describe("Distance Constants", () => {
 
 describe("Distance Schema Factory", () => {
   it("should create non-optional schema by default", () => {
-    const schema = createDistanceSchema(tDe);
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn);
     expect(schema.safeParse(undefined).success).toBe(false);
   });
 
   it("should create optional schema when requested", () => {
-    const schema = createDistanceSchema(tDe, true);
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn, true);
     expect(schema.safeParse(undefined).success).toBe(true);
   });
 
   it("should apply consistent validation rules", () => {
-    const schema = createDistanceSchema(tDe);
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn);
     expect(schema.safeParse(0.05).success).toBe(false); // below min
     expect(schema.safeParse(0.1).success).toBe(true); // valid min
     expect(schema.safeParse(0.15).success).toBe(false); // wrong step
@@ -94,7 +100,7 @@ describe("Distance Schema Factory", () => {
   });
 
   it("should return i18n translated error messages", () => {
-    const schema = createDistanceSchema(tDe);
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn);
     const resultMin = schema.safeParse(0.05);
     const resultStep = schema.safeParse(0.15);
     const resultMax = schema.safeParse(6000.1);
@@ -103,27 +109,39 @@ describe("Distance Schema Factory", () => {
     if (!resultMin.success) {
       expect(resultMin.error.issues.length).toBeGreaterThan(0);
       expect(resultMin.error.issues[0].message).toContain(
-        "Entfernung muss mindestens",
+        "Distance must be at least",
       );
     }
 
     expect(resultStep.success).toBe(false);
     if (!resultStep.success) {
       expect(resultStep.error.issues.length).toBeGreaterThan(0);
-      expect(resultStep.error.issues[0].message).toContain("Schritten");
+      expect(resultStep.error.issues[0].message).toContain("increments");
     }
 
     expect(resultMax.success).toBe(false);
     if (!resultMax.success) {
       expect(resultMax.error.issues.length).toBeGreaterThan(0);
-      expect(resultMax.error.issues[0].message).toContain("überschreiten");
+      expect(resultMax.error.issues[0].message).toContain("cannot exceed");
     }
   });
 });
 
 describe("i18n Translation Integration", () => {
+  it("should use correct translation messages for English", () => {
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn);
+    const resultMin = schema.safeParse(0.05);
+
+    expect(resultMin.success).toBe(false);
+    if (!resultMin.success) {
+      expect(resultMin.error.issues[0].message).toBe(
+        "Distance must be at least 0.1 km",
+      );
+    }
+  });
+
   it("should use correct translation messages for German", () => {
-    const schema = createDistanceSchema(tDe);
+    const schema = createProjectSharedTravelLegDistanceSchema(tDe);
     const resultMin = schema.safeParse(0.05);
 
     expect(resultMin.success).toBe(false);
@@ -134,20 +152,20 @@ describe("i18n Translation Integration", () => {
     }
   });
 
-  it("should translate max distance errors for German", () => {
-    const schema = createDistanceSchema(tDe);
+  it("should translate max distance errors for English", () => {
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn);
     const resultMax = schema.safeParse(6000.1);
 
     expect(resultMax.success).toBe(false);
     if (!resultMax.success) {
       expect(resultMax.error.issues[0].message).toBe(
-        "Die Entfernung darf 6000 km nicht überschreiten",
+        "Distance cannot exceed 6000 km",
       );
     }
   });
 
   it("should translate step errors for German", () => {
-    const schema = createDistanceSchema(tDe);
+    const schema = createProjectSharedTravelLegDistanceSchema(tDe);
     const resultStep = schema.safeParse(0.15);
 
     expect(resultStep.success).toBe(false);
@@ -158,15 +176,15 @@ describe("i18n Translation Integration", () => {
     }
   });
 
-  it("should translate parameters in German messages", () => {
-    const schema = createDistanceSchema(tDe);
+  it("should translate parameters in English messages", () => {
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn);
     const resultMin = schema.safeParse(0.05);
 
     expect(resultMin.success).toBe(false);
     if (!resultMin.success) {
       expect(resultMin.error.issues.length).toBeGreaterThan(0);
       expect(resultMin.error.issues[0].message).toBe(
-        "Die Entfernung muss mindestens 0.1 km betragen",
+        "Distance must be at least 0.1 km",
       );
     }
   });
@@ -174,10 +192,10 @@ describe("i18n Translation Integration", () => {
 
 describe("Floating-Point Edge Cases", () => {
   it("should handle values close to step boundaries", () => {
-    expect(isMultipleOfStep(0.09999999)).toBe(false);
-    // Note: 0.10000001 is too close to 0.1 and may pass due to epsilon tolerance
-    expect(isMultipleOfStep(0.1)).toBe(true);
-    expect(isMultipleOfStep(0.2)).toBe(true);
+    expect(isMultipleOfDistanceStep(0.09999999)).toBe(false);
+    expect(isMultipleOfDistanceStep(0.1 + 0.2)).toBe(true);
+    expect(isMultipleOfDistanceStep(0.1)).toBe(true);
+    expect(isMultipleOfDistanceStep(0.2)).toBe(true);
   });
 
   it("should validate very large numbers", () => {
@@ -186,7 +204,7 @@ describe("Floating-Point Edge Cases", () => {
   });
 
   it("should handle min/max boundaries correctly", () => {
-    const schema = createDistanceSchema(tDe);
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn);
 
     // Test exact boundaries
     expect(schema.safeParse(MIN_DISTANCE_KM).success).toBe(true); // 0.1
@@ -198,7 +216,7 @@ describe("Floating-Point Edge Cases", () => {
   });
 
   it("should handle floating point arithmetic correctly", () => {
-    const schema = createDistanceSchema(tDe);
+    const schema = createProjectSharedTravelLegDistanceSchema(tEn);
 
     // Test common floating point problematic values
     expect(schema.safeParse(0.3).success).toBe(true); // 0.1 + 0.1 + 0.1
@@ -209,7 +227,7 @@ describe("Floating-Point Edge Cases", () => {
 
 describe("Distance Validation Schemas", () => {
   // Base Drizzle schema for testing (type validation only, no custom messages)
-  const BaseCreateActivitySchema = createInsertSchema(
+  const BaseCreateProjectSharedTravelLegSchema = createInsertSchema(
     projectSharedTravelLegsTable,
   ).omit({
     id: true,
@@ -217,7 +235,7 @@ describe("Distance Validation Schemas", () => {
     updatedAt: true,
   });
 
-  describe("Base Create Activity Schema (Type Validation)", () => {
+  describe("Base Create Project Shared Travel Leg Schema (Type Validation)", () => {
     it("should accept valid distance values", () => {
       const validData = {
         projectId: "test-project",
@@ -227,7 +245,7 @@ describe("Distance Validation Schemas", () => {
         travelDate: null,
       };
 
-      const result = BaseCreateActivitySchema.safeParse(validData);
+      const result = BaseCreateProjectSharedTravelLegSchema.safeParse(validData);
       expect(result.success).toBe(true);
     });
 
@@ -243,7 +261,7 @@ describe("Distance Validation Schemas", () => {
           travelDate: null,
         };
 
-        const result = BaseCreateActivitySchema.safeParse(data);
+        const result = BaseCreateProjectSharedTravelLegSchema.safeParse(data);
         expect(result.success).toBe(true);
       }
     });
@@ -257,7 +275,7 @@ describe("Distance Validation Schemas", () => {
         travelDate: null,
       };
 
-      const result = BaseCreateActivitySchema.safeParse(data);
+      const result = BaseCreateProjectSharedTravelLegSchema.safeParse(data);
       expect(result.success).toBe(true);
     });
 
@@ -270,25 +288,25 @@ describe("Distance Validation Schemas", () => {
         travelDate: null,
       };
 
-      const result = BaseCreateActivitySchema.safeParse(data);
+      const result = BaseCreateProjectSharedTravelLegSchema.safeParse(data);
       expect(result.success).toBe(true);
     });
   });
 
-  describe("Edit Activity Form Item Schema (Batch Operations)", () => {
-    it("should accept valid distance values with activity ID", () => {
+  describe("Project Shared Travel Leg Form Schema (Batch Operations)", () => {
+    it("accepts valid distance values for a Project Shared Travel Leg", () => {
       const validData = {
         id: "test-id",
         projectId: "test-project-id",
         transportEmissionProfile: "bus" as const,
         distanceKm: 5.5,
-        description: "Test activity",
+        description: "Test shared travel leg",
         travelDate: new Date(),
         isNew: false,
         isDeleted: false,
       };
 
-      const result = activityUpdateSchema(tDe).safeParse(validData);
+      const result = ProjectSharedTravelLegFormSchema.safeParse(validData);
       expect(result.success).toBe(true);
     });
 
@@ -298,13 +316,13 @@ describe("Distance Validation Schemas", () => {
         projectId: "test-project-id",
         transportEmissionProfile: "train" as const,
         distanceKm: 100.5,
-        description: "Test activity",
+        description: "Test shared travel leg",
         travelDate: new Date(),
         isNew: false,
         isDeleted: false,
       };
 
-      const result = activityUpdateSchema(tDe).safeParse(validData);
+      const result = ProjectSharedTravelLegFormSchema.safeParse(validData);
 
       expect(result.success).toBe(true);
     });

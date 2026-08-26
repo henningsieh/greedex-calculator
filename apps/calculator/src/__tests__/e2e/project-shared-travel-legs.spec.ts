@@ -72,23 +72,29 @@ test.describe("Project Shared Travel Legs", () => {
       .fill(projectName);
     await page.getByRole("combobox").click();
     await page.getByRole("option", { name: /Germany/ }).click();
-    await page.getByRole("button", { name: en.project.activities.title }).click();
+    await page
+      .getByRole("button", { name: en.project["shared-travel"].title })
+      .click();
 
     await page
-      .getByRole("button", { name: en.project.activities.form.title })
+      .getByRole("button", { name: en.project["shared-travel"].form.title })
       .click();
     await page
-      .getByLabel(en.project.activities.form["transport-emission-profile"])
+      .getByLabel(en.project["shared-travel"].form["transport-emission-profile"])
       .click();
     await page
-      .getByRole("option", { name: en.project.activities.types.electricCar })
+      .getByRole("option", {
+        name: en.project["shared-travel"].types.electricCar,
+      })
       .click();
-    await page.getByLabel(en.project.activities.form.distance).fill("120.5");
     await page
-      .getByLabel(en.project.activities.form.description)
+      .getByLabel(en.project["shared-travel"].form.distance)
+      .fill("120.5");
+    await page
+      .getByLabel(en.project["shared-travel"].form.description)
       .fill(description);
     await expect(
-      page.getByLabel(en.project.activities.form["travel-date"]),
+      page.getByLabel(en.project["shared-travel"].form["travel-date"]),
     ).toBeVisible();
 
     await page
@@ -102,14 +108,14 @@ test.describe("Project Shared Travel Legs", () => {
     createdProjectId = url.pathname.split("/").at(-1);
 
     const sharedTravelTab = page.getByRole("tab", {
-      name: en.project.details.tabs.activities,
+      name: en.project.details.tabs["shared-travel"],
     });
     await sharedTravelTab.click();
     const sharedTravelLegRow = page
       .getByRole("row")
       .filter({ hasText: description });
     await expect(sharedTravelLegRow).toContainText(
-      en.project.activities.types.electricCar,
+      en.project["shared-travel"].types.electricCar,
     );
 
     const editedProjectName = `${projectName} edited`;
@@ -129,7 +135,7 @@ test.describe("Project Shared Travel Legs", () => {
       .getByLabel(en.organization.projects.form.new.name)
       .fill(editedProjectName);
     await editDialog
-      .getByRole("button", { name: en.project.activities.title })
+      .getByRole("button", { name: en.project["shared-travel"].title })
       .click();
     await editDialog
       .getByRole("button", { name: en.organization.projects.form.edit.update })
@@ -139,7 +145,7 @@ test.describe("Project Shared Travel Legs", () => {
       page.getByRole("heading", { name: editedProjectName }),
     ).toBeVisible();
     await expect(sharedTravelLegRow).toContainText(
-      en.project.activities.types.electricCar,
+      en.project["shared-travel"].types.electricCar,
     );
   });
 
@@ -153,8 +159,8 @@ test.describe("Project Shared Travel Legs", () => {
     const detailsTab = page.getByRole("tab", {
       name: en.project.details.tabs.details,
     });
-    const activitiesTab = page.getByRole("tab", {
-      name: en.project.details.tabs.activities,
+    const sharedTravelTab = page.getByRole("tab", {
+      name: en.project.details.tabs["shared-travel"],
     });
     const participantsTab = page.getByRole("tab", {
       name: en.project.details.tabs.participants,
@@ -162,11 +168,11 @@ test.describe("Project Shared Travel Legs", () => {
 
     await expect(detailsTab).toHaveAttribute("data-state", "active");
 
-    await activitiesTab.click();
-    await expect(activitiesTab).toHaveAttribute("data-state", "active");
+    await sharedTravelTab.click();
+    await expect(sharedTravelTab).toHaveAttribute("data-state", "active");
     await expect(
       page.locator('[data-slot="card-title"]', {
-        hasText: en.project.activities.title,
+        hasText: en.project["shared-travel"].title,
       }),
     ).toBeVisible();
 
@@ -188,87 +194,95 @@ test.describe("Project Shared Travel Legs", () => {
     await page.goto(`/en/org/projects/${projectId}`);
     // The route is server-rendered; wait for its client-side tab controls to hydrate.
     await page.waitForTimeout(2_000);
-    const activitiesTab = page.getByRole("tab", {
-      name: en.project.details.tabs.activities,
+    const sharedTravelTab = page.getByRole("tab", {
+      name: en.project.details.tabs["shared-travel"],
     });
-    await activitiesTab.click();
-    await expect(activitiesTab).toHaveAttribute("data-state", "active");
+    await sharedTravelTab.click();
+    await expect(sharedTravelTab).toHaveAttribute("data-state", "active");
 
     await expect(
       page.locator('[data-slot="card-title"]', {
-        hasText: en.project.activities.title,
+        hasText: en.project["shared-travel"].title,
       }),
     ).toBeVisible();
     await expect(
-      page.getByText(en.project.activities.empty.title, { exact: true }),
+      page.getByText(en.project["shared-travel"].empty.title, { exact: true }),
     ).toBeVisible();
 
-    await page.getByLabel(en.project.activities.form.title).click();
+    await page.getByLabel(en.project["shared-travel"].form.title).click();
 
     const dialog = page.getByRole("dialog");
     await expect(
-      dialog.getByRole("heading", { name: en.project.activities.form.title }),
+      dialog.getByRole("heading", {
+        name: en.project["shared-travel"].form.title,
+      }),
     ).toBeVisible();
 
     await dialog
-      .getByLabel(en.project.activities.form["transport-emission-profile"])
+      .getByLabel(en.project["shared-travel"].form["transport-emission-profile"])
       .click();
     await expect(
-      page.getByRole("option", { name: en.project.activities.types.electricCar }),
+      page.getByRole("option", {
+        name: en.project["shared-travel"].types.electricCar,
+      }),
     ).toBeVisible();
     await expect(page.getByRole("option", { name: "Plane" })).toHaveCount(0);
     await page
-      .getByRole("option", { name: en.project.activities.types.electricCar })
+      .getByRole("option", {
+        name: en.project["shared-travel"].types.electricCar,
+      })
       .click();
 
-    await dialog.getByLabel(en.project.activities.form.distance).fill("123.4");
     await dialog
-      .getByLabel(en.project.activities.form.description)
+      .getByLabel(en.project["shared-travel"].form.distance)
+      .fill("123.4");
+    await dialog
+      .getByLabel(en.project["shared-travel"].form.description)
       .fill(sharedTravelLegDescription);
     await expect(
-      dialog.getByLabel(en.project.activities.form["travel-date"]),
+      dialog.getByLabel(en.project["shared-travel"].form["travel-date"]),
     ).toBeVisible();
     await dialog
-      .getByRole("button", { name: en.project.activities.form.submit })
+      .getByRole("button", { name: en.project["shared-travel"].form.submit })
       .click();
 
     const sharedTravelLegRow = page
       .getByRole("row")
       .filter({ hasText: sharedTravelLegDescription });
     await expect(sharedTravelLegRow).toContainText(
-      en.project.activities.types.electricCar,
+      en.project["shared-travel"].types.electricCar,
     );
     await expect(sharedTravelLegRow).toContainText("123.4");
 
     await sharedTravelLegRow
-      .getByRole("button", { name: en.project.activities.table.edit })
+      .getByRole("button", { name: en.project["shared-travel"].table.edit })
       .click();
     await dialog
-      .getByLabel(en.project.activities.form.description)
+      .getByLabel(en.project["shared-travel"].form.description)
       .fill(`${sharedTravelLegDescription} updated`);
     await dialog
-      .getByRole("button", { name: en.project.activities.form.update })
+      .getByRole("button", { name: en.project["shared-travel"].form.update })
       .click();
 
     const updatedSharedTravelLegRow = page
       .getByRole("row")
       .filter({ hasText: `${sharedTravelLegDescription} updated` });
     await expect(updatedSharedTravelLegRow).toContainText(
-      en.project.activities.types.electricCar,
+      en.project["shared-travel"].types.electricCar,
     );
 
     await updatedSharedTravelLegRow
-      .getByRole("button", { name: en.project.activities.table.delete })
+      .getByRole("button", { name: en.project["shared-travel"].table.delete })
       .click();
     const confirmation = page.getByRole("alertdialog");
     await expect(
       confirmation.getByRole("heading", {
-        name: en.project.activities.delete["confirm-title"],
+        name: en.project["shared-travel"].delete["confirm-title"],
       }),
     ).toBeVisible();
     await confirmation
       .getByRole("button", {
-        name: en.project.activities.delete["confirm-button"],
+        name: en.project["shared-travel"].delete["confirm-button"],
       })
       .click();
 
@@ -287,40 +301,42 @@ test.describe("Project Shared Travel Legs", () => {
       await page.goto(`/${locale}/org/projects/${projectId}`);
       // The route is server-rendered; wait for its client-side tab controls to hydrate.
       await page.waitForTimeout(2_000);
-      const activitiesTab = page.getByRole("tab", {
-        name: messages.project.details.tabs.activities,
+      const sharedTravelTab = page.getByRole("tab", {
+        name: messages.project.details.tabs["shared-travel"],
       });
-      await activitiesTab.click();
-      await expect(activitiesTab).toHaveAttribute("data-state", "active");
+      await sharedTravelTab.click();
+      await expect(sharedTravelTab).toHaveAttribute("data-state", "active");
 
       await expect(
         page.locator('[data-slot="card-title"]', {
-          hasText: messages.project.activities.title,
+          hasText: messages.project["shared-travel"].title,
         }),
       ).toBeVisible();
       await expect(
-        page.getByText(messages.project.activities.empty.title, { exact: true }),
+        page.getByText(messages.project["shared-travel"].empty.title, {
+          exact: true,
+        }),
       ).toBeVisible();
       await expect(
-        page.getByText(messages.project.activities.empty.description, {
+        page.getByText(messages.project["shared-travel"].empty.description, {
           exact: true,
         }),
       ).toBeVisible();
 
-      await page.getByLabel(messages.project.activities.form.title).click();
+      await page.getByLabel(messages.project["shared-travel"].form.title).click();
       const dialog = page.getByRole("dialog");
       await expect(
         dialog.getByRole("heading", {
-          name: messages.project.activities.form.title,
+          name: messages.project["shared-travel"].form.title,
         }),
       ).toBeVisible();
       await expect(
         dialog.getByLabel(
-          messages.project.activities.form["transport-emission-profile"],
+          messages.project["shared-travel"].form["transport-emission-profile"],
         ),
       ).toBeVisible();
       await expect(
-        dialog.getByLabel(messages.project.activities.form["travel-date"]),
+        dialog.getByLabel(messages.project["shared-travel"].form["travel-date"]),
       ).toBeVisible();
       await dialog.getByRole("button", { name: "Close" }).click();
     }

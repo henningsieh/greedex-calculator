@@ -12,7 +12,7 @@ interface TransportEmissionProfilePresentationProps {
 export function TransportEmissionProfilePresentation({
   profile,
 }: TransportEmissionProfilePresentationProps) {
-  const t = useTranslations("project.activities");
+  const t = useTranslations("project.shared-travel");
 
   return (
     <div className="flex items-center gap-2">

@@ -1,4 +1,7 @@
-import { MAX_DISTANCE_KM, MIN_DISTANCE_KM } from "@greendex/config/activities";
+import {
+  MAX_DISTANCE_KM,
+  MIN_DISTANCE_KM,
+} from "@greendex/config/project-shared-travel";
 import { PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES } from "@greendex/config/transport-emission-profiles";
 import {
   projectSharedTravelLegsTable,
@@ -10,6 +13,8 @@ import {
   createUpdateSchema,
 } from "drizzle-zod";
 import { z } from "zod";
+
+import { validateDistanceStep } from "./distance-validation";
 
 const persistedInsertSchema = createInsertSchema(projectSharedTravelLegsTable);
 const persistedSelectSchema = createSelectSchema(projectSharedTravelLegsTable);
@@ -23,7 +28,7 @@ const distanceKmSchema = z
   .number()
   .min(MIN_DISTANCE_KM)
   .max(MAX_DISTANCE_KM)
-  .refine((distanceKm) => Number.isInteger(distanceKm * 10), {
+  .refine(validateDistanceStep, {
     message: "Distance must use increments of 0.1 km",
   });
 

@@ -435,7 +435,7 @@
       "welcome-to-your-organizations-dashboard": "Organisationsmanagement",
       "total-projects": "Gesamtanzahl der Projekte",
       "total-participants": "Gesamtzahl der Teilnehmenden",
-      "total-activities": "Gesamtemissionen durch Aktivitäten",
+      "total-shared-travel-legs": "Gesamtanzahl gemeinsamer Reiseabschnitte",
       "coming-soon": "Demnächst verfügbar",
       "tabs": {
         "participants": "Teilnehmende",
@@ -496,7 +496,7 @@
           "toast": {
             "success": "Projekt erfolgreich aktualisiert",
             "error": "Fehler beim Aktualisieren des Projekts",
-            "failed-activities": "Fehler beim Verarbeiten von {count, plural, one {# Aktivität} other {# Aktivitäten}}: {activities}"
+            "failed-shared-travel-legs": "Fehler beim Verarbeiten von {count, plural, one {# gemeinsamen Reiseabschnitt} other {# gemeinsamen Reiseabschnitten}}: {profiles}"
           },
           "back": "Zurück",
           "cancel": "Abbrechen",
@@ -541,7 +541,7 @@
             "success": "Projekt erfolgreich erstellt",
             "error": "Fehler beim Erstellen des Projekts",
             "error-generic": "Ein Fehler ist aufgetreten",
-            "failed-activities": "Fehler beim Erstellen von {count, plural, one {# Aktivität} other {# Aktivitäten}}: {activities}"
+            "failed-shared-travel-legs": "Fehler beim Erstellen von {count, plural, one {# gemeinsamen Reiseabschnitt} other {# gemeinsamen Reiseabschnitten}}: {profiles}"
           },
           "submit": {
             "label": "Neues Projekt"
@@ -779,7 +779,7 @@
         "continue": "Weiter",
         "complete": "Abschließen"
       },
-      "project-activities": {
+      "project-shared-travel": {
         "title": "Gemeinsame Projektreisen",
         "description": "Dieses Projekt enthält gemeinsame Reisen, die zum Fußabdruck aller Teilnehmenden beitragen:",
         "note": "Dieser Betrag wird einmal in deine persönliche Projekt-Emissionsberechnung einbezogen.",
@@ -846,20 +846,20 @@
       "welcome-message": "Willkommensnachricht",
       "participants": "Teilnehmende",
       "participants-description": "Teilnehmende werden hier angezeigt.",
-      "activities": "Gemeinsame Projektreisen",
-      "activities-description": "Gemeinsame Reisen zur Berechnung des CO₂-Fußabdrucks",
+      "shared-travel": "Gemeinsame Projektreisen",
+      "shared-travel-description": "Gemeinsame Reisen zur Berechnung des CO₂-Fußabdrucks",
       "loading": "Projektdetails werden geladen…",
       "people-joined": "Leute sind bereits beigetreten",
       "no-participants-yet": "Noch keine Teilnehmenden",
       "share-the-participation-link": "Teile den Teilnahmelink, um Personen zu diesem Projekt einzuladen.",
       "tabs": {
         "details": "Projektdetails",
-        "activities": "Gemeinsame Projektreisen",
+        "shared-travel": "Gemeinsame Projektreisen",
         "participants": "Projektteilnehmende"
       },
       "statistics": {
         "participants": "Teilnehmende",
-        "activities": "Gemeinsame Reisen",
+        "shared-travel-legs": "Gemeinsame Reisen",
         "total-distance": "Gesamtstrecke",
         "duration": "Dauer",
         "km": "km",
@@ -873,7 +873,7 @@
       },
       "joined-on": "beigetreten am"
     },
-    "activities": {
+    "shared-travel": {
       "title": "Gemeinsame Projektreisen",
       "description": "Gemeinsame Reisen zur Berechnung des CO₂-Fußabdrucks",
       "empty": {

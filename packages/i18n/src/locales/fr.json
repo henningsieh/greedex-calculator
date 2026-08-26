@@ -435,7 +435,7 @@
       "welcome-to-your-organizations-dashboard": "Gestion de l'organisation",
       "total-projects": "Total des projets",
       "total-participants": "Total des participants",
-      "total-activities": "Émissions totales des activités",
+      "total-shared-travel-legs": "Total des trajets partagés",
       "coming-soon": "Bientôt disponible",
       "tabs": {
         "participants": "Participants",
@@ -496,7 +496,7 @@
           "toast": {
             "success": "Projet mis à jour avec succès",
             "error": "Échec de la mise à jour du projet",
-            "failed-activities": "Échec du traitement de {count, plural, one {# activité} other {# activités}} : {activities}"
+            "failed-shared-travel-legs": "Échec du traitement de {count, plural, one {# trajet partagé} other {# trajets partagés}} : {profiles}"
           },
           "back": "Retour",
           "cancel": "Annuler",
@@ -541,7 +541,7 @@
             "success": "Projet créé avec succès",
             "error": "Échec de la création du projet",
             "error-generic": "Une erreur s'est produite",
-            "failed-activities": "Échec de la création de {count, plural, one {# activité} other {# activités}} : {activities}"
+            "failed-shared-travel-legs": "Échec de la création de {count, plural, one {# trajet partagé} other {# trajets partagés}} : {profiles}"
           },
           "submit": {
             "label": "Nouveau projet"
@@ -779,7 +779,7 @@
         "continue": "Continuer",
         "complete": "Terminer"
       },
-      "project-activities": {
+      "project-shared-travel": {
         "title": "Voyages partagés du projet",
         "description": "Ce projet comprend des voyages partagés qui contribuent à l'empreinte de chaque participant :",
         "note": "Ce montant est inclus une fois dans le calcul de vos émissions personnelles pour le projet.",
@@ -846,20 +846,20 @@
       "welcome-message": "Message de bienvenue",
       "participants": "Participants",
       "participants-description": "Les participants seront affichés ici.",
-      "activities": "Voyages partagés du projet",
-      "activities-description": "Voyages partagés enregistrés pour le calcul de l'empreinte carbone",
+      "shared-travel": "Voyages partagés du projet",
+      "shared-travel-description": "Voyages partagés enregistrés pour le calcul de l'empreinte carbone",
       "loading": "Chargement des détails du projet…",
       "people-joined": "personnes ont déjà rejoint",
       "no-participants-yet": "Aucun participant pour l'instant",
       "share-the-participation-link": "Partagez le lien de participation pour inviter des personnes à ce projet.",
       "tabs": {
         "details": "Détails du projet",
-        "activities": "Voyages partagés du projet",
+        "shared-travel": "Voyages partagés du projet",
         "participants": "Participants au projet"
       },
       "statistics": {
         "participants": "Participants",
-        "activities": "Trajets partagés",
+        "shared-travel-legs": "Trajets partagés",
         "total-distance": "Distance totale",
         "duration": "Durée",
         "km": "km",
@@ -873,7 +873,7 @@
       },
       "joined-on": "a rejoint le"
     },
-    "activities": {
+    "shared-travel": {
       "title": "Voyages partagés du projet",
       "description": "Voyages partagés enregistrés pour le calcul de l'empreinte carbone",
       "empty": {

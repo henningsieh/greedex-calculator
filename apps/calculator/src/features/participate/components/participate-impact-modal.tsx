@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { Button } from "@/components/ui/button";
-import { ParticipantActivityValueType } from "@/features/participate/types";
+import type { ParticipantTravelLegTransportEmissionProfile } from "@/features/participate/types";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 
 /**
@@ -60,7 +60,9 @@ const getImpactMessage = (
 ): string => {
   const value = typeof stepValue === "string" ? stepValue : Number(stepValue);
 
-  const transportHandler = (mode: ParticipantActivityValueType) => {
+  const transportHandler = (
+    mode: ParticipantTravelLegTransportEmissionProfile,
+  ) => {
     if (mode === "plane") {
       if (Number(value) === 0)
         return "✅ Great! No flying keeps your footprint low!";

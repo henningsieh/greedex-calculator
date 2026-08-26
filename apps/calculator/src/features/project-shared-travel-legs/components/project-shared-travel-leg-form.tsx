@@ -1,6 +1,9 @@
 "use client";
 
-import { DISTANCE_KM_STEP, MIN_DISTANCE_KM } from "@greendex/config/activities";
+import {
+  DISTANCE_KM_STEP,
+  MIN_DISTANCE_KM,
+} from "@greendex/config/project-shared-travel";
 import { useTranslations } from "@greendex/i18n/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -34,7 +37,7 @@ export function ProjectSharedTravelLegForm({
   onSuccess,
   onCancel,
 }: ProjectSharedTravelLegFormProps) {
-  const t = useTranslations("project.activities");
+  const t = useTranslations("project.shared-travel");
   const queryClient = useQueryClient();
   const isEditing = sharedTravelLeg !== undefined;
   const {

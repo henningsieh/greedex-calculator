@@ -435,7 +435,7 @@
       "welcome-to-your-organizations-dashboard": "Organisatiebeheer",
       "total-projects": "Totaal projecten",
       "total-participants": "Totaal deelnemers",
-      "total-activities": "Totale uitstoot van activiteiten",
+      "total-shared-travel-legs": "Totaal gedeelde trajecten",
       "coming-soon": "Binnenkort beschikbaar",
       "tabs": {
         "participants": "Deelnemers",
@@ -496,7 +496,7 @@
           "toast": {
             "success": "Project succesvol bijgewerkt",
             "error": "Project bijwerken mislukt",
-            "failed-activities": "Verwerken van {count, plural, one {# activiteit} other {# activiteiten}} mislukt: {activities}"
+            "failed-shared-travel-legs": "Verwerken van {count, plural, one {# gedeeld traject} other {# gedeelde trajecten}} mislukt: {profiles}"
           },
           "back": "Terug",
           "cancel": "Annuleren",
@@ -541,7 +541,7 @@
             "success": "Project succesvol aangemaakt",
             "error": "Project aanmaken mislukt",
             "error-generic": "Er is een fout opgetreden",
-            "failed-activities": "Aanmaken van {count, plural, one {# activiteit} other {# activiteiten}} mislukt: {activities}"
+            "failed-shared-travel-legs": "Aanmaken van {count, plural, one {# gedeeld traject} other {# gedeelde trajecten}} mislukt: {profiles}"
           },
           "submit": {
             "label": "Nieuw project"
@@ -779,7 +779,7 @@
         "continue": "Doorgaan",
         "complete": "Voltooien"
       },
-      "project-activities": {
+      "project-shared-travel": {
         "title": "Gedeelde projectreizen",
         "description": "Dit project bevat gedeelde reizen die bijdragen aan de voetafdruk van elke deelnemer:",
         "note": "Dit bedrag wordt eenmaal opgenomen in de berekening van jouw persoonlijke projectuitstoot.",
@@ -846,20 +846,20 @@
       "welcome-message": "Welkomstbericht",
       "participants": "Deelnemers",
       "participants-description": "Deelnemers worden hier weergegeven.",
-      "activities": "Gedeelde projectreizen",
-      "activities-description": "Gedeelde reizen bijgehouden voor de berekening van de koolstofvoetafdruk",
+      "shared-travel": "Gedeelde projectreizen",
+      "shared-travel-description": "Gedeelde reizen bijgehouden voor de berekening van de koolstofvoetafdruk",
       "loading": "Projectdetails laden…",
       "people-joined": "mensen hebben zich al aangemeld",
       "no-participants-yet": "Nog geen deelnemers",
       "share-the-participation-link": "Deel de deelnamelink om mensen uit te nodigen voor dit project.",
       "tabs": {
         "details": "Projectdetails",
-        "activities": "Gedeelde projectreizen",
+        "shared-travel": "Gedeelde projectreizen",
         "participants": "Projectdeelnemers"
       },
       "statistics": {
         "participants": "Deelnemers",
-        "activities": "Gedeelde trajecten",
+        "shared-travel-legs": "Gedeelde trajecten",
         "total-distance": "Totale afstand",
         "duration": "Duur",
         "km": "km",
@@ -873,7 +873,7 @@
       },
       "joined-on": "aangemeld op"
     },
-    "activities": {
+    "shared-travel": {
       "title": "Gedeelde projectreizen",
       "description": "Gedeelde reizen bijgehouden voor de berekening van de koolstofvoetafdruk",
       "empty": {

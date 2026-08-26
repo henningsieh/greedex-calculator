@@ -70,7 +70,7 @@ The questionnaire e2e tests validate:
 - ✅ Progress bar and step counter
 - ✅ Impact modals after emission-affecting steps
 - ✅ CO2 stats display from step 2 onwards
-- ✅ Final summary with breakdown (transport, accommodation, food, project activities)
+- ✅ Final summary with breakdown (Participant Travel, accommodation, food, Project Shared Travel)
 - ✅ Console logging of complete questionnaire data
 
 ## Notes

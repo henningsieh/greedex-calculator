@@ -28,7 +28,7 @@ export function TransportEmissionProfileSelect({
   value,
   onValueChange,
 }: TransportEmissionProfileSelectProps) {
-  const t = useTranslations("project.activities");
+  const t = useTranslations("project.shared-travel");
 
   return (
     <Select

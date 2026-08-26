@@ -323,33 +323,20 @@ const schema = myResourceSchema(t);
 
 ---
 
-## Implementation Notes from Real Refactoring
+## Project Shared Travel Leg validation
 
-This pattern was proven working in [src/__tests__/distance-validation.test.ts](../../src/__tests__/distance-validation.test.ts) with all 26 tests passing:
+Project Shared Travel Leg validation is owned by
+`apps/calculator/src/features/project-shared-travel-legs/`:
 
-**What changed:**
-- ✅ Switched from custom mock translation functions to `createTranslator`
-- ✅ Removed 50+ lines of mock translation logic
-- ✅ Removed all `as any` type casting
-- ✅ Removed `vi.fn()` mock tracking code
-- ✅ Tests now use identical translators as production
+- **Canonical schemas:** `validation-schemas.ts`
+- **Localized distance validation:** `distance-validation.ts`
+- **Management form:** `components/project-shared-travel-leg-form.tsx`
+- **Procedures:** `procedures.ts`
+- **Tests:** `apps/calculator/src/__tests__/project-shared-travel-leg-validation.test.ts`
 
-**Results:**
-- All 26 tests passing with real next-intl behavior
-- Translation changes automatically caught by tests
-- 100% type-safe, zero workarounds
-- Single translator instance reused across all tests
-
-**Key Discovery:**
-When validation code uses full paths like `t("project.activities.form.validation.distanceKm.min")`, the test translator should have **no namespace** specified. Otherwise the path gets duplicated.
-
----
-
-### Activity Schemas
-- **File:** `src/features/project-activities/validation-schemas.ts`
-- **Components:** `src/features/project-activities/components/project-activity-form.tsx`
-- **Procedures:** `src/features/project-activities/procedures.ts`
-- **Tests:** `src/__tests__/distance-validation.test.ts`
+When validation uses a full key such as
+`project.shared-travel.form.validation.distanceKm.min`, create the test
+translator without a namespace so that next-intl does not duplicate the path.
 
 ---
 

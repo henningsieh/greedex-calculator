@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Project } from "@/features/participate/types";
+import { calculateProjectSharedTravelCO2 } from "@/features/project-shared-travel-legs/calculations";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
-import { calculateActivitiesCO2 } from "@/features/projects/utils";
 
 interface ParticipateHeaderProps {
   project: Project;
@@ -25,10 +25,12 @@ interface ParticipateHeaderProps {
  * name, and a shared-travel contribution with a per-leg breakdown when present.
  */
 export function ParticipateHeader({ project }: ParticipateHeaderProps) {
-  const tActivities = useTranslations("project.activities");
+  const tSharedTravel = useTranslations("project.shared-travel");
   const t = useTranslations("participation.questionnaire");
   const locale = useLocale();
-  const projectSharedTravelCO2 = calculateActivitiesCO2(project.sharedTravelLegs);
+  const projectSharedTravelCO2 = calculateProjectSharedTravelCO2(
+    project.sharedTravelLegs,
+  );
 
   return (
     <div className="space-y-4 pb-4">
@@ -73,7 +75,7 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
             </h1>
           </div>
 
-          {/* Right Side: Metrics/Activities */}
+          {/* Right Side: Project Shared Travel metrics */}
           <div className="flex flex-col border-t border-border/50 bg-muted/10 md:w-70 md:border-t-0 md:border-l lg:w-[320px]">
             {projectSharedTravelCO2 > 0 ? (
               <div className="flex flex-1 flex-col justify-center p-4">
@@ -85,9 +87,9 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5 text-sm font-medium tracking-wide text-muted-foreground uppercase">
-                          {t("project-activities.title")}
+                          {t("project-shared-travel.title")}
                         </div>
-                        <PROJECT_ICONS.activities className="size-5 text-muted-foreground/50 transition-colors group-hover:text-primary/80" />
+                        <PROJECT_ICONS.sharedTravelLegs className="size-5 text-muted-foreground/50 transition-colors group-hover:text-primary/80" />
                       </div>
                       <div className="flex items-baseline gap-2">
                         <span className="font-mono text-2xl font-bold tracking-tight text-primary">
@@ -98,13 +100,13 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
                         </span>
                       </div>
                       <p className="text-[10px] text-muted-foreground/60">
-                        {t("project-activities.note")}
+                        {t("project-shared-travel.note")}
                       </p>
                     </button>
                   </TooltipTrigger>
                   <TooltipContent className="p-2" side="bottom">
                     <div className="max-w-xs">
-                      <p className="mb-2 font-medium">{tActivities("title")}</p>
+                      <p className="mb-2 font-medium">{tSharedTravel("title")}</p>
                       <div className="space-y-1">
                         {project.sharedTravelLegs.map((sharedTravelLeg) => (
                           <div
@@ -112,7 +114,7 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
                             key={sharedTravelLeg.id}
                           >
                             <span>
-                              {tActivities(
+                              {tSharedTravel(
                                 `types.${sharedTravelLeg.transportEmissionProfile}`,
                               )}
                             </span>
@@ -127,7 +129,7 @@ export function ParticipateHeader({ project }: ParticipateHeaderProps) {
             ) : (
               <div className="flex flex-1 items-center justify-center p-6 text-center text-muted-foreground/50">
                 <span className="text-sm">
-                  {t("project-activities.empty.title")}
+                  {t("project-shared-travel.empty.title")}
                 </span>
               </div>
             )}

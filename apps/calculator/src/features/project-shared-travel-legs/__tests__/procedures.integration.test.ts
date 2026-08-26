@@ -142,6 +142,7 @@ describe("canonical Project Shared Travel Leg procedures", () => {
       description: "Station transfer",
       travelDate,
     });
+    // Regression guard: procedure output must not recreate legacy field aliases.
     expect(created.sharedTravelLeg).not.toHaveProperty("activityType");
     expect(created.sharedTravelLeg).not.toHaveProperty("activityDate");
 
@@ -268,8 +269,9 @@ describe("canonical Project Shared Travel Leg procedures", () => {
     },
   );
 
-  it("exposes only the canonical Project Shared Travel Leg namespace", () => {
+  it("exposes only the Project Shared Travel Leg namespace", () => {
     expect(router).toHaveProperty("projectSharedTravelLegs");
+    // Regression guard: the removed compatibility namespace must stay absent.
     expect(router).not.toHaveProperty("projectActivities");
   });
 });

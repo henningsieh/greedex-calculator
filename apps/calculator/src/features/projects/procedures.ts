@@ -756,13 +756,5 @@ export const getProjectForParticipation = base
       });
     }
 
-    const sharedTravelLegs = project.sharedTravelLegs;
-
-    return {
-      ...project,
-      sharedTravelLegs,
-      // Compatibility alias; both properties intentionally contain the same
-      // canonical records until public consumers migrate.
-      activities: sharedTravelLegs,
-    };
+    return project;
   });

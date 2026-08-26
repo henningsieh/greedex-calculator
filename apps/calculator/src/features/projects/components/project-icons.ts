@@ -38,8 +38,8 @@ export const PROJECT_ICONS = {
   /** Icon for Adding a new project */
   addProject: MapPinPlusIcon,
 
-  /** Icon for project activities (routes, trips, movements) */
-  activities: WaypointsIcon,
+  /** Icon for Project Shared Travel Legs (routes, trips, movements). */
+  sharedTravelLegs: WaypointsIcon,
 
   /** Icon for project participants */
   participants: BabyIcon,

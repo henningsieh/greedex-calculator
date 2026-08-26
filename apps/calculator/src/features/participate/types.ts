@@ -137,22 +137,22 @@ export const FOOD_FACTORS: Record<FoodFrequency, number> = Object.fromEntries(
 export type Project = ProjectForParticipationType;
 
 // ============================================================================
-// PARTICIPANT ACTIVITY TYPES
+// PARTICIPANT TRAVEL LEG TYPES
 // ============================================================================
 
 /**
- * Re-export participant activity value type from config
+ * Participant Travel Leg transport-emission profile from shared configuration.
  */
-export type ParticipantActivityValueType = ParticipantTransportEmissionProfile;
+export type ParticipantTravelLegTransportEmissionProfile =
+  ParticipantTransportEmissionProfile;
 
 /**
- * Participation activity type - computed values for UI display
- * Represents individual travel segments calculated from participant questionnaire responses
- * Not stored in database, computed at runtime for display purposes
+ * A Participant Travel Leg computed from questionnaire responses for UI display.
+ * It is not persisted in the database.
  */
-export interface ParticipantActivity {
+export interface ParticipantTravelLeg {
   id: string;
-  type: ParticipantActivityValueType; // Includes all transport modes: boat, bus, train, car, plane, electricCar
+  transportEmissionProfile: ParticipantTravelLegTransportEmissionProfile;
   distanceKm: number;
   co2Kg: number;
 }
@@ -169,7 +169,7 @@ interface ParticipantComputedFields {
  * This extends the inferred database type with calculated values
  */
 export type Participant = z.infer<typeof ParticipantSchema> & {
-  activities: ParticipantActivity[];
+  travelLegs: ParticipantTravelLeg[];
 } & ParticipantComputedFields;
 
 /**
@@ -180,8 +180,8 @@ export interface ProjectStats {
   totalParticipants: number;
   totalCO2: number;
   averageCO2: number;
-  breakdownByType: Record<
-    ParticipantActivityValueType,
+  breakdownByTransportEmissionProfile: Record<
+    ParticipantTravelLegTransportEmissionProfile,
     {
       distance: number;
       co2: number;

@@ -1,7 +1,8 @@
-import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
-import { describe, expect, it, vi } from "vitest";
+import { TRANSPORT_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
+import { describe, expect, it } from "vitest";
 
 import type { ProjectParticipantWithUser } from "@/features/participants/types";
+import type { ProjectSharedTravelLegForCalculation } from "@/features/project-shared-travel-legs/calculations";
 import {
   calculateProjectDuration,
   getProjectStatistics,
@@ -20,13 +21,13 @@ describe("calculateProjectDuration", () => {
 
   it("uses ceil and returns whole days", () => {
     const start = new Date("2025-01-01T00:00:00Z");
-    const end = new Date("2025-01-02T12:00:00Z"); // 1.5 days -> ceil -> 2
+    const end = new Date("2025-01-02T12:00:00Z");
     expect(calculateProjectDuration(start, end)).toBe(2);
   });
 });
 
 describe("getProjectStatistics", () => {
-  it("computes shared-travel-leg counts, distance, duration, and emissions", () => {
+  it("computes Project Shared Travel Leg counts, distance, duration, and emissions", () => {
     const project = {
       startDate: "2025-01-01",
       endDate: "2025-01-05",
@@ -81,40 +82,21 @@ describe("getProjectStatistics", () => {
     ];
 
     const sharedTravelLegs = [
-      { activityType: "car", distanceKm: 10 },
-      { activityType: "train", distanceKm: 20.5 },
-      // invalid activity should be ignored
-      { activityType: "unknown", distanceKm: 15 },
-      { activityType: "bus", distanceKm: -5 },
-    ];
+      { transportEmissionProfile: "car", distanceKm: 10 },
+      { transportEmissionProfile: "train", distanceKm: 20.5 },
+      { transportEmissionProfile: "bus", distanceKm: -5 },
+    ] satisfies ProjectSharedTravelLegForCalculation[];
 
-    const errorSpy = vi
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined);
+    const stats = getProjectStatistics(project, participants, sharedTravelLegs);
 
-    try {
-      const stats = getProjectStatistics(
-        project,
-        participants,
-        sharedTravelLegs as any,
-      );
-
-      expect(stats.participantsCount).toBe(3);
-      expect(stats.sharedTravelLegsCount).toBe(4);
-      // total distance sums numeric positive distances regardless of activity type
-      // 10 + 20.5 + 15 = 45.5 (bus negative value ignored)
-      expect(stats.totalDistanceKm).toBeCloseTo(45.5);
-      expect(stats.durationDays).toBe(4);
-
-      // CO2: car 10 * carFactor + train 20.5 * trainFactor (unknown ignored, negative ignored)
-      const expectedCO2 =
-        10 * ACTIVITY_EMISSION_FACTORS.car +
-        20.5 * ACTIVITY_EMISSION_FACTORS.train;
-      expect(stats.sharedTravelCO2Kg).toBeCloseTo(expectedCO2);
-      expect(errorSpy).toHaveBeenCalledWith("Unknown activity type: unknown");
-    } finally {
-      errorSpy.mockRestore();
-    }
+    expect(stats.participantsCount).toBe(3);
+    expect(stats.sharedTravelLegsCount).toBe(3);
+    expect(stats.totalDistanceKm).toBeCloseTo(30.5);
+    expect(stats.durationDays).toBe(4);
+    expect(stats.sharedTravelCO2Kg).toBeCloseTo(
+      10 * TRANSPORT_EMISSION_FACTORS.car +
+        20.5 * TRANSPORT_EMISSION_FACTORS.train,
+    );
   });
 
   it("handles missing or empty inputs safely", () => {

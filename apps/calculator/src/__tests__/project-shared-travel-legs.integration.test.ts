@@ -12,7 +12,7 @@ import {
 import { eq, like, sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import type { ProjectActivityType } from "@/features/project-activities/types";
+import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 import type { ProjectType } from "@/features/projects/types";
 
 // Test data constants
@@ -29,11 +29,11 @@ const TEST_ORG = {
   slug: `test-org-${Date.now()}`,
 };
 
-describe("Project Activities Integration Tests", () => {
+describe("Project Shared Travel Legs integration", () => {
   let userId: string;
   let orgId: string;
   let projectId: string;
-  let activityId: string;
+  let sharedTravelLegId: string;
 
   beforeAll(async () => {
     // Clean up any existing test data that might conflict
@@ -158,7 +158,7 @@ describe("Project Activities Integration Tests", () => {
   });
 
   describe("Project Creation", () => {
-    it("should create a project without activities", async () => {
+    it("should create a project without sharedTravelLegs", async () => {
       const projectData = {
         id: randomUUID(),
         name: "Test Project",
@@ -190,15 +190,15 @@ describe("Project Activities Integration Tests", () => {
       projectId = projectData.id;
     });
 
-    it("should create a project with activities", async () => {
+    it("should create a project with sharedTravelLegs", async () => {
       const projectData = {
         id: randomUUID(),
-        name: "Test Project with Activities",
+        name: "Test Project with Project Shared Travel Legs",
         startDate: new Date("2025-01-01"),
         endDate: new Date("2025-12-31"),
         location: "Berlin",
         country: "DE" as EUCountryCode,
-        welcomeMessage: "Welcome to project with activities",
+        welcomeMessage: "Welcome to project with shared travel",
         responsibleUserId: userId,
         organizationId: orgId,
         createdAt: new Date(),
@@ -209,8 +209,8 @@ describe("Project Activities Integration Tests", () => {
       // Insert project
       await db.insert(projectsTable).values(projectData);
 
-      // Insert activities
-      const activity1 = {
+      // Insert Project Shared Travel Legs.
+      const sharedTravelLeg1 = {
         id: randomUUID(),
         projectId: projectData.id,
         transportEmissionProfile: "car" as const,
@@ -219,9 +219,9 @@ describe("Project Activities Integration Tests", () => {
         travelDate: new Date("2025-01-15"),
         createdAt: new Date(),
         updatedAt: new Date(),
-      } satisfies ProjectActivityType;
+      } satisfies ProjectSharedTravelLeg;
 
-      const activity2 = {
+      const sharedTravelLeg2 = {
         id: randomUUID(),
         projectId: projectData.id,
         transportEmissionProfile: "train" as const,
@@ -230,24 +230,24 @@ describe("Project Activities Integration Tests", () => {
         travelDate: new Date("2025-02-20"),
         createdAt: new Date(),
         updatedAt: new Date(),
-      } satisfies ProjectActivityType;
+      } satisfies ProjectSharedTravelLeg;
 
-      await db.insert(projectSharedTravelLegsTable).values(activity1);
+      await db.insert(projectSharedTravelLegsTable).values(sharedTravelLeg1);
 
-      await db.insert(projectSharedTravelLegsTable).values(activity2);
+      await db.insert(projectSharedTravelLegsTable).values(sharedTravelLeg2);
 
-      // Verify activities were created
-      const activities = await db
+      // Verify the Project Shared Travel Legs were created.
+      const sharedTravelLegs = await db
         .select()
         .from(projectSharedTravelLegsTable)
         .where(eq(projectSharedTravelLegsTable.projectId, projectData.id))
         .orderBy(projectSharedTravelLegsTable.createdAt);
 
-      expect(activities).toHaveLength(2);
-      expect(activities[0].transportEmissionProfile).toBe("car");
-      expect(activities[0].distanceKm).toBe(150.5); // Rounded to 1 decimal place
-      expect(activities[1].transportEmissionProfile).toBe("train");
-      expect(activities[1].distanceKm).toBe(250); // Rounded to 1 decimal place
+      expect(sharedTravelLegs).toHaveLength(2);
+      expect(sharedTravelLegs[0].transportEmissionProfile).toBe("car");
+      expect(sharedTravelLegs[0].distanceKm).toBe(150.5); // Rounded to 1 decimal place
+      expect(sharedTravelLegs[1].transportEmissionProfile).toBe("train");
+      expect(sharedTravelLegs[1].distanceKm).toBe(250); // Rounded to 1 decimal place
     });
   });
 
@@ -281,9 +281,9 @@ describe("Project Activities Integration Tests", () => {
     });
   });
 
-  describe("Activity Management", () => {
-    it("should create an activity", async () => {
-      const activityData = {
+  describe("Project Shared Travel Leg Management", () => {
+    it("creates a Project Shared Travel Leg", async () => {
+      const sharedTravelLegData = {
         id: randomUUID(),
         projectId,
         transportEmissionProfile: "bus" as const,
@@ -292,41 +292,43 @@ describe("Project Activities Integration Tests", () => {
         travelDate: new Date("2025-03-10"),
         createdAt: new Date(),
         updatedAt: new Date(),
-      } satisfies ProjectActivityType;
+      } satisfies ProjectSharedTravelLeg;
 
-      await db.insert(projectSharedTravelLegsTable).values(activityData);
+      await db.insert(projectSharedTravelLegsTable).values(sharedTravelLegData);
 
-      // Verify activity was created
+      // Verify the Project Shared Travel Leg was created.
       const result = await db
         .select()
         .from(projectSharedTravelLegsTable)
-        .where(eq(projectSharedTravelLegsTable.id, activityData.id));
+        .where(eq(projectSharedTravelLegsTable.id, sharedTravelLegData.id));
 
       expect(result).toHaveLength(1);
       expect(result[0].transportEmissionProfile).toBe(
-        activityData.transportEmissionProfile,
+        sharedTravelLegData.transportEmissionProfile,
       );
       expect(result[0].distanceKm).toBe(75.3); // 75.25 rounded to 1 decimal place
-      expect(result[0].description).toBe(activityData.description);
+      expect(result[0].description).toBe(sharedTravelLegData.description);
 
-      activityId = activityData.id;
+      sharedTravelLegId = sharedTravelLegData.id;
     });
 
-    it("should list activities for a project", async () => {
-      const activities = await db
+    it("lists Project Shared Travel Legs for a project", async () => {
+      const sharedTravelLegs = await db
         .select()
         .from(projectSharedTravelLegsTable)
         .where(eq(projectSharedTravelLegsTable.projectId, projectId))
         .orderBy(projectSharedTravelLegsTable.createdAt);
 
-      expect(activities.length).toBeGreaterThan(0);
+      expect(sharedTravelLegs.length).toBeGreaterThan(0);
 
-      const activity = activities.find((a) => a.id === activityId);
-      expect(activity).toBeDefined();
-      expect(activity?.transportEmissionProfile).toBe("bus");
+      const sharedTravelLeg = sharedTravelLegs.find(
+        (a) => a.id === sharedTravelLegId,
+      );
+      expect(sharedTravelLeg).toBeDefined();
+      expect(sharedTravelLeg?.transportEmissionProfile).toBe("bus");
     });
 
-    it("should update an activity", async () => {
+    it("updates a Project Shared Travel Leg", async () => {
       const newType = "train" as const;
       const newDistance = 120.75;
       const newDescription = "Updated team event";
@@ -339,13 +341,13 @@ describe("Project Activities Integration Tests", () => {
           description: newDescription,
           updatedAt: new Date(),
         })
-        .where(eq(projectSharedTravelLegsTable.id, activityId));
+        .where(eq(projectSharedTravelLegsTable.id, sharedTravelLegId));
 
       // Verify update
       const result = await db
         .select()
         .from(projectSharedTravelLegsTable)
-        .where(eq(projectSharedTravelLegsTable.id, activityId));
+        .where(eq(projectSharedTravelLegsTable.id, sharedTravelLegId));
 
       expect(result).toHaveLength(1);
       expect(result[0].transportEmissionProfile).toBe(newType);
@@ -353,27 +355,27 @@ describe("Project Activities Integration Tests", () => {
       expect(result[0].description).toBe(newDescription);
     });
 
-    it("should delete an activity", async () => {
-      // Delete activity
+    it("deletes a Project Shared Travel Leg", async () => {
+      // Delete the Project Shared Travel Leg.
       await db
         .delete(projectSharedTravelLegsTable)
-        .where(eq(projectSharedTravelLegsTable.id, activityId));
+        .where(eq(projectSharedTravelLegsTable.id, sharedTravelLegId));
 
       // Verify deletion
       const result = await db
         .select()
         .from(projectSharedTravelLegsTable)
-        .where(eq(projectSharedTravelLegsTable.id, activityId));
+        .where(eq(projectSharedTravelLegsTable.id, sharedTravelLegId));
 
       expect(result).toHaveLength(0);
     });
   });
 
   describe("Validation Tests", () => {
-    it("should reject invalid activity types", async () => {
-      // Try to insert invalid activity type - this should be caught by TypeScript/drizzle
-      // Since we can't bypass the type system, we'll test that valid types work
-      const validActivity = {
+    it("persists a valid Transport Emission Profile", async () => {
+      // TypeScript and Drizzle constrain persisted Project Shared Travel Legs to
+      // the canonical Transport Emission Profile set.
+      const validSharedTravelLeg = {
         id: randomUUID(),
         projectId,
         transportEmissionProfile: "car" as const,
@@ -382,15 +384,15 @@ describe("Project Activities Integration Tests", () => {
         updatedAt: new Date(),
         description: null,
         travelDate: null,
-      } satisfies ProjectActivityType;
+      } satisfies ProjectSharedTravelLeg;
 
-      await db.insert(projectSharedTravelLegsTable).values(validActivity);
+      await db.insert(projectSharedTravelLegsTable).values(validSharedTravelLeg);
 
       // Verify it was inserted
       const result = await db
         .select()
         .from(projectSharedTravelLegsTable)
-        .where(eq(projectSharedTravelLegsTable.id, validActivity.id));
+        .where(eq(projectSharedTravelLegsTable.id, validSharedTravelLeg.id));
       expect(result).toHaveLength(1);
       expect(result[0].transportEmissionProfile).toBe("car");
     });
@@ -398,7 +400,7 @@ describe("Project Activities Integration Tests", () => {
     it("should handle decimal precision correctly", async () => {
       const testDistance = 123.456789; // More precision than allowed
 
-      const activity = {
+      const sharedTravelLeg = {
         id: randomUUID(),
         projectId,
         transportEmissionProfile: "car" as const,
@@ -407,9 +409,9 @@ describe("Project Activities Integration Tests", () => {
         updatedAt: new Date(),
         description: null,
         travelDate: null,
-      } satisfies ProjectActivityType;
+      } satisfies ProjectSharedTravelLeg;
 
-      await db.insert(projectSharedTravelLegsTable).values(activity);
+      await db.insert(projectSharedTravelLegsTable).values(sharedTravelLeg);
 
       // Check that it was stored with correct precision (should be rounded/truncated)
       const result = await db
@@ -429,10 +431,10 @@ describe("Project Activities Integration Tests", () => {
 
   describe("Permission & Relationship Tests", () => {
     it("should maintain referential integrity", async () => {
-      // Try to create activity for non-existent project
+      // Try to create a Project Shared Travel Leg for a non-existent project.
       const fakeProjectId = randomUUID();
 
-      const invalidActivity = {
+      const invalidSharedTravelLeg = {
         id: randomUUID(),
         projectId: fakeProjectId,
         transportEmissionProfile: "car" as const,
@@ -441,10 +443,12 @@ describe("Project Activities Integration Tests", () => {
         updatedAt: new Date(),
         description: null,
         travelDate: null,
-      } satisfies ProjectActivityType;
+      } satisfies ProjectSharedTravelLeg;
 
       try {
-        await db.insert(projectSharedTravelLegsTable).values(invalidActivity);
+        await db
+          .insert(projectSharedTravelLegsTable)
+          .values(invalidSharedTravelLeg);
         // If we get here, the constraint didn't work
         expect(true).toBe(false); // Should have failed
       } catch (error) {
@@ -453,7 +457,7 @@ describe("Project Activities Integration Tests", () => {
       }
     });
 
-    it("should cascade delete activities when project is deleted", async () => {
+    it("cascade-deletes Project Shared Travel Legs when a project is deleted", async () => {
       const cascadeProjectId = randomUUID();
 
       const cascadeProject = {
@@ -474,10 +478,10 @@ describe("Project Activities Integration Tests", () => {
       // Create project
       await db.insert(projectsTable).values(cascadeProject);
 
-      // Create activity for project
-      const cascadeActivityId = randomUUID();
-      const cascadeActivity = {
-        id: cascadeActivityId,
+      // Create a Project Shared Travel Leg for the project.
+      const cascadeSharedTravelLegId = randomUUID();
+      const cascadeSharedTravelLeg = {
+        id: cascadeSharedTravelLegId,
         projectId: cascadeProjectId,
         transportEmissionProfile: "car" as const,
         distanceKm: 50,
@@ -485,37 +489,39 @@ describe("Project Activities Integration Tests", () => {
         travelDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
-      } satisfies ProjectActivityType;
+      } satisfies ProjectSharedTravelLeg;
 
-      await db.insert(projectSharedTravelLegsTable).values(cascadeActivity);
+      await db
+        .insert(projectSharedTravelLegsTable)
+        .values(cascadeSharedTravelLeg);
 
-      // Verify activity exists
-      let activities = await db
+      // Verify the Project Shared Travel Leg exists.
+      let sharedTravelLegs = await db
         .select()
         .from(projectSharedTravelLegsTable)
         .where(eq(projectSharedTravelLegsTable.projectId, cascadeProjectId));
-      expect(activities).toHaveLength(1);
+      expect(sharedTravelLegs).toHaveLength(1);
 
-      // Delete project (should cascade delete activity)
+      // Delete the project and cascade-delete its Project Shared Travel Leg.
       await db
         .delete(projectsTable)
         .where(eq(projectsTable.id, cascadeProjectId));
 
-      // Verify activity was cascade deleted
-      activities = await db
+      // Verify the Project Shared Travel Leg was cascade-deleted.
+      sharedTravelLegs = await db
         .select()
         .from(projectSharedTravelLegsTable)
         .where(eq(projectSharedTravelLegsTable.projectId, cascadeProjectId));
-      expect(activities).toHaveLength(0);
+      expect(sharedTravelLegs).toHaveLength(0);
     });
   });
 
   describe("Data Integrity Tests", () => {
     it("should maintain audit timestamps (createdAt stable, updatedAt changes on update)", async () => {
-      const testActivityId = randomUUID();
+      const testSharedTravelLegId = randomUUID();
 
-      const testActivity = {
-        id: testActivityId,
+      const testSharedTravelLeg = {
+        id: testSharedTravelLegId,
         projectId,
         transportEmissionProfile: "car" as const,
         distanceKm: 25,
@@ -523,16 +529,16 @@ describe("Project Activities Integration Tests", () => {
         travelDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
-      } satisfies ProjectActivityType;
+      } satisfies ProjectSharedTravelLeg;
 
-      // Insert activity
-      await db.insert(projectSharedTravelLegsTable).values(testActivity);
+      // Insert sharedTravelLeg
+      await db.insert(projectSharedTravelLegsTable).values(testSharedTravelLeg);
 
       // Get timestamps
       const result = await db
         .select()
         .from(projectSharedTravelLegsTable)
-        .where(eq(projectSharedTravelLegsTable.id, testActivityId));
+        .where(eq(projectSharedTravelLegsTable.id, testSharedTravelLegId));
 
       expect(result).toHaveLength(1);
       expect(result[0].createdAt).toBeDefined();
@@ -553,13 +559,13 @@ describe("Project Activities Integration Tests", () => {
       await db
         .update(projectSharedTravelLegsTable)
         .set({ distanceKm: 30 })
-        .where(eq(projectSharedTravelLegsTable.id, testActivityId));
+        .where(eq(projectSharedTravelLegsTable.id, testSharedTravelLegId));
       console.timeEnd("update-no-explicit-updatedAt");
 
       let updatedRows = await db
         .select()
         .from(projectSharedTravelLegsTable)
-        .where(eq(projectSharedTravelLegsTable.id, testActivityId));
+        .where(eq(projectSharedTravelLegsTable.id, testSharedTravelLegId));
 
       const prevUpdatedAt = new Date(result[0].updatedAt).getTime();
       const newUpdatedAt = new Date(updatedRows[0].updatedAt).getTime();
@@ -576,13 +582,13 @@ describe("Project Activities Integration Tests", () => {
             distanceKm: 30,
             updatedAt: nextTimestamp,
           })
-          .where(eq(projectSharedTravelLegsTable.id, testActivityId));
+          .where(eq(projectSharedTravelLegsTable.id, testSharedTravelLegId));
         console.timeEnd("update-with-explicit-updatedAt");
 
         updatedRows = await db
           .select()
           .from(projectSharedTravelLegsTable)
-          .where(eq(projectSharedTravelLegsTable.id, testActivityId));
+          .where(eq(projectSharedTravelLegsTable.id, testSharedTravelLegId));
       }
 
       const updatedResult = updatedRows;
@@ -601,7 +607,7 @@ describe("Project Activities Integration Tests", () => {
       const operations: Promise<unknown>[] = [];
 
       for (let i = 0; i < 5; i++) {
-        const concurrentActivity = {
+        const concurrentSharedTravelLeg = {
           id: randomUUID(),
           projectId,
           transportEmissionProfile: "car" as const,
@@ -610,23 +616,25 @@ describe("Project Activities Integration Tests", () => {
           travelDate: null,
           createdAt: new Date(),
           updatedAt: new Date(),
-        } satisfies ProjectActivityType;
+        } satisfies ProjectSharedTravelLeg;
 
         operations.push(
-          db.insert(projectSharedTravelLegsTable).values(concurrentActivity),
+          db
+            .insert(projectSharedTravelLegsTable)
+            .values(concurrentSharedTravelLeg),
         );
       }
 
       // Execute all operations
       await Promise.all(operations);
 
-      // Verify all activities were created
-      const activities = await db.$count(
+      // Verify all Project Shared Travel Legs were created.
+      const sharedTravelLegs = await db.$count(
         projectSharedTravelLegsTable,
         sql`${projectSharedTravelLegsTable.projectId} = ${projectId} AND ${projectSharedTravelLegsTable.transportEmissionProfile} = 'car'`,
       );
 
-      expect(activities).toBeGreaterThanOrEqual(5);
+      expect(sharedTravelLegs).toBeGreaterThanOrEqual(5);
     });
   });
 });

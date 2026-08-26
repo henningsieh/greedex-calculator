@@ -1,10 +1,13 @@
-import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 import { projectsTable } from "@greendex/database/schema";
 import { asc, desc, type SQL, sql } from "drizzle-orm";
 import type z from "zod";
 
 import { type AppRoute, PROJECT_DETAIL_PATH } from "@/app/routes";
 import type { ProjectParticipantWithUser } from "@/features/participants/types";
+import {
+  calculateProjectSharedTravelCO2,
+  type ProjectSharedTravelLegForCalculation,
+} from "@/features/project-shared-travel-legs/calculations";
 import type {
   ListProjectsInput,
   ProjectStatistics,
@@ -45,10 +48,10 @@ export function getProjectsDefaultSorting() {
 }
 
 /**
- * Retrieves project data and associated activities for the given project ID.
+ * Retrieves a project and its associated Project Shared Travel Legs.
  *
  * @param projectId - The project's unique identifier
- * @returns The project data including its activities, or `null` if fetching fails
+ * @returns The project data including its shared travel legs, or `null` if fetching fails
  */
 export async function getProjectData(projectId: string) {
   try {
@@ -187,17 +190,13 @@ export const calculateProjectDuration = (
  *
  * The function is tolerant of missing inputs and returns sensible defaults.
  */
-type SharedTravelLegForCalculation = {
-  distanceKm: number;
-} & ({ transportEmissionProfile: string } | { activityType: string });
-
 export function getProjectStatistics(
   project:
     | { startDate?: string | Date; endDate?: string | Date }
     | null
     | undefined,
   participants?: ProjectParticipantWithUser[] | null,
-  sharedTravelLegs?: SharedTravelLegForCalculation[] | null,
+  sharedTravelLegs?: ProjectSharedTravelLegForCalculation[] | null,
 ): ProjectStatistics {
   const participantsCount = participants?.length ?? 0;
   const sharedTravelLegsCount = sharedTravelLegs?.length ?? 0;
@@ -216,7 +215,9 @@ export function getProjectStatistics(
     ? calculateProjectDuration(project.startDate ?? "", project.endDate ?? "")
     : 0;
 
-  const sharedTravelCO2Kg = calculateActivitiesCO2(sharedTravelLegs ?? []);
+  const sharedTravelCO2Kg = calculateProjectSharedTravelCO2(
+    sharedTravelLegs ?? [],
+  );
 
   return {
     participantsCount,
@@ -225,78 +226,6 @@ export function getProjectStatistics(
     durationDays,
     sharedTravelCO2Kg,
   };
-}
-
-/**
- * Type for valid activity types that can be used in CO2 calculations.
- */
-type ValidActivityType = keyof typeof ACTIVITY_EMISSION_FACTORS;
-
-/**
- * Check if an activity type has a known CO2 factor.
- *
- * @param activityType - The activity type to check
- * @returns true if the activity type has a known CO2 factor
- */
-function hasValidCO2Factor(
-  activityType: string,
-): activityType is ValidActivityType {
-  return activityType in ACTIVITY_EMISSION_FACTORS;
-}
-
-/**
- * Calculate CO₂ emissions for a single activity.
- *
- * @param activityType - Type of transport activity
- * @param distanceKm - Distance traveled in kilometers
- * @returns CO₂ emissions in kilograms, or 0 if invalid
- */
-function calculateSingleActivityCO2(
-  activityType: string,
-  distanceKm: number,
-): number {
-  // Validate distance
-  if (Number.isNaN(distanceKm) || distanceKm <= 0) {
-    return 0;
-  }
-
-  // Check if activity type has a known CO2 factor
-  if (!hasValidCO2Factor(activityType)) {
-    console.error(`Unknown activity type: ${activityType}`);
-    return 0;
-  }
-
-  // Calculate emissions based on activity type
-  return distanceKm * ACTIVITY_EMISSION_FACTORS[activityType];
-}
-
-/**
- * Compute total CO₂ emissions for a list of transport activities.
- *
- * Ignores activities whose `distanceKm` is not a positive number and skips activity types without known CO2 factors.
- *
- * @param activities - Array of activities containing `activityType` and `distanceKm` (kilometers)
- * @returns Total CO₂ emissions in kilograms
- */
-export function calculateActivitiesCO2(
-  activities: SharedTravelLegForCalculation[],
-): number {
-  if (!activities || activities.length === 0) {
-    return 0;
-  }
-
-  return activities.reduce((total, activity) => {
-    const distanceKm = Number(activity.distanceKm);
-    const transportEmissionProfile =
-      "transportEmissionProfile" in activity
-        ? activity.transportEmissionProfile
-        : activity.activityType;
-    const emissions = calculateSingleActivityCO2(
-      transportEmissionProfile,
-      distanceKm,
-    );
-    return total + emissions;
-  }, 0);
 }
 
 /**

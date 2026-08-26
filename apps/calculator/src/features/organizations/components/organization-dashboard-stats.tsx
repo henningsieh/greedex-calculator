@@ -37,9 +37,9 @@ export function OrganizationDashboardStats({
       </Card>
       <Card className="p-6">
         <div className="text-sm font-medium text-muted-foreground">
-          {t("total-activities")}
+          {t("total-shared-travel-legs")}
         </div>
-        <div className="text-2xl font-bold">{stats.totalActivities}</div>
+        <div className="text-2xl font-bold">{stats.totalSharedTravelLegs}</div>
       </Card>
     </div>
   );

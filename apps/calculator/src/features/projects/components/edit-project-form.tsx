@@ -1,6 +1,9 @@
 "use client";
 
-import { DISTANCE_KM_STEP, MIN_DISTANCE_KM } from "@greendex/config/activities";
+import {
+  DISTANCE_KM_STEP,
+  MIN_DISTANCE_KM,
+} from "@greendex/config/project-shared-travel";
 import { useTranslations } from "@greendex/i18n/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -53,7 +56,7 @@ interface EditProjectFormProps {
  * @returns The rendered edit project form UI.
  */
 export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
-  const tSharedTravel = useTranslations("project.activities");
+  const tSharedTravel = useTranslations("project.shared-travel");
   const t = useTranslations("organization.projects.form");
   const [currentStep, setCurrentStep] = useState<number>(
     PROJECT_FORM_STEPS.PROJECT_DETAILS,
@@ -177,9 +180,9 @@ export function EditProjectForm({ project, onSuccess }: EditProjectFormProps) {
 
       if (failedProfiles.length > 0) {
         toast.error(
-          t("edit.toast.failed-activities", {
+          t("edit.toast.failed-shared-travel-legs", {
             count: failedProfiles.length,
-            activities: failedProfiles.join(", "),
+            profiles: failedProfiles.join(", "),
           }),
         );
       }

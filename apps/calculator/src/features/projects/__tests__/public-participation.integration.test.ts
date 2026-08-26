@@ -63,7 +63,7 @@ describe("public participation contract", () => {
     await db.delete(user).where(eq(user.id, userId));
   });
 
-  it("exposes canonical shared travel and maps the deprecated alias to the same records", async () => {
+  it("exposes only canonical shared travel records", async () => {
     const project = await client.projects.getForParticipation({ id: projectId });
 
     expect(project.sharedTravelLegs).toEqual([
@@ -75,8 +75,6 @@ describe("public participation contract", () => {
         description: "Public shared transfer",
       }),
     ]);
-    expect(project.sharedTravelLegs[0]).not.toHaveProperty("activityType");
-    expect(project.sharedTravelLegs[0]).not.toHaveProperty("activityDate");
-    expect(project.activities).toEqual(project.sharedTravelLegs);
+    expect(project).not.toHaveProperty("activities");
   });
 });

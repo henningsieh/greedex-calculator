@@ -1,5 +1,8 @@
-import { DECIMAL_PRECISION, DECIMAL_SCALE } from "@greendex/config/activities";
 import { EUCountryCode } from "@greendex/config/eu-countries";
+import {
+  DECIMAL_PRECISION,
+  DECIMAL_SCALE,
+} from "@greendex/config/project-shared-travel";
 import {
   PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES,
   ProjectSharedTransportEmissionProfile,

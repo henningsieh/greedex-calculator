@@ -290,9 +290,9 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
 }
 
 /**
- * Display a project's statistics, participation controls, and tabbed sections for details, activities, and participants.
+ * Display a project's statistics, participation controls, and tabbed sections for details, Project Shared Travel, and Project Participants.
  *
- * @param id - Project identifier used to fetch project details, participants, and activities
+ * @param id - Project identifier used to fetch project details, Project Participants, and Project Shared Travel Legs
  * @returns A React element containing the project's overview UI
  */
 export function ProjectDetails({ id }: ProjectDetailsProps) {
@@ -355,8 +355,8 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
         <Card className="gap-3">
           <CardHeader>
             <div className="flex items-center gap-2 text-sm text-secondary">
-              <PROJECT_ICONS.activities className="size-4" />
-              {t("statistics.activities")}
+              <PROJECT_ICONS.sharedTravelLegs className="size-4" />
+              {t("statistics.shared-travel-legs")}
             </div>
           </CardHeader>
           <CardContent>
@@ -418,10 +418,10 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
           </TabsTrigger>
           <TabsTrigger
             className="focus-visible:border-secondary focus-visible:ring-secondary/50 focus-visible:outline-secondary dark:data-[state=active]:border-secondary/50"
-            value="activities"
+            value="shared-travel"
           >
-            <PROJECT_ICONS.activities className="size-4" />
-            {t("tabs.activities")}
+            <PROJECT_ICONS.sharedTravelLegs className="size-4" />
+            {t("tabs.shared-travel")}
           </TabsTrigger>
           <TabsTrigger
             className="focus-visible:border-secondary focus-visible:ring-secondary/50 focus-visible:outline-secondary dark:data-[state=active]:border-secondary/50"
@@ -437,7 +437,7 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
           <ProjectDetailsTab project={project} />
         </TabsContent>
 
-        <TabsContent value="activities">
+        <TabsContent value="shared-travel">
           <ProjectSharedTravelLegsTable canEdit={canUpdate} projectId={id} />
         </TabsContent>
 

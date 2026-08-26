@@ -27,7 +27,7 @@ export function ProjectSharedTravelLegDialog({
   sharedTravelLeg,
   onSuccess,
 }: ProjectSharedTravelLegDialogProps) {
-  const t = useTranslations("project.activities");
+  const t = useTranslations("project.shared-travel");
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>

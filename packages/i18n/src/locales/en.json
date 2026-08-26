@@ -435,7 +435,7 @@
       "welcome-to-your-organizations-dashboard": "Organization management",
       "total-projects": "Total Projects",
       "total-participants": "Total Participants",
-      "total-activities": "Total emissions from activities",
+      "total-shared-travel-legs": "Total shared travel legs",
       "coming-soon": "Coming Soon",
       "tabs": {
         "participants": "Participants",
@@ -496,7 +496,7 @@
           "toast": {
             "success": "Project updated successfully",
             "error": "Failed to update project",
-            "failed-activities": "Failed to process {count, plural, one {# activity} other {# activities}}: {activities}"
+            "failed-shared-travel-legs": "Failed to process {count, plural, one {# shared travel leg} other {# shared travel legs}}: {profiles}"
           },
           "back": "Back",
           "cancel": "Cancel",
@@ -541,7 +541,7 @@
             "success": "Project created successfully",
             "error": "Failed to create project",
             "error-generic": "An error occurred",
-            "failed-activities": "Failed to create {count, plural, one {# activity} other {# activities}}: {activities}"
+            "failed-shared-travel-legs": "Failed to create {count, plural, one {# shared travel leg} other {# shared travel legs}}: {profiles}"
           },
           "submit": {
             "label": "New project"
@@ -694,7 +694,7 @@
       "header": {
         "badge": "Greendex 2.0",
         "title": "Welcome to Greendex",
-        "subtitle": "CO₂ Calculator for Erasmus+ Project Activities",
+        "subtitle": "CO₂ Calculator for Erasmus+ Projects",
         "step-counter": "Step {current} of {total}"
       },
       "welcome": {
@@ -779,7 +779,7 @@
         "continue": "Continue",
         "complete": "Complete"
       },
-      "project-activities": {
+      "project-shared-travel": {
         "title": "Project Shared Travel",
         "description": "This project includes shared travel that contributes to every participant's footprint:",
         "note": "This amount is included once in your personal project emission calculation.",
@@ -846,20 +846,20 @@
       "welcome-message": "Welcome Message",
       "participants": "Participants",
       "participants-description": "Participants will be displayed here.",
-      "activities": "Project Shared Travel",
-      "activities-description": "Shared travel tracked for carbon footprint calculation",
+      "shared-travel": "Project Shared Travel",
+      "shared-travel-description": "Shared travel tracked for carbon footprint calculation",
       "loading": "loading project details…",
       "people-joined": "people have already joined",
       "no-participants-yet": "No participants yet",
       "share-the-participation-link": "Share the participation link to invite people to this project.",
       "tabs": {
         "details": "Project Details",
-        "activities": "Project Shared Travel",
+        "shared-travel": "Project Shared Travel",
         "participants": "Project Participants"
       },
       "statistics": {
         "participants": "Participants",
-        "activities": "Shared travel legs",
+        "shared-travel-legs": "Shared travel legs",
         "total-distance": "Total Distance",
         "duration": "Duration",
         "km": "km",
@@ -873,7 +873,7 @@
       },
       "joined-on": "joined on"
     },
-    "activities": {
+    "shared-travel": {
       "title": "Project Shared Travel",
       "description": "Shared travel tracked for carbon footprint calculation",
       "empty": {

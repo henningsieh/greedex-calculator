@@ -135,8 +135,7 @@ export type CreateProjectWithSharedTravelLegs = z.infer<
 >;
 
 /**
- * Public participation contract. `activities` remains a deprecated alias for
- * `sharedTravelLegs` while external consumers complete their migration.
+ * Public participation contract with canonical Project Shared Travel Legs.
  */
 export const ProjectForParticipationSchema = createSelectSchema(
   projectsTable,
@@ -145,5 +144,4 @@ export const ProjectForParticipationSchema = createSelectSchema(
   organization: createSelectSchema(organization),
   country: z.enum(EU_COUNTRY_CODES),
   sharedTravelLegs: z.array(ProjectSharedTravelLegWithRelationsSchema),
-  activities: z.array(ProjectSharedTravelLegWithRelationsSchema),
 });

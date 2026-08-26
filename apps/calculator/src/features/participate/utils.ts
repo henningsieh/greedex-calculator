@@ -13,10 +13,10 @@ import {
   ROOM_OCCUPANCY_FACTORS,
   ROUND_TRIP_MULTIPLIER,
 } from "@greendex/config/participate";
-import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
+import { TRANSPORT_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 
+import { calculateProjectSharedTravelCO2 } from "@/features/project-shared-travel-legs/calculations";
 import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
-import { calculateActivitiesCO2 } from "@/features/projects/utils";
 
 import {
   ACCOMMODATION_FACTORS,
@@ -71,24 +71,24 @@ export function calculateEmissions(
   let accommodationCO2 = 0;
   let foodCO2 = 0;
 
-  // Calculate transport emissions (round trip: TO and FROM project)
+  // Calculate Participant Travel Leg emissions (round trip: TO and FROM project).
   if (answers.flightKm) {
-    participantTravelCO2 += answers.flightKm * ACTIVITY_EMISSION_FACTORS.plane;
+    participantTravelCO2 += answers.flightKm * TRANSPORT_EMISSION_FACTORS.plane;
   }
   if (answers.boatKm) {
-    participantTravelCO2 += answers.boatKm * ACTIVITY_EMISSION_FACTORS.boat;
+    participantTravelCO2 += answers.boatKm * TRANSPORT_EMISSION_FACTORS.boat;
   }
   if (answers.trainKm) {
-    participantTravelCO2 += answers.trainKm * ACTIVITY_EMISSION_FACTORS.train;
+    participantTravelCO2 += answers.trainKm * TRANSPORT_EMISSION_FACTORS.train;
   }
   if (answers.busKm) {
-    participantTravelCO2 += answers.busKm * ACTIVITY_EMISSION_FACTORS.bus;
+    participantTravelCO2 += answers.busKm * TRANSPORT_EMISSION_FACTORS.bus;
   }
   if (answers.carKm) {
     const carFactor =
       answers.carType === "electricCar"
-        ? ACTIVITY_EMISSION_FACTORS.electricCar
-        : ACTIVITY_EMISSION_FACTORS.car;
+        ? TRANSPORT_EMISSION_FACTORS.electricCar
+        : TRANSPORT_EMISSION_FACTORS.car;
     const passengers = answers.carPassengers || DEFAULT_CAR_PASSENGERS;
     participantTravelCO2 += (answers.carKm * carFactor) / passengers;
   }
@@ -112,7 +112,7 @@ export function calculateEmissions(
   }
 
   const projectSharedTravelCO2 = sharedTravelLegs
-    ? calculateActivitiesCO2(sharedTravelLegs)
+    ? calculateProjectSharedTravelCO2(sharedTravelLegs)
     : 0;
 
   const totalCO2 =

@@ -435,7 +435,7 @@
       "welcome-to-your-organizations-dashboard": "Upravljanje organizacije",
       "total-projects": "Skupaj projektov",
       "total-participants": "Skupaj udeležencev",
-      "total-activities": "Skupne emisije iz aktivnosti",
+      "total-shared-travel-legs": "Skupaj skupnih poti",
       "coming-soon": "Kmalu na voljo",
       "tabs": {
         "participants": "Udeleženci",
@@ -496,7 +496,7 @@
           "toast": {
             "success": "Projekt uspešno posodobljen",
             "error": "Posodobitev projekta ni uspela",
-            "failed-activities": "Ni uspelo obdelati {count, plural, one {# aktivnosti} other {# aktivnosti}}: {activities}"
+            "failed-shared-travel-legs": "Obdelava {count, plural, one {# skupne poti} other {# skupnih poti}} ni uspela: {profiles}"
           },
           "back": "Nazaj",
           "cancel": "Prekliči",
@@ -541,7 +541,7 @@
             "success": "Projekt uspešno ustvarjen",
             "error": "Ustvarjanje projekta ni uspelo",
             "error-generic": "Prišlo je do napake",
-            "failed-activities": "Ni uspelo ustvariti {count, plural, one {# aktivnosti} other {# aktivnosti}}: {activities}"
+            "failed-shared-travel-legs": "Ustvarjanje {count, plural, one {# skupne poti} other {# skupnih poti}} ni uspelo: {profiles}"
           },
           "submit": {
             "label": "Nov projekt"
@@ -779,7 +779,7 @@
         "continue": "Nadaljuj",
         "complete": "Zaključi"
       },
-      "project-activities": {
+      "project-shared-travel": {
         "title": "Skupna potovanja projekta",
         "description": "Ta projekt vključuje skupna potovanja, ki prispevajo k odtisu vsakega udeleženca:",
         "note": "Ta znesek je enkrat vključen v vaš osebni izračun emisij projekta.",
@@ -846,20 +846,20 @@
       "welcome-message": "Pozdravno sporočilo",
       "participants": "Udeleženci",
       "participants-description": "Udeleženci bodo prikazani tukaj.",
-      "activities": "Skupna potovanja projekta",
-      "activities-description": "Skupna potovanja za izračun ogljičnega odtisa",
+      "shared-travel": "Skupna potovanja projekta",
+      "shared-travel-description": "Skupna potovanja za izračun ogljičnega odtisa",
       "loading": "nalaganje podrobnosti projekta…",
       "people-joined": "ljudi se je že pridružilo",
       "no-participants-yet": "Še ni udeležencev",
       "share-the-participation-link": "Delite povezavo za sodelovanje, da povabite ljudi v ta projekt.",
       "tabs": {
         "details": "Podrobnosti projekta",
-        "activities": "Skupna potovanja projekta",
+        "shared-travel": "Skupna potovanja projekta",
         "participants": "Udeleženci projekta"
       },
       "statistics": {
         "participants": "Udeleženci",
-        "activities": "Skupne poti",
+        "shared-travel-legs": "Skupne poti",
         "total-distance": "Skupna razdalja",
         "duration": "Trajanje",
         "km": "km",
@@ -873,7 +873,7 @@
       },
       "joined-on": "pridružil/a se"
     },
-    "activities": {
+    "shared-travel": {
       "title": "Skupna potovanja projekta",
       "description": "Skupna potovanja za izračun ogljičnega odtisa",
       "empty": {

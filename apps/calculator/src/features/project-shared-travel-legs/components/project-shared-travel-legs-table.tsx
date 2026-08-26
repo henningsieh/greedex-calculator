@@ -62,7 +62,7 @@ export function ProjectSharedTravelLegsTable({
   projectId,
   canEdit = false,
 }: ProjectSharedTravelLegsTableProps) {
-  const t = useTranslations("project.activities");
+  const t = useTranslations("project.shared-travel");
   const format = useFormatter();
   const queryClient = useQueryClient();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -203,7 +203,7 @@ export function ProjectSharedTravelLegsTable({
           <Empty className="border">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <PROJECT_ICONS.activities className="size-6" />
+                <PROJECT_ICONS.sharedTravelLegs className="size-6" />
               </EmptyMedia>
               <EmptyTitle>{t("empty.title")}</EmptyTitle>
               <EmptyDescription>{t("empty.description")}</EmptyDescription>
