@@ -3,7 +3,6 @@
  * Handles connection pooling and Drizzle ORM setup
  */
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
-
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 

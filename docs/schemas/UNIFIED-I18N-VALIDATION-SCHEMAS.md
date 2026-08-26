@@ -28,9 +28,16 @@ otherwise next-intl duplicates the full path.
 The distance rule accepts the configured 0.1 km increment while tolerating
 normal floating-point arithmetic such as `0.1 + 0.2`.
 
-## Compatibility boundary
+## Canonical persistence boundary
 
-The migration test is the only application-adjacent code allowed to use the
-legacy `project_activity` view and its old SQL columns. That view remains a
-temporary deployment adapter until its cutover-removal issue is complete;
-application code must not reintroduce legacy aliases around it.
+Migration `0013_remove_project_activity_compatibility_view` dropped the temporary
+`project_activity` compatibility view, its `INSTEAD OF` trigger, and the
+`project_activity_compatibility_view_write()` function created in `0010`. The
+canonical `project_shared_travel_leg` table and its
+`project_shared_transport_emission_profile` enum are the sole persistence
+contract. The historical cutover suite
+(`project-shared-travel-legs-migration.integration.test.ts`) remains the only
+code that references legacy `activity_type`/`activity_date`, and the cleanup
+suite (`project-shared-travel-legs-cleanup.integration.test.ts`) proves the
+canonical table and procedures still work after removal. Application code must
+not reintroduce legacy `project_activity` aliases.
