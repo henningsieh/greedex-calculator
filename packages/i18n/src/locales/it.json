@@ -841,20 +841,20 @@
       "welcome-message": "Messaggio di benvenuto",
       "participants": "Partecipanti",
       "participants-description": "I partecipanti verranno visualizzati qui.",
-      "activities": "Attività",
-      "activities-description": "Le attività del progetto verranno visualizzate qui.",
+      "activities": "Viaggi condivisi del progetto",
+      "activities-description": "Viaggi condivisi tracciati per il calcolo dell'impronta di carbonio",
       "loading": "Caricamento dettagli progetto…",
       "people-joined": "persone si sono già unite",
       "no-participants-yet": "Ancora nessun partecipante",
       "share-the-participation-link": "Condividi il link di partecipazione per invitare persone a questo progetto.",
       "tabs": {
         "details": "Dettagli progetto",
-        "activities": "Attività del progetto",
+        "activities": "Viaggi condivisi del progetto",
         "participants": "Partecipanti al progetto"
       },
       "statistics": {
         "participants": "Partecipanti",
-        "activities": "Attività",
+        "activities": "Tragitti condivisi",
         "total-distance": "Distanza totale",
         "duration": "Durata",
         "km": "km",
@@ -869,30 +869,28 @@
       "joined-on": "iscritto/a il"
     },
     "activities": {
-      "title": "Attività del progetto",
-      "description": "Attività di viaggio tracciate per il calcolo dell'impronta di carbonio",
+      "title": "Viaggi condivisi del progetto",
+      "description": "Viaggi condivisi tracciati per il calcolo dell'impronta di carbonio",
       "empty": {
-        "title": "Ancora nessuna attività",
-        "description": "Questo progetto non ha attività registrate. Aggiungi attività per monitorare l'impronta di carbonio."
+        "title": "Ancora nessun tragitto condiviso",
+        "description": "Questo progetto non ha tragitti condivisi registrati. Aggiungine uno per monitorare l'impronta di carbonio."
       },
       "types": {
         "boat": "Barca",
         "bus": "Autobus",
         "train": "Treno",
-        "car": "Auto"
+        "car": "Auto",
+        "electricCar": "Auto elettrica"
       },
       "form": {
-        "title": "Aggiungi attività",
-        "edit-title": "Modifica attività",
-        "activity-type": "Tipo di attività",
-        "activity-type-placeholder": "Seleziona tipo di attività",
+        "title": "Aggiungi tragitto condiviso",
+        "edit-title": "Modifica tragitto condiviso",
         "distance": "Distanza (km)",
         "distance-placeholder": "Inserisci la distanza in chilometri",
         "description": "Descrizione (facoltativo)",
-        "description-placeholder": "Aggiungi una descrizione per questa attività",
-        "activity-date": "Data attività (facoltativo)",
-        "submit": "Aggiungi attività",
-        "update": "Aggiorna attività",
+        "description-placeholder": "Aggiungi una descrizione per questo tragitto condiviso",
+        "submit": "Aggiungi tragitto condiviso",
+        "update": "Aggiorna tragitto condiviso",
         "cancel": "Annulla",
         "adding": "Aggiunta in corso…",
         "updating": "Aggiornamento in corso…",
@@ -902,25 +900,28 @@
             "max": "La distanza non può superare {max} km",
             "step": "La distanza deve essere in incrementi di {step} km"
           }
-        }
+        },
+        "transport-emission-profile": "Profilo delle emissioni del trasporto",
+        "transport-emission-profile-placeholder": "Seleziona un profilo delle emissioni del trasporto",
+        "travel-date": "Data del viaggio (facoltativo)"
       },
       "delete": {
-        "confirm-title": "Eliminare l'attività?",
-        "confirm-description": "Questa operazione eliminerà definitivamente questa attività. Questa azione non può essere annullata.",
+        "confirm-title": "Eliminare il tragitto condiviso?",
+        "confirm-description": "Questa operazione eliminerà definitivamente questo tragitto condiviso. Questa azione non può essere annullata.",
         "confirm-button": "Elimina",
         "cancel-button": "Annulla",
         "deleting": "Eliminazione in corso..."
       },
       "toast": {
-        "create-success": "Attività aggiunta con successo",
-        "create-error": "Aggiunta dell'attività non riuscita",
-        "update-success": "Attività aggiornata con successo",
-        "update-error": "Aggiornamento dell'attività non riuscito",
-        "delete-success": "Attività eliminata con successo",
-        "delete-error": "Eliminazione dell'attività non riuscita"
+        "create-success": "Tragitto condiviso aggiunto con successo",
+        "create-error": "Aggiunta del tragitto condiviso non riuscita",
+        "update-success": "Tragitto condiviso aggiornato con successo",
+        "update-error": "Aggiornamento del tragitto condiviso non riuscito",
+        "delete-success": "Tragitto condiviso eliminato con successo",
+        "delete-error": "Eliminazione del tragitto condiviso non riuscita"
       },
       "table": {
-        "type": "Tipo",
+        "type": "Profilo delle emissioni del trasporto",
         "distance": "Distanza",
         "description": "Descrizione",
         "date": "Data",
@@ -930,7 +931,7 @@
         "km": "km"
       },
       "error": {
-        "load-failed": "Caricamento delle attività non riuscito. Riprova."
+        "load-failed": "Caricamento dei tragitti condivisi non riuscito. Riprova."
       }
     }
   },

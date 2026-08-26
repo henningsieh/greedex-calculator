@@ -57,6 +57,9 @@ export const CreateProjectSharedTravelLegInputSchema = z.object({
   travelDate: persistedInsertSchema.shape.activityDate,
 });
 
+export const ProjectSharedTravelLegFormSchema =
+  CreateProjectSharedTravelLegInputSchema.omit({ projectId: true });
+
 const projectSharedTravelLegUpdateSchema = z.object({
   transportEmissionProfile: TransportEmissionProfileSchema.optional(),
   distanceKm: distanceKmSchema.optional(),

@@ -841,20 +841,20 @@
       "welcome-message": "Pozdravno sporočilo",
       "participants": "Udeleženci",
       "participants-description": "Udeleženci bodo prikazani tukaj.",
-      "activities": "Aktivnosti",
-      "activities-description": "Projektne aktivnosti bodo prikazane tukaj.",
+      "activities": "Skupna potovanja projekta",
+      "activities-description": "Skupna potovanja za izračun ogljičnega odtisa",
       "loading": "nalaganje podrobnosti projekta…",
       "people-joined": "ljudi se je že pridružilo",
       "no-participants-yet": "Še ni udeležencev",
       "share-the-participation-link": "Delite povezavo za sodelovanje, da povabite ljudi v ta projekt.",
       "tabs": {
         "details": "Podrobnosti projekta",
-        "activities": "Projektne aktivnosti",
+        "activities": "Skupna potovanja projekta",
         "participants": "Udeleženci projekta"
       },
       "statistics": {
         "participants": "Udeleženci",
-        "activities": "Aktivnosti",
+        "activities": "Skupne poti",
         "total-distance": "Skupna razdalja",
         "duration": "Trajanje",
         "km": "km",
@@ -869,30 +869,28 @@
       "joined-on": "pridružil/a se"
     },
     "activities": {
-      "title": "Projektne aktivnosti",
-      "description": "Potovalne aktivnosti za izračun ogljičnega odtisa",
+      "title": "Skupna potovanja projekta",
+      "description": "Skupna potovanja za izračun ogljičnega odtisa",
       "empty": {
-        "title": "Še ni aktivnosti",
-        "description": "Ta projekt nima zabeleženih aktivnosti. Dodajte aktivnosti za sledenje ogljičnega odtisa."
+        "title": "Še ni skupnih poti",
+        "description": "Ta projekt nima zabeleženih skupnih poti. Dodajte eno za sledenje ogljičnega odtisa."
       },
       "types": {
         "boat": "Čoln",
         "bus": "Avtobus",
         "train": "Vlak",
-        "car": "Avto"
+        "car": "Avto",
+        "electricCar": "Električni avto"
       },
       "form": {
-        "title": "Dodaj aktivnost",
-        "edit-title": "Uredi aktivnost",
-        "activity-type": "Vrsta aktivnosti",
-        "activity-type-placeholder": "Izberi vrsto aktivnosti",
+        "title": "Dodaj skupno pot",
+        "edit-title": "Uredi skupno pot",
         "distance": "Razdalja (km)",
         "distance-placeholder": "Vnesite razdaljo v kilometrih",
         "description": "Opis (neobvezno)",
-        "description-placeholder": "Dodajte opis aktivnosti",
-        "activity-date": "Datum aktivnosti (neobvezno)",
-        "submit": "Dodaj aktivnost",
-        "update": "Posodobi aktivnost",
+        "description-placeholder": "Dodajte opis za to skupno pot",
+        "submit": "Dodaj skupno pot",
+        "update": "Posodobi skupno pot",
         "cancel": "Prekliči",
         "adding": "Dodajanje…",
         "updating": "Posodabljanje…",
@@ -902,25 +900,28 @@
             "max": "Razdalja ne sme presegati {max} km",
             "step": "Razdalja mora biti v korakih po {step} km"
           }
-        }
+        },
+        "transport-emission-profile": "Emisijski profil prevoza",
+        "transport-emission-profile-placeholder": "Izberi emisijski profil prevoza",
+        "travel-date": "Datum potovanja (neobvezno)"
       },
       "delete": {
-        "confirm-title": "Izbrišem aktivnost?",
-        "confirm-description": "To bo trajno izbrisalo to aktivnost. Tega dejanja ni mogoče razveljaviti.",
+        "confirm-title": "Izbrišem skupno pot?",
+        "confirm-description": "To bo trajno izbrisalo to skupno pot. Tega dejanja ni mogoče razveljaviti.",
         "confirm-button": "Izbriši",
         "cancel-button": "Prekliči",
         "deleting": "Brisanje..."
       },
       "toast": {
-        "create-success": "Aktivnost uspešno dodana",
-        "create-error": "Dodajanje aktivnosti ni uspelo",
-        "update-success": "Aktivnost uspešno posodobljena",
-        "update-error": "Posodobitev aktivnosti ni uspela",
-        "delete-success": "Aktivnost uspešno izbrisana",
-        "delete-error": "Brisanje aktivnosti ni uspelo"
+        "create-success": "Skupna pot uspešno dodana",
+        "create-error": "Dodajanje skupne poti ni uspelo",
+        "update-success": "Skupna pot uspešno posodobljena",
+        "update-error": "Posodobitev skupne poti ni uspela",
+        "delete-success": "Skupna pot uspešno izbrisana",
+        "delete-error": "Brisanje skupne poti ni uspelo"
       },
       "table": {
-        "type": "Vrsta",
+        "type": "Emisijski profil prevoza",
         "distance": "Razdalja",
         "description": "Opis",
         "date": "Datum",
@@ -930,7 +931,7 @@
         "km": "km"
       },
       "error": {
-        "load-failed": "Nalagaljenje aktivnosti ni uspelo. Poskusite znova."
+        "load-failed": "Skupnih poti ni bilo mogoče naložiti. Poskusite znova."
       }
     }
   },

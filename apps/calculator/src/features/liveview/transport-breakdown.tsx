@@ -4,10 +4,10 @@ import { PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES as ACTIVITY_VALUES } from "@
 
 import { Card } from "@/components/ui/card";
 import type { ProjectStats } from "@/features/participate/types";
-import { PROJECT_ACTIVITIES_ICONS } from "@/features/project-activities/activities-icons";
+import { TransportEmissionProfileIcon } from "@/features/project-shared-travel-legs/components/transport-emission-profile-icon";
 
 interface TransportIconProps {
-  type: keyof typeof PROJECT_ACTIVITIES_ICONS;
+  type: (typeof ACTIVITY_VALUES)[number];
   className?: string;
 }
 
@@ -15,8 +15,7 @@ export function TransportIcon({
   type,
   className = "size-5",
 }: TransportIconProps) {
-  const Icon = PROJECT_ACTIVITIES_ICONS[type];
-  return <Icon className={className} />;
+  return <TransportEmissionProfileIcon className={className} profile={type} />;
 }
 
 interface TransportBreakdownProps {

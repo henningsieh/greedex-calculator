@@ -1,7 +1,6 @@
 "use client";
 
 import { DISTANCE_KM_STEP, MIN_DISTANCE_KM } from "@greendex/config/activities";
-import { PROJECT_SHARED_TRANSPORT_EMISSION_PROFILES as ACTIVITY_VALUES } from "@greendex/config/transport-emission-profiles";
 import { projectActivitiesTable } from "@greendex/database/schema";
 import { useTranslations } from "@greendex/i18n/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,14 +28,8 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { TransportEmissionProfileSelect } from "@/features/project-shared-travel-legs/components/transport-emission-profile-select";
 import {
   PROJECT_FORM_STEPS,
   PROJECT_FORM_TOTAL_STEPS,
@@ -393,31 +386,17 @@ export function CreateProjectForm({
                           }
                         >
                           <FieldLabel htmlFor={`activities.${index}.type`}>
-                            {tActivities("form.activity-type")}
+                            {tActivities("form.transport-emission-profile")}
                           </FieldLabel>
                           <Controller
                             control={control}
                             name={`activities.${index}.activityType`}
                             render={({ field: selectField }) => (
-                              <Select
+                              <TransportEmissionProfileSelect
+                                id={`activities.${index}.type`}
                                 onValueChange={selectField.onChange}
                                 value={selectField.value}
-                              >
-                                <SelectTrigger id={`activities.${index}.type`}>
-                                  <SelectValue
-                                    placeholder={tActivities(
-                                      "form.activity-type-placeholder",
-                                    )}
-                                  />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {ACTIVITY_VALUES.map((type) => (
-                                    <SelectItem key={type} value={type}>
-                                      {tActivities(`types.${type}`)}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
+                              />
                             )}
                           />
                         </Field>

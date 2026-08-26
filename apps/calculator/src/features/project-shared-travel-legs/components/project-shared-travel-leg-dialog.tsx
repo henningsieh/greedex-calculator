@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "@greendex/i18n/client";
+
 import {
   Dialog,
   DialogContent,
@@ -8,51 +10,41 @@ import {
 } from "@/components/ui/dialog";
 import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 
-import { ProjectActivityForm } from "./project-activity-form";
+import { ProjectSharedTravelLegForm } from "./project-shared-travel-leg-form";
 
-interface ProjectActivityDialogProps {
+interface ProjectSharedTravelLegDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   projectId: string;
-  activity?: ProjectSharedTravelLeg;
+  sharedTravelLeg?: ProjectSharedTravelLeg;
   onSuccess?: () => void;
 }
 
-/**
- * Dialog component for adding or editing project activities.
- *
- * @param open - Whether the dialog is open
- * @param onOpenChange - Callback when dialog open state changes
- * @param projectId - ID of the project
- * @param activity - Optional activity to edit (undefined for adding)
- * @param onSuccess - Callback when form submission succeeds
- * @returns The dialog component
- */
-export function ProjectActivityDialog({
+export function ProjectSharedTravelLegDialog({
   open,
   onOpenChange,
   projectId,
-  activity,
+  sharedTravelLeg,
   onSuccess,
-}: ProjectActivityDialogProps) {
-  const isEditing = !!activity;
+}: ProjectSharedTravelLegDialogProps) {
+  const t = useTranslations("project.activities");
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isEditing ? "Edit Activity" : "Add Activity"}
+            {t(sharedTravelLeg ? "form.edit-title" : "form.title")}
           </DialogTitle>
         </DialogHeader>
-        <ProjectActivityForm
-          activity={activity}
+        <ProjectSharedTravelLegForm
           onCancel={() => onOpenChange(false)}
           onSuccess={() => {
             onSuccess?.();
             onOpenChange(false);
           }}
           projectId={projectId}
+          sharedTravelLeg={sharedTravelLeg}
         />
       </DialogContent>
     </Dialog>

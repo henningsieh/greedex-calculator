@@ -1,12 +1,10 @@
 import { TRANSPORT_EMISSION_FACTORS as ACTIVITY_EMISSION_FACTORS } from "@greendex/config/transport-emission-profiles";
 import { projectsTable } from "@greendex/database/schema";
 import { asc, desc, type SQL, sql } from "drizzle-orm";
-import React from "react";
 import type z from "zod";
 
 import { type AppRoute, PROJECT_DETAIL_PATH } from "@/app/routes";
 import type { ProjectParticipantWithUser } from "@/features/participants/types";
-import { PROJECT_ACTIVITIES_ICONS } from "@/features/project-activities/activities-icons";
 import type {
   ListProjectsInput,
   ProjectStatistics,
@@ -59,19 +57,6 @@ export async function getProjectData(projectId: string) {
     console.error("Failed to fetch project data:", error);
     return null;
   }
-}
-
-/**
- * Render the icon for a given project activity type with consistent sizing.
- *
- * @param type - The activity type key from PROJECT_ACTIVITIES_ICONS
- * @returns A React element that renders the corresponding activity icon (styled with consistent size)
- */
-export function getProjectActivityIcon(
-  type: keyof typeof PROJECT_ACTIVITIES_ICONS,
-): React.ReactElement {
-  const Icon = PROJECT_ACTIVITIES_ICONS[type];
-  return React.createElement(Icon, { className: "size-4" });
 }
 
 /**

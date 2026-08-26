@@ -841,20 +841,20 @@
       "welcome-message": "Willkommensnachricht",
       "participants": "Teilnehmende",
       "participants-description": "Teilnehmende werden hier angezeigt.",
-      "activities": "Aktivitäten",
-      "activities-description": "Projektaktivitäten werden hier angezeigt.",
+      "activities": "Gemeinsame Projektreisen",
+      "activities-description": "Gemeinsame Reisen zur Berechnung des CO₂-Fußabdrucks",
       "loading": "Projektdetails werden geladen…",
       "people-joined": "Leute sind bereits beigetreten",
       "no-participants-yet": "Noch keine Teilnehmenden",
       "share-the-participation-link": "Teile den Teilnahmelink, um Personen zu diesem Projekt einzuladen.",
       "tabs": {
         "details": "Projektdetails",
-        "activities": "Projektaktivitäten",
+        "activities": "Gemeinsame Projektreisen",
         "participants": "Projektteilnehmende"
       },
       "statistics": {
         "participants": "Teilnehmende",
-        "activities": "Aktivitäten",
+        "activities": "Gemeinsame Reisen",
         "total-distance": "Gesamtstrecke",
         "duration": "Dauer",
         "km": "km",
@@ -869,30 +869,28 @@
       "joined-on": "beigetreten am"
     },
     "activities": {
-      "title": "Projektaktivitäten",
-      "description": "Reiseaktivitäten zur Berechnung des CO₂-Fußabdrucks",
+      "title": "Gemeinsame Projektreisen",
+      "description": "Gemeinsame Reisen zur Berechnung des CO₂-Fußabdrucks",
       "empty": {
-        "title": "Noch keine Aktivitäten",
-        "description": "Für dieses Projekt wurden noch keine Aktivitäten erfasst. Füge Aktivitäten hinzu, um den CO₂-Fußabdruck zu verfolgen."
+        "title": "Noch keine gemeinsamen Reisen",
+        "description": "Für dieses Projekt wurden noch keine gemeinsamen Reisen erfasst. Füge eine hinzu, um den CO₂-Fußabdruck zu verfolgen."
       },
       "types": {
         "boat": "Boot",
         "bus": "Bus",
         "train": "Zug",
-        "car": "Auto"
+        "car": "Auto",
+        "electricCar": "Elektroauto"
       },
       "form": {
-        "title": "Aktivität hinzufügen",
-        "edit-title": "Aktivität bearbeiten",
-        "activity-type": "Aktivitätstyp",
-        "activity-type-placeholder": "Aktivitätstyp auswählen",
+        "title": "Gemeinsame Reise hinzufügen",
+        "edit-title": "Gemeinsame Reise bearbeiten",
         "distance": "Entfernung (km)",
         "distance-placeholder": "Entfernung in Kilometern eingeben",
         "description": "Beschreibung (optional)",
-        "description-placeholder": "Füge eine Beschreibung für diese Aktivität hinzu",
-        "activity-date": "Aktivitätsdatum (optional)",
-        "submit": "Aktivität hinzufügen",
-        "update": "Aktivität aktualisieren",
+        "description-placeholder": "Füge eine Beschreibung für diese gemeinsame Reise hinzu",
+        "submit": "Gemeinsame Reise hinzufügen",
+        "update": "Gemeinsame Reise aktualisieren",
         "cancel": "Abbrechen",
         "adding": "Wird hinzugefügt…",
         "updating": "Wird aktualisiert…",
@@ -902,25 +900,28 @@
             "max": "Die Entfernung darf {max} km nicht überschreiten",
             "step": "Die Entfernung muss in Schritten von {step} km angegeben werden"
           }
-        }
+        },
+        "transport-emission-profile": "Emissionsprofil für Verkehrsmittel",
+        "transport-emission-profile-placeholder": "Emissionsprofil für Verkehrsmittel auswählen",
+        "travel-date": "Reisedatum (optional)"
       },
       "delete": {
-        "confirm-title": "Aktivität löschen?",
-        "confirm-description": "Diese Aktivität wird dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
+        "confirm-title": "Gemeinsame Reise löschen?",
+        "confirm-description": "Diese gemeinsame Reise wird dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
         "confirm-button": "Löschen",
         "cancel-button": "Abbrechen",
         "deleting": "Löschen..."
       },
       "toast": {
-        "create-success": "Aktivität erfolgreich hinzugefügt",
-        "create-error": "Fehler beim Hinzufügen der Aktivität",
-        "update-success": "Aktivität erfolgreich aktualisiert",
-        "update-error": "Fehler beim Aktualisieren der Aktivität",
-        "delete-success": "Aktivität erfolgreich gelöscht",
-        "delete-error": "Fehler beim Löschen der Aktivität"
+        "create-success": "Gemeinsame Reise erfolgreich hinzugefügt",
+        "create-error": "Fehler beim Hinzufügen der gemeinsamen Reise",
+        "update-success": "Gemeinsame Reise erfolgreich aktualisiert",
+        "update-error": "Fehler beim Aktualisieren der gemeinsamen Reise",
+        "delete-success": "Gemeinsame Reise erfolgreich gelöscht",
+        "delete-error": "Fehler beim Löschen der gemeinsamen Reise"
       },
       "table": {
-        "type": "Typ",
+        "type": "Emissionsprofil für Verkehrsmittel",
         "distance": "Entfernung",
         "description": "Beschreibung",
         "date": "Datum",
@@ -930,7 +931,7 @@
         "km": "km"
       },
       "error": {
-        "load-failed": "Aktivitäten konnten nicht geladen werden. \nBitte probiere es noch einmal."
+        "load-failed": "Gemeinsame Reisen konnten nicht geladen werden. Bitte probiere es noch einmal."
       }
     }
   },

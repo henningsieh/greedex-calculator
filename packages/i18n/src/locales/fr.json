@@ -841,20 +841,20 @@
       "welcome-message": "Message de bienvenue",
       "participants": "Participants",
       "participants-description": "Les participants seront affichés ici.",
-      "activities": "Activités",
-      "activities-description": "Les activités du projet seront affichées ici.",
+      "activities": "Voyages partagés du projet",
+      "activities-description": "Voyages partagés enregistrés pour le calcul de l'empreinte carbone",
       "loading": "Chargement des détails du projet…",
       "people-joined": "personnes ont déjà rejoint",
       "no-participants-yet": "Aucun participant pour l'instant",
       "share-the-participation-link": "Partagez le lien de participation pour inviter des personnes à ce projet.",
       "tabs": {
         "details": "Détails du projet",
-        "activities": "Activités du projet",
+        "activities": "Voyages partagés du projet",
         "participants": "Participants au projet"
       },
       "statistics": {
         "participants": "Participants",
-        "activities": "Activités",
+        "activities": "Trajets partagés",
         "total-distance": "Distance totale",
         "duration": "Durée",
         "km": "km",
@@ -869,30 +869,28 @@
       "joined-on": "a rejoint le"
     },
     "activities": {
-      "title": "Activités du projet",
-      "description": "Activités de voyage enregistrées pour le calcul de l'empreinte carbone",
+      "title": "Voyages partagés du projet",
+      "description": "Voyages partagés enregistrés pour le calcul de l'empreinte carbone",
       "empty": {
-        "title": "Aucune activité pour l'instant",
-        "description": "Ce projet n'a aucune activité enregistrée. Ajoutez des activités pour suivre l'empreinte carbone."
+        "title": "Aucun trajet partagé pour le moment",
+        "description": "Ce projet n'a aucun trajet partagé enregistré. Ajoutez-en un pour suivre l'empreinte carbone."
       },
       "types": {
         "boat": "Bateau",
         "bus": "Bus",
         "train": "Train",
-        "car": "Voiture"
+        "car": "Voiture",
+        "electricCar": "Voiture électrique"
       },
       "form": {
-        "title": "Ajouter une activité",
-        "edit-title": "Modifier l'activité",
-        "activity-type": "Type d'activité",
-        "activity-type-placeholder": "Sélectionner le type d'activité",
+        "title": "Ajouter un trajet partagé",
+        "edit-title": "Modifier le trajet partagé",
         "distance": "Distance (km)",
         "distance-placeholder": "Entrez la distance en kilomètres",
         "description": "Description (facultatif)",
-        "description-placeholder": "Ajoutez une description pour cette activité",
-        "activity-date": "Date de l'activité (facultatif)",
-        "submit": "Ajouter l'activité",
-        "update": "Mettre à jour l'activité",
+        "description-placeholder": "Ajoutez une description pour ce trajet partagé",
+        "submit": "Ajouter un trajet partagé",
+        "update": "Mettre à jour le trajet partagé",
         "cancel": "Annuler",
         "adding": "Ajout en cours…",
         "updating": "Mise à jour en cours…",
@@ -902,25 +900,28 @@
             "max": "La distance ne peut pas dépasser {max} km",
             "step": "La distance doit être un multiple de {step} km"
           }
-        }
+        },
+        "transport-emission-profile": "Profil d'émissions du transport",
+        "transport-emission-profile-placeholder": "Sélectionner un profil d'émissions du transport",
+        "travel-date": "Date du voyage (facultatif)"
       },
       "delete": {
-        "confirm-title": "Supprimer l'activité ?",
-        "confirm-description": "Cela supprimera définitivement cette activité. Cette action est irréversible.",
+        "confirm-title": "Supprimer le trajet partagé ?",
+        "confirm-description": "Cela supprimera définitivement ce trajet partagé. Cette action est irréversible.",
         "confirm-button": "Supprimer",
         "cancel-button": "Annuler",
         "deleting": "Suppression en cours..."
       },
       "toast": {
-        "create-success": "Activité ajoutée avec succès",
-        "create-error": "Échec de l'ajout de l'activité",
-        "update-success": "Activité mise à jour avec succès",
-        "update-error": "Échec de la mise à jour de l'activité",
-        "delete-success": "Activité supprimée avec succès",
-        "delete-error": "Échec de la suppression de l'activité"
+        "create-success": "Trajet partagé ajouté avec succès",
+        "create-error": "Échec de l'ajout du trajet partagé",
+        "update-success": "Trajet partagé mis à jour avec succès",
+        "update-error": "Échec de la mise à jour du trajet partagé",
+        "delete-success": "Trajet partagé supprimé avec succès",
+        "delete-error": "Échec de la suppression du trajet partagé"
       },
       "table": {
-        "type": "Type",
+        "type": "Profil d'émissions du transport",
         "distance": "Distance",
         "description": "Description",
         "date": "Date",
@@ -930,7 +931,7 @@
         "km": "km"
       },
       "error": {
-        "load-failed": "Échec du chargement des activités. Veuillez réessayer."
+        "load-failed": "Échec du chargement des trajets partagés. Veuillez réessayer."
       }
     }
   },

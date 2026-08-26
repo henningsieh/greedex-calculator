@@ -841,20 +841,20 @@
       "welcome-message": "Welkomstbericht",
       "participants": "Deelnemers",
       "participants-description": "Deelnemers worden hier weergegeven.",
-      "activities": "Activiteiten",
-      "activities-description": "Projectactiviteiten worden hier weergegeven.",
+      "activities": "Gedeelde projectreizen",
+      "activities-description": "Gedeelde reizen bijgehouden voor de berekening van de koolstofvoetafdruk",
       "loading": "Projectdetails laden…",
       "people-joined": "mensen hebben zich al aangemeld",
       "no-participants-yet": "Nog geen deelnemers",
       "share-the-participation-link": "Deel de deelnamelink om mensen uit te nodigen voor dit project.",
       "tabs": {
         "details": "Projectdetails",
-        "activities": "Projectactiviteiten",
+        "activities": "Gedeelde projectreizen",
         "participants": "Projectdeelnemers"
       },
       "statistics": {
         "participants": "Deelnemers",
-        "activities": "Activiteiten",
+        "activities": "Gedeelde trajecten",
         "total-distance": "Totale afstand",
         "duration": "Duur",
         "km": "km",
@@ -869,30 +869,28 @@
       "joined-on": "aangemeld op"
     },
     "activities": {
-      "title": "Projectactiviteiten",
-      "description": "Reisactiviteiten bijgehouden voor de berekening van de koolstofvoetafdruk",
+      "title": "Gedeelde projectreizen",
+      "description": "Gedeelde reizen bijgehouden voor de berekening van de koolstofvoetafdruk",
       "empty": {
-        "title": "Nog geen activiteiten",
-        "description": "Dit project heeft geen geregistreerde activiteiten. Voeg activiteiten toe om de koolstofvoetafdruk bij te houden."
+        "title": "Nog geen gedeelde trajecten",
+        "description": "Dit project heeft geen gedeelde trajecten geregistreerd. Voeg er een toe om de koolstofvoetafdruk bij te houden."
       },
       "types": {
         "boat": "Boot",
         "bus": "Bus",
         "train": "Trein",
-        "car": "Auto"
+        "car": "Auto",
+        "electricCar": "Elektrische auto"
       },
       "form": {
-        "title": "Activiteit toevoegen",
-        "edit-title": "Activiteit bewerken",
-        "activity-type": "Type activiteit",
-        "activity-type-placeholder": "Type activiteit selecteren",
+        "title": "Gedeeld traject toevoegen",
+        "edit-title": "Gedeeld traject bewerken",
         "distance": "Afstand (km)",
         "distance-placeholder": "Voer afstand in kilometers in",
         "description": "Beschrijving (optioneel)",
-        "description-placeholder": "Voeg een beschrijving toe voor deze activiteit",
-        "activity-date": "Datum activiteit (optioneel)",
-        "submit": "Activiteit toevoegen",
-        "update": "Activiteit bijwerken",
+        "description-placeholder": "Voeg een beschrijving toe voor dit gedeelde traject",
+        "submit": "Gedeeld traject toevoegen",
+        "update": "Gedeeld traject bijwerken",
         "cancel": "Annuleren",
         "adding": "Toevoegen…",
         "updating": "Bijwerken…",
@@ -902,25 +900,28 @@
             "max": "Afstand mag niet meer dan {max} km zijn",
             "step": "Afstand moet in stappen van {step} km worden opgegeven"
           }
-        }
+        },
+        "transport-emission-profile": "Emissieprofiel voor vervoer",
+        "transport-emission-profile-placeholder": "Selecteer een emissieprofiel voor vervoer",
+        "travel-date": "Reisdatum (optioneel)"
       },
       "delete": {
-        "confirm-title": "Activiteit verwijderen?",
-        "confirm-description": "Hiermee wordt deze activiteit definitief verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm-title": "Gedeeld traject verwijderen?",
+        "confirm-description": "Hiermee wordt dit gedeelde traject definitief verwijderd. Deze actie kan niet ongedaan worden gemaakt.",
         "confirm-button": "Verwijderen",
         "cancel-button": "Annuleren",
         "deleting": "Verwijderen..."
       },
       "toast": {
-        "create-success": "Activiteit succesvol toegevoegd",
-        "create-error": "Activiteit toevoegen mislukt",
-        "update-success": "Activiteit succesvol bijgewerkt",
-        "update-error": "Activiteit bijwerken mislukt",
-        "delete-success": "Activiteit succesvol verwijderd",
-        "delete-error": "Activiteit verwijderen mislukt"
+        "create-success": "Gedeeld traject succesvol toegevoegd",
+        "create-error": "Gedeeld traject toevoegen mislukt",
+        "update-success": "Gedeeld traject succesvol bijgewerkt",
+        "update-error": "Gedeeld traject bijwerken mislukt",
+        "delete-success": "Gedeeld traject succesvol verwijderd",
+        "delete-error": "Gedeeld traject verwijderen mislukt"
       },
       "table": {
-        "type": "Type",
+        "type": "Emissieprofiel voor vervoer",
         "distance": "Afstand",
         "description": "Beschrijving",
         "date": "Datum",
@@ -930,7 +931,7 @@
         "km": "km"
       },
       "error": {
-        "load-failed": "Activiteiten laden mislukt. Probeer het opnieuw."
+        "load-failed": "Gedeelde trajecten laden mislukt. Probeer het opnieuw."
       }
     }
   },

@@ -841,20 +841,20 @@
       "welcome-message": "Welcome Message",
       "participants": "Participants",
       "participants-description": "Participants will be displayed here.",
-      "activities": "Activities",
-      "activities-description": "Project activities will be displayed here.",
+      "activities": "Project Shared Travel",
+      "activities-description": "Shared travel tracked for carbon footprint calculation",
       "loading": "loading project details…",
       "people-joined": "people have already joined",
       "no-participants-yet": "No participants yet",
       "share-the-participation-link": "Share the participation link to invite people to this project.",
       "tabs": {
         "details": "Project Details",
-        "activities": "Project Activities",
+        "activities": "Project Shared Travel",
         "participants": "Project Participants"
       },
       "statistics": {
         "participants": "Participants",
-        "activities": "Activities",
+        "activities": "Shared travel legs",
         "total-distance": "Total Distance",
         "duration": "Duration",
         "km": "km",
@@ -869,30 +869,31 @@
       "joined-on": "joined on"
     },
     "activities": {
-      "title": "Project Activities",
-      "description": "Travel activities tracked for carbon footprint calculation",
+      "title": "Project Shared Travel",
+      "description": "Shared travel tracked for carbon footprint calculation",
       "empty": {
-        "title": "No activities yet",
-        "description": "This project doesn't have any activities recorded. Add activities to track the carbon footprint."
+        "title": "No shared travel legs yet",
+        "description": "This project does not have any shared travel legs recorded. Add one to track the carbon footprint."
       },
       "types": {
         "boat": "Boat",
         "bus": "Bus",
         "train": "Train",
-        "car": "Car"
+        "car": "Car",
+        "electricCar": "Electric car"
       },
       "form": {
-        "title": "Add Activity",
-        "edit-title": "Edit Activity",
-        "activity-type": "Activity Type",
-        "activity-type-placeholder": "Select activity type",
+        "title": "Add shared travel leg",
+        "edit-title": "Edit shared travel leg",
+        "transport-emission-profile": "Transport emission profile",
+        "transport-emission-profile-placeholder": "Select a transport emission profile",
         "distance": "Distance (km)",
         "distance-placeholder": "Enter distance in kilometers",
         "description": "Description (optional)",
-        "description-placeholder": "Add a description for this activity",
-        "activity-date": "Activity Date (optional)",
-        "submit": "Add Activity",
-        "update": "Update Activity",
+        "description-placeholder": "Add a description for this shared travel leg",
+        "travel-date": "Travel date (optional)",
+        "submit": "Add shared travel leg",
+        "update": "Update shared travel leg",
         "cancel": "Cancel",
         "adding": "Adding…",
         "updating": "Updating…",
@@ -905,22 +906,22 @@
         }
       },
       "delete": {
-        "confirm-title": "Delete Activity?",
-        "confirm-description": "This will permanently delete this activity. This action cannot be undone.",
+        "confirm-title": "Delete shared travel leg?",
+        "confirm-description": "This will permanently delete this shared travel leg. This action cannot be undone.",
         "confirm-button": "Delete",
         "cancel-button": "Cancel",
         "deleting": "Deleting..."
       },
       "toast": {
-        "create-success": "Activity added successfully",
-        "create-error": "Failed to add activity",
-        "update-success": "Activity updated successfully",
-        "update-error": "Failed to update activity",
-        "delete-success": "Activity deleted successfully",
-        "delete-error": "Failed to delete activity"
+        "create-success": "Shared travel leg added successfully",
+        "create-error": "Failed to add shared travel leg",
+        "update-success": "Shared travel leg updated successfully",
+        "update-error": "Failed to update shared travel leg",
+        "delete-success": "Shared travel leg deleted successfully",
+        "delete-error": "Failed to delete shared travel leg"
       },
       "table": {
-        "type": "Type",
+        "type": "Transport emission profile",
         "distance": "Distance",
         "description": "Description",
         "date": "Date",
@@ -930,7 +931,7 @@
         "km": "km"
       },
       "error": {
-        "load-failed": "Failed to load activities. Please try again."
+        "load-failed": "Failed to load shared travel legs. Please try again."
       }
     }
   },

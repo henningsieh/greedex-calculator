@@ -47,50 +47,38 @@ import {
 } from "@/components/ui/table";
 import type { ProjectSharedTravelLeg } from "@/features/project-shared-travel-legs/types";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
-import { getProjectActivityIcon } from "@/features/projects/utils";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
 
-import { ProjectActivityDialog } from "./project-activity-dialog";
+import { ProjectSharedTravelLegDialog } from "./project-shared-travel-leg-dialog";
+import { TransportEmissionProfileIcon } from "./transport-emission-profile-icon";
+import { TransportEmissionProfilePresentation } from "./transport-emission-profile-presentation";
 
-interface ProjectActivitiesTableProps {
+interface ProjectSharedTravelLegsTableProps {
   projectId: string;
   canEdit?: boolean;
 }
-/**
- * Render a card showing a project's activities, with optional UI for adding, editing, and deleting items.
- *
- * Displays a loading skeleton while fetching, an error card on fetch failure, an empty state when there are no activities,
- * and a table of activities when data is available. When `canEdit` is true, in-card forms for creating/editing and a
- * delete confirmation dialog are provided. Successful deletions and form submissions refresh the list; delete operations
- * also surface success/error toasts.
- *
- * @param projectId - ID of the project whose activities should be displayed
- * @param canEdit - When true, show controls for adding, editing, and deleting activities
- * @returns A React element containing the activities list card for the specified project
- */
-export function ProjectActivitiesTable({
+
+export function ProjectSharedTravelLegsTable({
   projectId,
   canEdit = false,
-}: ProjectActivitiesTableProps) {
+}: ProjectSharedTravelLegsTableProps) {
   const t = useTranslations("project.activities");
   const format = useFormatter();
   const queryClient = useQueryClient();
-
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [editingActivity, setEditingActivity] = useState<
+  const [editingSharedTravelLeg, setEditingSharedTravelLeg] = useState<
     ProjectSharedTravelLeg | undefined
-  >(undefined);
-  const [deletingActivityId, setDeletingActivityId] = useState<
+  >();
+  const [deletingSharedTravelLegId, setDeletingSharedTravelLegId] = useState<
     string | undefined
-  >(undefined);
-
-  const { data: activities } = useSuspenseQuery(
+  >();
+  const { data: sharedTravelLegs } = useSuspenseQuery(
     orpcQuery.projectSharedTravelLegs.list.queryOptions({
       input: { projectId },
     }),
   );
 
-  const deleteActivityMutation = useMutation({
+  const deleteMutation = useMutation({
     mutationFn: (id: string) =>
       orpc.projectSharedTravelLegs.delete({ projectId, id }),
     onSuccess: () => {
@@ -100,7 +88,7 @@ export function ProjectActivitiesTable({
           input: { projectId },
         }),
       });
-      setDeletingActivityId(undefined);
+      setDeletingSharedTravelLegId(undefined);
     },
     onError: () => {
       toast.error(t("toast.delete-error"));
@@ -109,7 +97,7 @@ export function ProjectActivitiesTable({
 
   const handleFormSuccess = () => {
     setIsAddDialogOpen(false);
-    setEditingActivity(undefined);
+    setEditingSharedTravelLeg(undefined);
     void queryClient.invalidateQueries({
       queryKey: orpcQuery.projectSharedTravelLegs.list.queryKey({
         input: { projectId },
@@ -117,31 +105,33 @@ export function ProjectActivitiesTable({
     });
   };
 
-  const hasActivities = activities && activities.length > 0;
-
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <PROJECT_ICONS.activities className="size-5 text-secondary" />
+          <TransportEmissionProfileIcon
+            className="size-5 text-secondary"
+            profile="train"
+          />
           {t("title")}
         </CardTitle>
         <CardDescription>{t("description")}</CardDescription>
         {canEdit && (
           <CardAction>
             <Button
+              aria-label={t("form.title")}
               onClick={() => setIsAddDialogOpen(true)}
               size="sm"
               variant="secondaryoutline"
             >
               <PlusIcon className="size-4" />
-              <p className="hidden sm:inline-flex">{t("form.title")}</p>
+              <span className="hidden sm:inline-flex">{t("form.title")}</span>
             </Button>
           </CardAction>
         )}
       </CardHeader>
       <CardContent>
-        {hasActivities ? (
+        {sharedTravelLegs.length > 0 ? (
           <div className="rounded-md border">
             <Table>
               <TableHeader>
@@ -156,27 +146,22 @@ export function ProjectActivitiesTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {activities.map((activity) => (
-                  <TableRow key={activity.id}>
+                {sharedTravelLegs.map((sharedTravelLeg) => (
+                  <TableRow key={sharedTravelLeg.id}>
                     <TableCell>
-                      <div className="flex items-center gap-2">
-                        {getProjectActivityIcon(
-                          activity.transportEmissionProfile,
-                        )}
-                        <span>
-                          {t(`types.${activity.transportEmissionProfile}`)}
-                        </span>
-                      </div>
+                      <TransportEmissionProfilePresentation
+                        profile={sharedTravelLeg.transportEmissionProfile}
+                      />
                     </TableCell>
                     <TableCell>
-                      {activity.distanceKm} {t("table.km")}
+                      {sharedTravelLeg.distanceKm} {t("table.km")}
                     </TableCell>
                     <TableCell className="max-w-50 truncate">
-                      {activity.description || "-"}
+                      {sharedTravelLeg.description || "-"}
                     </TableCell>
                     <TableCell>
-                      {activity.travelDate
-                        ? format.dateTime(new Date(activity.travelDate), {
+                      {sharedTravelLeg.travelDate
+                        ? format.dateTime(new Date(sharedTravelLeg.travelDate), {
                             year: "numeric",
                             month: "short",
                             day: "numeric",
@@ -187,17 +172,21 @@ export function ProjectActivitiesTable({
                       <TableCell>
                         <div className="flex items-center gap-1">
                           <Button
-                            onClick={() => setEditingActivity(activity)}
+                            aria-label={t("table.edit")}
+                            onClick={() =>
+                              setEditingSharedTravelLeg(sharedTravelLeg)
+                            }
                             size="icon"
-                            title={t("table.edit")}
                             variant="ghost"
                           >
                             <EditIcon className="size-4" />
                           </Button>
                           <Button
-                            onClick={() => setDeletingActivityId(activity.id)}
+                            aria-label={t("table.delete")}
+                            onClick={() =>
+                              setDeletingSharedTravelLegId(sharedTravelLeg.id)
+                            }
                             size="icon"
-                            title={t("table.delete")}
                             variant="ghost"
                           >
                             <Trash2Icon className="size-4 text-destructive" />
@@ -234,27 +223,30 @@ export function ProjectActivitiesTable({
           </Empty>
         )}
 
-        {/* Add Activity Dialog */}
-        <ProjectActivityDialog
+        <ProjectSharedTravelLegDialog
           onOpenChange={setIsAddDialogOpen}
           onSuccess={handleFormSuccess}
           open={isAddDialogOpen}
           projectId={projectId}
         />
-
-        {/* Edit Activity Dialog */}
-        <ProjectActivityDialog
-          activity={editingActivity}
-          onOpenChange={(open) => !open && setEditingActivity(undefined)}
+        <ProjectSharedTravelLegDialog
+          onOpenChange={(open) => {
+            if (!open) {
+              setEditingSharedTravelLeg(undefined);
+            }
+          }}
           onSuccess={handleFormSuccess}
-          open={!!editingActivity}
+          open={editingSharedTravelLeg !== undefined}
           projectId={projectId}
+          sharedTravelLeg={editingSharedTravelLeg}
         />
-
-        {/* Delete Confirmation Dialog */}
         <AlertDialog
-          onOpenChange={(open) => !open && setDeletingActivityId(undefined)}
-          open={!!deletingActivityId}
+          onOpenChange={(open) => {
+            if (!open) {
+              setDeletingSharedTravelLegId(undefined);
+            }
+          }}
+          open={deletingSharedTravelLegId !== undefined}
         >
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -264,18 +256,19 @@ export function ProjectActivitiesTable({
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={deleteActivityMutation.isPending}>
+              <AlertDialogCancel disabled={deleteMutation.isPending}>
                 {t("delete.cancel-button")}
               </AlertDialogCancel>
               <AlertDialogAction
                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                disabled={deleteActivityMutation.isPending}
-                onClick={() =>
-                  deletingActivityId &&
-                  deleteActivityMutation.mutate(deletingActivityId)
-                }
+                disabled={deleteMutation.isPending}
+                onClick={() => {
+                  if (deletingSharedTravelLegId) {
+                    deleteMutation.mutate(deletingSharedTravelLegId);
+                  }
+                }}
               >
-                {deleteActivityMutation.isPending
+                {deleteMutation.isPending
                   ? t("delete.deleting")
                   : t("delete.confirm-button")}
               </AlertDialogAction>
@@ -286,24 +279,3 @@ export function ProjectActivitiesTable({
     </Card>
   );
 }
-
-// UNUSED: ProjectActivitiesListSkeleton
-// export function ProjectActivitiesListSkeleton() {
-//   return (
-//     <Card>
-//       <CardHeader>
-//         <div className="flex justify-between items-center">
-//           <div>
-//             <Skeleton className="w-40 h-6" />
-//             <Skeleton className="mt-1 w-60 h-4" />
-//           </div>
-//         </div>
-//       </CardHeader>
-//       <CardContent>
-//         <div className="space-y-4">
-//           <Skeleton className="w-full h-10" />
-//           <Skeleton className="w-full h-10" />
-//           <Skeleton className="w-full h-10" />
-//         </div>
-//       </CardContent>
-//     </Card>

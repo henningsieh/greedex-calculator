@@ -38,11 +38,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ParticipantsLinkControls } from "@/features/participants/components/participants-link-controls";
 import { ParticipantsList } from "@/features/participants/components/participants-list";
+import { ProjectSharedTravelLegsTable } from "@/features/project-shared-travel-legs/components/project-shared-travel-legs-table";
 import {
   EditProjectForm,
   EditProjectFormSkeleton,
 } from "@/features/projects/components/edit-project-form";
-import { ProjectActivitiesTab } from "@/features/projects/components/project-activities-tab";
 import { ProjectDetailsTab } from "@/features/projects/components/project-details-tab";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 import { getProjectStatistics } from "@/features/projects/utils";
@@ -365,7 +365,7 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
           </CardContent>
         </Card>
 
-        {/* CO2 Emissions by Project Activities */}
+        {/* CO2 emissions from project shared travel */}
         <Card className="gap-3">
           <CardHeader>
             <div className="flex items-center gap-2 text-sm text-secondary">
@@ -433,9 +433,8 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
           <ProjectDetailsTab project={project} />
         </TabsContent>
 
-        {/* Project Activities Tab */}
         <TabsContent value="activities">
-          <ProjectActivitiesTab canEdit={canUpdate} projectId={id} />
+          <ProjectSharedTravelLegsTable canEdit={canUpdate} projectId={id} />
         </TabsContent>
 
         {/* Participants Tab */}
