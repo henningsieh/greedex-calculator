@@ -354,11 +354,16 @@ Greendex currently deploys only to a shared **Coolify development environment**:
 - App port: `3000`
 - Socket port: `4000`, exposed through the configured public socket URL
 
-There is intentionally **no repository Dockerfile**. The deployment relies on
-Coolify injecting environment variables and Turborepo forwarding them to the
-application processes. The `"env": ["*"]` setting on the `build` and `start`
-tasks in [`turbo.json`](turbo.json) is critical for forwarding those variables
-to workspace processes.
+Deployment uses the repository **Dockerfile** (multi-stage): a `test` stage
+runs the full Vitest suite against a real candidate (disposable PostgreSQL,
+migrations, seed) and must pass before the `runtime` stage image is built —
+a failing candidate aborts the build and is never promoted. Credentials are
+injected as Docker build secrets (Coolify "Build Variables" +
+`use_build_secrets`) and exist only in the test stage. The runtime image runs
+as the unprivileged `node` user and relies on Coolify injecting environment
+variables; Turborepo forwards them to the application processes via the
+`"env": ["*"]` setting on the `build` and `start` tasks in
+[`turbo.json`](turbo.json).
 
 Every calculator deployment runs the existing Drizzle `db:migrate` command in
 `prestart`, before Next.js and Socket.IO start. If a migration fails, the
