@@ -56,14 +56,17 @@ FROM node:22-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 
-COPY --from=test /app /app
+# Install curl and enable pnpm BEFORE copying the application layers. This
+# keeps the small, cacheable apt layer independent of the multi-gigabyte
+# COPY --from=test step, so apt never competes with the test-stage export
+# for disk space.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends curl \
+  && rm -rf /var/lib/apt/lists/* \
+  && corepack enable \
+  && touch /app/.env
 
-# Enable pnpm, provide an empty dotenv target for the start task, and install
-# curl so Coolify's container healthcheck can probe /api/rpc/health without
-# falling back from a missing curl to wget.
-RUN corepack enable && touch /app/.env \
-  && apt-get update && apt-get install -y --no-install-recommends curl \
-  && rm -rf /var/lib/apt/lists/*
+COPY --from=test /app /app
 
 EXPOSE 3000
 CMD ["pnpm", "run", "start"]
