@@ -31,9 +31,11 @@ ENV NODE_ENV=production
 
 COPY --from=test /app /app
 
-# Enable pnpm and provide an empty dotenv target; real configuration is supplied
-# by the platform environment and the repository-managed .env behavior.
-RUN corepack enable && touch /app/.env
+# Enable pnpm, provide an empty dotenv target for the start task, and install
+# wget so Coolify's container healthcheck can probe /api/rpc/health.
+RUN corepack enable && touch /app/.env \
+  && apt-get update && apt-get install -y --no-install-recommends wget \
+  && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 3000
 CMD ["pnpm", "run", "start"]
