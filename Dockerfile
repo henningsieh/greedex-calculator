@@ -3,7 +3,7 @@ FROM node:22-bookworm AS test
 WORKDIR /app
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends postgresql python3-aiosmtpd wget \
+  && apt-get install -y --no-install-recommends curl postgresql python3-aiosmtpd wget \
   && rm -rf /var/lib/apt/lists/*
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
@@ -32,9 +32,10 @@ ENV NODE_ENV=production
 COPY --from=test /app /app
 
 # Enable pnpm, provide an empty dotenv target for the start task, and install
-# wget so Coolify's container healthcheck can probe /api/rpc/health.
+# curl so Coolify's container healthcheck can probe /api/rpc/health without
+# falling back from a missing curl to wget.
 RUN corepack enable && touch /app/.env \
-  && apt-get update && apt-get install -y --no-install-recommends wget \
+  && apt-get update && apt-get install -y --no-install-recommends curl \
   && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 3000
