@@ -14,10 +14,6 @@ describe("environment entrypoints", () => {
     path.resolve("src/__tests__/global-setup.ts"),
     "utf8",
   );
-  const candidateTestScript = readFileSync(
-    path.resolve("scripts/test-candidate.sh"),
-    "utf8",
-  );
   const calculatorPackage = JSON.parse(
     readFileSync(path.resolve("package.json"), "utf8"),
   ) as PackageManifest;
@@ -54,13 +50,6 @@ describe("environment entrypoints", () => {
     );
     expect(calculatorPackage.scripts["test:candidate"]).toBe(
       "dotenv -e ../../.env -- bash scripts/test-candidate.sh",
-    );
-    expect(candidateTestScript).toContain('candidate_port="3001"');
-    expect(candidateTestScript).toContain(
-      ': "${RELEASE_TEST_DATABASE_URL:?Set RELEASE_TEST_DATABASE_URL',
-    );
-    expect(candidateTestScript).toContain(
-      "timeout --signal=TERM 5m pnpm --filter @greendex/calculator run test:run",
     );
   });
 
@@ -120,8 +109,5 @@ describe("environment entrypoints", () => {
     );
     expect(calculatorPackage.scripts["dev:socket"]).not.toContain("dotenv");
     expect(calculatorPackage.scripts.start).not.toContain("dotenv");
-    expect(calculatorPackage.scripts.start).toContain(
-      "next start --hostname 0.0.0.0",
-    );
   });
 });

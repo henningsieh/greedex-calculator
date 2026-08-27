@@ -10,17 +10,15 @@ pnpm --filter @greendex/calculator run test:candidate && pnpm run start
 
 1. uses `RELEASE_TEST_DATABASE_URL`, the existing Coolify development database;
 2. applies committed Drizzle migrations to that test database;
-3. starts the built candidate Next.js application on `127.0.0.1:3001`;
+3. starts the built candidate Next.js application on `127.0.0.1:3000`;
 4. waits for `GET /api/rpc/health` on that loopback address;
 5. runs the complete calculator `pnpm run test:run` Vitest suite against that
-   running candidate (with a five-minute maximum); and
+   running candidate; and
 6. stops the temporary candidate test server on success or failure.
 
-Port `3000` remains exclusively for the normal application and Coolify's health
-check. The test server uses `3001`, so a hung test can never make an unfinished
-candidate look healthy. The command sets `NEXT_PUBLIC_BASE_URL` to the test
-server's loopback address. The public hostname is never used as test evidence
-before promotion.
+The command sets `NEXT_PUBLIC_BASE_URL` to the loopback address for both the
+candidate server and the test suite. The public hostname is never used as test
+evidence before promotion.
 
 The candidate receives normal Coolify environment variables directly. It does
 not require `/app/.env`. The normal application `DATABASE_URL` remains the
