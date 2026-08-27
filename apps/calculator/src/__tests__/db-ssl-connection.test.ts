@@ -60,7 +60,7 @@ describe.skipIf(!shouldRunTests)("Database SSL Connection", () => {
     expect(result.rows[0]).toHaveProperty("test_value");
   });
 
-  it("should preserve the configured Coolify require-mode URL", () => {
+  it("should have correct DATABASE_URL format for Coolify require mode", () => {
     expect(DATABASE_URL).toContain("sslmode=require");
     expect(DATABASE_URL).toContain("uselibpqcompat=true");
     // Should NOT contain sslrootcert for "require" mode (no cert verification)
@@ -94,12 +94,11 @@ describe("DATABASE_URL Configuration", () => {
     expect(DATABASE_URL).toMatch(POSTGRES_PROTOCOL_REGEX);
   });
 
-  it("should use the configured SSL mode when one is provided", () => {
-    if (DATABASE_URL?.includes("sslmode=require")) {
-      expect(DATABASE_URL).toContain("uselibpqcompat=true");
-      expect(DATABASE_URL).not.toContain("sslrootcert");
-    } else {
-      expect(DATABASE_URL).not.toContain("sslrootcert");
-    }
+  it("should include sslmode=require parameter", () => {
+    expect(DATABASE_URL).toContain("sslmode=require");
+  });
+
+  it("should include uselibpqcompat=true parameter", () => {
+    expect(DATABASE_URL).toContain("uselibpqcompat=true");
   });
 });

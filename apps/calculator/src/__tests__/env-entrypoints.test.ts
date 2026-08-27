@@ -10,10 +10,6 @@ type PackageManifest = {
 
 describe("environment entrypoints", () => {
   const content = readFileSync(path.resolve("src/socket-server.ts"), "utf8");
-  const globalTestSetup = readFileSync(
-    path.resolve("src/__tests__/global-setup.ts"),
-    "utf8",
-  );
   const calculatorPackage = JSON.parse(
     readFileSync(path.resolve("package.json"), "utf8"),
   ) as PackageManifest;
@@ -41,16 +37,6 @@ describe("environment entrypoints", () => {
 
   it("reads environment variables via the shared @/env module", () => {
     expect(content).toMatch(/await import\("@\/env"\)/);
-  });
-
-  it("supports injected environments for the candidate test command", () => {
-    expect(globalTestSetup).toContain("if (existsSync(envPath))");
-    expect(globalTestSetup).toContain(
-      "Using environment variables injected by the runtime",
-    );
-    expect(calculatorPackage.scripts["test:candidate"]).toBe(
-      "dotenv -e ../../.env -- bash scripts/test-candidate.sh",
-    );
   });
 
   it("loads the root .env before Turbo only for local commands", () => {

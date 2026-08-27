@@ -583,18 +583,15 @@ describe("API Documentation UI", () => {
     });
     try {
       const page = await browser.newPage();
-      await page.goto(docsUrl, {
-        waitUntil: "domcontentloaded",
-        timeout: 30_000,
-      });
+      await page.goto(docsUrl, { timeout: 10_000 });
       await page.waitForSelector("div#app", {
-        timeout: 30_000,
+        timeout: 10_000,
       });
       // Scalar mounts its UI once the bundle executes
-      await page.waitForSelector("main", { timeout: 30_000 });
+      await page.waitForSelector("main", { timeout: 10_000 });
       // The docs heading shows the API title from specGenerateOptions.info.title
       await page.waitForSelector("h1.section-header-label", {
-        timeout: 30_000,
+        timeout: 10_000,
       });
       expect(
         await page.locator("h1.section-header-label").textContent(),
@@ -603,7 +600,7 @@ describe("API Documentation UI", () => {
     } finally {
       await browser.close();
     }
-  }, 45_000);
+  });
 });
 
 describe("OpenAPI Specification", () => {

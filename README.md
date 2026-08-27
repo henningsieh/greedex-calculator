@@ -193,8 +193,7 @@ Run these from the repository root:
 | `pnpm run lint`                                    | Run Oxlint and agent-instruction drift checks |
 | `pnpm run format`                                  | Format workspaces with Oxfmt                  |
 | `pnpm run check:agent-instructions`                | Validate scoped agent instructions            |
-| `pnpm run test:run`                                | Run the complete Vitest suite                 |
-| `pnpm --filter @greendex/calculator test:candidate` | Run the full candidate test gate             |
+| `pnpm run test:run`                                | Run Vitest once                               |
 | `pnpm --filter @greendex/calculator test:coverage` | Run calculator coverage                       |
 | `pnpm run test:e2e`                                | Run Playwright tests                          |
 | `pnpm run db:generate`                             | Generate Drizzle migrations                   |
@@ -361,16 +360,9 @@ application processes. The `"env": ["*"]` setting on the `build` and `start`
 tasks in [`turbo.json`](turbo.json) is critical for forwarding those variables
 to workspace processes.
 
-Coolify runs `pnpm --filter @greendex/calculator run test:candidate` in the
-candidate container before the normal start command. It starts the built
-candidate locally, waits for its loopback health endpoint, and runs the full
-Vitest suite against it using the Coolify development database. A failure
-prevents the candidate from reaching the health check, leaving the previous
-release live. See [`docs/deployment/release-test-gate.md`](docs/deployment/release-test-gate.md).
-
-After the test gate passes, the existing Drizzle `db:migrate` command still
-runs in `prestart`, before Next.js and Socket.IO start. If a migration fails,
-the process exits non-zero and Coolify cannot mark the new calculator container
+Every calculator deployment runs the existing Drizzle `db:migrate` command in
+`prestart`, before Next.js and Socket.IO start. If a migration fails, the
+process exits non-zero and Coolify cannot mark the new calculator container
 healthy. This is the repository's database-as-code deployment contract.
 
 Deployment secrets, database credentials, and infrastructure identifiers are

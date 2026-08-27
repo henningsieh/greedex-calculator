@@ -30,9 +30,6 @@ description: Comprehensive documentation index for all libraries and features in
 - [README.md](database/README.md)
 - [Coolify SSL connection](database/coolify-ssl-connection.md)
 
-### deployment/
-- [Candidate release test gate](deployment/release-test-gate.md)
-
 ### i18n/
 - [Dynamic-Country_Flag-Data.md](i18n/Dynamic-Country_Flag-Data.md)
 - [next-intl.internationalization.md](i18n/next-intl.internationalization.md)
