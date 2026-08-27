@@ -3,18 +3,16 @@ import { resolve } from "node:path";
 
 import { config } from "dotenv";
 
-// Load environment variables from monorepo root BEFORE any tests run
-// In Turborepo, the .env file is at the repository root, not in apps/calculator
+// Load local development values when available. Coolify injects values into
+// the candidate container directly and intentionally has no repository .env.
 const envPath = resolve(process.cwd(), "../../.env");
 
-if (!existsSync(envPath)) {
-  console.error(`❌ .env file not found at: ${envPath}`);
-  process.exit(1);
+if (existsSync(envPath)) {
+  config({ path: envPath });
+  console.log(`✅ Loaded environment variables from: ${envPath}`);
+} else {
+  console.log("✅ Using environment variables injected by the runtime");
 }
-
-config({ path: envPath });
-
-console.log(`✅ Loaded environment variables from: ${envPath}`);
 
 export default function setup() {
   // Global setup function - runs before all tests
