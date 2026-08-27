@@ -1,9 +1,19 @@
+# syntax=docker/dockerfile:1
 FROM node:22-bookworm AS test
+
+# Non-sensitive identifiers may arrive as plain build args.
+ARG GOOGLE_CLIENT_ID
+ARG DISCORD_CLIENT_ID
+ARG GITHUB_CLIENT_ID
+ARG SMTP_HOST
+ARG SMTP_PORT
+ARG SMTP_SENDER
+ARG SMTP_SECURE
 
 WORKDIR /app
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends curl postgresql python3-aiosmtpd wget \
+  && apt-get install -y --no-install-recommends curl postgresql wget \
   && rm -rf /var/lib/apt/lists/*
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
@@ -22,7 +32,24 @@ RUN corepack enable && pnpm install --frozen-lockfile
 RUN pnpm --filter @greendex/calculator exec playwright install --with-deps chromium
 
 COPY . .
-RUN ./docker/run-candidate-tests.sh
+
+# Sensitive credentials are provided as Docker build secrets, mounted into this
+# single step and exposed to the script under /run/secrets/<NAME>. They never
+# become part of any image layer, manifest, or cache entry.
+RUN --mount=type=secret,id=BETTER_AUTH_SECRET \
+    --mount=type=secret,id=GOOGLE_CLIENT_ID \
+    --mount=type=secret,id=GOOGLE_CLIENT_SECRET \
+    --mount=type=secret,id=DISCORD_CLIENT_ID \
+    --mount=type=secret,id=DISCORD_CLIENT_SECRET \
+    --mount=type=secret,id=GITHUB_CLIENT_ID \
+    --mount=type=secret,id=GITHUB_CLIENT_SECRET \
+    --mount=type=secret,id=SMTP_HOST \
+    --mount=type=secret,id=SMTP_PORT \
+    --mount=type=secret,id=SMTP_SENDER \
+    --mount=type=secret,id=SMTP_USERNAME \
+    --mount=type=secret,id=SMTP_PASSWORD \
+    --mount=type=secret,id=SMTP_SECURE \
+    ./docker/run-candidate-tests.sh
 
 FROM node:22-bookworm-slim AS runtime
 

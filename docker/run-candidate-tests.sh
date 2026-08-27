@@ -8,8 +8,6 @@ pg_ctlcluster "$postgres_version" main start
 runuser -u postgres -- psql -c "ALTER USER postgres PASSWORD 'test-password';"
 runuser -u postgres -- createdb greendex_test
 
-python3 -m aiosmtpd -n -l 127.0.0.1:587 >/tmp/test-smtp.log 2>&1 &
-smtp_pid=$!
 server_pid=""
 
 cleanup() {
@@ -17,7 +15,6 @@ cleanup() {
     kill "$server_pid" 2>/dev/null || true
     wait "$server_pid" 2>/dev/null || true
   fi
-  kill "$smtp_pid" 2>/dev/null || true
   pg_ctlcluster "$postgres_version" main stop 2>/dev/null || true
   rm -f .env
 }
@@ -30,25 +27,42 @@ export NODE_ENV="test"
 export PORT="3000"
 export SOCKET_PORT="4000"
 export ORPC_DEV_DELAY_MS="0"
-repeat() {
-  local character="$1"
-  local length="$2"
-  printf "%*s" "$length" "" | tr " " "$character"
-}
 
-export BETTER_AUTH_SECRET=$(repeat x 32)
-export GOOGLE_CLIENT_ID="$(repeat 0 12).apps.googleusercontent.com"
-export GOOGLE_CLIENT_SECRET="GOCSPX$(repeat x 24)"
-export DISCORD_CLIENT_ID=$(repeat 0 19)
-export DISCORD_CLIENT_SECRET=$(repeat x 32)
-export GITHUB_CLIENT_ID=$(repeat 0 20)
-export GITHUB_CLIENT_SECRET=$(repeat x 40)
-export SMTP_HOST="127.0.0.1"
-export SMTP_PORT="587"
-export SMTP_SENDER="test@invalid.example"
-export SMTP_USERNAME="test"
-export SMTP_PASSWORD=$(repeat x 32)
-export SMTP_SECURE="false"
+# Every secret and external-service credential MUST be supplied by the build
+# environment (Coolify build variables locally; the real .env when running
+# locally). Fabricating dummies here would make the candidate tests behave
+# differently from real deployments, which is not acceptable.
+required_secrets=(
+  BETTER_AUTH_SECRET
+  GOOGLE_CLIENT_ID 
+  GOOGLE_CLIENT_SECRET
+  DISCORD_CLIENT_ID
+  DISCORD_CLIENT_SECRET
+  GITHUB_CLIENT_ID 
+  GITHUB_CLIENT_SECRET
+  SMTP_HOST
+  SMTP_PORT
+  SMTP_SENDER
+  SMTP_USERNAME
+  SMTP_PASSWORD
+  SMTP_SECURE
+)
+missing_secrets=()
+for key in "${required_secrets[@]}"; do
+  # BuildKit mounts secrets as files under /run/secrets; fall back to the
+  # process environment for builds that pass values as --build-arg instead.
+  if [[ -f "/run/secrets/$key" ]]; then
+    value=$(cat "/run/secrets/$key")
+    export "$key=$value"
+  elif [[ -z "${!key:-}" ]]; then
+    missing_secrets+=("$key")
+  fi
+done
+if ((${#missing_secrets[@]} > 0)); then
+  echo "Missing required environment variables: ${missing_secrets[*]}" >&2
+  echo "Mark them as Build Variables in Coolify or provide them via --build-arg." >&2
+  exit 1
+fi
 
 # The existing Vitest global setup reads the root .env. This file exists only
 # inside the disposable test stage and contains generated test configuration.
