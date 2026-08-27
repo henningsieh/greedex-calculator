@@ -63,10 +63,33 @@ ENV NODE_ENV=production
 RUN apt-get update \
   && apt-get install -y --no-install-recommends curl \
   && rm -rf /var/lib/apt/lists/* \
-  && corepack enable \
-  && touch /app/.env
+  && corepack enable
 
-COPY --from=test /app /app
+# Create production-only dependency tree
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
+COPY apps/calculator/package.json apps/calculator/package.json
+COPY apps/documentation/package.json apps/documentation/package.json
+COPY packages/auth/package.json packages/auth/package.json
+COPY packages/config/package.json packages/config/package.json
+COPY packages/database/package.json packages/database/package.json
+COPY packages/email/package.json packages/email/package.json
+COPY packages/i18n/package.json packages/i18n/package.json
+
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy only required runtime build outputs from test stage
+COPY --from=test /app/apps ./apps
+COPY --from=test /app/packages ./packages
+COPY --from=test /app/turbo.json ./turbo.json
+COPY --from=test /app/.oxfmtrc.json ./.oxfmtrc.json
+
+# Create non-root user and set ownership
+RUN groupadd -r appuser && useradd -r -g appuser appuser \
+  && chown -R appuser:appuser /app \
+  && touch /app/.env \
+  && chown appuser:appuser /app/.env
+
+USER appuser
 
 EXPOSE 3000
 CMD ["pnpm", "run", "start"]

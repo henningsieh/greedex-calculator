@@ -73,18 +73,22 @@ async function createDisposableDatabase(): Promise<{
 }> {
   const databaseName = `cleanup_${randomUUID().replaceAll("-", "")}`;
   const adminPool = new Pool({ connectionString: adminDatabaseUrl(), max: 1 });
+  await adminPool.query(`CREATE DATABASE "${databaseName}"`);
+
+  const pool = new Pool({
+    connectionString: disposableDatabaseUrl(databaseName),
+    max: 1,
+  });
   // pg_terminate_backend in dropDisposableDatabase can race with an idle pooled
   // client; without this handler the FATAL 57P01 surfaces as an unhandled error.
-  adminPool.on("error", () => {});
-  await adminPool.query(`CREATE DATABASE "${databaseName}"`);
+  pool.on("error", (err) => {
+    if ((err as { code?: string }).code !== "57P01") throw err;
+  });
 
   return {
     databaseName,
     adminPool,
-    pool: new Pool({
-      connectionString: disposableDatabaseUrl(databaseName),
-      max: 1,
-    }).on("error", () => {}),
+    pool,
   };
 }
 

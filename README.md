@@ -47,7 +47,7 @@ resources, sustainability challenges, and the Greendex E-Forest. Learn more at
 | Real-time POC        | Socket.IO `4.8.3`                                             |
 | Documentation        | Fumadocs + Next.js                                            |
 | Tests                | Vitest `4.1.11`, Playwright `1.62.1`                          |
-| Quality              | Oxlint `1.79.0`, Oxfmt `0.64.0`                               |
+| Quality              | Oxlint `1.80.0`, Oxfmt `0.65.0`                               |
 
 Core framework versions are centralized in the catalog in
 `pnpm-workspace.yaml`. Formatter behavior — including import sorting — is
@@ -103,7 +103,7 @@ Use the current project toolchain where possible:
 - Node.js 22+ (Node.js 24 recommended) — enforced via `engines.node >= 22` in
   the root `package.json` and pinned to `22` in `.node-version`
 - Corepack
-- pnpm `10.28.2` (declared by `packageManager`)
+- pnpm `11.24.0` (declared by `packageManager`)
 - PostgreSQL
 
 ### Install

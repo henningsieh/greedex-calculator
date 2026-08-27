@@ -40,6 +40,7 @@ const projectId = randomUUID();
 const foreignOrganizationId = randomUUID();
 const foreignProjectId = randomUUID();
 const headers = new Headers();
+const sharedTravelEmail = `shared-travel-${userId}-${Date.now()}@sieh.org`;
 
 const client = createRouterClient(router, {
   context: async () => ({ headers }),
@@ -49,7 +50,7 @@ beforeAll(async () => {
   await db.insert(user).values({
     id: userId,
     name: "Shared Travel Contract User",
-    email: `shared-travel-${userId}-${Date.now()}@sieh.org`,
+    email: sharedTravelEmail,
     emailVerified: true,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -98,7 +99,7 @@ beforeEach(() => {
     user: {
       id: userId,
       name: "Shared Travel Contract User",
-      email: `shared-travel-${userId}-${Date.now()}@sieh.org`,
+      email: sharedTravelEmail,
     },
   });
   authMocks.hasPermission.mockResolvedValue(true);

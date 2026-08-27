@@ -75,18 +75,18 @@ async function createDisposableDatabase(): Promise<{
 }> {
   const databaseName = `shared_travel_${randomUUID().replaceAll("-", "")}`;
   const adminPool = new Pool({ connectionString: adminDatabaseUrl(), max: 1 });
-  attachPoolErrorHandler(adminPool);
   await adminPool.query(`CREATE DATABASE "${databaseName}"`);
+
+  const pool = new Pool({
+    connectionString: disposableDatabaseUrl(databaseName),
+    max: 1,
+  });
+  attachPoolErrorHandler(pool);
 
   return {
     databaseName,
     adminPool,
-    pool: attachPoolErrorHandler(
-      new Pool({
-        connectionString: disposableDatabaseUrl(databaseName),
-        max: 1,
-      }),
-    ),
+    pool,
   };
 }
 
@@ -94,7 +94,9 @@ async function createDisposableDatabase(): Promise<{
 // client. Without this handler the resulting FATAL 57P01 surfaces as an
 // unhandled exception even though every assertion already passed.
 function attachPoolErrorHandler(pool: Pool): Pool {
-  pool.on("error", () => {});
+  pool.on("error", (err) => {
+    if ((err as { code?: string }).code !== "57P01") throw err;
+  });
   return pool;
 }
 
