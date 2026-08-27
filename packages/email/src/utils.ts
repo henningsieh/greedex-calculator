@@ -6,7 +6,7 @@
  * Masks an email address for logging purposes to protect user privacy.
  * Replaces most of the local part with asterisks, keeping only the first character and domain.
  * @param email - The email address to mask.
- * @returns The masked email, e.g., "j***@example.com".
+ * @returns The masked email, e.g., "j***@sieh.org".
  */
 export function maskEmail(email?: string): string {
   if (!email) {

@@ -1,9 +1,9 @@
 import { createEmailSender } from "@greendex/email";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const senderAddress = "greendex@example.com";
-const baseUrl = "https://greendex.example";
-const recipient = "recipient@example.com";
+const senderAddress = "greendex@sieh.org";
+const baseUrl = "https://greendex.apps.sieh.org";
+const recipient = `recipient-${Date.now()}@sieh.org`;
 const sendMail = vi.fn();
 
 const emailSender = createEmailSender({
@@ -21,7 +21,7 @@ describe("email sender", () => {
   });
 
   it("renders and sends an email verification message", async () => {
-    const verificationUrl = "https://greendex.example/verify?token=verification";
+    const verificationUrl = `https://greendex.apps.sieh.org/verify?token=verification`;
 
     await emailSender.sendEmailVerificationEmail({
       user: { email: recipient, name: "Ada Lovelace" },
@@ -39,7 +39,7 @@ describe("email sender", () => {
   });
 
   it("renders and sends a password reset message", async () => {
-    const resetUrl = "https://greendex.example/reset?token=reset";
+    const resetUrl = `https://greendex.apps.sieh.org/reset?token=reset`;
 
     await emailSender.sendPasswordResetEmail({
       user: { email: recipient, name: "Ada Lovelace" },
@@ -57,7 +57,7 @@ describe("email sender", () => {
   });
 
   it("renders and sends an organization invitation", async () => {
-    const inviteLink = "https://greendex.example/invitations/invite";
+    const inviteLink = `https://greendex.apps.sieh.org/invitations/invite`;
 
     await emailSender.sendOrganizationInvitation({
       email: recipient,
@@ -86,7 +86,7 @@ describe("email sender", () => {
   });
 
   it("sends a magic-link message with HTML and plain text content", async () => {
-    const magicLink = "https://greendex.example/magic-link?token=magic";
+    const magicLink = `https://greendex.apps.sieh.org/magic-link?token=magic`;
 
     await emailSender.sendMagicLinkEmail({ email: recipient, url: magicLink });
 

@@ -34,7 +34,7 @@ vi.mock("@/env", () => ({
       GITHUB_CLIENT_SECRET: "test-github-client-secret-40-chars",
       SMTP_HOST: "localhost",
       SMTP_PORT: 587,
-      SMTP_SENDER: "test@example.com",
+      SMTP_SENDER: "greendex@sieh.org",
       SMTP_USERNAME: "test",
       SMTP_PASSWORD: "test",
       SMTP_SECURE: false,

@@ -60,7 +60,7 @@ async function applyCutoverMigration(pool: Pool): Promise<void> {
 async function createLegacyProject(pool: Pool): Promise<void> {
   await pool.query(`
     INSERT INTO "user" ("id", "name", "email", "email_verified", "created_at", "updated_at")
-    VALUES ('owner', 'Migration Owner', 'owner@example.com', true, '2026-01-01T00:00:00.000Z', '2026-01-01T00:00:00.000Z');
+    VALUES ('owner', 'Migration Owner', 'owner-${Date.now()}@sieh.org', true, '2026-01-01T00:00:00.000Z', '2026-01-01T00:00:00.000Z');
     INSERT INTO "organization" ("id", "name", "slug", "created_at")
     VALUES ('organization', 'Migration Organization', 'migration-organization', '2026-01-01T00:00:00.000Z');
     INSERT INTO "project" ("id", "name", "start_date", "end_date", "location", "country", "responsible_user_id", "organization_id", "archived", "created_at", "updated_at")

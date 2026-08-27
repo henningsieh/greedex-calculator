@@ -26,7 +26,7 @@ describe("public participation contract", () => {
     await db.insert(user).values({
       id: userId,
       name: "Public Participation Contract User",
-      email: `public-participation-${userId}@example.com`,
+      email: `public-participation-${userId}@sieh.org`,
       emailVerified: true,
       createdAt: new Date(),
       updatedAt: new Date(),

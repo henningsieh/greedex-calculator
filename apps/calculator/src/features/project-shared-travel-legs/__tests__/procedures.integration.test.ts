@@ -49,7 +49,7 @@ beforeAll(async () => {
   await db.insert(user).values({
     id: userId,
     name: "Shared Travel Contract User",
-    email: `shared-travel-${userId}@example.com`,
+    email: `shared-travel-${userId}-${Date.now()}@sieh.org`,
     emailVerified: true,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -98,7 +98,7 @@ beforeEach(() => {
     user: {
       id: userId,
       name: "Shared Travel Contract User",
-      email: `shared-travel-${userId}@example.com`,
+      email: `shared-travel-${userId}-${Date.now()}@sieh.org`,
     },
   });
   authMocks.hasPermission.mockResolvedValue(true);
