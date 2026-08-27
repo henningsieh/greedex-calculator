@@ -61,35 +61,30 @@ ENV NODE_ENV=production
 # COPY --from=test step, so apt never competes with the test-stage export
 # for disk space.
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends curl \
+  && apt-get install -y --no-install-recommends curl procps \
   && rm -rf /var/lib/apt/lists/* \
   && corepack enable
 
-# Create production-only dependency tree
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
-COPY apps/calculator/package.json apps/calculator/package.json
-COPY apps/documentation/package.json apps/documentation/package.json
-COPY packages/auth/package.json packages/auth/package.json
-COPY packages/config/package.json packages/config/package.json
-COPY packages/database/package.json packages/database/package.json
-COPY packages/email/package.json packages/email/package.json
-COPY packages/i18n/package.json packages/i18n/package.json
+COPY --from=test /app /app
 
-RUN pnpm install --frozen-lockfile --prod
+# The .next output is coupled to the exact node_modules layout it was built
+# against (Turbopack bakes resolved package identities into chunks), so the
+# full workspace tree ships as-is: building against a production-only tree is
+# not possible (TypeScript/tailwind/dotenv-cli are devDependencies) and a
+# production-only relink breaks every baked chunk reference. Switching to
+# Next.js output:"standalone" is the follow-up refactor that would change
+# this. Only the disposable Next.js build cache is dropped.
+RUN touch /app/.env \
+  && rm -rf /app/apps/*/.next/cache
 
-# Copy only required runtime build outputs from test stage
-COPY --from=test /app/apps ./apps
-COPY --from=test /app/packages ./packages
-COPY --from=test /app/turbo.json ./turbo.json
-COPY --from=test /app/.oxfmtrc.json ./.oxfmtrc.json
+# Application files stay root-owned (read/execute only). Only the trees the
+# runtime legitimately writes (Next.js caches and the documentation app's
+# fumadocs codegen) are writable by the unprivileged process.
+RUN chown -R node:node /app/apps/calculator/.next \
+  /app/apps/documentation/.next \
+  /app/apps/documentation/.source
 
-# Create non-root user and set ownership
-RUN groupadd -r appuser && useradd -r -g appuser appuser \
-  && chown -R appuser:appuser /app \
-  && touch /app/.env \
-  && chown appuser:appuser /app/.env
-
-USER appuser
+USER node
 
 EXPOSE 3000
 CMD ["pnpm", "run", "start"]
