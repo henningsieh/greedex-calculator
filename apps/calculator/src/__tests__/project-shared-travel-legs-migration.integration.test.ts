@@ -75,16 +75,27 @@ async function createDisposableDatabase(): Promise<{
 }> {
   const databaseName = `shared_travel_${randomUUID().replaceAll("-", "")}`;
   const adminPool = new Pool({ connectionString: adminDatabaseUrl(), max: 1 });
+  attachPoolErrorHandler(adminPool);
   await adminPool.query(`CREATE DATABASE "${databaseName}"`);
 
   return {
     databaseName,
     adminPool,
-    pool: new Pool({
-      connectionString: disposableDatabaseUrl(databaseName),
-      max: 1,
-    }),
+    pool: attachPoolErrorHandler(
+      new Pool({
+        connectionString: disposableDatabaseUrl(databaseName),
+        max: 1,
+      }),
+    ),
   };
+}
+
+// pg_terminate_backend in dropDisposableDatabase can race with an idle pooled
+// client. Without this handler the resulting FATAL 57P01 surfaces as an
+// unhandled exception even though every assertion already passed.
+function attachPoolErrorHandler(pool: Pool): Pool {
+  pool.on("error", () => {});
+  return pool;
 }
 
 async function dropDisposableDatabase(

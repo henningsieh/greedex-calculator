@@ -1,0 +1,13 @@
+# Local state and secrets never enter an image build.
+.git
+.env
+.env.*
+!.env.example
+node_modules
+**/node_modules
+.next
+**/.next
+.turbo
+**/.turbo
+coverage
+**/coverage
