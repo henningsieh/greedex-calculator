@@ -9,6 +9,11 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "jsdom",
+    environmentOptions: {
+      jsdom: {
+        url: process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000",
+      },
+    },
     globals: true,
     globalSetup: ["./src/__tests__/global-setup.ts"],
     setupFiles: ["./src/__tests__/setup.ts"],

@@ -16,7 +16,7 @@
     "prebuild": "pnpm run generate:sri && pnpm run check:sri && turbo run db:migrate",
     "build": "next build",
     "prestart": "pnpx kill-port 3000 4000 || true && sleep 1 && pnpm --filter @greendex/database run db:migrate",
-    "start": "concurrently --kill-others \"next start\" \"cross-env NODE_ENV=production tsx src/socket-server.ts\"",
+    "start": "concurrently --kill-others \"next start --hostname 0.0.0.0\" \"cross-env NODE_ENV=production tsx src/socket-server.ts\"",
     "format": "oxfmt",
     "lint": "oxlint --fix --fix-suggestions --fix-dangerously",
     "type-check": "next typegen && tsc --noEmit",

@@ -39,7 +39,9 @@ vi.mock("@/env", () => ({
       SMTP_PASSWORD: "test",
       SMTP_SECURE: false,
       NODE_ENV: "test",
-      PORT: 3000,
+      get PORT() {
+        return Number(process.env.PORT ?? "3000");
+      },
       ORPC_DEV_DELAY_MS: 0,
       SOCKET_PORT: 4000,
     };
