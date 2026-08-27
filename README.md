@@ -36,7 +36,7 @@ resources, sustainability challenges, and the Greendex E-Forest. Learn more at
 | Web applications     | Next.js `16.3.2`, React `19.2.8`, App Router, React Compiler  |
 | Language             | TypeScript `7.0.2`                                            |
 | Monorepo             | Turborepo `2.10.12`, pnpm workspaces/catalog                  |
-| Package manager      | pnpm `11.23.0`                                                |
+| Package manager      | pnpm `11.24.0`                                                |
 | UI                   | shadcn/ui, Radix UI, cmdk, Tailwind CSS `4.3.3`               |
 | Authentication       | Better Auth `1.7.1` with organization and social-auth plugins |
 | API                  | oRPC `1.15.x`, TanStack Query, OpenAPI/Scalar                 |
