@@ -547,6 +547,11 @@ describe("OpenAPI REST Endpoint", () => {
   });
 });
 
+// Scalar loads its bundle from a CDN, so each navigation/selector operation
+// gets a generous budget; the whole-test budget must exceed their sum.
+const DOCS_UI_TIMEOUT_MS = 30_000;
+const DOCS_TEST_TIMEOUT_MS = 120_000;
+
 describe("API Documentation UI", () => {
   const docsUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/docs`;
 
@@ -569,41 +574,45 @@ describe("API Documentation UI", () => {
     expect(html).toContain("https://cdn.jsdelivr.net/npm/@scalar/api-reference");
   });
 
-  it("should render accessible API documentation UI", async () => {
-    if (!serverAvailable) {
-      throw new Error("Server not available");
-    }
+  it(
+    "should render accessible API documentation UI",
+    async () => {
+      if (!serverAvailable) {
+        throw new Error("Server not available");
+      }
 
-    // Verify the docs page is available and the Scalar UI actually renders.
-    // Uses stable markers from the plugin's own HTML template (#app), the
-    // <main> landmark Scalar mounts, and the page title instead of a
-    // Scalar-internal aria-label, which changes between Scalar versions.
-    const browser = await chromium.launch({
-      headless: process.env.HEADED !== "true",
-    });
-    try {
-      const page = await browser.newPage();
-      await page.goto(docsUrl, {
-        waitUntil: "domcontentloaded",
-        timeout: 30_000,
+      // Verify the docs page is available and the Scalar UI actually renders.
+      // Uses stable markers from the plugin's own HTML template (#app), the
+      // <main> landmark Scalar mounts, and the page title instead of a
+      // Scalar-internal aria-label, which changes between Scalar versions.
+      const browser = await chromium.launch({
+        headless: process.env.HEADED !== "true",
       });
-      await page.waitForSelector("div#app", {
-        timeout: 30_000,
-      });
-      // Scalar mounts its UI once the bundle executes
-      await page.waitForSelector("main", { timeout: 30_000 });
-      // The docs heading shows the API title from specGenerateOptions.info.title
-      await page.waitForSelector("h1.section-header-label", {
-        timeout: 30_000,
-      });
-      expect(
-        await page.locator("h1.section-header-label").textContent(),
-      ).toContain("Greendex Calculator API");
-      expect(await page.title()).toContain("API Reference");
-    } finally {
-      await browser.close();
-    }
-  }, 45_000);
+      try {
+        const page = await browser.newPage();
+        await page.goto(docsUrl, {
+          waitUntil: "domcontentloaded",
+          timeout: DOCS_UI_TIMEOUT_MS,
+        });
+        await page.waitForSelector("div#app", {
+          timeout: DOCS_UI_TIMEOUT_MS,
+        });
+        // Scalar mounts its UI once the bundle executes
+        await page.waitForSelector("main", { timeout: DOCS_UI_TIMEOUT_MS });
+        // The docs heading shows the API title from specGenerateOptions.info.title
+        await page.waitForSelector("h1.section-header-label", {
+          timeout: DOCS_UI_TIMEOUT_MS,
+        });
+        expect(
+          await page.locator("h1.section-header-label").textContent(),
+        ).toContain("Greendex Calculator API");
+        expect(await page.title()).toContain("API Reference");
+      } finally {
+        await browser.close();
+      }
+    },
+    DOCS_TEST_TIMEOUT_MS,
+  );
 });
 
 describe("OpenAPI Specification", () => {
