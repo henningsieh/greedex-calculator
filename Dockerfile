@@ -33,10 +33,12 @@ RUN pnpm --filter @greendex/calculator exec playwright install --with-deps chrom
 
 COPY . .
 
-# Sensitive credentials are provided as Docker build secrets, mounted into this
-# single step and exposed to the script under /run/secrets/<NAME>. They never
-# become part of any image layer, manifest, or cache entry.
-RUN --mount=type=secret,id=BETTER_AUTH_SECRET \
+# Build configuration is mounted into this single step and exposed to the
+# script under /run/secrets/<NAME>. Public URLs are needed while compiling the
+# browser bundle; credentials never become part of an image layer or manifest.
+RUN --mount=type=secret,id=NEXT_PUBLIC_BASE_URL \
+    --mount=type=secret,id=NEXT_PUBLIC_SOCKET_URL \
+    --mount=type=secret,id=BETTER_AUTH_SECRET \
     --mount=type=secret,id=GOOGLE_CLIENT_ID \
     --mount=type=secret,id=GOOGLE_CLIENT_SECRET \
     --mount=type=secret,id=DISCORD_CLIENT_ID \

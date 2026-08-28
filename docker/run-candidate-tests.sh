@@ -21,24 +21,26 @@ cleanup() {
 trap cleanup EXIT
 
 export DATABASE_URL="postgres://postgres:test-password@127.0.0.1:5432/greendex_test?sslmode=require&uselibpqcompat=true"
-export NEXT_PUBLIC_BASE_URL="http://127.0.0.1:3000"
-export NEXT_PUBLIC_SOCKET_URL="http://127.0.0.1:4000"
+# Candidate-local requests must not replace the public values compiled into the
+# release bundle. NEXT_PUBLIC_* variables are frozen by `next build`.
+export CANDIDATE_BASE_URL="http://127.0.0.1:3000"
 export NODE_ENV="test"
 export PORT="3000"
 export SOCKET_PORT="4000"
 export ORPC_DEV_DELAY_MS="0"
 
-# Every secret and external-service credential MUST be supplied by the build
-# environment (Coolify build variables locally; the real .env when running
-# locally). Fabricating dummies here would make the candidate tests behave
-# differently from real deployments, which is not acceptable.
-required_secrets=(
+# Public build values and external-service credentials are supplied by the
+# build environment. Public values are compiled into the candidate bundle;
+# credentials are consumed by the current release test suite.
+required_build_variables=(
+  NEXT_PUBLIC_BASE_URL
+  NEXT_PUBLIC_SOCKET_URL
   BETTER_AUTH_SECRET
-  GOOGLE_CLIENT_ID 
+  GOOGLE_CLIENT_ID
   GOOGLE_CLIENT_SECRET
   DISCORD_CLIENT_ID
   DISCORD_CLIENT_SECRET
-  GITHUB_CLIENT_ID 
+  GITHUB_CLIENT_ID
   GITHUB_CLIENT_SECRET
   SMTP_HOST
   SMTP_PORT
@@ -47,19 +49,19 @@ required_secrets=(
   SMTP_PASSWORD
   SMTP_SECURE
 )
-missing_secrets=()
-for key in "${required_secrets[@]}"; do
+missing_build_variables=()
+for key in "${required_build_variables[@]}"; do
   # BuildKit mounts secrets as files under /run/secrets; fall back to the
   # process environment for builds that pass values as --build-arg instead.
   if [[ -f "/run/secrets/$key" ]]; then
     value=$(cat "/run/secrets/$key")
     export "$key=$value"
   elif [[ -z "${!key:-}" ]]; then
-    missing_secrets+=("$key")
+    missing_build_variables+=("$key")
   fi
 done
-if ((${#missing_secrets[@]} > 0)); then
-  echo "Missing required environment variables: ${missing_secrets[*]}" >&2
+if ((${#missing_build_variables[@]} > 0)); then
+  echo "Missing required environment variables: ${missing_build_variables[*]}" >&2
   echo "Mark them as Build Variables in Coolify or provide them via --build-arg." >&2
   exit 1
 fi

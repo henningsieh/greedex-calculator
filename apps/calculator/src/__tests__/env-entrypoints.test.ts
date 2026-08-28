@@ -27,6 +27,15 @@ describe("environment entrypoints", () => {
   ) as {
     tasks: Record<string, { env?: string[] }>;
   };
+  const candidateTestScript = readFileSync(
+    path.resolve("../../docker/run-candidate-tests.sh"),
+    "utf8",
+  );
+  const dockerfile = readFileSync(path.resolve("../../Dockerfile"), "utf8");
+  const openApiRestTest = readFileSync(
+    path.resolve("src/__tests__/openapi-rest.test.ts"),
+    "utf8",
+  );
 
   it("does not load dotenv from a hardcoded .env path", () => {
     const importLine = content
@@ -95,5 +104,19 @@ describe("environment entrypoints", () => {
     );
     expect(calculatorPackage.scripts["dev:socket"]).not.toContain("dotenv");
     expect(calculatorPackage.scripts.start).not.toContain("dotenv");
+  });
+
+  it("keeps public build URLs separate from the candidate HTTP endpoint", () => {
+    expect(candidateTestScript).toContain(
+      'export CANDIDATE_BASE_URL="http://127.0.0.1:3000"',
+    );
+    expect(candidateTestScript).not.toMatch(
+      /export NEXT_PUBLIC_(?:BASE|SOCKET)_URL="http:\/\/127\.0\.0\.1/,
+    );
+    expect(dockerfile).toContain("id=NEXT_PUBLIC_BASE_URL");
+    expect(dockerfile).toContain("id=NEXT_PUBLIC_SOCKET_URL");
+    expect(openApiRestTest).toContain(
+      "env.CANDIDATE_BASE_URL ?? env.NEXT_PUBLIC_BASE_URL",
+    );
   });
 });

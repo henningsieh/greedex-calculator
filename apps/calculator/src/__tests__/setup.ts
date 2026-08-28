@@ -42,6 +42,9 @@ vi.mock("@/env", () => ({
       PORT: 3000,
       ORPC_DEV_DELAY_MS: 0,
       SOCKET_PORT: 4000,
+      get CANDIDATE_BASE_URL() {
+        return process.env.CANDIDATE_BASE_URL;
+      },
     };
   },
 }));

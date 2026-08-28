@@ -17,7 +17,10 @@ import { env } from "@/env";
 import { SEED_USER } from "../../scripts/seed";
 
 const OPENAPI_VERSION_REGEX = /^3\.\d+\.\d+$/;
-const baseUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/openapi`;
+// Candidate-release tests access the unpublished container directly while the
+// public URL remains the value compiled into the browser bundle.
+const testBaseUrl = env.CANDIDATE_BASE_URL ?? env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = `${testBaseUrl}/api/openapi`;
 let serverAvailable = false;
 
 // Check if server is available before running tests
