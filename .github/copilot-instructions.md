@@ -11,7 +11,6 @@
 Never execute commands that start the development server or any forced/hard git commands:
 
 - `pnpm run dev`, `npm run dev`, `yarn dev`, or any dev server! Most of the time there is already a dev server running on port 3000.
-- Background processes or new terminal sessions
 - `git push --force`, `git reset --hard`, or destructive git operations
 
 ### Allowed Commands
