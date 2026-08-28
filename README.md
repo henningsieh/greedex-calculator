@@ -191,7 +191,7 @@ Run these from the repository root:
 | `pnpm run start`                                   | Start persistent workspace services           |
 | `pnpm run type-check`                              | Run workspace type checks                     |
 | `pnpm run lint`                                    | Run Oxlint and agent-instruction drift checks |
-| `pnpm run format`                                  | Format workspaces with Oxfmt                  |
+| `pnpm run format`                                  | Check workspace formatting with Oxfmt         |
 | `pnpm run check:agent-instructions`                | Validate scoped agent instructions            |
 | `pnpm run test:run`                                | Run Vitest once                               |
 | `pnpm --filter @greendex/calculator test:coverage` | Run calculator coverage                       |
@@ -355,9 +355,11 @@ Greendex currently deploys only to a shared **Coolify development environment**:
 - Socket port: `4000`, exposed through the configured public socket URL
 
 Deployment uses the repository **Dockerfile** (multi-stage): a `test` stage
-runs the full Vitest suite against a real candidate (disposable PostgreSQL,
-migrations, seed) and must pass before the `runtime` stage image is built —
-a failing candidate aborts the build and is never promoted. Credentials are
+checks repository formatting, linting, type safety, and synchronized agent
+instructions before exercising the full Vitest suite against a real candidate
+(disposable PostgreSQL, migrations, seed). Every check must pass before the
+`runtime` stage image is built, so a failing candidate aborts the build and is
+never promoted. Credentials are
 injected as Docker build secrets (Coolify "Build Variables" +
 `use_build_secrets`) and exist only in the test stage. The runtime image runs
 as the unprivileged `node` user and relies on Coolify injecting environment

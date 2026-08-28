@@ -11,8 +11,8 @@
     "./client": "./src/auth-client.ts"
   },
   "scripts": {
-    "format": "oxfmt",
-    "lint": "oxlint --fix --fix-suggestions --fix-dangerously",
+    "format": "oxfmt --check",
+    "lint": "oxlint",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf node_modules .turbo"
   },
@@ -22,8 +22,6 @@
     "better-auth": "catalog:"
   },
   "devDependencies": {
-    "oxfmt": "^0.64.0",
-    "oxlint": "^1.79.0",
     "typescript": "catalog:"
   },
   "peerDependencies": {

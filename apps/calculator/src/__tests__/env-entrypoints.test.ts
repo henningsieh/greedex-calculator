@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 type PackageManifest = {
   scripts: Record<string, string>;
   dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
 };
 
 describe("environment entrypoints", () => {
@@ -16,6 +17,23 @@ describe("environment entrypoints", () => {
   const rootPackage = JSON.parse(
     readFileSync(path.resolve("../../package.json"), "utf8"),
   ) as PackageManifest;
+  const workspacePackages = [
+    "apps/documentation/package.json",
+    "packages/auth/package.json",
+    "packages/config/package.json",
+    "packages/database/package.json",
+    "packages/email/package.json",
+    "packages/i18n/package.json",
+  ].map(
+    (manifestPath) =>
+      JSON.parse(
+        readFileSync(path.resolve("../..", manifestPath), "utf8"),
+      ) as PackageManifest,
+  );
+  const workspaceConfig = readFileSync(
+    path.resolve("../../pnpm-workspace.yaml"),
+    "utf8",
+  );
   const nextConfig = readFileSync(path.resolve("next.config.ts"), "utf8");
   const turboConfig = JSON.parse(
     readFileSync(path.resolve("../../turbo.json"), "utf8"),
@@ -138,6 +156,39 @@ describe("environment entrypoints", () => {
     expect(dockerfile).toContain("id=NEXT_PUBLIC_SOCKET_URL");
     expect(openApiRestTest).toContain(
       "env.CANDIDATE_BASE_URL ?? env.NEXT_PUBLIC_BASE_URL",
+    );
+  });
+
+  it("runs non-mutating repository quality checks before candidate setup", () => {
+    expect(rootPackage.scripts.format).toBe("turbo run format");
+    expect(rootPackage.scripts.lint).toBe(
+      "turbo run lint --concurrency 1 && pnpm run check:agent-instructions",
+    );
+    expect(rootPackage.scripts["type-check"]).toBe("turbo run type-check");
+    expect(rootPackage.scripts["test:run"]).toBe("turbo run test:run --");
+    expect(workspaceConfig).toContain("  oxfmt: 0.65.0");
+    expect(workspaceConfig).toContain("  oxlint: 1.80.0");
+    expect(rootPackage.devDependencies).toMatchObject({
+      oxfmt: "catalog:",
+      oxlint: "catalog:",
+    });
+    for (const workspacePackage of [calculatorPackage, ...workspacePackages]) {
+      expect(workspacePackage.scripts.format).toBe("oxfmt --check");
+      expect(workspacePackage.scripts.lint).toBe("oxlint");
+      expect(workspacePackage.scripts["type-check"]).toBeDefined();
+    }
+
+    expect(candidateTestScript).toContain("pnpm run format");
+    expect(candidateTestScript).toContain("pnpm run lint");
+    expect(candidateTestScript).toContain("pnpm run type-check");
+    expect(candidateTestScript).toContain("pnpm run test:run");
+    expect(candidateTestScript.indexOf("pnpm run format")).toBeLessThan(
+      candidateTestScript.indexOf(
+        "pnpm --filter @greendex/database run db:migrate",
+      ),
+    );
+    expect(candidateTestScript.indexOf("pnpm run test:run")).toBeGreaterThan(
+      candidateTestScript.indexOf("server_pid=$!"),
     );
   });
 

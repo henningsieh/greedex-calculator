@@ -86,6 +86,12 @@ for key in \
   printf "%s=%s\n" "$key" "${!key}"
 done > .env
 
+# A candidate must satisfy the repository quality contract before migrations,
+# builds, or runtime startup can advance it toward promotion.
+pnpm run format
+pnpm run lint
+pnpm run type-check
+
 pnpm --filter @greendex/database run db:migrate
 pnpm --filter @greendex/calculator run db:seed
 pnpm run build
@@ -116,5 +122,5 @@ for attempt in $(seq 1 60); do
   sleep 1
 done
 
-pnpm --filter @greendex/calculator run test:run
+pnpm run test:run
 pnpm --filter @greendex/calculator run test:release-email
