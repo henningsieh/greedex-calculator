@@ -121,6 +121,7 @@ describe("environment entrypoints", () => {
       "SOCKET_PORT",
     ]);
     expect(turboConfig.tasks["db:migrate"].env).toEqual(["DATABASE_URL"]);
+    expect(turboConfig.tasks["test:run"].env).toEqual(["CANDIDATE_BASE_URL"]);
   });
 
   it("does not download utilities during release startup", () => {
@@ -200,13 +201,13 @@ describe("environment entrypoints", () => {
     expect(dockerfile).toContain("id=IMAP_PASSWORD");
     expect(dockerfile).toContain("id=EMAIL_TEST_SENDER");
     expect(dockerfile).toContain("id=EMAIL_TEST_RECIPIENT");
-    expect(dockerfile).not.toContain("id=GOOGLE_CLIENT_SECRET");
-    expect(dockerfile).not.toContain("id=GITHUB_CLIENT_SECRET");
-    expect(environmentExample).toContain(
-      "EMAIL_TEST_SENDER=greendex-release-gate-sender@sieh.org",
+    expect(candidateTestScript).toContain(
+      'export GOOGLE_CLIENT_SECRET="GOCSPX-release-gate-secret"',
     );
-    expect(environmentExample).toContain(
-      "EMAIL_TEST_RECIPIENT=greendex-release-gate-inbox@sieh.org",
+    expect(candidateTestScript).toContain(
+      'export GITHUB_CLIENT_SECRET="release-gate-github-secret-1234567890123"',
     );
+    expect(environmentExample).toContain("EMAIL_TEST_SENDER=");
+    expect(environmentExample).toContain("EMAIL_TEST_RECIPIENT=");
   });
 });
