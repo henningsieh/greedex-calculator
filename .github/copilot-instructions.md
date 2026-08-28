@@ -8,15 +8,16 @@
 
 ### Forbidden Commands
 
-Never execute commands that start processes or builds:
+Never execute commands that start the development server or any forced/hard git commands:
 
-- `pnpm run dev`, `pnpm run build`, `pnpm run start`
-- `npm run dev`, `yarn dev`, or any dev server
+- `pnpm run dev`, `npm run dev`, `yarn dev`, or any dev server! Most of the time there is already a dev server running on port 3000.
 - Background processes or new terminal sessions
 - `git push --force`, `git reset --hard`, or destructive git operations
 
 ### Allowed Commands
 
+- **Building and starting the project's app**: `pnpm run build`, `pnpm run start`
+- **Docker build**: `DOCKER_BUILDKIT=1 docker build --secret id=NEXT_PUBLIC_BASE_URL,env=NEXT_PUBLIC_BASE_URL --secret id=NEXT_PUBLIC_SOCKET_URL,env=NEXT_PUBLIC_SOCKET_URL --secret id=BETTER_AUTH_SECRET,env=BETTER_AUTH_SECRET --secret id=GOOGLE_CLIENT_ID,env=GOOGLE_CLIENT_ID --secret id=GOOGLE_CLIENT_SECRET,env=GOOGLE_CLIENT_SECRET --secret id=DISCORD_CLIENT_ID,env=DISCORD_CLIENT_ID --secret id=DISCORD_CLIENT_SECRET,env=DISCORD_CLIENT_SECRET --secret id=GITHUB_CLIENT_ID,env=GITHUB_CLIENT_ID --secret id=GITHUB_CLIENT_SECRET,env=GITHUB_CLIENT_SECRET --secret id=SMTP_HOST,env=SMTP_HOST --secret id=SMTP_PORT,env=SMTP_PORT --secret id=SMTP_SENDER,env=SMTP_SENDER --secret id=SMTP_USERNAME,env=SMTP_USERNAME --secret id=SMTP_PASSWORD,env=SMTP_PASSWORD --secret id=SMTP_SECURE,env=SMTP_SECURE -t greendex-calculator .`
 - **Linting/Formatting**: `pnpm run lint`, `pnpm run format`
 - **Testing**: `pnpm run test`, `pnpm run test:run`, `pnpm run test:coverage`
 - **Git (read-only + commits)**: `git status`, `git log`, `git diff`, `git add`, `git commit`, `git checkout -b`
