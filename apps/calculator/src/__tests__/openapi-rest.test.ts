@@ -550,7 +550,7 @@ describe("OpenAPI REST Endpoint", () => {
 // Scalar loads its bundle from a CDN, so each navigation/selector operation
 // gets a generous budget; the whole-test budget must exceed their sum.
 const DOCS_UI_TIMEOUT_MS = 30_000;
-const DOCS_TEST_TIMEOUT_MS = 120_000;
+const DOCS_TEST_TIMEOUT_MS = 150_000;
 
 describe("API Documentation UI", () => {
   const docsUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/docs`;
