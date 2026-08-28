@@ -58,14 +58,12 @@ FROM node:22-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Install curl and enable pnpm BEFORE copying the application layers. This
-# keeps the small, cacheable apt layer independent of the multi-gigabyte
-# COPY --from=test step, so apt never competes with the test-stage export
-# for disk space.
+# The pinned pnpm package is installed in the test stage and copied with the
+# workspace. Runtime invokes it directly with Node, so Corepack cannot fetch a
+# package manager during a cold start.
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends curl procps \
-  && rm -rf /var/lib/apt/lists/* \
-  && corepack enable
+  && apt-get install -y --no-install-recommends curl \
+  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=test /app /app
 
@@ -89,4 +87,4 @@ RUN chown -R node:node /app/apps/calculator/.next \
 USER node
 
 EXPOSE 3000
-CMD ["pnpm", "run", "start"]
+CMD ["node", "node_modules/pnpm/bin/pnpm.cjs", "run", "start"]

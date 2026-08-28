@@ -36,6 +36,9 @@ describe("environment entrypoints", () => {
     path.resolve("../../.env.example"),
     "utf8",
   );
+  const runtimeDockerfile = dockerfile.slice(
+    dockerfile.indexOf("FROM node:22-bookworm-slim AS runtime"),
+  );
   const openApiRestTest = readFileSync(
     path.resolve("src/__tests__/openapi-rest.test.ts"),
     "utf8",
@@ -100,6 +103,20 @@ describe("environment entrypoints", () => {
       "SOCKET_PORT",
     ]);
     expect(turboConfig.tasks["db:migrate"].env).toEqual(["DATABASE_URL"]);
+  });
+
+  it("does not download utilities during release startup", () => {
+    expect(calculatorPackage.scripts.prestart).toBe(
+      "pnpm --filter @greendex/database run db:migrate",
+    );
+    expect(calculatorPackage.scripts.prestart).not.toContain("pnpx");
+    expect(runtimeDockerfile).toContain(
+      'CMD ["node", "node_modules/pnpm/bin/pnpm.cjs", "run", "start"]',
+    );
+    expect(runtimeDockerfile).not.toContain("corepack enable");
+    expect(candidateTestScript).toContain(
+      "runuser -u node --preserve-environment",
+    );
   });
 
   it("does not load dotenv inside calculator processes", () => {

@@ -3,6 +3,13 @@
 
 import { vi } from "vitest";
 
+declare global {
+  var IS_REACT_ACT_ENVIRONMENT: boolean;
+}
+
+// Tell React that Vitest's jsdom environment supports act().
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
 // Environment variables are loaded in global-setup.ts
 
 // Mock the auth client to avoid environment variable validation during tests

@@ -90,10 +90,13 @@ pnpm --filter @greendex/database run db:migrate
 pnpm --filter @greendex/calculator run db:seed
 pnpm run build
 
-(
-  cd apps/calculator
-  exec env NODE_ENV=production node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3000
-) &
+# Exercise the exact release entrypoint as the unprivileged runtime user. The
+# prestart migration must succeed before Calculator, Documentation, and Socket.IO
+# are allowed to become healthy.
+chown -R node:node apps/calculator/.next apps/documentation/.next \
+  apps/documentation/.source
+runuser -u node --preserve-environment -- \
+  env HOME=/home/node node node_modules/pnpm/bin/pnpm.cjs run start &
 server_pid=$!
 
 for attempt in $(seq 1 60); do
