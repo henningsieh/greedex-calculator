@@ -5,11 +5,11 @@ description: Verwalten Sie die Teammitglieder und Rollen Ihrer Organisation
 
 # Teamverwaltung
 
-Die Team-Seite ermöglicht es Ihnen, die Teammitglieder Ihrer Organisation anzuzeigen und zu verwalten - Eigentümer und Mitarbeiter, die bei der Verwaltung der Organisation und ihrer Projekte helfen.
+Die Team-Seite ermöglicht es Ihnen, die Teammitglieder Ihrer Organisation anzuzeigen und zu verwalten - Organisationsadministratoren und Projektkoordinatoren, die bei der Verwaltung der Organisation und ihrer Projekte helfen.
 
 ## Teamrollen verstehen
 
-### Eigentümer
+### Organisationsadministrator
 
 **Vollständige administrative Kontrolle:**
 
@@ -17,11 +17,11 @@ Die Team-Seite ermöglicht es Ihnen, die Teammitglieder Ihrer Organisation anzuz
 - Kann die Organisation löschen
 - Kann alle Projekte und Einstellungen verwalten
 - Kann jedes Teammitglied entfernen
-- Kann die Eigentümerschaft übertragen
+- Kann die Rolle des Organisationsadministrators übertragen
 
-**Am besten für:** Organisationsadministratoren, Projektkoordinatoren
+**Typische Verantwortung:** Organisationsweite Verwaltung und Aufsicht
 
-### Mitarbeiter
+### Projektkoordinator
 
 **Projektmanagement-Zugriff:**
 
@@ -29,9 +29,9 @@ Die Team-Seite ermöglicht es Ihnen, die Teammitglieder Ihrer Organisation anzuz
 - Kann Teilnehmer einladen
 - Kann Team- und Teilnehmerlisten anzeigen
 - Kann die Organisation nicht löschen
-- Kann keine Eigentümer oder Mitarbeiter einladen
+- Kann keine Organisationsadministratoren oder Projektkoordinatoren einladen
 
-**Am besten für:** Projektmanager, Koordinatoren, Support-Mitarbeiter
+**Typische Verantwortung:** Koordination von Projekten und ihren Teilnehmern
 
 ### Teilnehmer
 
@@ -61,7 +61,7 @@ Die Team-Seite zeigt:
 Verwenden Sie die Tabellensteuerungen, um:
 
 - **Suchen** - Mitglieder nach Name oder E-Mail finden
-- **Nach Rolle filtern** - Nur Eigentümer, Mitarbeiter oder alle anzeigen
+- **Nach Rolle filtern** - Nur Organisationsadministratoren, Projektkoordinatoren oder alle anzeigen
 - **Sortieren** - Nach Name, Rolle oder Beitrittsdatum ordnen
 - **Paginierung** - Durch große Teams navigieren
 
@@ -100,7 +100,7 @@ Der Eingeladene kann die Einladung nicht mehr annehmen.
 
 ### Rollen ändern
 
-Eigentümer können Mitgliederrollen ändern:
+Organisationsadministratoren können Mitgliederrollen ändern:
 
 1. Finden Sie das Teammitglied in der Liste
 2. Klicken Sie auf ihre aktuelle Rolle
@@ -109,31 +109,31 @@ Eigentümer können Mitgliederrollen ändern:
 
 ### Rollenänderungs-Berechtigungen
 
-| Aktion                  | Eigentümer | Mitarbeiter | Teilnehmer |
-| ----------------------- | ---------- | ----------- | ---------- |
-| Zu Eigentümer befördern | ✅         | ❌          | ❌         |
-| Eigentümer degradieren  | ✅         | ❌          | ❌         |
-| Zu Mitarbeiter ändern   | ✅         | ❌          | ❌         |
-| Zu Teilnehmer ändern    | ✅         | ✅\*        | ❌         |
+| Aktion                                   | Organisationsadministrator | Projektkoordinator | Teilnehmer |
+| ---------------------------------------- | -------------------------- | ------------------ | ---------- |
+| Zum Organisationsadministrator befördern | ✅                         | ❌                 | ❌         |
+| Organisationsadministrator herabstufen   | ✅                         | ❌                 | ❌         |
+| Zum Projektkoordinator ändern            | ✅                         | ❌                 | ❌         |
+| Zu Teilnehmer ändern                     | ✅                         | ✅\*               | ❌         |
 
-\*Mitarbeiter können nur Teilnehmer zu anderen Rollen ändern
+\*Projektkoordinatoren können nur Teilnehmer zu anderen Rollen ändern
 
-### Eigentümerschaft übertragen
+### Rolle des Organisationsadministrators übertragen
 
-Um die Organisationseigentümerschaft zu übertragen:
+Um die Rolle des Organisationsadministrators zu übertragen:
 
 1. Gehen Sie zur Team-Seite
 2. Finden Sie das Mitglied, das befördert werden soll
-3. Ändern Sie ihre Rolle zu **Eigentümer**
-4. (Optional) Sich selbst zu Mitarbeiter degradieren
+3. Ändern Sie ihre Rolle zu **Organisationsadministrator**
+4. (Optional) Sich selbst zum Projektkoordinator herabstufen
 
-**Hinweis:** Eine Organisation muss immer mindestens einen Eigentümer haben.
+**Hinweis:** Eine Organisation muss immer mindestens einen Organisationsadministrator haben.
 
 ## Teammitglieder entfernen
 
 ### Ein Mitglied entfernen
 
-Eigentümer können Teammitglieder entfernen:
+Organisationsadministratoren können Teammitglieder entfernen:
 
 1. Finden Sie das Mitglied in der Teamliste
 2. Klicken Sie auf die Schaltfläche **"Entfernen"**
@@ -150,7 +150,7 @@ Eigentümer können Teammitglieder entfernen:
 
 Sie können sich nicht selbst aus der Organisation entfernen:
 
-- Bitten Sie einen anderen Eigentümer, Sie zu entfernen
+- Bitten Sie einen anderen Organisationsadministrator, Sie zu entfernen
 - Oder löschen Sie Ihr Konto vollständig
 
 ## Teamgrößen-Limits
@@ -183,8 +183,8 @@ Wenn ein Teammitglied nicht erscheint:
 
 Wenn Sie die Rolle eines Mitglieds nicht ändern können:
 
-- Verifizieren Sie, dass Sie Eigentümer-Berechtigungen haben
-- Überprüfen Sie, ob sie der einzige Eigentümer sind (muss mindestens einen haben)
+- Verifizieren Sie, dass Sie Berechtigungen als Organisationsadministrator haben
+- Überprüfen Sie, ob sie der einzige Organisationsadministrator sind (muss mindestens einen haben)
 - Stellen Sie sicher, dass das Mitglied seine Einladung angenommen hat
 
 ### Einladungsprobleme
@@ -195,19 +195,19 @@ Für Einladungsprobleme siehe [Einladungs-Fehlerbehebung](/docs/organization/inv
 
 ### Zugriffskontrolle
 
-- **Eigentümer begrenzen** - Nur vertrauenswürdige Administratoren sollten Eigentümer sein
+- **Organisationsadministratoren begrenzen** - Nur vertrauenswürdige Personen sollten Organisationsadministratoren sein
 - **Regelmäßige Überprüfungen** - Rollen vierteljährlich auditieren
 - **Offboarding** - Zugriff entfernen, wenn Teammitglieder gehen
 - **Einladungen überwachen** - Ausstehende Einladungen verfolgen
 
 ### Sensible Operationen
 
-Nur Eigentümer können:
+Nur Organisationsadministratoren können:
 
 - Die Organisation löschen
 - Auf Rechnungsinformationen zugreifen
 - Kritische Einstellungen ändern
-- Andere Eigentümer entfernen
+- Andere Organisationsadministratoren entfernen
 
 ## Verwandte Themen
 

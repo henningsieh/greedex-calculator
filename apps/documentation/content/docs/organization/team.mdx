@@ -5,11 +5,11 @@ description: Manage your organization's team members and their roles
 
 # Team Management
 
-The Team page allows you to view and manage your organization's team members - Owners and Employees who help manage the organization and its projects.
+The Team page allows you to view and manage your organization's team members - Organization Administrators and Project Coordinators who help manage the organization and its projects.
 
 ## Understanding Team Roles
 
-### Owner
+### Organization Administrator
 
 **Full administrative control:**
 
@@ -19,9 +19,9 @@ The Team page allows you to view and manage your organization's team members - O
 - Can remove any team member
 - Can transfer ownership
 
-**Best for:** Organization administrators, project coordinators
+**Typical responsibility:** Organization-wide administration and oversight
 
-### Employee
+### Project Coordinator
 
 **Project management access:**
 
@@ -29,9 +29,9 @@ The Team page allows you to view and manage your organization's team members - O
 - Can invite Participants
 - Can view team and participant lists
 - Cannot delete the organization
-- Cannot invite Owners or Employees
+- Cannot invite Organization Administrators or Project Coordinators
 
-**Best for:** Project managers, coordinators, support staff
+**Typical responsibility:** Coordinating projects and their Participants
 
 ### Participant
 
@@ -61,7 +61,7 @@ The Team page displays:
 Use the table controls to:
 
 - **Search** - Find members by name or email
-- **Filter by role** - Show only Owners, Employees, or all
+- **Filter by role** - Show only Organization Administrators, Project Coordinators, or all
 - **Sort** - Order by name, role, or join date
 - **Pagination** - Navigate through large teams
 
@@ -100,7 +100,7 @@ The invitee will no longer be able to accept the invitation.
 
 ### Changing Roles
 
-Owners can change member roles:
+Organization Administrators can change member roles:
 
 1. Find the team member in the list
 2. Click on their current role
@@ -109,31 +109,31 @@ Owners can change member roles:
 
 ### Role Change Permissions
 
-| Action                | Owner | Employee | Participant |
-| --------------------- | ----- | -------- | ----------- |
-| Promote to Owner      | ✅    | ❌       | ❌          |
-| Demote Owner          | ✅    | ❌       | ❌          |
-| Change to Employee    | ✅    | ❌       | ❌          |
-| Change to Participant | ✅    | ✅\*     | ❌          |
+| Action                                | Organization Administrator | Project Coordinator | Participant |
+| ------------------------------------- | -------------------------- | ------------------- | ----------- |
+| Promote to Organization Administrator | ✅                         | ❌                  | ❌          |
+| Demote Organization Administrator     | ✅                         | ❌                  | ❌          |
+| Change to Project Coordinator         | ✅                         | ❌                  | ❌          |
+| Change to Participant                 | ✅                         | ✅\*                | ❌          |
 
-\*Employees can only change Participants to other roles
+\*Project Coordinators can only change Participants to other roles
 
-### Transferring Ownership
+### Transferring organization administration
 
-To transfer organization ownership:
+To transfer responsibility for organization administration:
 
 1. Go to Team page
 2. Find the member to promote
-3. Change their role to **Owner**
-4. (Optional) Demote yourself to Employee
+3. Change their role to **Organization Administrator**
+4. (Optional) Demote yourself to Project Coordinator
 
-**Note:** An organization must always have at least one Owner.
+**Note:** An organization must always have at least one Organization Administrator.
 
 ## Removing Team Members
 
 ### Removing a Member
 
-Owners can remove team members:
+Organization Administrators can remove team members:
 
 1. Find the member in the team list
 2. Click the **"Remove"** button
@@ -150,7 +150,7 @@ Owners can remove team members:
 
 You cannot remove yourself from the organization:
 
-- Ask another Owner to remove you
+- Ask another Organization Administrator to remove you
 - Or delete your account entirely
 
 ## Team Size Limits
@@ -183,8 +183,8 @@ If a team member doesn't appear:
 
 If you can't change a member's role:
 
-- Verify you have Owner permissions
-- Check if they're the only Owner (must have at least one)
+- Verify you have Organization Administrator permissions
+- Check if they're the only Organization Administrator (must have at least one)
 - Ensure the member has accepted their invitation
 
 ### Invitation Issues
@@ -195,19 +195,19 @@ For invitation problems, see [Invitations Troubleshooting](/docs/organization/in
 
 ### Access Control
 
-- **Limit Owners** - Only trusted administrators should be Owners
+- **Limit Organization Administrators** - Assign this role only to trusted people
 - **Regular reviews** - Audit roles quarterly
 - **Offboarding** - Remove access when team members leave
 - **Monitor invites** - Track pending invitations
 
 ### Sensitive Operations
 
-Only Owners can:
+Only Organization Administrators can:
 
 - Delete the organization
 - Access billing information
 - Change critical settings
-- Remove other Owners
+- Remove other Organization Administrators
 
 ## Related Topics
 

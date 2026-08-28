@@ -349,19 +349,20 @@ export function ProjectsTable({ projects }: { projects: ProjectType[] }) {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {memberRole === MEMBER_ROLES.Owner && selectedRows.length > 0 && (
-              <Button
-                disabled={isBatchDeleting}
-                onClick={handleBatchDelete}
-                size="sm"
-                variant="destructive"
-              >
-                <Trash2Icon className="mr-2 size-4" />
-                {t("table.batch-delete", {
-                  count: selectedRows.length,
-                })}
-              </Button>
-            )}
+            {memberRole === MEMBER_ROLES.OrganizationAdministrator &&
+              selectedRows.length > 0 && (
+                <Button
+                  disabled={isBatchDeleting}
+                  onClick={handleBatchDelete}
+                  size="sm"
+                  variant="destructive"
+                >
+                  <Trash2Icon className="mr-2 size-4" />
+                  {t("table.batch-delete", {
+                    count: selectedRows.length,
+                  })}
+                </Button>
+              )}
           </div>
         </div>
         {columnFilters.length > 0 && (

@@ -33,7 +33,7 @@ function ProfileSelectionProbe() {
 }
 
 describe("TransportEmissionProfileSelect", () => {
-  it("lets an administrator select electric car and does not offer plane", () => {
+  it("allows selecting electric car and omits plane", () => {
     container = document.createElement("div");
     document.body.append(container);
     root = createRoot(container);

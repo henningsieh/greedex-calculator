@@ -188,7 +188,7 @@ test.describe("Project Shared Travel Legs", () => {
     await expect(detailsTab).toHaveAttribute("data-state", "active");
   });
 
-  test("allows an administrator to manage electric-car shared travel", async ({
+  test("allows an Organization Administrator to manage electric-car shared travel", async ({
     page,
   }) => {
     await page.goto(`/en/org/projects/${projectId}`);
