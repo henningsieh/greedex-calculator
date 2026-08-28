@@ -91,7 +91,7 @@ export const createProject = authorized
  *
  * Behavior:
  * - Members (role: "member"): See all projects in their organization (read-only)
- * - Admins/Owners: See all projects in their organization (full access)
+ * - Project Coordinators/Organization Administrators: See all projects in their organization (full access)
  *
  * This respects Better Auth's organization-based permissions:
  * - Users can only see projects from organizations they are members of
@@ -297,7 +297,7 @@ export const updateProject = authorized
  *
  * Requires:
  * - Authentication
- * - Owner role OR Employee role AND is the responsible user of the project
+ * - Organization Administrator role OR Project Coordinator role AND is the responsible user of the project
  * - Project must belong to user's active organization
  */
 export const deleteProject = authorized
@@ -348,16 +348,17 @@ export const deleteProject = authorized
       headers: await headers(),
     });
 
-    // Check permissions: Owner can delete any project, Employee can delete only their own projects
-    const isOwner = role === MEMBER_ROLES.Owner;
-    const isResponsibleEmployee =
-      role === MEMBER_ROLES.Employee &&
+    // Organization Administrators can delete any project; Project Coordinators can delete only their own.
+    const isOrganizationAdministrator =
+      role === MEMBER_ROLES.OrganizationAdministrator;
+    const isResponsibleProjectCoordinator =
+      role === MEMBER_ROLES.ProjectCoordinator &&
       existingProject.responsibleUserId === context.user.id;
 
-    if (!(isOwner || isResponsibleEmployee)) {
+    if (!isOrganizationAdministrator && !isResponsibleProjectCoordinator) {
       throw errors.FORBIDDEN({
         message:
-          "You don't have permission to delete this project. Only the owner or the responsible employee can delete it.",
+          "You don't have permission to delete this project. Only an Organization Administrator or the responsible Project Coordinator can delete it.",
       });
     }
 
@@ -374,7 +375,7 @@ export const deleteProject = authorized
  *
  * Requires:
  * - Authentication
- * - Owner role OR Employee role AND is the responsible user of the project
+ * - Organization Administrator role OR Project Coordinator role AND is the responsible user of the project
  * - Project must belong to user's active organization
  */
 export const archiveProject = authorized
@@ -426,16 +427,17 @@ export const archiveProject = authorized
       });
     }
 
-    // Check permissions: Owner can archive any project, Employee can archive only their own projects
-    const isOwner = role === MEMBER_ROLES.Owner;
-    const isResponsibleEmployee =
-      role === MEMBER_ROLES.Employee &&
+    // Organization Administrators can archive any project; Project Coordinators can archive only their own.
+    const isOrganizationAdministrator =
+      role === MEMBER_ROLES.OrganizationAdministrator;
+    const isResponsibleProjectCoordinator =
+      role === MEMBER_ROLES.ProjectCoordinator &&
       existingProject.responsibleUserId === context.user.id;
 
-    if (!(isOwner || isResponsibleEmployee)) {
+    if (!isOrganizationAdministrator && !isResponsibleProjectCoordinator) {
       throw errors.FORBIDDEN({
         message:
-          "You don't have permission to archive this project. Only the owner or the responsible employee can archive it.",
+          "You don't have permission to archive this project. Only an Organization Administrator or the responsible Project Coordinator can archive it.",
       });
     }
 
@@ -499,7 +501,10 @@ export const setActiveProject = authorized
         headers: await headers(),
       });
 
-      if (role !== MEMBER_ROLES.Employee && role !== MEMBER_ROLES.Owner) {
+      if (
+        role !== MEMBER_ROLES.ProjectCoordinator &&
+        role !== MEMBER_ROLES.OrganizationAdministrator
+      ) {
         throw errors.FORBIDDEN({
           message: "You don't have permission to set an active project",
         });
@@ -625,7 +630,7 @@ export const getProjectParticipants = authorized
  *
  * Requires:
  * - Authentication
- * - Owner role OR Employee role AND is the responsible user of each project
+ * - Organization Administrator role OR Project Coordinator role AND is the responsible user of each project
  * - All projects must belong to user's active organization
  */
 export const batchDeleteProjects = authorized
@@ -680,17 +685,18 @@ export const batchDeleteProjects = authorized
       });
     }
 
-    // Check permissions for each project: Owner can delete any, Employee only their own
-    const isOwner = role === MEMBER_ROLES.Owner;
+    // Organization Administrators can delete any project; Project Coordinators only their own.
+    const isOrganizationAdministrator =
+      role === MEMBER_ROLES.OrganizationAdministrator;
     for (const project of projectsToDelete) {
-      const isResponsibleEmployee =
-        role === MEMBER_ROLES.Employee &&
+      const isResponsibleProjectCoordinator =
+        role === MEMBER_ROLES.ProjectCoordinator &&
         project.responsibleUserId === context.user.id;
 
-      if (!(isOwner || isResponsibleEmployee)) {
+      if (!isOrganizationAdministrator && !isResponsibleProjectCoordinator) {
         throw errors.FORBIDDEN({
           message:
-            "You don't have permission to delete one or more of these projects. Only the owner or the responsible employee can delete projects.",
+            "You don't have permission to delete one or more of these projects. Only an Organization Administrator or the responsible Project Coordinator can delete projects.",
         });
       }
     }

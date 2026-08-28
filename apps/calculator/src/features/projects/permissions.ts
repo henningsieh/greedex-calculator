@@ -34,7 +34,7 @@ const statement = {
 export const ac = createAccessControl(statement);
 
 /**
- * Owner Role
+ * Organization Administrator role (Better Auth `owner`)
  * - Full control over all resources including projects
  * - Can create, read, update, delete, and archive projects
  * - Inherits all default owner permissions
@@ -45,11 +45,11 @@ export const owner = ac.newRole({
 });
 
 /**
- * Admin Role (Employee)
+ * Project Coordinator role (Better Auth `admin`)
  * - Can manage projects and most organization resources
- * - Can create, read, update projects
+ * - Can create, read, and update projects
  * - Can archive projects they are responsible for (dynamic permission)
- * - CANNOT delete projects (only owners can delete)
+ * - Cannot delete projects (reserved for Organization Administrators)
  * - Inherits all default admin permissions
  */
 export const admin = ac.newRole({
@@ -58,15 +58,13 @@ export const admin = ac.newRole({
 });
 
 /**
- * Member Role (Regular Participant)
- * - Can only READ projects within their organization
- * - CANNOT create new projects
- * - CANNOT update, delete, or archive projects
- * - This role represents regular participants/team members
+ * Participant role (Better Auth `member`)
+ * - Can only read projects within their organization
+ * - Cannot create, update, delete, or archive projects
  */
 export const member = ac.newRole({
   ...memberAc.statements,
-  project: ["read"], // Members can only read projects
+  project: ["read"], // Participants can only read projects
 });
 
 /**

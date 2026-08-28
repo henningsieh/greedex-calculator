@@ -8,6 +8,8 @@ description: Comprehensive documentation index for all libraries and features in
 ## Agent navigation
 
 - [Task routes for agents](agent-workflows.md)
+- [Domain documentation and glossary](agents/domain.md)
+- [Canonical domain glossary](../DOMAIN-GLOSSARY.md)
 - Repository-wide rules and scoped instruction index: [`AGENTS.md`](../AGENTS.md)
 
 ## All Files in docs/

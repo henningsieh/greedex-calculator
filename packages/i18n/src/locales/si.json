@@ -671,8 +671,8 @@
       "description": "Podrobnosti in nastavitve organizacije."
     },
     "roles": {
-      "owner": "Lastnik",
-      "admin": "Zaposleni",
+      "owner": "Skrbnik organizacije",
+      "admin": "Koordinator projekta",
       "member": "Udeleženec"
     },
     "invitation": {

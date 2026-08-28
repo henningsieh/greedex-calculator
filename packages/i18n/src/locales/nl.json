@@ -671,8 +671,8 @@
       "description": "Dit zijn de gegevens en instellingen van de organisatie."
     },
     "roles": {
-      "owner": "Eigenaar",
-      "admin": "Medewerker",
+      "owner": "Organisatiebeheerder",
+      "admin": "Projectcoördinator",
       "member": "Deelnemer"
     },
     "invitation": {

@@ -24,6 +24,28 @@ Never execute commands that start the development server or any forced/hard git 
 
 ---
 
+## Commit Conventions
+
+Every commit message must follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) as maintained by the [conventionalcommits.org project](https://github.com/conventional-commits/conventionalcommits.org).
+
+Use this structure:
+
+```text
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+- Use a recognized type such as `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `ci`, `chore`, or `perf`.
+- Keep the description imperative, concise, and without a trailing period.
+- Add a scope when it clarifies the affected area, for example `docs:` or `fix(calculator):`.
+- Mark breaking changes with `!` after the type/scope (for example, `feat!:`) and/or a `BREAKING CHANGE:` footer explaining the migration.
+- Keep each commit focused on one logical change; do not use vague messages such as `updates` or `WIP`.
+
+Before creating a commit, verify that its subject matches the grammar and that any breaking change is explicitly documented.
+
 ## Essential Context
 
 | What                 | Value                 | Notes                                          |
@@ -146,7 +168,7 @@ The default five-role label vocabulary is used. See `docs/agents/triage-labels.m
 
 ### Domain docs
 
-This monorepo uses a multi-context layout. See `docs/agents/domain.md`.
+This repository has one domain context. Before changing domain language, read `docs/agents/domain.md` and the canonical `DOMAIN-GLOSSARY.md`.
 
 ### Primary documentation
 
