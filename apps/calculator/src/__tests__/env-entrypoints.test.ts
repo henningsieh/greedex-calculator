@@ -32,6 +32,10 @@ describe("environment entrypoints", () => {
     "utf8",
   );
   const dockerfile = readFileSync(path.resolve("../../Dockerfile"), "utf8");
+  const environmentExample = readFileSync(
+    path.resolve("../../.env.example"),
+    "utf8",
+  );
   const openApiRestTest = readFileSync(
     path.resolve("src/__tests__/openapi-rest.test.ts"),
     "utf8",
@@ -117,6 +121,24 @@ describe("environment entrypoints", () => {
     expect(dockerfile).toContain("id=NEXT_PUBLIC_SOCKET_URL");
     expect(openApiRestTest).toContain(
       "env.CANDIDATE_BASE_URL ?? env.NEXT_PUBLIC_BASE_URL",
+    );
+  });
+
+  it("uses real SMTP and IMAP credentials only for the isolated release-gate email", () => {
+    expect(calculatorPackage.scripts["test:release-email"]).toBe(
+      "dotenv -e ../../.env -- tsx scripts/verify-release-gate-email.ts",
+    );
+    expect(dockerfile).toContain("id=IMAP_HOST");
+    expect(dockerfile).toContain("id=IMAP_PASSWORD");
+    expect(dockerfile).toContain("id=EMAIL_TEST_SENDER");
+    expect(dockerfile).toContain("id=EMAIL_TEST_RECIPIENT");
+    expect(dockerfile).not.toContain("id=GOOGLE_CLIENT_SECRET");
+    expect(dockerfile).not.toContain("id=GITHUB_CLIENT_SECRET");
+    expect(environmentExample).toContain(
+      "EMAIL_TEST_SENDER=greendex-release-gate-sender@sieh.org",
+    );
+    expect(environmentExample).toContain(
+      "EMAIL_TEST_RECIPIENT=greendex-release-gate-inbox@sieh.org",
     );
   });
 });

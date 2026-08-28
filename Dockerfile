@@ -38,19 +38,19 @@ COPY . .
 # browser bundle; credentials never become part of an image layer or manifest.
 RUN --mount=type=secret,id=NEXT_PUBLIC_BASE_URL \
     --mount=type=secret,id=NEXT_PUBLIC_SOCKET_URL \
-    --mount=type=secret,id=BETTER_AUTH_SECRET \
-    --mount=type=secret,id=GOOGLE_CLIENT_ID \
-    --mount=type=secret,id=GOOGLE_CLIENT_SECRET \
-    --mount=type=secret,id=DISCORD_CLIENT_ID \
-    --mount=type=secret,id=DISCORD_CLIENT_SECRET \
-    --mount=type=secret,id=GITHUB_CLIENT_ID \
-    --mount=type=secret,id=GITHUB_CLIENT_SECRET \
     --mount=type=secret,id=SMTP_HOST \
     --mount=type=secret,id=SMTP_PORT \
     --mount=type=secret,id=SMTP_SENDER \
     --mount=type=secret,id=SMTP_USERNAME \
     --mount=type=secret,id=SMTP_PASSWORD \
     --mount=type=secret,id=SMTP_SECURE \
+    --mount=type=secret,id=IMAP_HOST \
+    --mount=type=secret,id=IMAP_PORT \
+    --mount=type=secret,id=IMAP_SECURE \
+    --mount=type=secret,id=IMAP_USERNAME \
+    --mount=type=secret,id=IMAP_PASSWORD \
+    --mount=type=secret,id=EMAIL_TEST_SENDER \
+    --mount=type=secret,id=EMAIL_TEST_RECIPIENT \
     ./docker/run-candidate-tests.sh
 
 FROM node:22-bookworm-slim AS runtime

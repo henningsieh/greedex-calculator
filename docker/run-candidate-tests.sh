@@ -29,25 +29,33 @@ export PORT="3000"
 export SOCKET_PORT="4000"
 export ORPC_DEV_DELAY_MS="0"
 
-# Public build values and external-service credentials are supplied by the
-# build environment. Public values are compiled into the candidate bundle;
-# credentials are consumed by the current release test suite.
+# Only public build values and release-gate mail credentials are mounted into
+# this disposable stage. OAuth credentials use syntactically valid test values:
+# the candidate suite verifies local auth flows without contacting providers.
+export BETTER_AUTH_SECRET="release-gate-test-secret"
+export GOOGLE_CLIENT_ID="123456789012-release-gate.apps.googleusercontent.com"
+export GOOGLE_CLIENT_SECRET="GOCSPX-release-gate-secret"
+export DISCORD_CLIENT_ID="1234567890123456789"
+export DISCORD_CLIENT_SECRET="release-gate-discord-secret-1234"
+export GITHUB_CLIENT_ID="12345678901234567890"
+export GITHUB_CLIENT_SECRET="release-gate-github-secret-1234567890123"
+
 required_build_variables=(
   NEXT_PUBLIC_BASE_URL
   NEXT_PUBLIC_SOCKET_URL
-  BETTER_AUTH_SECRET
-  GOOGLE_CLIENT_ID
-  GOOGLE_CLIENT_SECRET
-  DISCORD_CLIENT_ID
-  DISCORD_CLIENT_SECRET
-  GITHUB_CLIENT_ID
-  GITHUB_CLIENT_SECRET
   SMTP_HOST
   SMTP_PORT
   SMTP_SENDER
   SMTP_USERNAME
   SMTP_PASSWORD
   SMTP_SECURE
+  IMAP_HOST
+  IMAP_PORT
+  IMAP_SECURE
+  IMAP_USERNAME
+  IMAP_PASSWORD
+  EMAIL_TEST_SENDER
+  EMAIL_TEST_RECIPIENT
 )
 missing_build_variables=()
 for key in "${required_build_variables[@]}"; do
@@ -73,7 +81,8 @@ for key in \
   SOCKET_PORT ORPC_DEV_DELAY_MS BETTER_AUTH_SECRET GOOGLE_CLIENT_ID \
   GOOGLE_CLIENT_SECRET DISCORD_CLIENT_ID DISCORD_CLIENT_SECRET GITHUB_CLIENT_ID \
   GITHUB_CLIENT_SECRET SMTP_HOST SMTP_PORT SMTP_SENDER SMTP_USERNAME \
-  SMTP_PASSWORD SMTP_SECURE; do
+  SMTP_PASSWORD SMTP_SECURE IMAP_HOST IMAP_PORT IMAP_SECURE IMAP_USERNAME \
+  IMAP_PASSWORD EMAIL_TEST_SENDER EMAIL_TEST_RECIPIENT; do
   printf "%s=%s\n" "$key" "${!key}"
 done > .env
 
@@ -105,3 +114,4 @@ for attempt in $(seq 1 60); do
 done
 
 pnpm --filter @greendex/calculator run test:run
+pnpm --filter @greendex/calculator run test:release-email
