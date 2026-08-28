@@ -47,7 +47,7 @@ interface Props {
   onSuccess?: () => void;
 }
 
-export function InviteEmployeeDialog({
+export function InviteProjectCoordinatorDialog({
   organizationId,
   allowedRoles = Object.values(MEMBER_ROLES),
   onSuccess,
@@ -62,7 +62,7 @@ export function InviteEmployeeDialog({
     defaultValues: {
       email: "",
       name: "",
-      role: MEMBER_ROLES.Employee,
+      role: MEMBER_ROLES.ProjectCoordinator,
     },
   });
 
@@ -87,7 +87,10 @@ export function InviteEmployeeDialog({
                 input: {
                   organizationId,
                   filters: {
-                    roles: [MEMBER_ROLES.Owner, MEMBER_ROLES.Employee],
+                    roles: [
+                      MEMBER_ROLES.OrganizationAdministrator,
+                      MEMBER_ROLES.ProjectCoordinator,
+                    ],
                   },
                 },
               }),

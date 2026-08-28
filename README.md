@@ -12,7 +12,7 @@ workshops, and sustainability education in one application.
 
 ## What the application supports
 
-- Organization onboarding, membership, invitations, and role-based permissions
+- Organization onboarding, user membership, invitations, and role-based permissions
 - Project creation, editing, filtering, sorting, archiving, and batch actions
 - Participant management and a public participation/questionnaire flow
 - Project Shared Travel Legs, travel distances, and CO₂ statistics
@@ -26,6 +26,17 @@ workshops, and sustainability education in one application.
 The broader Greendex initiative also includes workshop formats, educational
 resources, sustainability challenges, and the Greendex E-Forest. Learn more at
 [greendex.world](https://greendex.world).
+
+### Domain language
+
+Greendex uses these canonical terms for people in the system:
+
+- **Organization Administrator** — manages an organization, its users, and its projects
+- **Project Coordinator** — manages projects and coordinates Participants
+- **Participant** — takes part in a project and submits participation data
+
+These terms are the product language. The complete wording glossary, including
+terms to avoid, is in [`DOMAIN-GLOSSARY.md`](DOMAIN-GLOSSARY.md).
 
 ---
 
@@ -258,7 +269,7 @@ It provides:
 - Password reset and magic-link flows
 - Google, GitHub, and Discord OAuth
 - Organization membership and invitations
-- Owner/admin/member access control
+- Organization Administrator, Project Coordinator, and Participant access control (implemented with Better Auth roles)
 - Active organization/project session fields
 
 The database schema generated for Better Auth is stored in

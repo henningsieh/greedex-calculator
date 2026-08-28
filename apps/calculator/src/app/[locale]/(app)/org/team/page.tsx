@@ -43,7 +43,10 @@ export default async () => {
       input: {
         organizationId: activeOrganizationId,
         filters: {
-          roles: [MEMBER_ROLES.Owner, MEMBER_ROLES.Employee],
+          roles: [
+            MEMBER_ROLES.OrganizationAdministrator,
+            MEMBER_ROLES.ProjectCoordinator,
+          ],
           search: undefined,
           sortBy: undefined,
           sortDirection: "asc",
@@ -69,7 +72,10 @@ export default async () => {
             emptyDescription={t("emptyState.description")}
             emptyTitle={t("emptyState.title")}
             organizationId={activeOrganizationId}
-            roles={[MEMBER_ROLES.Owner, MEMBER_ROLES.Employee]}
+            roles={[
+              MEMBER_ROLES.OrganizationAdministrator,
+              MEMBER_ROLES.ProjectCoordinator,
+            ]}
             showInviteButton={true}
           />
         </Suspense>

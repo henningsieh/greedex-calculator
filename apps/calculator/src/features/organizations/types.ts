@@ -32,9 +32,9 @@ export const USERS_SORT_FIELDS = [
  * Maps display names to database role values
  */
 export const MEMBER_ROLES = {
-  Owner: "owner", // Full access, can invite Employees/Admins
-  Employee: "admin", // Team members with admin privileges
-  Participant: "member", // Project participants
+  OrganizationAdministrator: "owner",
+  ProjectCoordinator: "admin",
+  Participant: "member",
 } as const;
 
 /**

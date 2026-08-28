@@ -11,8 +11,8 @@ The invitation system allows you to add new members to your organization. This c
 
 ### Who Can Invite
 
-- **Owners** can invite members with any role (Owner, Employee, Participant)
-- **Employees** can only invite Participants
+- **Organization Administrators** can invite members with any role (Organization Administrator, Project Coordinator, Participant)
+- **Project Coordinators** can only invite Participants
 
 ### How to Send an Invitation
 
@@ -21,7 +21,7 @@ The invitation system allows you to add new members to your organization. This c
 3. Fill in the invitation form:
    - **Email** - The invitee's email address
    - **Name** - The invitee's full name
-   - **Role** - Select the appropriate role (Owner, Employee, or Participant)
+   - **Role** - Select the appropriate role (Organization Administrator, Project Coordinator, or Participant)
 4. Click **"Send Invitation"**
 
 ### What Happens Next
@@ -58,15 +58,15 @@ Pending invitations are displayed in the Team page with a "Pending" status.
 
 ### Canceling Invitations
 
-Owners can cancel pending invitations from the Team page.
+Organization Administrators can cancel pending invitations from the Team page.
 
 ## Role Permissions
 
-| Role        | Can Invite Owners | Can Invite Employees | Can Invite Participants |
-| ----------- | ----------------- | -------------------- | ----------------------- |
-| Owner       | ✅                | ✅                   | ✅                      |
-| Employee    | ❌                | ❌                   | ✅                      |
-| Participant | ❌                | ❌                   | ❌                      |
+| Role                       | Can Invite Organization Administrators | Can Invite Project Coordinators | Can Invite Participants |
+| -------------------------- | -------------------------------------- | ------------------------------- | ----------------------- |
+| Organization Administrator | ✅                                     | ✅                              | ✅                      |
+| Project Coordinator        | ❌                                     | ❌                              | ✅                      |
+| Participant                | ❌                                     | ❌                              | ❌                      |
 
 ## Troubleshooting
 

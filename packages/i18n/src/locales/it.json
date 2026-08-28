@@ -671,8 +671,8 @@
       "description": "Questi sono i dettagli e le impostazioni dell'organizzazione."
     },
     "roles": {
-      "owner": "Proprietario",
-      "admin": "Dipendente",
+      "owner": "Amministratore dell’organizzazione",
+      "admin": "Coordinatore del progetto",
       "member": "Partecipante"
     },
     "invitation": {

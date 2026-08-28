@@ -34,7 +34,7 @@ import {
 } from "@/features/organizations/types";
 import { orpcQuery } from "@/lib/orpc/orpc";
 
-import { InviteEmployeeDialog } from "./invite-employee-dialog";
+import { InviteProjectCoordinatorDialog } from "./invite-project-coordinator-dialog";
 
 interface TeamTableProps {
   organizationId: string;
@@ -176,7 +176,7 @@ export function UsersTable({
           </Button>
         </div>
         {showInviteButton && (
-          <InviteEmployeeDialog
+          <InviteProjectCoordinatorDialog
             allowedRoles={roles}
             onSuccess={() => {
               setPageIndex(0);

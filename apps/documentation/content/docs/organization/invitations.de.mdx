@@ -11,8 +11,8 @@ Das Einladungssystem ermöglicht es Ihnen, neue Mitglieder zu Ihrer Organisation
 
 ### Wer kann einladen
 
-- **Eigentümer** können Mitglieder mit jeder Rolle einladen (Eigentümer, Mitarbeiter, Teilnehmer)
-- **Mitarbeiter** können nur Teilnehmer einladen
+- **Organisationsadministratoren** können Mitglieder mit jeder Rolle einladen (Organisationsadministrator, Projektkoordinator, Teilnehmer)
+- **Projektkoordinatoren** können nur Teilnehmer einladen
 
 ### Wie man eine Einladung sendet
 
@@ -21,7 +21,7 @@ Das Einladungssystem ermöglicht es Ihnen, neue Mitglieder zu Ihrer Organisation
 3. Füllen Sie das Einladungsformular aus:
    - **E-Mail** - Die E-Mail-Adresse des Eingeladenen
    - **Name** - Der vollständige Name des Eingeladenen
-   - **Rolle** - Wählen Sie die entsprechende Rolle (Eigentümer, Mitarbeiter oder Teilnehmer)
+   - **Rolle** - Wählen Sie die entsprechende Rolle (Organisationsadministrator, Projektkoordinator oder Teilnehmer)
 4. Klicken Sie auf **"Einladung senden"**
 
 ### Was passiert als Nächstes
@@ -58,15 +58,15 @@ Ausstehende Einladungen werden auf der Team-Seite mit dem Status "Ausstehend" an
 
 ### Einladungen stornieren
 
-Eigentümer können ausstehende Einladungen von der Team-Seite stornieren.
+Organisationsadministratoren können ausstehende Einladungen von der Team-Seite stornieren.
 
 ## Rollenberechtigungen
 
-| Rolle       | Kann Eigentümer einladen | Kann Mitarbeiter einladen | Kann Teilnehmer einladen |
-| ----------- | ------------------------ | ------------------------- | ------------------------ |
-| Eigentümer  | ✅                       | ✅                        | ✅                       |
-| Mitarbeiter | ❌                       | ❌                        | ✅                       |
-| Teilnehmer  | ❌                       | ❌                        | ❌                       |
+| Rolle                      | Kann Organisationsadministratoren einladen | Kann Projektkoordinatoren einladen | Kann Teilnehmer einladen |
+| -------------------------- | ------------------------------------------ | ---------------------------------- | ------------------------ |
+| Organisationsadministrator | ✅                                         | ✅                                 | ✅                       |
+| Projektkoordinator         | ❌                                         | ❌                                 | ✅                       |
+| Teilnehmer                 | ❌                                         | ❌                                 | ❌                       |
 
 ## Fehlerbehebung
 

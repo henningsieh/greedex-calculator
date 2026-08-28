@@ -106,13 +106,13 @@ Planned features include:
 
 ### Who Can Access Settings
 
-| Role        | View Settings | Edit Settings |
-| ----------- | ------------- | ------------- |
-| Owner       | ✅            | ✅            |
-| Employee    | ✅            | ❌            |
-| Participant | ❌            | ❌            |
+| Role                       | View Settings | Edit Settings |
+| -------------------------- | ------------- | ------------- |
+| Organization Administrator | ✅            | ✅            |
+| Project Coordinator        | ✅            | ❌            |
+| Participant                | ❌            | ❌            |
 
-Only **Owners** can modify organization settings. Employees can view settings but cannot make changes.
+Only **Organization Administrators** can modify organization settings. Project Coordinators can view settings but cannot make changes.
 
 ## Danger Zone
 
@@ -148,7 +148,7 @@ If your settings changes don't persist:
 
 - Check for validation errors
 - Ensure you clicked "Save Changes"
-- Verify you have Owner permissions
+- Verify you have Organization Administrator permissions
 - Try refreshing the page
 
 ### Invalid Email Error
@@ -177,8 +177,8 @@ If your preferred slug is unavailable:
 ### Security Considerations
 
 - **Use organization email** - Not a personal email address
-- **Monitor access** - Only Owners should have settings access
-- **Regular audits** - Review who has Owner permissions
+- **Monitor access** - Only Organization Administrators should have settings access
+- **Regular audits** - Review who has Organization Administrator permissions
 
 ## Related Topics
 
