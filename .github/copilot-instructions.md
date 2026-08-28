@@ -134,6 +134,20 @@ The instruction files below live under the repository-root [`.github/instruction
 
 <!-- AGENT-INSTRUCTION-INDEX-END -->
 
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub Issues. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The default five-role label vocabulary is used. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This monorepo uses a multi-context layout. See `docs/agents/domain.md`.
+
 ### Primary documentation
 
 | Task                                 | Primary documentation                                                      |
