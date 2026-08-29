@@ -1,9 +1,10 @@
-import { randomUUID } from "node:crypto";
 import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { Pool } from "pg";
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
+
+import { createDisposablePostgresFixture } from "./disposable-postgres.fixture";
 
 const migrationsDirectory = resolve(
   import.meta.dirname,
@@ -11,18 +12,6 @@ const migrationsDirectory = resolve(
 );
 const priorMigrationPrefix = "0012_";
 const cleanupMigrationPrefix = "0013_";
-
-function disposableDatabaseUrl(databaseName: string): string {
-  const url = new URL(process.env.DATABASE_URL!);
-  url.pathname = `/${databaseName}`;
-  return url.toString();
-}
-
-function adminDatabaseUrl(): string {
-  const url = new URL(process.env.DATABASE_URL!);
-  url.pathname = "/postgres";
-  return url.toString();
-}
 
 async function applyMigrationsUpTo(pool: Pool, maxPrefix: string): Promise<void> {
   const filenames = (await readdir(migrationsDirectory))
@@ -66,62 +55,11 @@ async function createCanonicalProject(pool: Pool): Promise<void> {
   `);
 }
 
-async function createDisposableDatabase(): Promise<{
-  databaseName: string;
-  adminPool: Pool;
-  pool: Pool;
-}> {
-  const databaseName = `cleanup_${randomUUID().replaceAll("-", "")}`;
-  const adminPool = new Pool({ connectionString: adminDatabaseUrl(), max: 1 });
-  await adminPool.query(`CREATE DATABASE "${databaseName}"`);
-
-  const pool = new Pool({
-    connectionString: disposableDatabaseUrl(databaseName),
-    max: 1,
-  });
-  // pg_terminate_backend in dropDisposableDatabase can race with an idle pooled
-  // client; without this handler the FATAL 57P01 surfaces as an unhandled error.
-  pool.on("error", (err) => {
-    if ((err as { code?: string }).code !== "57P01") throw err;
-  });
-
-  return {
-    databaseName,
-    adminPool,
-    pool,
-  };
-}
-
-async function dropDisposableDatabase(
-  databaseName: string,
-  adminPool: Pool,
-  pool: Pool,
-): Promise<void> {
-  await pool.end();
-  await adminPool.query(
-    "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1",
-    [databaseName],
-  );
-  await adminPool.query(`DROP DATABASE IF EXISTS "${databaseName}"`);
-  await adminPool.end();
-}
-
 describe("Project Shared Travel Leg compatibility cleanup", () => {
-  const databases: Awaited<ReturnType<typeof createDisposableDatabase>>[] = [];
-
-  afterEach(async () => {
-    await Promise.all(
-      databases
-        .splice(0)
-        .map(({ databaseName, adminPool, pool }) =>
-          dropDisposableDatabase(databaseName, adminPool, pool),
-        ),
-    );
-  });
+  const disposableDatabase = createDisposablePostgresFixture("cleanup");
 
   it("drops the legacy view/trigger/function and keeps canonical storage operational", async () => {
-    const database = await createDisposableDatabase();
-    databases.push(database);
+    const database = await disposableDatabase.create();
 
     await applyMigrationsUpTo(database.pool, priorMigrationPrefix);
     await createCanonicalProject(database.pool);
