@@ -18,7 +18,7 @@ export default defineConfig({
     timeout: 10_000,
   },
   use: {
-    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+    baseURL: process.env.CANDIDATE_BASE_URL ?? process.env.NEXT_PUBLIC_BASE_URL,
     storageState: "src/__tests__/e2e/.auth/storageState.json",
     trace: "on-first-retry",
     screenshot: "only-on-failure",

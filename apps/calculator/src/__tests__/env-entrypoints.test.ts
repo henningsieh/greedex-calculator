@@ -61,6 +61,10 @@ describe("environment entrypoints", () => {
     path.resolve("src/__tests__/openapi-rest.test.ts"),
     "utf8",
   );
+  const playwrightConfig = readFileSync(
+    path.resolve("playwright.config.ts"),
+    "utf8",
+  );
 
   it("does not load dotenv from a hardcoded .env path", () => {
     const importLine = content
@@ -157,6 +161,20 @@ describe("environment entrypoints", () => {
     expect(dockerfile).toContain("id=NEXT_PUBLIC_SOCKET_URL");
     expect(openApiRestTest).toContain(
       "env.CANDIDATE_BASE_URL ?? env.NEXT_PUBLIC_BASE_URL",
+    );
+  });
+
+  it("runs candidate-local Playwright coverage after the candidate starts", () => {
+    expect(candidateTestScript).toContain(
+      "pnpm --filter @greendex/calculator run test:e2e",
+    );
+    expect(candidateTestScript.indexOf("server_pid=$!")).toBeLessThan(
+      candidateTestScript.indexOf(
+        "pnpm --filter @greendex/calculator run test:e2e",
+      ),
+    );
+    expect(playwrightConfig).toContain(
+      "process.env.CANDIDATE_BASE_URL ?? process.env.NEXT_PUBLIC_BASE_URL",
     );
   });
 

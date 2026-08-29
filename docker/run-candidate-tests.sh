@@ -123,4 +123,5 @@ for attempt in $(seq 1 60); do
 done
 
 pnpm run test:run
+pnpm --filter @greendex/calculator run test:e2e
 pnpm --filter @greendex/calculator run test:release-email

@@ -118,6 +118,7 @@
     "@noble/hashes": "^2.3.0",
     "@paralleldrive/cuid2": "^3.0.6",
     "@playwright/test": "^1.62.1",
+    "@scalar/api-reference": "1.25.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/pg": "^8.23.1",
     "@types/qrcode": "^1.5.6",

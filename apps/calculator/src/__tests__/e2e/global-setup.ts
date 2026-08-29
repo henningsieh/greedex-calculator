@@ -67,25 +67,50 @@ async function globalSetup(config: FullConfig) {
 
     console.log("✅ Sign-in page loaded with expected content");
 
-    // Wait for the login form inputs to be rendered (client-side)
-    await page.waitForSelector('input[name="email"]', { timeout: 10000 });
-    await page.waitForSelector('input[name="password"]', { timeout: 10000 });
-    await page.waitForSelector('button[type="submit"]', { timeout: 10000 });
+    if (process.env.CANDIDATE_BASE_URL) {
+      // The candidate browser bundle intentionally addresses the public auth
+      // origin. Seed its candidate-local browser context directly so the
+      // browser suites never contact the promoted release.
+      const response = await page.request.post(
+        new URL("/api/auth/sign-in/email", baseURL).toString(),
+        {
+          data: {
+            callbackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/org/dashboard`,
+            email: SEED_USER.email,
+            password: SEED_USER.password,
+          },
+          headers: {
+            Origin: process.env.NEXT_PUBLIC_BASE_URL!,
+          },
+        },
+      );
+      if (!response.ok()) {
+        throw new Error(
+          `Candidate sign-in failed with HTTP ${response.status()}.`,
+        );
+      }
+      await page.goto(new URL("/en/org/dashboard", baseURL).toString());
+    } else {
+      // Wait for the login form inputs to be rendered (client-side)
+      await page.waitForSelector('input[name="email"]', { timeout: 10_000 });
+      await page.waitForSelector('input[name="password"]', { timeout: 10_000 });
+      await page.waitForSelector('button[type="submit"]', { timeout: 10_000 });
 
-    // Login with seed user
-    await page.fill('input[name="email"]', SEED_USER.email);
-    await page.fill('input[name="password"]', SEED_USER.password);
+      // Login with seed user
+      await page.fill('input[name="email"]', SEED_USER.email);
+      await page.fill('input[name="password"]', SEED_USER.password);
 
-    // Wait a bit for any animations to settle
-    await page.waitForTimeout(500);
+      // Wait a bit for any animations to settle
+      await page.waitForTimeout(500);
 
-    // Click with force to bypass animation stability check
-    const submitButton = page.locator('button[type="submit"]');
-    await submitButton.waitFor({ state: "visible", timeout: 10_000 });
-    await submitButton.click({ force: true, timeout: 10_000 });
+      // Click with force to bypass animation stability check
+      const submitButton = page.locator('button[type="submit"]');
+      await submitButton.waitFor({ state: "visible", timeout: 10_000 });
+      await submitButton.click({ force: true, timeout: 10_000 });
 
-    // Wait for redirect to dashboard
-    await page.waitForURL("**/org/dashboard", { timeout: 30_000 });
+      // Wait for redirect to dashboard
+      await page.waitForURL("**/org/dashboard", { timeout: 30_000 });
+    }
 
     // Quick verification that dashboard is loaded
     const h1Text = (await page.locator("h1").first().textContent()) ?? "";
