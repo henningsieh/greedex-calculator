@@ -93,7 +93,6 @@ async function waitForDeliveredMessage() {
         );
       }
 
-      await imapClient.messageDelete(String(uid), { uid: true });
       return;
     }
 
@@ -115,7 +114,9 @@ async function verifyReleaseGateEmail() {
       url: `${requiredEnvironmentVariable("NEXT_PUBLIC_BASE_URL")}/verify?${marker}`,
     });
     await waitForDeliveredMessage();
-    console.log("Release-gate email was delivered and verified through IMAP.");
+    console.log(
+      "Release-gate email was delivered, verified through IMAP, and retained.",
+    );
   } finally {
     await imapClient.logout();
   }

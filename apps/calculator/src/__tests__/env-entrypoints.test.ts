@@ -49,6 +49,10 @@ describe("environment entrypoints", () => {
     path.resolve("../../docker/run-candidate-tests.sh"),
     "utf8",
   );
+  const releaseEmailScript = readFileSync(
+    path.resolve("scripts/verify-release-gate-email.ts"),
+    "utf8",
+  );
   const dockerfile = readFileSync(path.resolve("../../Dockerfile"), "utf8");
   const environmentExample = readFileSync(
     path.resolve("../../.env.example"),
@@ -230,5 +234,9 @@ describe("environment entrypoints", () => {
     );
     expect(environmentExample).toContain("EMAIL_TEST_SENDER=");
     expect(environmentExample).toContain("EMAIL_TEST_RECIPIENT=");
+  });
+
+  it("retains the verified release-gate email in the recipient inbox", () => {
+    expect(releaseEmailScript).not.toContain("messageDelete");
   });
 });
