@@ -104,29 +104,6 @@ export const getCountryData = (
  */
 export const isEUCountry = isEUCountryBase;
 
-// UNUSED: getDefaultEUCountry
-// /**
-//  * Get the default EU country code for forms and UI elements
-//  * Since locales are no longer tied to specific countries, this returns
-//  * the first available EU country from supported locales, or Germany as fallback.
-//  *
-//  * @returns A valid EU country code
-//  */
-// export const getDefaultEUCountry = (): EUCountryCode => {
-//   // Try to find a locale with a country code that's in the EU
-//   const localeWithEUCountry = SUPPORTED_LOCALES.find(
-//     (locale) =>
-//       "countryCode" in locale && isEUCountry(locale.countryCode as string),
-//   );
-
-//   if (localeWithEUCountry && "countryCode" in localeWithEUCountry) {
-//     return localeWithEUCountry.countryCode as EUCountryCode;
-//   }
-
-//   // Fallback to Germany (first EU country in the list)
-//   return "DE";
-// };
-
 /**
  * Get all available countries (not just EU) with their flags
  * @param locale The locale code for country names (default: "en")

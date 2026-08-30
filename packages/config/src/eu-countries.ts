@@ -234,19 +234,6 @@ export type EUCountryCode = (typeof EU_COUNTRIES)[number]["code"];
  */
 export type EUCountryConfig = (typeof EU_COUNTRIES)[number];
 
-// UNUSED: getEUCountryConfig
-// /**
-//  * Get EU country configuration by country code
-//  * @param countryCode ISO 3166-1 alpha-2 country code
-//  * @returns EU country configuration or undefined if not found
-//  */
-// export const getEUCountryConfig = (
-//   countryCode: string,
-// ): EUCountryConfig | undefined => {
-//   const code = countryCode.toUpperCase();
-//   return EU_COUNTRIES.find((country) => country.code === code);
-// };
-
 /**
  * Check if a country code is an EU member state
  * @param countryCode ISO 3166-1 alpha-2 country code
