@@ -31,35 +31,50 @@ test.describe("candidate-local browser coverage", () => {
 
     expect(new URL(page.url()).origin).toBe(new URL(candidateBaseUrl!).origin);
     await expect(page.locator("div#app")).toBeVisible();
-    await expect(page.locator("main")).toBeVisible();
+    await expect(
+      page.getByRole("main", {
+        name: "API documentation for Greendex Calculator API",
+      }),
+    ).toBeVisible();
     await expect(
       page.getByRole("heading", { name: "Greendex Calculator API" }),
     ).toBeVisible();
   });
 
-  test("constructs the public authentication callback without contacting it", async ({
+  test("keeps auth transport candidate-local while constructing the public callback", async ({
     browser,
   }) => {
-    const context = await browser.newContext();
+    const context = await browser.newContext({
+      storageState: { cookies: [], origins: [] },
+    });
     const page = await context.newPage();
     let authRequest: Request | undefined;
+    let unexpectedPublicAuthRequest: Request | undefined;
 
-    await context.route(`${publicBaseUrl}/api/auth/**`, async (route) => {
+    await context.route(`${candidateBaseUrl}/api/auth/**`, async (route) => {
       authRequest = route.request();
+      await route.abort();
+    });
+    await context.route(`${publicBaseUrl}/api/auth/**`, async (route) => {
+      unexpectedPublicAuthRequest = route.request();
       await route.abort();
     });
 
     try {
       await page.goto(new URL("/en/login", candidateBaseUrl).toString());
-      await page.getByRole("button", { name: "Google" }).click();
+      await expect(
+        page.getByRole("heading", { name: "Welcome back, Greendexer!" }),
+      ).toBeVisible();
+      await page.getByRole("button", { name: /Google/ }).click();
 
       await expect
         .poll(() => authRequest?.url())
-        .toContain(`${publicBaseUrl}/api/auth/sign-in/social`);
+        .toContain(`${candidateBaseUrl}/api/auth/sign-in/social`);
       expect(authRequest?.postDataJSON()).toMatchObject({
         callbackURL: `${publicBaseUrl}/org/dashboard`,
         provider: "google",
       });
+      expect(unexpectedPublicAuthRequest).toBeUndefined();
       expect(new URL(page.url()).origin).toBe(new URL(candidateBaseUrl!).origin);
     } finally {
       await context.close();

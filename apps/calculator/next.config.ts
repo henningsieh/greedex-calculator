@@ -4,6 +4,8 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig = {
   typedRoutes: true,
   reactCompiler: true,
+  // Allow local browser tooling to request development-only Next.js assets.
+  allowedDevOrigins: ["127.0.0.1"],
   devIndicators: {
     position: "top-right",
   },

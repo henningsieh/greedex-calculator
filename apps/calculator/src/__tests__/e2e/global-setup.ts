@@ -68,9 +68,9 @@ async function globalSetup(config: FullConfig) {
     console.log("✅ Sign-in page loaded with expected content");
 
     if (process.env.CANDIDATE_BASE_URL) {
-      // The candidate browser bundle intentionally addresses the public auth
-      // origin. Seed its candidate-local browser context directly so the
-      // browser suites never contact the promoted release.
+      // Seed the candidate context without following the public post-login
+      // callback. Better Auth derives secure cookie attributes from its public
+      // server base URL, so normalize those attributes for the loopback origin.
       const response = await page.request.post(
         new URL("/api/auth/sign-in/email", baseURL).toString(),
         {
@@ -89,6 +89,35 @@ async function globalSetup(config: FullConfig) {
           `Candidate sign-in failed with HTTP ${response.status()}.`,
         );
       }
+
+      const cookies = response
+        .headersArray()
+        .filter(({ name }) => name.toLowerCase() === "set-cookie")
+        .map(({ value }) => {
+          const [nameValue, ...attributes] = value.split(";");
+          const separatorIndex = nameValue.indexOf("=");
+          if (separatorIndex === -1) {
+            throw new Error(
+              "Candidate sign-in returned an invalid session cookie.",
+            );
+          }
+
+          const candidateUsesHttps = new URL(baseURL).protocol === "https:";
+          const responseCookieName = nameValue.slice(0, separatorIndex);
+
+          return {
+            name: candidateUsesHttps
+              ? responseCookieName
+              : responseCookieName.replace(/^__Secure-/, ""),
+            value: nameValue.slice(separatorIndex + 1),
+            url: baseURL,
+            httpOnly: attributes.some(
+              (attribute) => attribute.trim().toLowerCase() === "httponly",
+            ),
+            secure: candidateUsesHttps,
+          };
+        });
+      await page.context().addCookies(cookies);
       await page.goto(new URL("/en/org/dashboard", baseURL).toString());
     } else {
       // Wait for the login form inputs to be rendered (client-side)
