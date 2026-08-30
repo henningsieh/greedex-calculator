@@ -13,15 +13,13 @@
     "dev": "concurrently --kill-others \"pnpm run dev:next\" \"pnpm run dev:socket\"",
     "dev:next": "NODE_ENV=development next dev",
     "dev:socket": "NODE_ENV=development tsx --watch src/socket-server.ts",
-    "prebuild": "pnpm run generate:sri && pnpm run check:sri && turbo run db:migrate",
+    "prebuild": "pnpm --filter @greendex/database run db:migrate",
     "build": "next build",
     "prestart": "pnpm --filter @greendex/database run db:migrate",
     "start": "concurrently --kill-others \"next start\" \"cross-env NODE_ENV=production tsx src/socket-server.ts\"",
     "format": "oxfmt --check",
     "lint": "oxlint",
     "type-check": "next typegen && tsc --noEmit",
-    "generate:sri": "node scripts/generate-sri.js",
-    "check:sri": "node scripts/check-sri.js",
     "test": "pnpm run test:run",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -140,8 +138,5 @@
     "typescript": "catalog:",
     "vite": "8.2.2",
     "vitest": "^4.1.11"
-  },
-  "config": {
-    "scalarVersion": "1.25.0"
   }
 }

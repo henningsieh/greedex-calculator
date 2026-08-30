@@ -128,10 +128,13 @@ describe("environment entrypoints", () => {
     expect(turboConfig.tasks["test:run"].env).toEqual(["CANDIDATE_BASE_URL"]);
   });
 
-  it("does not download utilities during release startup", () => {
-    expect(calculatorPackage.scripts.prestart).toBe(
-      "pnpm --filter @greendex/database run db:migrate",
-    );
+  it("runs Database migrations directly before build and release startup", () => {
+    const directMigrationCommand =
+      "pnpm --filter @greendex/database run db:migrate";
+
+    expect(calculatorPackage.scripts.prebuild).toBe(directMigrationCommand);
+    expect(calculatorPackage.scripts.prestart).toBe(directMigrationCommand);
+    expect(calculatorPackage.scripts.prebuild).not.toContain("pnpx");
     expect(calculatorPackage.scripts.prestart).not.toContain("pnpx");
     expect(runtimeDockerfile).toContain(
       'CMD ["node", "node_modules/pnpm/bin/pnpm.cjs", "run", "start"]',

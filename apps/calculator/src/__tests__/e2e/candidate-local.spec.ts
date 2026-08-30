@@ -1,18 +1,9 @@
-import { createRequire } from "node:module";
-import { dirname, resolve } from "node:path";
-
 import { expect, test, type Request } from "@playwright/test";
-
-import { SCALAR_URL } from "@/lib/orpc/scalar-sri";
 
 const candidateBaseUrl = process.env.CANDIDATE_BASE_URL;
 const publicBaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const publicSocketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
-const require = createRequire(import.meta.url);
-const scalarBundlePath = resolve(
-  dirname(require.resolve("@scalar/api-reference")),
-  "browser/standalone.js",
-);
+const scalarScriptPath = "/api/scalar-reference";
 
 test.describe("candidate-local browser coverage", () => {
   test.skip(
@@ -20,22 +11,31 @@ test.describe("candidate-local browser coverage", () => {
     "Candidate-local coverage runs only when CANDIDATE_BASE_URL is configured.",
   );
 
-  test("renders Scalar documentation using the local bundle", async ({
+  test("renders Scalar documentation using the self-hosted bundle", async ({
     page,
   }) => {
-    await page.route(SCALAR_URL, (route) =>
-      route.fulfill({ path: scalarBundlePath }),
-    );
+    let scalarRequestUrl: string | undefined;
+    const externalDocumentationRequests: string[] = [];
+    const candidateOrigin = new URL(candidateBaseUrl!).origin;
+
+    page.on("request", (request) => {
+      const url = new URL(request.url());
+      if (url.pathname === scalarScriptPath) {
+        scalarRequestUrl = request.url();
+      }
+      if (url.origin !== candidateOrigin) {
+        externalDocumentationRequests.push(request.url());
+      }
+    });
 
     await page.goto("/api/docs");
 
     expect(new URL(page.url()).origin).toBe(new URL(candidateBaseUrl!).origin);
-    await expect(page.locator("div#app")).toBeVisible();
-    await expect(
-      page.getByRole("main", {
-        name: "API documentation for Greendex Calculator API",
-      }),
-    ).toBeVisible();
+    await expect
+      .poll(() => scalarRequestUrl)
+      .toBe(new URL(scalarScriptPath, candidateBaseUrl).toString());
+    expect(externalDocumentationRequests).toEqual([]);
+    await expect(page.locator(".scalar-api-reference")).toBeVisible();
     await expect(
       page.getByRole("heading", { name: "Greendex Calculator API" }),
     ).toBeVisible();

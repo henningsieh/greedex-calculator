@@ -6,6 +6,18 @@ import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 
 import { router } from "@/lib/orpc/router";
 
+function escapeHtmlAttribute(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function serializeJsonForHtml(value: unknown) {
+  return JSON.stringify(value).replaceAll("<", "\\u003c");
+}
+
 /**
  * Centralized OpenAPI handler used by both `/api/openapi` and `/api/docs`.
  *
@@ -24,7 +36,29 @@ export const openapiHandler = new OpenAPIHandler(router, {
       schemaConverters: [new ZodToJsonSchemaConverter()],
       docsProvider: "scalar",
       docsPath: "/api/docs",
+      docsScriptUrl: "/api/scalar-reference",
+      docsConfig: { withDefaultFonts: false },
       specPath: "/api/openapi-spec",
+      renderDocsHtml: (
+        _specUrl,
+        title,
+        head,
+        scriptUrl,
+        config,
+        spec,
+      ) => `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${escapeHtmlAttribute(title)}</title>
+    ${head}
+  </head>
+  <body>
+    <script id="api-reference" type="application/json" data-configuration="${escapeHtmlAttribute(JSON.stringify(config ?? {}))}">${serializeJsonForHtml(spec)}</script>
+    <script src="${escapeHtmlAttribute(scriptUrl)}"></script>
+  </body>
+</html>`,
       specGenerateOptions: {
         info: {
           title: "Greendex Calculator API",

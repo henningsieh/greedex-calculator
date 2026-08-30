@@ -216,10 +216,15 @@ Run these from the repository root:
 > the committed Drizzle migration history and the shell `&&` chain stops the
 > application start if migration fails. A Coolify deployment therefore cannot
 > make a new calculator container healthy with a database schema behind its
-> shipped code. Before any local `pnpm run start`, verify that `DATABASE_URL`
-> points at the database you intend to migrate.
+> shipped code. The calculator's `prebuild` applies the same migration before
+> each calculator build. The Docker candidate gate also applies migrations
+> explicitly before the workspace build and then exercises `prestart`. Before
+> any local build or start, verify that `DATABASE_URL` points at the database
+> you intend to migrate.
 >
-> The calculator's `prebuild` only generates/checks Scalar SRI data.
+> The Scalar API reference bundle is served from the exact package version
+> pinned in `pnpm-lock.yaml`; builds do not fetch documentation assets from a
+> CDN.
 
 ---
 

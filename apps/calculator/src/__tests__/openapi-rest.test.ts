@@ -16,6 +16,7 @@ import { env } from "@/env";
 import { SEED_USER } from "../../scripts/seed";
 
 const OPENAPI_VERSION_REGEX = /^3\.\d+\.\d+$/;
+const SCALAR_SCRIPT_PATH = "/api/scalar-reference";
 // Candidate-release tests access the unpublished container directly while the
 // public URL remains the value compiled into the browser bundle.
 const testBaseUrl = env.CANDIDATE_BASE_URL ?? env.NEXT_PUBLIC_BASE_URL;
@@ -565,10 +566,28 @@ describe("API Documentation UI", () => {
 
     const html = await response.text();
 
-    // Embedded configuration script should exist
-    expect(html).toContain('id="app"');
-    // Should reference Scalar script
-    expect(html).toContain("https://cdn.jsdelivr.net/npm/@scalar/api-reference");
+    // The installed Scalar standalone bundle reads this embedded specification.
+    expect(html).toContain('id="api-reference"');
+    expect(html).toContain('type="application/json"');
+    expect(html).toContain("&quot;withDefaultFonts&quot;:false");
+    // Scalar must be served by this application in every environment.
+    expect(html).toContain(`src="${SCALAR_SCRIPT_PATH}"`);
+    expect(html).not.toContain(
+      "https://cdn.jsdelivr.net/npm/@scalar/api-reference",
+    );
+  });
+
+  it("should serve the self-hosted Scalar browser bundle", async () => {
+    if (!serverAvailable) {
+      throw new Error("Server not available");
+    }
+
+    const response = await fetch(`${testBaseUrl}${SCALAR_SCRIPT_PATH}`);
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toContain("text/javascript");
+    expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
+    expect(await response.text()).toContain("Scalar API Reference");
   });
 });
 

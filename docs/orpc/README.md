@@ -46,7 +46,7 @@ This index helps you find the right documentation for your task.
 
 | Document | Purpose | Audience |
 |----------|---------|----------|
-| [orpc.openapi-reference.md](./orpc.openapi-reference.md) | Plugin details + SRI security | DevOps, security engineers |
+| [orpc.openapi-reference.md](./orpc.openapi-reference.md) | Plugin details + self-hosted Scalar | DevOps, security engineers |
 | [orpc.openapi.scalar.md](./orpc.openapi.scalar.md) | Scalar UI alternatives | Developers |
 | [orpc.tanstack-query-compatibility.md](./orpc.tanstack-query-compatibility.md) | TanStack Query version compatibility issues | Developers (⚠️ temporary workaround) |
 
@@ -71,7 +71,7 @@ This index helps you find the right documentation for your task.
 1. Read: [DUAL-SETUP.md - Best Practices](./DUAL-SETUP.md#best-practices) (5 min)
 2. Study: How `authorized` base works in [src/lib/orpc/README.md](../src/lib/orpc/README.md)
 3. Reference: Protected procedure examples
-4. Advanced: [orpc.openapi-reference.md - SRI Security](./orpc.openapi-reference.md#sri-security-for-scalar-bundle)
+4. Advanced: [orpc.openapi-reference.md - Self-hosted Scalar](./orpc.openapi-reference.md#self-hosted-scalar-bundle)
 
 ### Path 4: "I need to integrate external tools"
 1. Read: [DUAL-SETUP.md - Using Endpoints](./DUAL-SETUP.md#using-the-endpoints) (5 min)
@@ -137,8 +137,9 @@ await orpc.procedure();
 - [`src/lib/orpc/openapi-handler.ts`](../src/lib/orpc/openapi-handler.ts) — Handler config
 
 ### Build & Deployment
-- [`scripts/generate-sri.js`](../scripts/generate-sri.js) — SRI hash generator
-- [`package.json`](../package.json) → `config.scalarVersion` — Version source
+- [`src/app/api/scalar-reference/route.ts`](../../apps/calculator/src/app/api/scalar-reference/route.ts) — Same-origin Scalar bundle
+- [`apps/calculator/package.json`](../../apps/calculator/package.json) — Exact Scalar dependency
+- [`pnpm-lock.yaml`](../../pnpm-lock.yaml) — Package version and integrity
 
 ### Documentation
 - [`docs/orpc/QUICKSTART.md`](./QUICKSTART.md) — This directory
@@ -198,7 +199,7 @@ A: During server-side rendering, `orpc` calls procedures directly (no HTTP). In 
 | "How to create procedure" | [src/lib/orpc/README.md - Usage](../src/lib/orpc/README.md#usage-pattern-unified-client) |
 | "SSR not working" | [DUAL-SETUP.md - SSR Optimization](./DUAL-SETUP.md#ssr-optimization) |
 | "How to protect endpoint" | [src/lib/orpc/README.md - Protected Procedures](../src/lib/orpc/README.md#creating-protected-procedures) |
-| "Scalar UI blank" | [orpc.openapi-reference.md - SRI](./orpc.openapi-reference.md#sri-security-for-scalar-bundle) |
+| "Scalar UI blank" | [orpc.openapi-reference.md - Self-hosted Scalar](./orpc.openapi-reference.md#self-hosted-scalar-bundle) |
 
 ---
 

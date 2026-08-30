@@ -78,12 +78,6 @@ These exports have zero references and are not part of public APIs or UI librari
 
 - `getPathname` (line 19)
 
-#### `src/lib/orpc/scalar-sri.ts`
-
-- `SCALAR_VERSION` (line 2)
-- `SCALAR_URL` (line 3)
-- `SCALAR_SRI` (line 4)
-
 #### `src/lib/utils/index.ts`
 
 - `cn` (line 4) ⚠️ **VERIFY BEFORE DELETING** - This is commonly used utility
