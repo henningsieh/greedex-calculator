@@ -17,7 +17,6 @@ export async function PreviewSection() {
               alt="Greendex carbon footprint calculator dashboard showing CO₂ emissions tracking"
               className="object-cover"
               fill
-              priority
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1152px"
               src="/Greendex-hero-banner.png"
             />
