@@ -48,12 +48,28 @@ test.describe("candidate-local browser coverage", () => {
       storageState: { cookies: [], origins: [] },
     });
     const page = await context.newPage();
+    const pageErrors: Error[] = [];
+    const consoleErrors: string[] = [];
+    page.on("pageerror", (error) => pageErrors.push(error));
+    page.on("console", (message) => {
+      if (message.type() === "error") {
+        consoleErrors.push(message.text());
+      }
+    });
+
     let authRequest: Request | undefined;
     let unexpectedPublicAuthRequest: Request | undefined;
 
     await context.route(`${candidateBaseUrl}/api/auth/**`, async (route) => {
       authRequest = route.request();
-      await route.abort();
+      await route.fulfill({
+        body: JSON.stringify({
+          redirect: false,
+          url: "https://accounts.google.com/o/oauth2/v2/auth",
+        }),
+        contentType: "application/json",
+        status: 200,
+      });
     });
     await context.route(`${publicBaseUrl}/api/auth/**`, async (route) => {
       unexpectedPublicAuthRequest = route.request();
@@ -76,6 +92,8 @@ test.describe("candidate-local browser coverage", () => {
       });
       expect(unexpectedPublicAuthRequest).toBeUndefined();
       expect(new URL(page.url()).origin).toBe(new URL(candidateBaseUrl!).origin);
+      expect(pageErrors).toEqual([]);
+      expect(consoleErrors).toEqual([]);
     } finally {
       await context.close();
     }
