@@ -15,9 +15,9 @@ import { after } from "next/server";
 import { env } from "@/env";
 import {
   ac,
-  admin,
-  member as memberRole,
-  owner,
+  ProjectCoordinatorRole,
+  ProjectParticipantRole,
+  OrganizationAdministratorRole,
 } from "@/features/projects/permissions";
 import { emailSender } from "@/lib/email";
 
@@ -91,9 +91,9 @@ export const auth = betterAuth({
     organizationPlugin({
       ac,
       roles: {
-        owner,
-        admin,
-        member: memberRole,
+        owner: OrganizationAdministratorRole,
+        admin: ProjectCoordinatorRole,
+        member: ProjectParticipantRole,
       },
       async sendInvitationEmail(data) {
         try {

@@ -8,7 +8,11 @@
  */
 
 import { MEMBER_ROLES, type MemberRole } from "@/features/organizations/types";
-import type { ProjectPermission } from "@/features/projects/permissions";
+import {
+  canManageProject,
+  type ProjectPermission,
+} from "@/features/projects/permissions";
+import type { ProjectType } from "@/features/projects/types";
 import { authClient } from "@/lib/better-auth/auth-client";
 
 /**
@@ -39,14 +43,18 @@ function checkProjectPermission(
  *
  * @example
  * ```tsx
- * function ProjectActions() {
- *   const { canCreate, canUpdate, canDelete, role } = useProjectPermissions();
+ * function ProjectActions({ project }: { project: ProjectType }) {
+ *   const {
+ *     canCreate,
+ *     canUpdateProject,
+ *     canDeleteProject,
+ *   } = useProjectPermissions();
  *
  *   return (
  *     <div>
  *       {canCreate && <Button>New Project</Button>}
- *       {canUpdate && <Button>Edit</Button>}
- *       {canDelete && <Button>Delete</Button>}
+ *       {canUpdateProject(project) && <Button>Edit</Button>}
+ *       {canDeleteProject(project) && <Button>Delete</Button>}
  *     </div>
  *   );
  * }
@@ -72,15 +80,28 @@ export function useProjectPermissions() {
   }
 
   const isPending = sessionPending || orgPending;
+  const canCreate = checkProjectPermission(role, ["create"]);
+  const canRead = checkProjectPermission(role, ["read"]);
+  const canUpdate = checkProjectPermission(role, ["update"]);
+  const canDelete = checkProjectPermission(role, ["delete"]);
+  const canArchive = checkProjectPermission(role, ["archive"]);
+  const canManage = (project: Pick<ProjectType, "responsibleUserId">) =>
+    canManageProject(role, session?.user?.id, project);
 
   return {
     role,
     isPending,
-    canCreate: checkProjectPermission(role, ["create"]),
-    canRead: checkProjectPermission(role, ["read"]),
-    canUpdate: checkProjectPermission(role, ["update"]),
-    canDelete: checkProjectPermission(role, ["delete"]),
-    canArchive: checkProjectPermission(role, ["archive"]),
+    canCreate,
+    canRead,
+    canUpdate,
+    canDelete,
+    canArchive,
+    canUpdateProject: (project: Pick<ProjectType, "responsibleUserId">) =>
+      canUpdate && canManage(project),
+    canDeleteProject: (project: Pick<ProjectType, "responsibleUserId">) =>
+      canDelete && canManage(project),
+    canArchiveProject: (project: Pick<ProjectType, "responsibleUserId">) =>
+      canArchive && canManage(project),
   };
 }
 

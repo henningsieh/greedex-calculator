@@ -6,6 +6,7 @@ import {
 import { and, asc, eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { assertProjectManagementAccess } from "@/features/projects/authorization";
 import { authorized, requireProjectPermissions } from "@/lib/orpc/middleware";
 
 import type {
@@ -22,8 +23,12 @@ import {
 } from "./validation-schemas";
 
 type ProcedureContext = {
+  headers: Headers;
   session: {
     activeOrganizationId?: string | null;
+  };
+  user: {
+    id: string;
   };
 };
 
@@ -78,15 +83,15 @@ async function assertProjectAccess(
   }
 }
 
-async function assertTravelLegAccess(
+async function assertTravelLegManagementAccess(
   input: { id: string; projectId?: string },
-  operation: "update" | "delete",
   context: ProcedureContext,
   errors: ProcedureErrors,
 ): Promise<void> {
   const organizationId = requireActiveOrganization(context, errors);
   const [existingTravelLeg] = await db
     .select({
+      projectId: projectSharedTravelLegsTable.projectId,
       projectOrganizationId: projectsTable.organizationId,
     })
     .from(projectSharedTravelLegsTable)
@@ -111,9 +116,15 @@ async function assertTravelLegAccess(
   }
   if (existingTravelLeg.projectOrganizationId !== organizationId) {
     throw errors.FORBIDDEN({
-      message: `You don't have permission to ${operation} this shared travel leg`,
+      message: "You don't have permission to manage this shared travel leg",
     });
   }
+
+  await assertProjectManagementAccess(
+    existingTravelLeg.projectId,
+    context,
+    errors,
+  );
 }
 
 export async function listProjectSharedTravelLegsHandler(
@@ -138,6 +149,7 @@ export async function createProjectSharedTravelLegHandler(
   errors: ProcedureErrors,
 ) {
   await assertProjectAccess(input.projectId, context, errors);
+  await assertProjectManagementAccess(input.projectId, context, errors);
 
   const [createdTravelLeg] = await db
     .insert(projectSharedTravelLegsTable)
@@ -181,7 +193,7 @@ export async function updateProjectSharedTravelLegHandler(
   context: ProcedureContext,
   errors: ProcedureErrors,
 ) {
-  await assertTravelLegAccess(input, "update", context, errors);
+  await assertTravelLegManagementAccess(input, context, errors);
 
   const updateData: Partial<typeof projectSharedTravelLegsTable.$inferInsert> =
     {};
@@ -230,7 +242,7 @@ export async function deleteProjectSharedTravelLegHandler(
   context: ProcedureContext,
   errors: ProcedureErrors,
 ) {
-  await assertTravelLegAccess(input, "delete", context, errors);
+  await assertTravelLegManagementAccess(input, context, errors);
 
   await db
     .delete(projectSharedTravelLegsTable)

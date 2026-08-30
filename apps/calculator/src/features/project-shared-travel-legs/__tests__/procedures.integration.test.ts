@@ -22,6 +22,7 @@ import {
 } from "vitest";
 
 const authMocks = vi.hoisted(() => ({
+  getActiveMemberRole: vi.fn(),
   getSession: vi.fn(),
   hasPermission: vi.fn(),
 }));
@@ -35,8 +36,10 @@ vi.mock("@/lib/better-auth", () => ({
 import { router } from "@/lib/orpc/router";
 
 const userId = randomUUID();
+const otherUserId = randomUUID();
 const organizationId = randomUUID();
 const projectId = randomUUID();
+const otherProjectId = randomUUID();
 const foreignOrganizationId = randomUUID();
 const foreignProjectId = randomUUID();
 const headers = new Headers();
@@ -47,14 +50,24 @@ const client = createRouterClient(router, {
 });
 
 beforeAll(async () => {
-  await db.insert(user).values({
-    id: userId,
-    name: "Shared Travel Contract User",
-    email: sharedTravelEmail,
-    emailVerified: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+  await db.insert(user).values([
+    {
+      id: userId,
+      name: "Shared Travel Contract User",
+      email: sharedTravelEmail,
+      emailVerified: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: otherUserId,
+      name: "Other Shared Travel Coordinator",
+      email: `other-shared-travel-${otherUserId}@sieh.org`,
+      emailVerified: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ]);
   await db.insert(organization).values({
     id: organizationId,
     name: "Shared Travel Contract Organization",
@@ -69,6 +82,16 @@ beforeAll(async () => {
     location: "Berlin",
     country: "DE" as EUCountryCode,
     responsibleUserId: userId,
+    organizationId,
+  });
+  await db.insert(projectsTable).values({
+    id: otherProjectId,
+    name: "Other Shared Travel Contract Project",
+    startDate: new Date("2026-01-01T00:00:00.000Z"),
+    endDate: new Date("2026-12-31T00:00:00.000Z"),
+    location: "Hamburg",
+    country: "DE" as EUCountryCode,
+    responsibleUserId: otherUserId,
     organizationId,
   });
   await db.insert(organization).values({
@@ -102,6 +125,7 @@ beforeEach(() => {
       email: sharedTravelEmail,
     },
   });
+  authMocks.getActiveMemberRole.mockResolvedValue({ role: "owner" });
   authMocks.hasPermission.mockResolvedValue(true);
 });
 
@@ -112,15 +136,20 @@ afterEach(async () => {
   await db
     .delete(projectSharedTravelLegsTable)
     .where(eq(projectSharedTravelLegsTable.projectId, foreignProjectId));
+  await db
+    .delete(projectSharedTravelLegsTable)
+    .where(eq(projectSharedTravelLegsTable.projectId, otherProjectId));
   vi.clearAllMocks();
 });
 
 afterAll(async () => {
   await db.delete(projectsTable).where(eq(projectsTable.id, projectId));
+  await db.delete(projectsTable).where(eq(projectsTable.id, otherProjectId));
   await db.delete(projectsTable).where(eq(projectsTable.id, foreignProjectId));
   await db.delete(organization).where(eq(organization.id, organizationId));
   await db.delete(organization).where(eq(organization.id, foreignOrganizationId));
   await db.delete(user).where(eq(user.id, userId));
+  await db.delete(user).where(eq(user.id, otherUserId));
 });
 
 describe("canonical Project Shared Travel Leg procedures", () => {
@@ -226,6 +255,20 @@ describe("canonical Project Shared Travel Leg procedures", () => {
     await expect(
       client.projectSharedTravelLegs.list({ projectId }),
     ).resolves.toEqual([]);
+  });
+
+  it("blocks a Project Coordinator from managing another coordinator's project", async () => {
+    authMocks.getActiveMemberRole.mockResolvedValue({ role: "admin" });
+
+    await expect(
+      client.projectSharedTravelLegs.create({
+        projectId: otherProjectId,
+        transportEmissionProfile: "train",
+        distanceKm: 20,
+        description: null,
+        travelDate: null,
+      }),
+    ).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 
   it("preserves active-organization scoping and typed forbidden errors", async () => {
