@@ -70,7 +70,6 @@ export const SUPPORTED_LOCALES = [
 - Type-safe country codes (`EUCountryCode`)
 - Marker size constants (`MARKER_SIZE.DEFAULT`, `MARKER_SIZE.LARGE`)
 - Validation functions (`isEUCountry`)
-- Country configuration lookup (`getEUCountryConfig`)
 
 **Example:**
 ```typescript

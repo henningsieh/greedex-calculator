@@ -16,128 +16,13 @@ These exports have zero references and are not part of public APIs or UI librari
 
 ### Source Files
 
-#### `src/app/routes.ts`
-
-- `LIVE_VIEW_PATH` (line 22)
-- `ORPC_TEST_PATH` (line 51)
-
-#### `src/components/location.tsx`
-
-- `ProjectLocation` (line 134)
-
-#### `src/components/navbar.tsx`
-
-- `Navbar` (line 23)
-
-#### `src/config/activities.ts`
-
-- `DECIMAL_PRECISION` (line 69)
-- `DECIMAL_SCALE` (line 76)
-- `ACTIVITY_EMISSION_FACTORS` (line 86)
-- `ACTIVITY_DEFAULT_DISTANCES` (line 106)
-
-#### `src/config/eu-countries.ts`
-
-- `getEUCountryConfig` (line 242)
-
-#### `src/config/pagination.ts`
-
-- `PageSizeOption` (line 20)
-
-#### `src/lib/theme.ts`
-
-- `ThemeKey` (line 2)
-
-#### `src/lib/better-auth/permissions-utils.ts`
-
-- `canCreateProjects` (line 91)
-- `canUpdateProjects` (line 98)
-- `canArchiveProjects` (line 105)
-- `isReadOnlyMember` (line 114)
-
-#### `src/lib/better-auth/types.ts`
-
-- `User` (line 20)
-
-#### `src/lib/email/index.ts`
+<!-- #### `src/lib/email/index.ts`
 
 - `sendPasswordResetEmail` (line 25)
 - `sendEmailVerificationEmail` (line 66)
-- `sendOrganizationInvitation` (line 120)
-
-#### `src/lib/i18n/countries.ts`
-
-- `getDefaultEUCountry` (line 119)
-
-#### `src/lib/i18n/eu-cities.ts`
-
-- `getEUCitiesSubset` (line 39)
-- `getEUCitiesByRegion` (line 50)
-
-#### `src/lib/i18n/routing.ts`
-
-- `getPathname` (line 19)
-
-#### `src/lib/utils/index.ts`
-
-- `cn` (line 4) ⚠️ **VERIFY BEFORE DELETING** - This is commonly used utility
-
-#### `src/features/authentication/components/magic-link-form.tsx`
-
-- `MagicLinkForm` (line 31)
-
-#### `src/features/landingpage/constants.ts`
-
-- `NAVIGATION_ITEMS` (line 12)
-
-#### `src/features/participants/types.ts`
-
-- `ProjectParticipantType` (line 18)
-- `ProjectParticipantWithUser` (line 25)
-- `Participant` (line 32)
-
-#### `src/features/project-activities/validation-schemas.ts`
-
-- `createUpdateActivityInputSchema` (line 44)
-- `createEditActivityFormItemSchema` (line 65)
-
-### Test/Spec Files
-
-#### `specs/001-org-registration/contracts/members-list.contract.ts`
-
-All exports appear unused (this is a contract/spec file - may be intentionally documentational):
-
-- `transformMemberToTableRow` (line 349)
-- `ListMembersParams` (line 30)
-- `ListMembersQuery` (line 31)
-- `ListMembersResponse` (line 64)
-- `ListMembersError` (line 78)
-- `listMembersTestCases` (line 84)
-- `listMembersStatusCodes` (line 141)
-- `listMembersExamples` (line 153)
-- `listMembersContractTests` (line 264)
-
-#### `specs/001-org-registration/contracts/organization-create.contract.ts`
-
-- `CreateOrganizationRequest` (line 38)
-- `CreateOrganizationResponse` (line 60)
-- `CreateOrganizationError` (line 83)
-- `createOrganizationStatusCodes` (line 91)
-- `createOrganizationExamples` (line 104)
-
-#### `specs/001-org-registration/contracts/organization-list.contract.ts`
-
-- `ListOrganizationsQuery` (line 27)
-- `ListOrganizationsResponse` (line 57)
-- `ListOrganizationsError` (line 73)
-- `listOrganizationsStatusCodes` (line 81)
-- `listOrganizationsExamples` (line 91)
+- `sendOrganizationInvitation` (line 120) -->
 
 ### Skeleton Components (Potentially Unused)
-
-#### `src/features/organizations/components/organozation-header.tsx`
-
-- `DashboardHeaderSkeleton` (line 64)
 
 #### `src/features/participants/components/participants-link-controls.tsx`
 
@@ -154,20 +39,6 @@ All exports appear unused (this is a contract/spec file - may be intentionally d
 #### `src/features/projects/components/project-switcher.tsx`
 
 - `ProjectSwitcherSkeleton` (line 146)
-
-### Component Exports
-
-#### `src/features/organizations/components/organozation-header.tsx`
-
-- `OrganizationHeader` (line 27)
-
-#### `src/features/projects/components/project-switcher.tsx`
-
-- `ProjectSwitcher` (line 31)
-
-#### `src/features/projects/components/projects-list.tsx`
-
-- `ProjectsList` (line 9)
 
 ---
 
@@ -308,7 +179,6 @@ These are TypeScript type exports that may only be used in type positions. They 
 ### Library/Auth Types
 
 - `src/lib/better-auth/index.ts`: `auth` (line 28) - **DO NOT DELETE** - Core auth instance
-- `src/lib/better-auth/types.ts`: Organization, Invitation, Member, Session
 - `src/lib/email/nodemailer.ts`: SendEmailOptions
 - `src/lib/i18n/countries.ts`: CountryData
 - `src/lib/i18n/locales.ts`: LocaleData
@@ -340,7 +210,7 @@ These are TypeScript type exports that may only be used in type positions. They 
 
 ### Immediate Actions (Safe to Delete)
 
-1. **Delete unused skeleton components** - 5 skeleton components are not being used
+1. **Delete unused skeleton components** - 4 skeleton components are not being used
 2. **Remove unused email functions** - 3 email sender functions
 3. **Clean up unused permission utilities** - 4 permission check functions
 4. **Remove unused i18n utilities** - 3 country/city helper functions

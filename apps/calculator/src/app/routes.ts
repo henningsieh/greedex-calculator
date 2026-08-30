@@ -209,12 +209,3 @@ export const E_FOREST_PATH: AppRoute = "/e-forest";
  * Information about the application and organization.
  */
 export const ABOUT_PATH: AppRoute = "/about";
-
-// ============================================================================
-// Deprecated Routes
-// ============================================================================
-// The following routes are no longer in use but kept for reference.
-// Remove when confirmed safe to delete.
-// ============================================================================
-
-// UNUSED: export const LIVE_VIEW_PATH: AppRoute = "/org/activeproject/liveview";
