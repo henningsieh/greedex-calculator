@@ -84,8 +84,8 @@ describe("runtime image deployment evidence", () => {
       event: "greendex.runtime-image-evidence",
       container: "abcdef1234567890",
       imageReference: "greendex:commit",
-      imageId: "sha256:image-id",
-      imageDigest: "greendex@sha256:registry-digest",
+      imageDigest: "sha256:image-id",
+      repositoryDigest: "greendex@sha256:registry-digest",
       gateStatus: "passed",
       healthStatus: "healthy",
       user: "node",
@@ -101,7 +101,8 @@ describe("runtime image deployment evidence", () => {
     expect(result.code).toBe(1);
     expect(JSON.parse(result.output)).toMatchObject({
       event: "greendex.runtime-image-evidence",
-      imageDigest: "greendex@sha256:registry-digest",
+      imageDigest: "sha256:image-id",
+      repositoryDigest: "greendex@sha256:registry-digest",
       gateStatus: "failed",
       healthStatus: "unhealthy",
     });

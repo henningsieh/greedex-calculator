@@ -23,22 +23,22 @@ if [[ "$container_image_id" != "$inspected_image_id" || "$container_image_id" !=
 fi
 
 if [[ "$image_reference" == *@sha256:* ]]; then
-  image_digest="$image_reference"
+  repository_digest="$image_reference"
 else
   repository="$image_reference"
   last_reference_segment="${repository##*/}"
   if [[ "$last_reference_segment" == *:* ]]; then
     repository="${repository%:*}"
   fi
-  image_digest="$(
+  repository_digest="$(
     awk -v prefix="$repository@sha256:" \
       'index($0, prefix) == 1 { print; exit }' \
       <<< "$repository_digests"
   )"
 fi
-readonly image_digest
+readonly repository_digest
 
-if [[ -z "$image_digest" || "$image_digest" != *@sha256:* ]]; then
+if [[ -z "$repository_digest" || "$repository_digest" != *@sha256:* ]]; then
   echo "The selected image reference does not resolve to an immutable repository digest." >&2
   exit 1
 fi
@@ -66,11 +66,11 @@ else
   exit 1
 fi
 
-printf '{"event":"greendex.runtime-image-evidence","container":"%s","imageReference":"%s","imageId":"%s","imageDigest":"%s","gateStatus":"%s","healthStatus":"%s","user":"%s"}\n' \
+printf '{"event":"greendex.runtime-image-evidence","container":"%s","imageReference":"%s","imageDigest":"%s","repositoryDigest":"%s","gateStatus":"%s","healthStatus":"%s","user":"%s"}\n' \
   "$container_id" \
   "$image_reference" \
   "$container_image_id" \
-  "$image_digest" \
+  "$repository_digest" \
   "$gate_status" \
   "$health_status" \
   "$runtime_user"

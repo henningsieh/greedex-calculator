@@ -388,9 +388,9 @@ being checked, so Coolify cannot promote a partial or failed topology and the
 previous release stays active. A secret-safe terminal JSON event identifies
 the validating container. On the Docker host,
 `docker/collect-runtime-evidence.sh <container>` pairs that event with the
-selected container's immutable repository digest and emits the deployment
-evidence without reading its environment, proving that the tested image is the
-image selected for promotion.
+selected container's immutable Docker image ID and matching repository digest.
+It emits the deployment evidence without reading the container environment,
+proving that the tested image is the image selected for promotion.
 
 Coolify injects runtime environment variables into that final image;
 Turborepo forwards them to the application processes via the `"env": ["*"]`
