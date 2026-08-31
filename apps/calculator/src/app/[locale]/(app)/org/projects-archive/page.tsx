@@ -16,7 +16,10 @@ import {
 } from "@/features/projects/components/dashboard/archived-projects";
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
+import {
+  getQueryClient,
+  swallowPrefetchError,
+} from "@/lib/tanstack-react-query/hydration";
 
 export default async function ProjectsArchivePage() {
   const t = await getTranslations("organization.projectsArchive");
@@ -24,13 +27,15 @@ export default async function ProjectsArchivePage() {
   // Prefetch the projects data on the server
   // Using await ensures data is in cache BEFORE dehydration
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(
-    orpcQuery.projects.list.queryOptions({
-      input: {
-        sort_by: "createdAt",
-      },
-    }),
-  );
+  await queryClient
+    .query(
+      orpcQuery.projects.list.queryOptions({
+        input: {
+          sort_by: "createdAt",
+        },
+      }),
+    )
+    .catch(swallowPrefetchError);
 
   return (
     <div className="space-y-8">

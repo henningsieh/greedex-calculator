@@ -17,7 +17,10 @@ import { ParticipantsTable } from "@/features/participants/components/participan
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
+import {
+  getQueryClient,
+  swallowPrefetchError,
+} from "@/lib/tanstack-react-query/hydration";
 
 export default async () => {
   const headers = await nextHeaders();
@@ -36,21 +39,23 @@ export default async () => {
   // Prefetch participants data (members with "member" role)
   // Using await ensures data is in cache BEFORE dehydration
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(
-    orpcQuery.members.search.queryOptions({
-      input: {
-        organizationId: activeOrganizationId,
-        filters: {
-          roles: [MEMBER_ROLES.Participant],
-          search: undefined,
-          sortBy: undefined,
-          sortDirection: "asc",
-          limit: DEFAULT_PAGE_SIZE,
-          offset: 0,
+  await queryClient
+    .query(
+      orpcQuery.members.search.queryOptions({
+        input: {
+          organizationId: activeOrganizationId,
+          filters: {
+            roles: [MEMBER_ROLES.Participant],
+            search: undefined,
+            sortBy: undefined,
+            sortDirection: "asc",
+            limit: DEFAULT_PAGE_SIZE,
+            offset: 0,
+          },
         },
-      },
-    }),
-  );
+      }),
+    )
+    .catch(swallowPrefetchError);
 
   const t = await getTranslations("organization.participants");
 

@@ -18,7 +18,10 @@ import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 import { DEFAULT_PROJECT_SORT } from "@/features/projects/types";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
+import {
+  getQueryClient,
+  swallowPrefetchError,
+} from "@/lib/tanstack-react-query/hydration";
 
 /**
  * Render the Projects page with server-side data prefetching and permission-aware UI.
@@ -40,15 +43,21 @@ export default async function ProjectsPage() {
   // Prefetch in parallel for better performance
   // IMPORTANT: Query options must match EXACTLY what ProjectsTab uses
   await Promise.all([
-    queryClient.prefetchQuery(
-      orpcQuery.projects.list.queryOptions({
-        input: {
-          sort_by: DEFAULT_PROJECT_SORT.column,
-        },
-      }),
-    ),
-    queryClient.prefetchQuery(orpcQuery.organizations.getActive.queryOptions()),
-    queryClient.prefetchQuery(orpcQuery.organizations.getRole.queryOptions()),
+    queryClient
+      .query(
+        orpcQuery.projects.list.queryOptions({
+          input: {
+            sort_by: DEFAULT_PROJECT_SORT.column,
+          },
+        }),
+      )
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(orpcQuery.organizations.getActive.queryOptions())
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(orpcQuery.organizations.getRole.queryOptions())
+      .catch(swallowPrefetchError),
   ]);
 
   const { success: canCreate } = await auth.api.hasPermission({
