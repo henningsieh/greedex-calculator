@@ -45,12 +45,19 @@ function createRuntimeFixture(
   fixtureRoots.push(root);
 
   const binDirectory = path.join(root, "bin");
-  const eventsFile = path.join(root, "events.log");
-  const requestsFile = path.join(root, "requests.log");
+  const runtimeStateDirectory = path.join(root, "apps/calculator/.next");
+  const eventsFile = path.join(runtimeStateDirectory, "events.log");
+  const requestsFile = path.join(runtimeStateDirectory, "requests.log");
   mkdirSync(binDirectory);
-  mkdirSync(path.join(root, "apps/calculator/.next"), { recursive: true });
+  mkdirSync(runtimeStateDirectory, { recursive: true });
+  mkdirSync(path.join(root, "apps/calculator/src"), { recursive: true });
   mkdirSync(path.join(root, "apps/documentation/.next"), { recursive: true });
   mkdirSync(path.join(root, "apps/documentation/.source"), { recursive: true });
+  mkdirSync(path.join(root, "docker"));
+  mkdirSync(path.join(root, "node_modules"));
+  writeFileSync(path.join(root, "docker/runtime-entrypoint.sh"), "fixture\n", {
+    mode: 0o555,
+  });
   const packageMode = options.writablePackage === true ? 0o644 : 0o444;
   writeFileSync(path.join(root, "package.json"), "{}\n", {
     mode: packageMode,
@@ -99,9 +106,12 @@ while true; do sleep 0.1; done
       path.join(root, "apps"),
       path.join(root, "apps/calculator"),
       path.join(root, "apps/calculator/.next"),
+      path.join(root, "apps/calculator/src"),
       path.join(root, "apps/documentation"),
       path.join(root, "apps/documentation/.next"),
       path.join(root, "apps/documentation/.source"),
+      path.join(root, "docker"),
+      path.join(root, "node_modules"),
     ]) {
       chownSync(directory, NODE_USER_ID, NODE_GROUP_ID);
     }
@@ -110,26 +120,35 @@ while true; do sleep 0.1; done
       path.join(binDirectory, "hostname"),
       fakeRuntime,
       path.join(root, "package.json"),
+      path.join(root, "docker/runtime-entrypoint.sh"),
     ]) {
       chownSync(file, NODE_USER_ID, NODE_GROUP_ID);
     }
     chmodSync(path.join(root, "package.json"), packageMode);
+  }
+  for (const readOnlyPath of [
+    root,
+    path.join(root, "apps/calculator/src"),
+    path.join(root, "docker"),
+    path.join(root, "node_modules"),
+  ]) {
+    chmodSync(readOnlyPath, 0o555);
   }
 
   const entrypoint = path.resolve("../../docker/runtime-entrypoint.sh");
   const child = spawn(entrypoint, [fakeRuntime], {
     cwd: root,
     env: {
-      ...process.env,
       EVENTS_FILE: eventsFile,
       FAIL_URL_FRAGMENT: options.failUrlFragment ?? "",
-      PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+      NODE_ENV: "test",
+      PATH: `${binDirectory}:/usr/local/bin:/usr/bin:/bin`,
       PORT: "3000",
       REQUESTS_FILE: requestsFile,
       RUNTIME_IMAGE_GATE_TIMEOUT_SECONDS: "2",
       SECRET_SENTINEL: "must-not-appear-in-gate-output",
       SOCKET_PORT: "4000",
-      TMPDIR: root,
+      TMPDIR: runtimeStateDirectory,
     },
     gid: process.getuid?.() === 0 ? NODE_GROUP_ID : undefined,
     uid: process.getuid?.() === 0 ? NODE_USER_ID : undefined,
@@ -185,6 +204,16 @@ afterEach(async () => {
     }
   }
   for (const root of fixtureRoots.splice(0)) {
+    for (const readOnlyPath of [
+      root,
+      path.join(root, "apps/calculator/src"),
+      path.join(root, "docker"),
+      path.join(root, "node_modules"),
+    ]) {
+      if (existsSync(readOnlyPath)) {
+        chmodSync(readOnlyPath, 0o755);
+      }
+    }
     rmSync(root, { force: true, recursive: true });
   }
 });
@@ -200,7 +229,7 @@ describe("final runtime image gate", () => {
     expect(exit).toEqual({ code: 0, signal: null });
     const readyFile = path.join(
       fixture.root,
-      "greendex-runtime-image-gate-ready",
+      "apps/calculator/.next/greendex-runtime-image-gate-ready",
     );
     expect(readFileSync(fixture.eventsFile, "utf8").trim().split("\n")).toEqual([
       `start:3100:${readyFile}`,
@@ -250,7 +279,7 @@ describe("final runtime image gate", () => {
     expect(exit).toEqual({ code: 1, signal: null });
     expect(existsSync(fixture.eventsFile)).toBe(false);
     expect(fixture.output()).toContain(
-      "Application files must remain read-only for the runtime user.",
+      "Read-only runtime path is missing or writable: package.json",
     );
     expect(fixture.output()).toContain('"status":"failed"');
   });

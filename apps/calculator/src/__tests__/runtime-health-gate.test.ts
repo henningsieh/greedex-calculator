@@ -25,6 +25,7 @@ describe("runtime image health gate", () => {
     const readyFile = path.join(directory, "ready");
     vi.stubEnv("RUNTIME_IMAGE_GATE_FILE", readyFile);
     vi.resetModules();
+    vi.doUnmock("@/env");
 
     const { GET } = await import("@/app/api/rpc/[[...rest]]/route");
     const request = new Request("http://127.0.0.1:3000/api/rpc/health");

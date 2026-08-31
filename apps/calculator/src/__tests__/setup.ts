@@ -52,9 +52,6 @@ vi.mock("@/env", () => ({
       get CANDIDATE_BASE_URL() {
         return process.env.CANDIDATE_BASE_URL;
       },
-      get RUNTIME_IMAGE_GATE_FILE() {
-        return process.env.RUNTIME_IMAGE_GATE_FILE;
-      },
     };
   },
 }));

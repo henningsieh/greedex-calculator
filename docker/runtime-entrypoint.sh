@@ -94,10 +94,20 @@ verify_runtime_identity_and_permissions() {
     rm -f "$permission_probe"
   done
 
-  if [[ ! -f package.json || -w package.json ]]; then
-    echo "Application files must remain read-only for the runtime user." >&2
-    return 1
-  fi
+  local read_only_paths=(
+    "."
+    "package.json"
+    "apps/calculator/src"
+    "docker/runtime-entrypoint.sh"
+    "node_modules"
+  )
+  local read_only_path
+  for read_only_path in "${read_only_paths[@]}"; do
+    if [[ ! -e "$read_only_path" || -w "$read_only_path" ]]; then
+      echo "Read-only runtime path is missing or writable: $read_only_path" >&2
+      return 1
+    fi
+  done
 }
 
 start_runtime() {
