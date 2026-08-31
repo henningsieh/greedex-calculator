@@ -7,11 +7,16 @@ import { afterEach, describe, expect, it } from "vitest";
 
 const temporaryDirectories: string[] = [];
 
+type EvidenceFixtureOptions = {
+  gateStatus?: "failed" | "passed";
+  healthStatus?: "healthy" | "unhealthy";
+};
+
 function writeExecutable(filePath: string, content: string) {
   writeFileSync(filePath, content, { mode: 0o755 });
 }
 
-function runEvidenceCollector() {
+function runEvidenceCollector(options: EvidenceFixtureOptions = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "greendex-image-evidence-"));
   temporaryDirectories.push(root);
   const binDirectory = path.join(root, "bin");
@@ -21,7 +26,7 @@ function runEvidenceCollector() {
     `#!/usr/bin/env bash
 set -Eeuo pipefail
 if [[ "$1" == "logs" ]]; then
-  printf '%s\\n' '{"event":"greendex.runtime-image-gate","container":"abcdef123456","status":"passed","phase":"terminal"}'
+  printf '{"event":"greendex.runtime-image-gate","container":"abcdef123456","status":"%s","phase":"terminal"}\\n' "$FAKE_GATE_STATUS"
   exit 0
 fi
 if [[ "$1" == "image" ]]; then format="$4"; else format="$3"; fi
@@ -30,33 +35,36 @@ case "$1:$2:$format" in
   'inspect:--format:{{.Image}}') printf '%s\\n' 'sha256:image-id' ;;
   'inspect:--format:{{.Config.Image}}') printf '%s\\n' 'greendex:commit' ;;
   'inspect:--format:{{.Config.User}}') printf '%s\\n' 'node' ;;
-  'inspect:--format:{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}') printf '%s\\n' 'healthy' ;;
+  'inspect:--format:{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}') printf '%s\\n' "$FAKE_HEALTH_STATUS" ;;
   'image:inspect:{{.Id}}') printf '%s\\n' 'sha256:image-id' ;;
-  'image:inspect:{{join .RepoDigests "\\n"}}') printf '%s\\n' 'greendex@sha256:registry-digest' ;;
+  'image:inspect:{{join .RepoDigests "\\n"}}') printf '%s\\n' 'mirror@sha256:unrelated-digest' 'greendex@sha256:registry-digest' ;;
   *) printf 'Unexpected docker arguments: %s\\n' "$*" >&2; exit 64 ;;
 esac
 `,
   );
 
   const collector = path.resolve("../../docker/collect-runtime-evidence.sh");
-  return new Promise<{ code: number | null; output: string }>(
+  return new Promise<{ code: number | null; output: string; error: string }>(
     (resolve, reject) => {
       const child = spawn(collector, ["greendex-runtime"], {
         env: {
+          FAKE_GATE_STATUS: options.gateStatus ?? "passed",
+          FAKE_HEALTH_STATUS: options.healthStatus ?? "healthy",
           NODE_ENV: "test",
           PATH: `${binDirectory}:/usr/bin:/bin`,
         },
         stdio: ["ignore", "pipe", "pipe"],
       });
       let output = "";
+      let error = "";
       child.stdout.on("data", (chunk: Buffer) => {
         output += chunk.toString();
       });
       child.stderr.on("data", (chunk: Buffer) => {
-        output += chunk.toString();
+        error += chunk.toString();
       });
       child.once("error", reject);
-      child.once("close", (code) => resolve({ code, output }));
+      child.once("close", (code) => resolve({ code, error, output }));
     },
   );
 }
@@ -81,6 +89,21 @@ describe("runtime image deployment evidence", () => {
       gateStatus: "passed",
       healthStatus: "healthy",
       user: "node",
+    });
+  });
+
+  it("records the selected digest when the terminal gate result failed", async () => {
+    const result = await runEvidenceCollector({
+      gateStatus: "failed",
+      healthStatus: "unhealthy",
+    });
+
+    expect(result.code).toBe(1);
+    expect(JSON.parse(result.output)).toMatchObject({
+      event: "greendex.runtime-image-evidence",
+      imageDigest: "greendex@sha256:registry-digest",
+      gateStatus: "failed",
+      healthStatus: "unhealthy",
     });
   });
 });
