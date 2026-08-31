@@ -8,10 +8,10 @@ networkConcurrency: 16
 catalog:
   react: 19.2.8
   react-dom: 19.2.8
-  react-email: 6.9.2
-  next: 16.3.2
-  next-intl: 4.13.7
-  better-auth: 1.7.1
+  react-email: 6.9.3
+  next: 16.3.3
+  next-intl: 4.14.1
+  better-auth: 1.7.2
   typescript: 7.0.2
   "@types/react": 19.2.18
   "@types/react-dom": 19.2.4
