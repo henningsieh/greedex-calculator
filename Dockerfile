@@ -86,5 +86,11 @@ RUN chown -R node:node /app/apps/calculator/.next \
 
 USER node
 
-EXPOSE 3000
+# The runtime gate is PID 1 in the exact final image. It starts the unchanged
+# release command below, withholds Calculator health until all three services
+# pass validation, proves graceful shutdown, and then starts the promotable
+# process topology. The upstream Node entrypoint remains in front so its normal
+# command handling is preserved.
+EXPOSE 3000 3001 4000
+ENTRYPOINT ["docker-entrypoint.sh", "/app/docker/runtime-entrypoint.sh"]
 CMD ["node", "node_modules/pnpm/bin/pnpm.cjs", "run", "start"]

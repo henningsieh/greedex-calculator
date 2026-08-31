@@ -1,7 +1,10 @@
+import { existsSync } from "node:fs";
+
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
 import { CORSPlugin } from "@orpc/server/plugins";
 
+import { env } from "@/env";
 import { router } from "@/lib/orpc/router";
 
 /**
@@ -23,6 +26,16 @@ const handler = new RPCHandler(router, {
  * Handles RPC requests from the client-side RPCLink
  */
 async function handleRequest(request: Request) {
+  const requestPath = new URL(request.url).pathname;
+  if (
+    request.method === "GET" &&
+    requestPath === "/api/rpc/health" &&
+    env.RUNTIME_IMAGE_GATE_FILE !== undefined &&
+    !existsSync(env.RUNTIME_IMAGE_GATE_FILE)
+  ) {
+    return Response.json({ status: "starting" }, { status: 503 });
+  }
+
   const { response } = await handler.handle(request, {
     prefix: "/api/rpc",
     context: {

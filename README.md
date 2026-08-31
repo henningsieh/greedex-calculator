@@ -375,13 +375,24 @@ checks repository formatting, linting, type safety, and synchronized agent
 instructions before exercising the full Vitest suite against a real candidate
 (disposable PostgreSQL, migrations, seed). Every check must pass before the
 `runtime` stage image is built, so a failing candidate aborts the build and is
-never promoted. Credentials are
-injected as Docker build secrets (Coolify "Build Variables" +
-`use_build_secrets`) and exist only in the test stage. The runtime image runs
-as the unprivileged `node` user and relies on Coolify injecting environment
-variables; Turborepo forwards them to the application processes via the
-`"env": ["*"]` setting on the `build` and `start` tasks in
-[`turbo.json`](turbo.json).
+never promoted. Credentials are injected as Docker build secrets (Coolify
+"Build Variables" + `use_build_secrets`) and exist only in the test stage.
+
+The final image then validates itself as the unprivileged `node` user through
+its unchanged release command. Its runtime entrypoint exercises
+migration-before-start, Calculator health, Documentation, Socket.IO, writable
+cache/codegen paths, read-only application files, and graceful termination. It
+starts the promotable process topology only after that validation run. The
+Calculator health endpoint returns `503` while the other services are still
+being checked, so Coolify cannot promote a partial or failed topology and the
+previous release stays active. A secret-safe terminal JSON event identifies
+the validating container; deployment evidence pairs that container ID with the
+immutable digest reported by Docker, proving that the tested image is the image
+selected for promotion.
+
+Coolify injects runtime environment variables into that final image;
+Turborepo forwards them to the application processes via the `"env": ["*"]`
+setting on the `build` and `start` tasks in [`turbo.json`](turbo.json).
 
 Every calculator deployment runs the existing Drizzle `db:migrate` command in
 `prestart`, before Next.js and Socket.IO start. If a migration fails, the

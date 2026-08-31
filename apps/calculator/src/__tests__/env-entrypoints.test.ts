@@ -149,6 +149,20 @@ describe("environment entrypoints", () => {
     );
   });
 
+  it("runs final-image validation through the unprivileged runtime entrypoint", () => {
+    expect(runtimeDockerfile).toContain("USER node");
+    expect(runtimeDockerfile).toContain(
+      'ENTRYPOINT ["docker-entrypoint.sh", "/app/docker/runtime-entrypoint.sh"]',
+    );
+    expect(runtimeDockerfile).toContain("EXPOSE 3000 3001 4000");
+    expect(runtimeDockerfile.indexOf("USER node")).toBeLessThan(
+      runtimeDockerfile.indexOf("ENTRYPOINT"),
+    );
+    expect(runtimeDockerfile.indexOf("ENTRYPOINT")).toBeLessThan(
+      runtimeDockerfile.indexOf("CMD"),
+    );
+  });
+
   it("does not load dotenv inside calculator processes", () => {
     expect(nextConfig).not.toMatch(
       /(?:from\s+|import\s+|require\s*\()\s*["']dotenv(?:\/config)?["']/,
