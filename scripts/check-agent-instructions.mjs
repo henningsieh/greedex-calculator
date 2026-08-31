@@ -6,11 +6,18 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const instructionDirectory = path.join(root, ".github", "instructions");
 const routerPath = path.join(root, ".github", "copilot-instructions.md");
 const workflowPath = path.join(root, "docs", "agents", "agent-workflows.md");
+const migrationGuidePath = path.join(
+  root,
+  "docs",
+  "agents",
+  "online-documentation-migration.md",
+);
 const legacyWorkflowPath = path.join(root, "docs", "agent-workflows.md");
 const referenceFiles = [
   path.join(root, "README.md"),
   path.join(root, "docs", "README.md"),
   workflowPath,
+  migrationGuidePath,
   path.join(root, "apps", "calculator", "src", "lib", "orpc", "README.md"),
   path.join(root, "docs", "projects", "README.md"),
 ];
@@ -62,6 +69,7 @@ const requiredRepositoryPaths = [
   "apps/calculator/src/lib/orpc/orpc.ts",
   "apps/calculator/src/lib/orpc/router.ts",
   "docs/agents/agent-workflows.md",
+  "docs/agents/online-documentation-migration.md",
   "packages/config/src/languages.ts",
   "packages/database/src/schemas/auth-schema.ts",
   "packages/email/src/templates",
