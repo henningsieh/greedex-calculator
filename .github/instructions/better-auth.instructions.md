@@ -11,7 +11,7 @@ Read the relevant Better Auth documentation before changing authentication or or
 - [Options](../../docs/better-auth/better-auth.options.md)
 - [Email/password](../../docs/better-auth/better-auth.credentials.email_password.md)
 - [Organizations](../../docs/better-auth/better-auth.organizations.md)
-- [oRPC integration](../../docs/orpc/orpc.better-auth.md)
+- [oRPC integration](https://v1.orpc.dev/docs/integrations/better-auth.md)
 - [Project permissions](../../docs/projects/permissions.md)
 
 ## Sources of truth

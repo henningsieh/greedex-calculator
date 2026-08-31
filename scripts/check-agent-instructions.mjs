@@ -6,6 +6,17 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const instructionDirectory = path.join(root, ".github", "instructions");
 const routerPath = path.join(root, ".github", "copilot-instructions.md");
 const workflowPath = path.join(root, "docs", "agent-workflows.md");
+const referenceFiles = [
+  path.join(root, "README.md"),
+  path.join(root, "docs", "README.md"),
+  workflowPath,
+  path.join(root, "apps", "calculator", "src", "lib", "orpc", "README.md"),
+  path.join(root, "docs", "projects", "README.md"),
+];
+const retiredDocumentationRoots = [
+  path.join("docs", "orpc"),
+  path.join("docs", "tanstack-react-query"),
+];
 const errors = [];
 
 const expectedScopes = {
@@ -21,6 +32,8 @@ const expectedScopes = {
     "packages/i18n/src/**/*.ts,packages/i18n/src/locales/*.json,packages/config/src/languages.ts,apps/calculator/src/lib/i18n/**/*.ts,apps/calculator/src/proxy.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx,apps/calculator/src/app/sitemap.ts",
   "orpc.instructions.md":
     "apps/calculator/src/lib/orpc/**/*.ts,apps/calculator/src/app/api/rpc/**/*.ts,apps/calculator/src/app/api/openapi/**/*.ts,apps/calculator/src/features/**/procedures.ts,apps/calculator/src/features/**/validation-schemas.ts,apps/calculator/src/instrumentation.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx",
+  "tanstack-react-query.instructions.md":
+    "apps/calculator/src/lib/tanstack-react-query/**/*.ts,apps/calculator/src/lib/tanstack-react-query/**/*.tsx,apps/calculator/src/components/providers/query-provider.tsx,apps/calculator/src/lib/orpc/orpc.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx,apps/calculator/src/features/**/components/**/*.ts,apps/calculator/src/features/**/components/**/*.tsx,apps/calculator/src/features/**/hooks/**/*.ts,apps/calculator/src/features/**/hooks/**/*.tsx",
   "shadcn.instructions.md":
     "apps/calculator/src/components/**/*.ts,apps/calculator/src/components/**/*.tsx,apps/calculator/src/features/**/components/**/*.ts,apps/calculator/src/features/**/components/**/*.tsx",
   "turborepo-package-management.instructions.md":
@@ -82,6 +95,17 @@ const stalePatterns = [
   },
 ];
 
+const retiredPointerPatterns = [
+  {
+    pattern: /docs\/(?:orpc|tanstack-react-query)(?:\/|\b)/u,
+    message: "replace pointers to retired vendor-documentation roots",
+  },
+  {
+    pattern: /\]\((?:\.\.\/)*(?:orpc|tanstack-react-query)\//u,
+    message: "replace relative pointers to retired vendor-documentation roots",
+  },
+];
+
 const addError = (message) => {
   errors.push(message);
 };
@@ -95,6 +119,24 @@ const pathExists = async (targetPath) => {
   } catch {
     return false;
   }
+};
+
+const findFiles = async (directoryPath) => {
+  if (!(await pathExists(directoryPath))) {
+    return [];
+  }
+
+  const files = [];
+  for (const entry of await readdir(directoryPath, { withFileTypes: true })) {
+    const entryPath = path.join(directoryPath, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await findFiles(entryPath)));
+    } else {
+      files.push(entryPath);
+    }
+  }
+
+  return files;
 };
 
 const parseFrontmatter = (content, fileName) => {
@@ -167,6 +209,17 @@ if (JSON.stringify(instructionFiles) !== JSON.stringify(expectedFiles)) {
 for (const relativePath of requiredRepositoryPaths) {
   if (!(await pathExists(path.join(root, relativePath)))) {
     addError(`required repository path is missing: ${relativePath}`);
+  }
+}
+
+for (const relativeRoot of retiredDocumentationRoots) {
+  const files = await findFiles(path.join(root, relativeRoot));
+  if (files.length > 0) {
+    addError(
+      `${relativeRoot}: retired documentation root contains files: ${files
+        .map((filePath) => path.relative(root, filePath))
+        .join(", ")}`,
+    );
   }
 }
 
@@ -249,6 +302,18 @@ for (const filePath of scannedFiles) {
   const relativePath = path.relative(root, filePath);
 
   for (const { pattern, message } of stalePatterns) {
+    if (pattern.test(content)) {
+      addError(`${relativePath}: ${message}`);
+    }
+  }
+}
+
+const pointerFiles = new Set([...scannedFiles, ...referenceFiles]);
+for (const filePath of pointerFiles) {
+  const content = await readUtf8(filePath);
+  const relativePath = path.relative(root, filePath);
+
+  for (const { pattern, message } of retiredPointerPatterns) {
     if (pattern.test(content)) {
       addError(`${relativePath}: ${message}`);
     }

@@ -35,14 +35,12 @@ Add business procedures to the owning feature, then register them in `apps/calcu
 
 ## Critical SSR oRPC invariant
 
-The universal client in `apps/calculator/src/lib/orpc/orpc.ts` reads `globalThis.$client` when its module is evaluated. Preserve both initialization paths:
+Preserve both initialization paths and their effective evaluation order:
 
 1. `apps/calculator/src/instrumentation.ts` dynamically imports `@/lib/orpc/client.server` in the Node.js runtime.
-2. `apps/calculator/src/app/[locale]/layout.tsx` side-effect-imports `@/lib/orpc/client.server` before local imports that can load the universal oRPC client.
+2. `apps/calculator/src/app/[locale]/layout.tsx` side-effect-imports `@/lib/orpc/client.server` before local SSR consumers.
 
-`apps/calculator/src/lib/orpc/client.server.ts` installs the direct router client on `globalThis.$client`. Removing or delaying either initialization path makes SSR fall back to the browser-only `RPCLink`; existing project routes can then render misleading 404 pages.
-
-Preserve the imports and their effective evaluation order. Validate changes with `apps/calculator/src/__tests__/e2e/project-routing.spec.ts`. Read [`docs/orpc/DUAL-SETUP.md`](../../docs/orpc/DUAL-SETUP.md) before editing this seam.
+The [oRPC instruction](orpc.instructions.md) owns the full project invariant. Read it and the [official v1 SSR guide](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md) before editing this seam, then validate with `apps/calculator/src/__tests__/e2e/project-routing.spec.ts`.
 
 ## Server and client data flow
 

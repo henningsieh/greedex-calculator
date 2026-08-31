@@ -126,7 +126,7 @@ The live database has SSL disabled because Coolify’s generated SSL mount was i
 | Documentation        | `apps/documentation/`                  | Fumadocs application                                     |
 | Socket.IO            | `apps/calculator/src/socket-server.ts` | Separate manually started process                        |
 
-**Critical oRPC invariant:** preserve both imports of `@/lib/orpc/client.server`: the dynamic import in `apps/calculator/src/instrumentation.ts` and the side-effect import in `apps/calculator/src/app/[locale]/layout.tsx`. The layout import must evaluate before local SSR consumers can load `apps/calculator/src/lib/orpc/orpc.ts`. Removing or delaying either path can make existing project pages render misleading 404s.
+**Critical oRPC invariant:** preserve both imports of `@/lib/orpc/client.server` and their effective evaluation order. Read `.github/instructions/orpc.instructions.md` and the [official v1 SSR guide](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md) before changing this seam.
 
 ---
 
@@ -152,6 +152,7 @@ The instruction files below live under the repository-root [`.github/instruction
 | `i18n.instructions.md`                         | Messages, locale routing/navigation, country presentation         | i18n package and localized app routes |
 | `orpc.instructions.md`                         | Procedures, middleware, router, OpenAPI, SSR clients              | oRPC, feature procedures, app routes  |
 | `shadcn.instructions.md`                       | Shared/feature components, forms, accessibility                   | Calculator component files            |
+| `tanstack-react-query.instructions.md`         | Query caching, options, mutations, prefetching, SSR, hydration    | Query integration surfaces             |
 | `turborepo-package-management.instructions.md` | Dependencies, catalog, workspace packages, Turbo tasks/env        | Manifests, workspace and Turbo config |
 
 <!-- AGENT-INSTRUCTION-INDEX-END -->
@@ -174,7 +175,8 @@ This repository has one domain context. Before changing domain language, read `d
 
 | Task                                 | Primary documentation                                                      |
 | ------------------------------------ | -------------------------------------------------------------------------- |
-| API endpoints and procedures         | `docs/orpc/QUICKSTART.md` → `docs/orpc/DUAL-SETUP.md`                      |
+| API endpoints and procedures         | `.github/instructions/orpc.instructions.md` → <https://v1.orpc.dev/llms.txt> |
+| Query caching, prefetch, and hydration | `.github/instructions/tanstack-react-query.instructions.md` → <https://tanstack.com/query/v5/llms.txt> |
 | Authentication and organizations     | `docs/better-auth/`                                                        |
 | UI components and forms              | `docs/shadcn/`                                                             |
 | Internationalization                 | `docs/i18n/`                                                               |

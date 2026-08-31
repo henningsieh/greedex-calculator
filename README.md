@@ -96,12 +96,13 @@ The calculator's business features live under
 Server-side oRPC initialization must happen before SSR consumers use the client.
 The locale layout (`apps/calculator/src/app/[locale]/layout.tsx`) must
 side-effect-import `@/lib/orpc/client.server`, alongside the import in
-`src/instrumentation.ts`. If that import is missing, Server Components fall
+`apps/calculator/src/instrumentation.ts`. If that import is missing, Server Components fall
 back to the browser-only RPC link and existing project pages render as
 spurious Next.js 404s — a regression diagnosed and fixed in August 2026. Do
-not reorder these initialization imports. See
-`AGENTS.md` and `docs/orpc/DUAL-SETUP.md` before
-changing this area.
+not reorder these initialization imports. See `AGENTS.md`, the
+[oRPC scoped instruction](.github/instructions/orpc.instructions.md), and the
+[official oRPC v1 SSR guide](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md)
+before changing this area.
 
 ---
 
@@ -252,8 +253,10 @@ settings.
 | `/api/auth/[...all]` | Better Auth route                              |
 
 Server Components call the server-side oRPC client directly; browser consumers
-use the HTTP client and TanStack Query. See `docs/orpc/QUICKSTART.md` and
-`docs/orpc/DUAL-SETUP.md`.
+use the JSON-over-HTTP client and TanStack Query. See the
+[implementation map](apps/calculator/src/lib/orpc/README.md),
+[oRPC project rules](.github/instructions/orpc.instructions.md), and
+[official oRPC v1 index](https://v1.orpc.dev/llms.txt).
 
 ### Authentication and authorization
 
@@ -389,7 +392,8 @@ index. Agents can use [`docs/agent-workflows.md`](docs/agent-workflows.md) to
 route cross-cutting tasks to the required scoped instructions and topic docs.
 Important areas include:
 
-- `docs/orpc/` — RPC/OpenAPI architecture
+- `.github/instructions/orpc.instructions.md` — Greendex RPC/OpenAPI rules and official v1 routes
+- `.github/instructions/tanstack-react-query.instructions.md` — Greendex Query rules and official v5 routes
 - `docs/better-auth/` — authentication and organizations
 - `docs/database/` — Drizzle/PostgreSQL notes
 - `docs/i18n/` — locale and country handling
