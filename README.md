@@ -388,7 +388,7 @@ are documented in `AGENTS.md`.
 ## Documentation
 
 Start with [`docs/README.md`](docs/README.md) for the developer-documentation
-index. Agents can use [`docs/agent-workflows.md`](docs/agent-workflows.md) to
+index. Agents can use [`docs/agents/agent-workflows.md`](docs/agents/agent-workflows.md) to
 route cross-cutting tasks to the required scoped instructions and topic docs.
 Important areas include:
 

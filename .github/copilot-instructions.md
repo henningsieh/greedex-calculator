@@ -133,7 +133,7 @@ The live database has SSL disabled because Coolify’s generated SSL mount was i
 ## Task Routing
 
 1. Check the repository-root file [`docs/README.md`](/docs/README.md) for the topic index.
-2. For an unfamiliar or cross-cutting task, follow the repository-root file [`docs/agent-workflows.md`](/docs/agent-workflows.md).
+2. For an unfamiliar or cross-cutting task, follow [`docs/agents/agent-workflows.md`](/docs/agents/agent-workflows.md).
 3. Before editing a matching concern, read every required scoped instruction below. GitHub Copilot applies matching files through `applyTo`; other agents must use this table as the router.
 4. Read the linked topic documentation before changing an integration.
 

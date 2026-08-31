@@ -5,7 +5,8 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const instructionDirectory = path.join(root, ".github", "instructions");
 const routerPath = path.join(root, ".github", "copilot-instructions.md");
-const workflowPath = path.join(root, "docs", "agent-workflows.md");
+const workflowPath = path.join(root, "docs", "agents", "agent-workflows.md");
+const legacyWorkflowPath = path.join(root, "docs", "agent-workflows.md");
 const referenceFiles = [
   path.join(root, "README.md"),
   path.join(root, "docs", "README.md"),
@@ -60,6 +61,7 @@ const requiredRepositoryPaths = [
   "apps/calculator/src/lib/orpc/client.server.ts",
   "apps/calculator/src/lib/orpc/orpc.ts",
   "apps/calculator/src/lib/orpc/router.ts",
+  "docs/agents/agent-workflows.md",
   "packages/config/src/languages.ts",
   "packages/database/src/schemas/auth-schema.ts",
   "packages/email/src/templates",
@@ -91,7 +93,7 @@ const stalePatterns = [
   },
   {
     pattern: /quick-start\.instructions\.md/u,
-    message: "use docs/agent-workflows.md for opt-in task routing",
+    message: "use docs/agents/agent-workflows.md for opt-in task routing",
   },
 ];
 
@@ -212,6 +214,12 @@ for (const relativePath of requiredRepositoryPaths) {
   }
 }
 
+if (await pathExists(legacyWorkflowPath)) {
+  addError(
+    "docs/agent-workflows.md is obsolete; keep overall agent guidance under docs/agents/",
+  );
+}
+
 for (const relativeRoot of retiredDocumentationRoots) {
   const files = await findFiles(path.join(root, relativeRoot));
   if (files.length > 0) {
@@ -263,13 +271,6 @@ try {
   addError("AGENTS.md is missing");
 }
 
-// AGENTS.md is a root-level symlink, so resolve its links from the path
-// agents read rather than from the physical .github/ target.
-if (await pathExists(agentPath)) {
-  const agentContent = await readUtf8(agentPath);
-  await validateMarkdownLinks(agentPath, agentContent, root);
-}
-
 const scannedFiles = [routerPath, workflowPath];
 for (const fileName of instructionFiles) {
   const filePath = path.join(instructionDirectory, fileName);
@@ -319,7 +320,11 @@ for (const filePath of pointerFiles) {
     }
   }
 
-  await validateMarkdownLinks(filePath, content);
+  // Agents consume copilot-instructions.md through the root AGENTS.md symlink.
+  // Resolve its links only from that repository-root perspective.
+  const linkBaseDirectory =
+    filePath === routerPath ? root : path.dirname(filePath);
+  await validateMarkdownLinks(filePath, content, linkBaseDirectory);
 }
 
 const instrumentation = await readUtf8(

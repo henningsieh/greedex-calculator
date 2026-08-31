@@ -7,7 +7,7 @@ description: "Developer documentation index and online vendor-reference routes"
 
 ## Agent navigation
 
-- [Task routes for agents](agent-workflows.md)
+- [Task routes for agents](agents/agent-workflows.md)
 - [Domain documentation and glossary](agents/domain.md)
 - [Canonical domain glossary](../DOMAIN-GLOSSARY.md)
 - Repository-wide rules and scoped instruction index: [`AGENTS.md`](../AGENTS.md)
@@ -27,7 +27,6 @@ The scoped instructions own Greendex invariants and route each task to the small
 
 ### Agent and domain guidance
 
-- [Agent workflows](agent-workflows.md)
 - [Issue tracker](agents/issue-tracker.md)
 - [Triage labels](agents/triage-labels.md)
 - [Domain model](agents/domain.md)
