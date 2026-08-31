@@ -26,6 +26,7 @@ import { orpcQuery } from "@/lib/orpc/orpc";
 import {
   getQueryClient,
   HydrateClient,
+  swallowPrefetchError,
 } from "@/lib/tanstack-react-query/hydration";
 
 /**
@@ -73,10 +74,18 @@ export default async function AppLayout({
   const queryClient = getQueryClient();
 
   const prefetches = [
-    queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions()),
-    queryClient.prefetchQuery(orpcQuery.projects.list.queryOptions()),
-    queryClient.prefetchQuery(orpcQuery.organizations.list.queryOptions()),
-    queryClient.prefetchQuery(orpcQuery.organizations.getActive.queryOptions()),
+    queryClient
+      .query(orpcQuery.betterauth.getSession.queryOptions())
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(orpcQuery.projects.list.queryOptions())
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(orpcQuery.organizations.list.queryOptions())
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(orpcQuery.organizations.getActive.queryOptions())
+      .catch(swallowPrefetchError),
   ];
 
   await Promise.all(prefetches);

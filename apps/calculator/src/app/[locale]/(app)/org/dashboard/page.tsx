@@ -10,7 +10,10 @@ import { MEMBER_ROLES } from "@/features/organizations/types";
 import { DEFAULT_PROJECT_SORT } from "@/features/projects/types";
 import { auth } from "@/lib/better-auth";
 import { orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
+import {
+  getQueryClient,
+  swallowPrefetchError,
+} from "@/lib/tanstack-react-query/hydration";
 /**
  * Render the organization dashboard page while prefetching and hydrating required server-side data for client components.
  *
@@ -35,37 +38,47 @@ export default async function DashboardPage() {
 
   // Prefetch all data using oRPC procedures for client components
   await Promise.all([
-    queryClient.prefetchQuery(
-      orpcQuery.projects.list.queryOptions({
-        input: {
-          sort_by: DEFAULT_PROJECT_SORT.column,
-        },
-      }),
-    ),
-    queryClient.prefetchQuery(orpcQuery.betterauth.getSession.queryOptions()),
-    queryClient.prefetchQuery(orpcQuery.organizations.list.queryOptions()),
-    queryClient.prefetchQuery(
-      orpcQuery.members.search.queryOptions({
-        input: {
-          organizationId: activeOrganizationId,
-          filters: {
-            roles: [MEMBER_ROLES.Participant],
-            search: undefined,
-            sortBy: undefined,
-            sortDirection: "asc",
-            limit: DEFAULT_PAGE_SIZE,
-            offset: 0,
+    queryClient
+      .query(
+        orpcQuery.projects.list.queryOptions({
+          input: {
+            sort_by: DEFAULT_PROJECT_SORT.column,
           },
-        },
-      }),
-    ),
-    queryClient.prefetchQuery(
-      orpcQuery.organizations.getStats.queryOptions({
-        input: {
-          organizationId: activeOrganizationId,
-        },
-      }),
-    ),
+        }),
+      )
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(orpcQuery.betterauth.getSession.queryOptions())
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(orpcQuery.organizations.list.queryOptions())
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(
+        orpcQuery.members.search.queryOptions({
+          input: {
+            organizationId: activeOrganizationId,
+            filters: {
+              roles: [MEMBER_ROLES.Participant],
+              search: undefined,
+              sortBy: undefined,
+              sortDirection: "asc",
+              limit: DEFAULT_PAGE_SIZE,
+              offset: 0,
+            },
+          },
+        }),
+      )
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(
+        orpcQuery.organizations.getStats.queryOptions({
+          input: {
+            organizationId: activeOrganizationId,
+          },
+        }),
+      )
+      .catch(swallowPrefetchError),
   ]);
 
   return (

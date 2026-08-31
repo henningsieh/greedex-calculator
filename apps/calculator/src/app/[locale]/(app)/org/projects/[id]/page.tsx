@@ -22,7 +22,10 @@ import { ErrorFallback } from "@/features/projects/components/project-error-fall
 import { PROJECT_ICONS } from "@/features/projects/components/project-icons";
 import { redirect } from "@/lib/i18n/routing";
 import { orpc, orpcQuery } from "@/lib/orpc/orpc";
-import { getQueryClient } from "@/lib/tanstack-react-query/hydration";
+import {
+  getQueryClient,
+  swallowPrefetchError,
+} from "@/lib/tanstack-react-query/hydration";
 
 /**
  * Render the project details tabs for a given project while ensuring server-side query data for the project, its Project Participants, and Project Shared Travel Legs is prefetched into the React Query cache.
@@ -50,21 +53,27 @@ export default async function ProjectsDetailsPage({
 
   // Prefetch all queries for SSR (keep prefetching behavior)
   await Promise.all([
-    queryClient.prefetchQuery(
-      orpcQuery.projects.getById.queryOptions({
-        input: { id },
-      }),
-    ),
-    queryClient.prefetchQuery(
-      orpcQuery.projects.getParticipants.queryOptions({
-        input: { projectId: id },
-      }),
-    ),
-    queryClient.prefetchQuery(
-      orpcQuery.projectSharedTravelLegs.list.queryOptions({
-        input: { projectId: id },
-      }),
-    ),
+    queryClient
+      .query(
+        orpcQuery.projects.getById.queryOptions({
+          input: { id },
+        }),
+      )
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(
+        orpcQuery.projects.getParticipants.queryOptions({
+          input: { projectId: id },
+        }),
+      )
+      .catch(swallowPrefetchError),
+    queryClient
+      .query(
+        orpcQuery.projectSharedTravelLegs.list.queryOptions({
+          input: { projectId: id },
+        }),
+      )
+      .catch(swallowPrefetchError),
   ]);
 
   return (
