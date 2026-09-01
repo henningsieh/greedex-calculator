@@ -370,6 +370,186 @@ Greendex currently deploys only to a shared **Coolify development environment**:
 - App port: `3000`
 - Socket port: `4000`, exposed through the configured public socket URL
 
+### Local release validation before push
+
+Run this workflow from a clean checkout on a Linux Docker host with BuildKit,
+Node.js 22+, Corepack, pnpm, and the installed workspace dependencies
+available. Docker must be able to run Linux containers and bind host ports
+`3100`, `3101`, and `4100`. No host PostgreSQL, Playwright, browser, or
+application server is required: the Docker build
+installs Chromium and provisions disposable PostgreSQL inside its `test` stage.
+
+Use a release-validation `.env` based on [`.env.example`](.env.example). The
+public URLs must be the URLs intended for the deployment, not candidate-local
+addresses. `DATABASE_URL` must identify the intended migration target and be
+reachable from the final container; final-image startup applies committed
+migrations to it. The SMTP account must be able to send to
+`EMAIL_TEST_RECIPIENT`, and the IMAP account must be able to observe that
+message. Keep the file outside Git and restrict its permissions:
+
+```bash
+chmod 600 .env
+```
+
+The build requires these secret input names:
+
+```text
+NEXT_PUBLIC_BASE_URL NEXT_PUBLIC_SOCKET_URL
+SMTP_HOST SMTP_PORT SMTP_SENDER SMTP_USERNAME SMTP_PASSWORD SMTP_SECURE
+IMAP_HOST IMAP_PORT IMAP_SECURE IMAP_USERNAME IMAP_PASSWORD
+EMAIL_TEST_SENDER EMAIL_TEST_RECIPIENT
+```
+
+The following copyable command loads `.env` into the build command's process
+without expanding or printing values, then mounts each value as a BuildKit
+secret. Do not add `--progress=plain`, shell tracing, or secret values as Docker
+build arguments when retaining build logs as evidence.
+
+```bash
+release_image="greendex-calculator:$(git rev-parse --short=12 HEAD)"
+
+RELEASE_IMAGE="$release_image" pnpm exec dotenv -e .env -- bash -ceu '
+  secret_args=()
+  for name in \
+    NEXT_PUBLIC_BASE_URL NEXT_PUBLIC_SOCKET_URL \
+    SMTP_HOST SMTP_PORT SMTP_SENDER SMTP_USERNAME SMTP_PASSWORD SMTP_SECURE \
+    IMAP_HOST IMAP_PORT IMAP_SECURE IMAP_USERNAME IMAP_PASSWORD \
+    EMAIL_TEST_SENDER EMAIL_TEST_RECIPIENT
+  do
+    secret_args+=(--secret "id=${name},env=${name}")
+  done
+  DOCKER_BUILDKIT=1 docker build \
+    "${secret_args[@]}" \
+    --tag "${RELEASE_IMAGE}" \
+    .
+'
+```
+
+This is both the **local build/final-image validation** and the
+**candidate-local test** phase. `docker/run-candidate-tests.sh` first runs
+formatting, linting (including the agent-instruction check), type checking,
+migrations, seed data, and the production build. It starts the built workspace
+as `node`, waits up to 180 seconds for candidate-local health, then runs the
+complete Vitest, Playwright, and release-email suites. A failure stops the
+Docker build before a runtime image is produced. `NEXT_PUBLIC_*` remains the
+public deployment configuration compiled into the bundle;
+`CANDIDATE_BASE_URL=http://127.0.0.1:3000` is set internally so candidate checks
+never hit the currently deployed release.
+
+Start the exact final image with runtime values from `.env`. Its entrypoint runs
+migrations and validates Calculator, Documentation, Socket.IO, permissions,
+health gating, and SIGTERM shutdown before restarting the promotable topology.
+The container becomes healthy only after the terminal runtime gate passes.
+
+```bash
+docker rm -f greendex-release-candidate 2>/dev/null || true
+
+docker run --detach \
+  --name greendex-release-candidate \
+  --env-file .env \
+  --publish 3100:3000 \
+  --publish 3101:3001 \
+  --publish 4100:4000 \
+  --health-cmd='curl --fail --silent http://127.0.0.1:3000/api/rpc/health >/dev/null || exit 1' \
+  --health-interval=5s \
+  --health-timeout=3s \
+  --health-retries=36 \
+  "$release_image"
+
+until [ "$(docker inspect --format '{{.State.Health.Status}}' greendex-release-candidate)" != "starting" ]; do
+  sleep 2
+done
+
+test "$(docker inspect --format '{{.State.Health.Status}}' greendex-release-candidate)" = healthy
+docker logs greendex-release-candidate 2>&1 \
+  | grep -F '"event":"greendex.runtime-image-gate"' \
+  | grep -F '"status":"passed"' \
+  | grep -F '"phase":"terminal"'
+
+docker image inspect --format 'image={{.Id}} size={{.Size}} user={{.Config.User}}' "$release_image"
+test "$(docker image inspect --format '{{.Id}}' "$release_image")" = \
+  "$(docker inspect --format '{{.Image}}' greendex-release-candidate)"
+test "$(docker image inspect --format '{{.Config.User}}' "$release_image")" = node
+test "$(docker image inspect --format '{{.Size}}' "$release_image")" -le 1100000000
+```
+
+Completion means the build exits zero, the final container is `healthy`, the
+terminal gate event says `passed`, the container image ID equals the tagged
+image ID, the runtime user is `node`, and the image is no larger than
+1,100,000,000 bytes. Record the commit, image ID, byte size, test totals, and
+terminal event; these fields contain no secret values. Remove the local
+candidate when the evidence is captured:
+
+```bash
+docker rm -f greendex-release-candidate
+```
+
+Allow roughly 20–40 minutes for a cold build and final validation. The browser,
+workspace dependencies, build outputs, and runtime image require substantial
+local storage; reserve at least 15 GB of free Docker disk and 8 GB of memory.
+Warm source-only builds should be faster because base-image, package-install,
+Playwright, and migration-dependency layers precede `COPY . .`. Changes to
+manifests or `pnpm-lock.yaml` invalidate dependency installation; changes to the
+Dockerfile before the browser layer invalidate that layer; source changes
+invalidate the candidate gate and later layers. Docker cache reuse never skips
+a layer whose inputs changed. Use `docker system df` to inspect pressure rather
+than deleting shared caches as part of the release workflow.
+
+Common failures:
+
+- `Missing required environment variables`: populate every secret name above;
+  confirm names only, without echoing values.
+- SMTP/IMAP or release-email timeout: verify account permissions, sender and
+  recipient routing, ports, and TLS booleans; the runtime image is not produced
+  until the real email round trip succeeds.
+- PostgreSQL migration/seed failure: inspect the failing migration output. The
+  build-stage database is disposable; a final-image migration failure instead
+  means `DATABASE_URL` in `.env` is unreachable or incompatible.
+- Candidate readiness timeout: inspect the immediately preceding build/start
+  output for Calculator, Documentation, or Socket.IO failure. Port conflicts
+  affect `docker run`, not the isolated build stage.
+- Playwright or Vitest failure: reproduce the named test without weakening its
+  timeout; host CPU/memory contention can exhaust the candidate readiness
+  budget.
+- Runtime remains `starting` or becomes `unhealthy`: inspect
+  `docker logs greendex-release-candidate`; a missing terminal event identifies
+  a failed service, permission, migration, or shutdown check.
+- Image-size or identity assertion failure: retain `docker image inspect` and
+  `docker inspect` output, rebuild the intended commit/tag, and do not push.
+
+### Post-deployment public smoke checks
+
+Push only after local completion. A push triggers Coolify; wait for that new
+deployment—not an older healthy container—to reach a terminal `finished`
+status. Then run the public checks against the configured URLs:
+
+```bash
+pnpm exec dotenv -e .env -- bash -ceu '
+  curl --fail --silent --show-error \
+    "${NEXT_PUBLIC_BASE_URL%/}/api/rpc/health"
+  curl --fail --silent --show-error \
+    "${NEXT_PUBLIC_SOCKET_URL%/}/socket.io/?EIO=4&transport=polling" \
+    | grep -E "^0"
+'
+```
+
+The health response must report `status: ok`, and the Socket.IO polling response
+must begin with `0`. On the authorized Docker host, identify the container for
+the just-finished deployment and run:
+
+```bash
+docker/collect-runtime-evidence.sh <container>
+```
+
+That command requires a healthy container whose terminal gate passed and whose
+selected image resolves to an immutable repository digest. It emits the exact
+container ID, image ID, repository digest, image size, runtime user, gate status,
+and health status without reading the container environment. Confirm its image
+ID corresponds to the newly finished Coolify deployment before treating the
+release as verified.
+
+### Gate architecture
+
 Deployment uses the repository **Dockerfile** (multi-stage): a `test` stage
 checks repository formatting, linting, type safety, and synchronized agent
 instructions before exercising the full Vitest suite against a real candidate
