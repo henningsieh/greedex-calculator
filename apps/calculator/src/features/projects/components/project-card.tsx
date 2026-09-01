@@ -68,8 +68,8 @@ export function ProjectCard({
 
   // Get user permissions
   const {
-    canUpdate,
-    canDelete,
+    canUpdateProject,
+    canDeleteProject,
     isPending: permissionsPending,
   } = useProjectPermissions();
 
@@ -199,7 +199,7 @@ export function ProjectCard({
                         <span>View Details</span>
                       </Link>
                     </DropdownMenuItem>
-                    {canUpdate && (
+                    {canUpdateProject(project) && (
                       <DropdownMenuItem
                         onClick={(e) => {
                           e.stopPropagation();
@@ -210,7 +210,7 @@ export function ProjectCard({
                         Edit Project
                       </DropdownMenuItem>
                     )}
-                    {canDelete && (
+                    {canDeleteProject(project) && (
                       <>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
@@ -286,7 +286,7 @@ export function ProjectCard({
         </Link>
       </div>
 
-      {canUpdate && (
+      {canUpdateProject(project) && (
         <Dialog onOpenChange={setIsEditModalOpen} open={isEditModalOpen}>
           <DialogContent>
             <DialogHeader>

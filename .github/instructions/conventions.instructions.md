@@ -37,7 +37,7 @@ pnpm run check:agent-instructions
 ```
 
 - Oxfmt configuration, import sorting, and Tailwind sorting live in `.oxfmtrc.json`.
-- Oxlint configuration lives in `.oxlintrc.json`; lint scripts may apply fixes.
+- Oxlint configuration lives in `.oxlintrc.json`; quality scripts report failures without modifying files.
 - Use Vitest for unit/integration tests and Playwright for browser flows.
 - Follow the process restrictions in `AGENTS.md`; repository configuration does not override them.
 

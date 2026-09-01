@@ -47,7 +47,7 @@ terms to avoid, is in [`DOMAIN-GLOSSARY.md`](DOMAIN-GLOSSARY.md).
 | Web applications     | Next.js `16.3.2`, React `19.2.8`, App Router, React Compiler  |
 | Language             | TypeScript `7.0.2`                                            |
 | Monorepo             | Turborepo `2.10.12`, pnpm workspaces/catalog                  |
-| Package manager      | pnpm `11.23.0`                                                |
+| Package manager      | pnpm `11.24.0`                                                |
 | UI                   | shadcn/ui, Radix UI, cmdk, Tailwind CSS `4.3.3`               |
 | Authentication       | Better Auth `1.7.1` with organization and social-auth plugins |
 | API                  | oRPC `1.15.x`, TanStack Query, OpenAPI/Scalar                 |
@@ -58,7 +58,7 @@ terms to avoid, is in [`DOMAIN-GLOSSARY.md`](DOMAIN-GLOSSARY.md).
 | Real-time POC        | Socket.IO `4.8.3`                                             |
 | Documentation        | Fumadocs + Next.js                                            |
 | Tests                | Vitest `4.1.11`, Playwright `1.62.1`                          |
-| Quality              | Oxlint `1.79.0`, Oxfmt `0.64.0`                               |
+| Quality              | Oxlint `1.80.0`, Oxfmt `0.65.0`                               |
 
 Core framework versions are centralized in the catalog in
 `pnpm-workspace.yaml`. Formatter behavior — including import sorting — is
@@ -114,7 +114,7 @@ Use the current project toolchain where possible:
 - Node.js 22+ (Node.js 24 recommended) — enforced via `engines.node >= 22` in
   the root `package.json` and pinned to `22` in `.node-version`
 - Corepack
-- pnpm `10.28.2` (declared by `packageManager`)
+- pnpm `11.24.0` (declared by `packageManager`)
 - PostgreSQL
 
 ### Install
@@ -202,7 +202,7 @@ Run these from the repository root:
 | `pnpm run start`                                   | Start persistent workspace services           |
 | `pnpm run type-check`                              | Run workspace type checks                     |
 | `pnpm run lint`                                    | Run Oxlint and agent-instruction drift checks |
-| `pnpm run format`                                  | Format workspaces with Oxfmt                  |
+| `pnpm run format`                                  | Check workspace formatting with Oxfmt         |
 | `pnpm run check:agent-instructions`                | Validate scoped agent instructions            |
 | `pnpm run test:run`                                | Run Vitest once                               |
 | `pnpm --filter @greendex/calculator test:coverage` | Run calculator coverage                       |
@@ -216,10 +216,15 @@ Run these from the repository root:
 > the committed Drizzle migration history and the shell `&&` chain stops the
 > application start if migration fails. A Coolify deployment therefore cannot
 > make a new calculator container healthy with a database schema behind its
-> shipped code. Before any local `pnpm run start`, verify that `DATABASE_URL`
-> points at the database you intend to migrate.
+> shipped code. The calculator's `prebuild` applies the same migration before
+> each calculator build. The Docker candidate gate also applies migrations
+> explicitly before the workspace build and then exercises `prestart`. Before
+> any local build or start, verify that `DATABASE_URL` points at the database
+> you intend to migrate.
 >
-> The calculator's `prebuild` only generates/checks Scalar SRI data.
+> The Scalar API reference bundle is served from the exact package version
+> pinned in `pnpm-lock.yaml`; builds do not fetch documentation assets from a
+> CDN.
 
 ---
 
@@ -365,14 +370,220 @@ Greendex currently deploys only to a shared **Coolify development environment**:
 - App port: `3000`
 - Socket port: `4000`, exposed through the configured public socket URL
 
-There is intentionally **no repository Dockerfile**. The deployment relies on
-Coolify injecting environment variables and Turborepo forwarding them to the
-application processes. The `"env": ["*"]` setting on the `build` and `start`
-tasks in [`turbo.json`](turbo.json) is critical for forwarding those variables
-to workspace processes.
+### Local release validation before push
 
-Every calculator deployment runs the existing Drizzle `db:migrate` command in
-`prestart`, before Next.js and Socket.IO start. If a migration fails, the
+Run this workflow from a clean checkout on a Linux Docker host with BuildKit,
+Node.js 22+, Corepack, pnpm, and the installed workspace dependencies
+available. Docker must be able to run Linux containers and bind host ports
+`3100`, `3101`, and `4100`. No host PostgreSQL, Playwright, browser, or
+application server is required: the Docker build
+installs Chromium and provisions disposable PostgreSQL inside its `test` stage.
+
+Use a release-validation `.env` based on [`.env.example`](.env.example). The
+public URLs must be the URLs intended for the deployment, not candidate-local
+addresses. `DATABASE_URL` must identify the intended migration target and be
+reachable from the final container; final-image startup applies committed
+migrations to it. The SMTP account must be able to send to
+`EMAIL_TEST_RECIPIENT`, and the IMAP account must be able to observe that
+message. Keep the file outside Git and restrict its permissions:
+
+```bash
+chmod 600 .env
+```
+
+The build requires these secret input names:
+
+```text
+NEXT_PUBLIC_BASE_URL NEXT_PUBLIC_SOCKET_URL
+SMTP_HOST SMTP_PORT SMTP_SENDER SMTP_USERNAME SMTP_PASSWORD SMTP_SECURE
+IMAP_HOST IMAP_PORT IMAP_SECURE IMAP_USERNAME IMAP_PASSWORD
+EMAIL_TEST_SENDER EMAIL_TEST_RECIPIENT
+```
+
+The following copyable command loads `.env` into the build command's process
+without expanding or printing values, then mounts each value as a BuildKit
+secret. Do not add `--progress=plain`, shell tracing, or secret values as Docker
+build arguments when retaining build logs as evidence.
+
+```bash
+release_image="greendex-calculator:$(git rev-parse --short=12 HEAD)"
+
+RELEASE_IMAGE="$release_image" pnpm exec dotenv -e .env -- bash -ceu '
+  secret_args=()
+  for name in \
+    NEXT_PUBLIC_BASE_URL NEXT_PUBLIC_SOCKET_URL \
+    SMTP_HOST SMTP_PORT SMTP_SENDER SMTP_USERNAME SMTP_PASSWORD SMTP_SECURE \
+    IMAP_HOST IMAP_PORT IMAP_SECURE IMAP_USERNAME IMAP_PASSWORD \
+    EMAIL_TEST_SENDER EMAIL_TEST_RECIPIENT
+  do
+    secret_args+=(--secret "id=${name},env=${name}")
+  done
+  DOCKER_BUILDKIT=1 docker build \
+    "${secret_args[@]}" \
+    --tag "${RELEASE_IMAGE}" \
+    .
+'
+```
+
+This is both the **local build/final-image validation** and the
+**candidate-local test** phase. `docker/run-candidate-tests.sh` first runs
+formatting, linting (including the agent-instruction check), type checking,
+migrations, seed data, and the production build. It starts the built workspace
+as `node`, waits up to 180 seconds for candidate-local health, then runs the
+complete Vitest, Playwright, and release-email suites. A failure stops the
+Docker build before a runtime image is produced. `NEXT_PUBLIC_*` remains the
+public deployment configuration compiled into the bundle;
+`CANDIDATE_BASE_URL=http://127.0.0.1:3000` is set internally so candidate checks
+never hit the currently deployed release.
+
+Start the exact final image with runtime values from `.env`. Its entrypoint runs
+migrations and validates Calculator, Documentation, Socket.IO, permissions,
+health gating, and SIGTERM shutdown before restarting the promotable topology.
+The container becomes healthy only after the terminal runtime gate passes.
+
+```bash
+docker rm -f greendex-release-candidate 2>/dev/null || true
+
+docker run --detach \
+  --name greendex-release-candidate \
+  --env-file .env \
+  --publish 3100:3000 \
+  --publish 3101:3001 \
+  --publish 4100:4000 \
+  --health-cmd='curl --fail --silent http://127.0.0.1:3000/api/rpc/health >/dev/null || exit 1' \
+  --health-interval=5s \
+  --health-timeout=3s \
+  --health-retries=36 \
+  "$release_image"
+
+until [ "$(docker inspect --format '{{.State.Health.Status}}' greendex-release-candidate)" != "starting" ]; do
+  sleep 2
+done
+
+test "$(docker inspect --format '{{.State.Health.Status}}' greendex-release-candidate)" = healthy
+docker logs greendex-release-candidate 2>&1 \
+  | grep -F '"event":"greendex.runtime-image-gate"' \
+  | grep -F '"status":"passed"' \
+  | grep -F '"phase":"terminal"'
+
+docker image inspect --format 'image={{.Id}} size={{.Size}} user={{.Config.User}}' "$release_image"
+test "$(docker image inspect --format '{{.Id}}' "$release_image")" = \
+  "$(docker inspect --format '{{.Image}}' greendex-release-candidate)"
+test "$(docker image inspect --format '{{.Config.User}}' "$release_image")" = node
+test "$(docker image inspect --format '{{.Size}}' "$release_image")" -le 1100000000
+```
+
+Completion means the build exits zero, the final container is `healthy`, the
+terminal gate event says `passed`, the container image ID equals the tagged
+image ID, the runtime user is `node`, and the image is no larger than
+1,100,000,000 bytes. Record the commit, image ID, byte size, test totals, and
+terminal event; these fields contain no secret values. Remove the local
+candidate when the evidence is captured:
+
+```bash
+docker rm -f greendex-release-candidate
+```
+
+Allow roughly 20–40 minutes for a cold build and final validation. The browser,
+workspace dependencies, build outputs, and runtime image require substantial
+local storage; reserve at least 15 GB of free Docker disk and 8 GB of memory.
+Warm source-only builds should be faster because base-image, package-install,
+Playwright, and migration-dependency layers precede `COPY . .`. Changes to
+manifests or `pnpm-lock.yaml` invalidate dependency installation; changes to the
+Dockerfile before the browser layer invalidate that layer; source changes
+invalidate the candidate gate and later layers. Docker cache reuse never skips
+a layer whose inputs changed. Use `docker system df` to inspect pressure rather
+than deleting shared caches as part of the release workflow.
+
+Common failures:
+
+- `Missing required environment variables`: populate every secret name above;
+  confirm names only, without echoing values.
+- SMTP/IMAP or release-email timeout: verify account permissions, sender and
+  recipient routing, ports, and TLS booleans; the runtime image is not produced
+  until the real email round trip succeeds.
+- PostgreSQL migration/seed failure: inspect the failing migration output. The
+  build-stage database is disposable; a final-image migration failure instead
+  means `DATABASE_URL` in `.env` is unreachable or incompatible.
+- Candidate readiness timeout: inspect the immediately preceding build/start
+  output for Calculator, Documentation, or Socket.IO failure. Port conflicts
+  affect `docker run`, not the isolated build stage.
+- Playwright or Vitest failure: reproduce the named test without weakening its
+  timeout; host CPU/memory contention can exhaust the candidate readiness
+  budget.
+- Runtime remains `starting` or becomes `unhealthy`: inspect
+  `docker logs greendex-release-candidate`; a missing terminal event identifies
+  a failed service, permission, migration, or shutdown check.
+- Image-size or identity assertion failure: retain `docker image inspect` and
+  `docker inspect` output, rebuild the intended commit/tag, and do not push.
+
+### Post-deployment public smoke checks
+
+Push only after local completion. A push triggers Coolify; wait for that new
+deployment—not an older healthy container—to reach a terminal `finished`
+status. Then run the public checks against the configured URLs:
+
+```bash
+pnpm exec dotenv -e .env -- bash -ceu '
+  curl --fail --silent --show-error \
+    "${NEXT_PUBLIC_BASE_URL%/}/api/rpc/health"
+  curl --fail --silent --show-error \
+    "${NEXT_PUBLIC_SOCKET_URL%/}/socket.io/?EIO=4&transport=polling" \
+    | grep -E "^0"
+'
+```
+
+The health response must report `status: ok`, and the Socket.IO polling response
+must begin with `0`. On the authorized Docker host, identify the container for
+the just-finished deployment and run:
+
+```bash
+docker/collect-runtime-evidence.sh <container>
+```
+
+That command requires a healthy container whose terminal gate passed and whose
+selected image resolves to an immutable repository digest. It emits the exact
+container ID, image ID, repository digest, image size, runtime user, gate status,
+and health status without reading the container environment. Confirm its image
+ID corresponds to the newly finished Coolify deployment before treating the
+release as verified.
+
+### Gate architecture
+
+Deployment uses the repository **Dockerfile** (multi-stage): a `test` stage
+checks repository formatting, linting, type safety, and synchronized agent
+instructions before exercising the full Vitest suite against a real candidate
+(disposable PostgreSQL, migrations, seed). Every check must pass before the
+`runtime` stage image is built, so a failing candidate aborts the build and is
+never promoted. Credentials are injected as Docker build secrets (Coolify
+"Build Variables" + `use_build_secrets`) and exist only in the test stage.
+
+Dependency installation and the Playwright browser download happen before the
+source tree is copied, so source-only deployments reuse Docker's base-image,
+package-install, and browser layers. The final image contains only both Next.js
+standalone outputs, static/public assets, the bundled Socket.IO server, and the
+production migration dependencies; it does not contain the development
+workspace or Playwright browsers. The release budget is 1,100,000,000 bytes.
+
+The final image validates itself as the unprivileged `node` user through
+[`docker/runtime-start.sh`](docker/runtime-start.sh). Its runtime entrypoint
+exercises migration-before-start, Calculator health, Documentation, Socket.IO,
+writable cache/codegen paths, read-only application files, and graceful
+termination. It starts the promotable process topology only after that
+validation run. The Calculator health endpoint returns `503` while the other
+services are still being checked, so Coolify cannot promote a partial or failed
+topology and the previous release stays active.
+
+A secret-safe terminal JSON event identifies the validating container. On the
+Docker host, `docker/collect-runtime-evidence.sh <container>` pairs that event
+with the selected container's immutable Docker image ID and matching repository
+digest. It also records `imageSizeBytes` and enforces the 1,100,000,000-byte
+runtime-image budget. Evidence is emitted without reading the container
+environment, proving that the tested image is the image selected for promotion.
+
+Coolify injects runtime environment variables directly into the final image's
+standalone Node.js processes. Every calculator deployment runs the existing
+Drizzle migration before Next.js and Socket.IO start. If a migration fails, the
 process exits non-zero and Coolify cannot mark the new calculator container
 healthy. This is the repository's database-as-code deployment contract.
 

@@ -83,7 +83,9 @@ test.describe("Questionnaire Form E2E Tests", () => {
     await page.locator('[role="combobox"]').first().click();
     await page.getByRole("option", { name: COUNTRY_REGEX.germany }).click();
 
-    await page.locator('input[id="email"]').fill("john.doe@example.com");
+    await page
+      .locator('input[id="email"]')
+      .fill(`john.doe-${Date.now()}@sieh.org`);
     await page.getByRole("button", { name: BUTTON_REGEX.continue }).click();
 
     // Step 2: Days
@@ -294,7 +296,7 @@ test.describe("Questionnaire Form E2E Tests", () => {
     await page.locator('input[id="firstName"]').fill("Jane");
     await page.locator('[role="combobox"]').first().click();
     await page.getByRole("option", { name: COUNTRY_REGEX.france }).click();
-    await page.locator('input[id="email"]').fill("jane@example.com");
+    await page.locator('input[id="email"]').fill(`jane-${Date.now()}@sieh.org`);
     await page.getByRole("button", { name: BUTTON_REGEX.continue }).click();
 
     // Days
@@ -375,7 +377,7 @@ test.describe("Questionnaire Form E2E Tests", () => {
     await expect(continueButton).toBeDisabled();
 
     // Fill email to enable button
-    await page.locator('input[id="email"]').fill("test@example.com");
+    await page.locator('input[id="email"]').fill(`test-${Date.now()}@sieh.org`);
     await expect(continueButton).toBeEnabled();
     await continueButton.click();
 
@@ -458,7 +460,7 @@ test.describe("Questionnaire Form E2E Tests", () => {
     await page.locator('input[id="firstName"]').fill("Test");
     await page.locator('[role="combobox"]').first().click();
     await page.getByRole("option", { name: COUNTRY_REGEX.germany }).click();
-    await page.locator('input[id="email"]').fill("test@example.com");
+    await page.locator('input[id="email"]').fill(`test-${Date.now()}@sieh.org`);
     await page.getByRole("button", { name: BUTTON_REGEX.continue }).click();
 
     // Should show step 3 of 16

@@ -20,7 +20,8 @@
       "persistent": true
     },
     "test:run": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": ["CANDIDATE_BASE_URL"]
     },
     "type-check": {
       "dependsOn": ["^build"]

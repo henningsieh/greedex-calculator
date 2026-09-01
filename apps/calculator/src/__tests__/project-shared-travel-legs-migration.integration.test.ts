@@ -1,27 +1,16 @@
-import { randomUUID } from "node:crypto";
 import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { Pool } from "pg";
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
+
+import { createDisposablePostgresFixture } from "./disposable-postgres.fixture";
 
 const migrationsDirectory = resolve(
   import.meta.dirname,
   "../../../../packages/database/src/migrations",
 );
 const priorMigrationPrefix = "0009_";
-
-function disposableDatabaseUrl(databaseName: string): string {
-  const url = new URL(process.env.DATABASE_URL!);
-  url.pathname = `/${databaseName}`;
-  return url.toString();
-}
-
-function adminDatabaseUrl(): string {
-  const url = new URL(process.env.DATABASE_URL!);
-  url.pathname = "/postgres";
-  return url.toString();
-}
 
 async function applyPriorMigrations(pool: Pool): Promise<void> {
   const filenames = (await readdir(migrationsDirectory))
@@ -68,55 +57,11 @@ async function createLegacyProject(pool: Pool): Promise<void> {
   `);
 }
 
-async function createDisposableDatabase(): Promise<{
-  databaseName: string;
-  adminPool: Pool;
-  pool: Pool;
-}> {
-  const databaseName = `shared_travel_${randomUUID().replaceAll("-", "")}`;
-  const adminPool = new Pool({ connectionString: adminDatabaseUrl(), max: 1 });
-  await adminPool.query(`CREATE DATABASE "${databaseName}"`);
-
-  return {
-    databaseName,
-    adminPool,
-    pool: new Pool({
-      connectionString: disposableDatabaseUrl(databaseName),
-      max: 1,
-    }),
-  };
-}
-
-async function dropDisposableDatabase(
-  databaseName: string,
-  adminPool: Pool,
-  pool: Pool,
-): Promise<void> {
-  await pool.end();
-  await adminPool.query(
-    "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1",
-    [databaseName],
-  );
-  await adminPool.query(`DROP DATABASE IF EXISTS "${databaseName}"`);
-  await adminPool.end();
-}
-
 describe("Project Shared Travel Leg PostgreSQL cutover", () => {
-  const databases: Awaited<ReturnType<typeof createDisposableDatabase>>[] = [];
-
-  afterEach(async () => {
-    await Promise.all(
-      databases
-        .splice(0)
-        .map(({ databaseName, adminPool, pool }) =>
-          dropDisposableDatabase(databaseName, adminPool, pool),
-        ),
-    );
-  });
+  const disposableDatabase = createDisposablePostgresFixture("shared_travel");
 
   it("preserves every supported legacy profile and keeps the legacy write contract operational", async () => {
-    const database = await createDisposableDatabase();
-    databases.push(database);
+    const database = await disposableDatabase.create();
     await applyPriorMigrations(database.pool);
     await createLegacyProject(database.pool);
 
@@ -252,8 +197,7 @@ describe("Project Shared Travel Leg PostgreSQL cutover", () => {
   it.each(["plane", "unknown"])(
     "aborts before conversion when legacy data contains %s",
     async (invalidProfile) => {
-      const database = await createDisposableDatabase();
-      databases.push(database);
+      const database = await disposableDatabase.create();
       await applyPriorMigrations(database.pool);
       await createLegacyProject(database.pool);
       await database.pool.query(

@@ -7,14 +7,12 @@ import {
   user,
 } from "@greendex/database/schema";
 import { and, asc, eq, inArray } from "drizzle-orm";
-import { headers } from "next/headers";
 import { z } from "zod";
 
-import { MEMBER_ROLES } from "@/features/organizations/types";
 import { ProjectParticipantWithUserSchema } from "@/features/participants/validation-schemas";
+import { assertProjectManagementAccess } from "@/features/projects/authorization";
 import { DEFAULT_PROJECT_SORT } from "@/features/projects/types";
 import { computeSortDesc, orderByClauseFor } from "@/features/projects/utils";
-import { auth } from "@/lib/better-auth";
 import { base } from "@/lib/orpc/context";
 import { authorized, requireProjectPermissions } from "@/lib/orpc/middleware";
 
@@ -242,34 +240,17 @@ export const updateProject = authorized
       });
     }
 
-    // Verify project belongs to user's organization before updating
-    const [existingProject] = await db
-      .select()
-      .from(projectsTable)
+    await assertProjectManagementAccess(input.id, context, errors);
+
+    await db
+      .update(projectsTable)
+      .set(input.data)
       .where(
         and(
           eq(projectsTable.id, input.id),
           eq(projectsTable.organizationId, context.session.activeOrganizationId),
         ),
-      )
-      .limit(1);
-
-    if (!existingProject) {
-      throw errors.NOT_FOUND({
-        message: "Project not found",
-      });
-    }
-
-    if (existingProject.organizationId !== context.session.activeOrganizationId) {
-      throw errors.FORBIDDEN({
-        message: "You don't have permission to update this project",
-      });
-    }
-
-    await db
-      .update(projectsTable)
-      .set(input.data)
-      .where(eq(projectsTable.id, input.id));
+      );
 
     // Fetch the updated project with responsible user
     const project = await db.query.projectsTable.findFirst({
@@ -297,8 +278,8 @@ export const updateProject = authorized
  *
  * Requires:
  * - Authentication
- * - Organization Administrator role OR Project Coordinator role AND is the responsible user of the project
- * - Project must belong to user's active organization
+ * - "delete" permission on the project resource (Organization Administrator only)
+ * - Project must belong to the active organization
  */
 export const deleteProject = authorized
   .use(requireProjectPermissions(["delete"]))
@@ -343,27 +324,18 @@ export const deleteProject = authorized
       });
     }
 
-    // Get current member role
-    const { role } = await auth.api.getActiveMemberRole({
-      headers: await headers(),
-    });
-
-    // Organization Administrators can delete any project; Project Coordinators can delete only their own.
-    const isOrganizationAdministrator =
-      role === MEMBER_ROLES.OrganizationAdministrator;
-    const isResponsibleProjectCoordinator =
-      role === MEMBER_ROLES.ProjectCoordinator &&
-      existingProject.responsibleUserId === context.user.id;
-
-    if (!isOrganizationAdministrator && !isResponsibleProjectCoordinator) {
-      throw errors.FORBIDDEN({
-        message:
-          "You don't have permission to delete this project. Only an Organization Administrator or the responsible Project Coordinator can delete it.",
-      });
-    }
+    // The delete permission is Organization-Administrator-only in the AC statement.
+    // The organization-scoped lookup above prevents cross-organization deletion.
 
     // Delete the project
-    await db.delete(projectsTable).where(eq(projectsTable.id, input.id));
+    await db
+      .delete(projectsTable)
+      .where(
+        and(
+          eq(projectsTable.id, input.id),
+          eq(projectsTable.organizationId, context.session.activeOrganizationId),
+        ),
+      );
 
     return {
       success: true,
@@ -375,10 +347,12 @@ export const deleteProject = authorized
  *
  * Requires:
  * - Authentication
- * - Organization Administrator role OR Project Coordinator role AND is the responsible user of the project
- * - Project must belong to user's active organization
+ * - "archive" permission on the project resource
+ * - Organization Administrators can archive every project; Project Coordinators only their own
+ * - Project must belong to the active organization
  */
 export const archiveProject = authorized
+  .use(requireProjectPermissions(["archive"]))
   .route({
     method: "PATCH",
     path: "/projects/:id/archive",
@@ -404,48 +378,18 @@ export const archiveProject = authorized
       });
     }
 
-    // Get current member role
-    const { role } = await auth.api.getActiveMemberRole({
-      headers: await headers(),
-    });
-
-    // Verify project exists and belongs to organization
-    const [existingProject] = await db
-      .select()
-      .from(projectsTable)
-      .where(
-        and(
-          eq(projectsTable.id, input.id),
-          eq(projectsTable.organizationId, context.session.activeOrganizationId),
-        ),
-      )
-      .limit(1);
-
-    if (!existingProject) {
-      throw errors.NOT_FOUND({
-        message: "Project not found or you don't have access to it",
-      });
-    }
-
-    // Organization Administrators can archive any project; Project Coordinators can archive only their own.
-    const isOrganizationAdministrator =
-      role === MEMBER_ROLES.OrganizationAdministrator;
-    const isResponsibleProjectCoordinator =
-      role === MEMBER_ROLES.ProjectCoordinator &&
-      existingProject.responsibleUserId === context.user.id;
-
-    if (!isOrganizationAdministrator && !isResponsibleProjectCoordinator) {
-      throw errors.FORBIDDEN({
-        message:
-          "You don't have permission to archive this project. Only an Organization Administrator or the responsible Project Coordinator can archive it.",
-      });
-    }
+    await assertProjectManagementAccess(input.id, context, errors);
 
     // Archive/unarchive the project
     await db
       .update(projectsTable)
       .set({ archived: input.archived })
-      .where(eq(projectsTable.id, input.id));
+      .where(
+        and(
+          eq(projectsTable.id, input.id),
+          eq(projectsTable.organizationId, context.session.activeOrganizationId),
+        ),
+      );
 
     // Fetch the updated project with relations
     const project = await db.query.projectsTable.findFirst({
@@ -474,9 +418,10 @@ export const archiveProject = authorized
  * Requires:
  * - Authentication
  * - "read" permission on project resource
- * - Project must belong to user's active organization (if projectId is provided)
+ * - Project must belong to the active organization (if projectId is provided)
  */
 export const setActiveProject = authorized
+  .use(requireProjectPermissions(["read"]))
   .route({
     method: "POST",
     path: "/projects/active",
@@ -494,19 +439,6 @@ export const setActiveProject = authorized
       if (!context.session.activeOrganizationId) {
         throw errors.BAD_REQUEST({
           message: "No active organization. Please select an organization first.",
-        });
-      }
-
-      const { role } = await auth.api.getActiveMemberRole({
-        headers: await headers(),
-      });
-
-      if (
-        role !== MEMBER_ROLES.ProjectCoordinator &&
-        role !== MEMBER_ROLES.OrganizationAdministrator
-      ) {
-        throw errors.FORBIDDEN({
-          message: "You don't have permission to set an active project",
         });
       }
 
@@ -630,8 +562,8 @@ export const getProjectParticipants = authorized
  *
  * Requires:
  * - Authentication
- * - Organization Administrator role OR Project Coordinator role AND is the responsible user of each project
- * - All projects must belong to user's active organization
+ * - "delete" permission on the project resource (Organization Administrator only)
+ * - All projects must belong to the active organization
  */
 export const batchDeleteProjects = authorized
   .use(requireProjectPermissions(["delete"]))
@@ -659,17 +591,9 @@ export const batchDeleteProjects = authorized
       });
     }
 
-    // Get current member role
-    const { role } = await auth.api.getActiveMemberRole({
-      headers: await headers(),
-    });
-
-    // Verify all projects belong to user's organization and check permissions
+    // Verify all projects belong to the active organization.
     const projectsToDelete = await db
-      .select({
-        id: projectsTable.id,
-        responsibleUserId: projectsTable.responsibleUserId,
-      })
+      .select({ id: projectsTable.id })
       .from(projectsTable)
       .where(
         and(
@@ -685,21 +609,7 @@ export const batchDeleteProjects = authorized
       });
     }
 
-    // Organization Administrators can delete any project; Project Coordinators only their own.
-    const isOrganizationAdministrator =
-      role === MEMBER_ROLES.OrganizationAdministrator;
-    for (const project of projectsToDelete) {
-      const isResponsibleProjectCoordinator =
-        role === MEMBER_ROLES.ProjectCoordinator &&
-        project.responsibleUserId === context.user.id;
-
-      if (!isOrganizationAdministrator && !isResponsibleProjectCoordinator) {
-        throw errors.FORBIDDEN({
-          message:
-            "You don't have permission to delete one or more of these projects. Only an Organization Administrator or the responsible Project Coordinator can delete projects.",
-        });
-      }
-    }
+    // The delete permission is Organization-Administrator-only in the AC statement.
 
     // Delete the projects
     const result = await db

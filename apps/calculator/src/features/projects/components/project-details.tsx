@@ -63,9 +63,9 @@ interface ProjectDetailsProps {
 export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
   const tProject = useTranslations("organization.projects");
   const {
-    canUpdate,
-    canDelete,
-    canArchive,
+    canUpdateProject,
+    canDeleteProject,
+    canArchiveProject,
     isPending: permissionsPending,
   } = useProjectPermissions();
   const format = useFormatter();
@@ -177,7 +177,7 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {canUpdate && (
+        {canUpdateProject(project) && (
           <DropdownMenuItem
             disabled={permissionsPending}
             onSelect={() => setIsEditModalOpen(true)}
@@ -186,7 +186,7 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
             {tProject("table.edit-project")}
           </DropdownMenuItem>
         )}
-        {canArchive && (
+        {canArchiveProject(project) && (
           <DropdownMenuItem
             disabled={isArchiving || permissionsPending}
             onSelect={async () => {
@@ -223,7 +223,7 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
               : tProject("form.archive.archive")}
           </DropdownMenuItem>
         )}
-        {canDelete && (
+        {canDeleteProject(project) && (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -267,7 +267,7 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
       />
 
       {/* Edit Project Dialog */}
-      {canUpdate && (
+      {canUpdateProject(project) && (
         <Dialog onOpenChange={setIsEditModalOpen} open={isEditModalOpen}>
           <DialogContent>
             <DialogHeader>
@@ -297,7 +297,7 @@ export function ProjectDetailsHeader({ id }: ProjectDetailsProps) {
  */
 export function ProjectDetails({ id }: ProjectDetailsProps) {
   const t = useTranslations("project.details");
-  const { canUpdate } = useProjectPermissions();
+  const { canUpdateProject } = useProjectPermissions();
 
   // Fetch project details
   const { data: project } = useSuspenseQuery(
@@ -438,7 +438,10 @@ export function ProjectDetails({ id }: ProjectDetailsProps) {
         </TabsContent>
 
         <TabsContent value="shared-travel">
-          <ProjectSharedTravelLegsTable canEdit={canUpdate} projectId={id} />
+          <ProjectSharedTravelLegsTable
+            canEdit={canUpdateProject(project)}
+            projectId={id}
+          />
         </TabsContent>
 
         {/* Participants Tab */}

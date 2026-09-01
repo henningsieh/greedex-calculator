@@ -291,9 +291,9 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
   const { confirm, ConfirmDialogComponent } = useConfirmDialog();
 
   const {
-    canUpdate,
-    canDelete,
-    canArchive,
+    canUpdateProject,
+    canDeleteProject,
+    canArchiveProject,
     isPending: permissionsPending,
   } = useProjectPermissions();
 
@@ -414,13 +414,13 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
               {t("table.view-details")}
             </Link>
           </DropdownMenuItem>
-          {canUpdate && (
+          {canUpdateProject(project) && (
             <DropdownMenuItem onClick={() => setIsEditModalOpen(true)}>
               <Edit2Icon className="mr-2 size-4" />
               {t("table.edit-project")}
             </DropdownMenuItem>
           )}
-          {canArchive && (
+          {canArchiveProject(project) && (
             <DropdownMenuItem
               disabled={isArchiving || permissionsPending}
               onClick={handleArchive}
@@ -431,7 +431,7 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
                 : t("form.archive.archive")}
             </DropdownMenuItem>
           )}
-          {canDelete && (
+          {canDeleteProject(project) && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -447,7 +447,7 @@ function ProjectActionsCell({ project }: { project: ProjectType }) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {canUpdate && (
+      {canUpdateProject(project) && (
         <Dialog onOpenChange={setIsEditModalOpen} open={isEditModalOpen}>
           <DialogContent>
             <DialogHeader>

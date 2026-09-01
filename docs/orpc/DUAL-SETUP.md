@@ -58,6 +58,7 @@ API Documentation
 | `/api/openapi/*` | `OpenAPIHandler` | REST (GET/POST/etc) | Standard HTTP REST API | External tools, third-parties |
 | `/api/openapi-spec` | OpenAPI spec generator | JSON | OpenAPI 3.x specification | Schema documentation, code generation |
 | `/api/docs` | `OpenAPIReferencePlugin` | HTML + JS | Interactive Scalar UI | Manual API testing, exploration |
+| `/api/scalar-reference` | Next.js route handler | JavaScript | Self-hosted Scalar bundle | Used by `/api/docs` |
 
 ### Interactive API Documentation
 
@@ -90,7 +91,8 @@ src/app/api/
 ├── rpc/[[...rest]]/route.ts        ← /api/rpc/* endpoint
 ├── openapi/[[...rest]]/route.ts    ← /api/openapi/* endpoint
 ├── openapi-spec/route.ts           ← /api/openapi-spec endpoint
-└── docs/route.ts                   ← /api/docs endpoint
+├── docs/route.ts                   ← /api/docs endpoint
+└── scalar-reference/route.ts       ← Self-hosted Scalar browser bundle
 ```
 
 ### RPC Endpoint (`/api/rpc/[[...rest]]/route.ts`)
@@ -146,6 +148,7 @@ export const openapiHandler = new OpenAPIHandler(router, {
     new OpenAPIReferencePlugin({
       docsProvider: "scalar",     ← Uses Scalar for UI
       docsPath: "/api/docs",      ← Where Scalar UI loads
+      docsScriptUrl: "/api/scalar-reference", ← Self-hosted browser bundle
       specPath: "/api/openapi-spec", ← Where spec is served
       specGenerateOptions: {
         info: {
@@ -161,49 +164,26 @@ export const openapiHandler = new OpenAPIHandler(router, {
 **Key Points:**
 - Single handler instance used by both `/api/openapi/*` and `/api/docs`
 - Centralized configuration for consistency
-- SRI security for Scalar bundle (see next section)
+- The Scalar browser bundle is served from the application origin
 
-### Scalar UI with Subresource Integrity (SRI)
+### Self-Hosted Scalar Browser Bundle
 
-**Problem**: Loading JS from CDN without integrity verification is a security risk.
+Loading Scalar from an unversioned CDN made documentation availability and
+candidate tests depend on a third party. Greendex instead installs an exact
+`@scalar/api-reference` version through `pnpm-lock.yaml` and exposes its
+standalone browser bundle at `/api/scalar-reference`. Scalar's external web
+fonts are disabled, so the documentation uses local system fonts.
 
-**Solution**: We compute an SRI hash matching the exact Scalar version.
-
-**How it works:**
-
-1. **Source of truth**: `package.json` → `config.scalarVersion`
-   ```json
-   {
-     "config": {
-       "scalarVersion": "1.25.0"
-     }
-   }
-   ```
-
-2. **Build-time generation**: `scripts/generate-sri.js`
-   ```bash
-   # Runs automatically on `pnpm run build`
-   $ pnpm run generate:sri
-   # → Fetches exact Scalar version from CDN
-   # → Computes SHA-384 hash
-   # → Writes to src/lib/orpc/scalar-sri.ts
-   ```
-
-3. **Output file** (git-ignored):
-   ```typescript
-   // src/lib/orpc/scalar-sri.ts (auto-generated, do not edit)
-   export const SCALAR_VERSION = "1.25.0";
-   export const SCALAR_URL = "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.25.0/dist/browser/standalone.js";
-   export const SCALAR_SRI = "sha384-xxxxx..."; // Content hash
-   ```
-
-4. **Used by**: `src/lib/orpc/openapi-handler.ts` when serving Scalar UI
+`src/lib/orpc/openapi-handler.ts` configures that same-origin URL for every
+environment. `src/app/api/scalar-reference/route.ts` serves the installed
+bundle, and the generated documentation HTML embeds the OpenAPI document in
+the format expected by that pinned Scalar version.
 
 **Benefits:**
-- ✅ Ensures exact bundle integrity
-- ✅ Prevents man-in-the-middle attacks
-- ✅ Single source of truth (package.json)
-- ✅ Automatic on every build
+- ✅ Identical behavior in local development, candidate images, and Coolify
+- ✅ No runtime or test dependency on a Scalar CDN
+- ✅ Package bytes are verified by pnpm's lockfile integrity metadata
+- ✅ Clean Git checkouts do not require generated source files
 
 ### Client Setup
 
@@ -487,7 +467,7 @@ import { orpc } from "@/lib/orpc/orpc";
 |---------|-------|----------|
 | "TypeError: Cannot read property X" in type checking | Importing from wrong location | Import from `@/lib/orpc/orpc`, not from router |
 | REST endpoint returns 404 | Procedure missing `.route()` metadata | Add `.route({ method, path })` to procedure |
-| Scalar UI shows as blank page | SRI mismatch or bundle not loading | Run `pnpm run generate:sri` and rebuild |
+| Scalar UI shows as blank page | Self-hosted bundle not loading | Check `/api/scalar-reference` and rebuild from the lockfile |
 | Authentication fails on protected endpoint | Headers not passed | Ensure cookies are sent (fetch with credentials) |
 | OpenAPI spec missing endpoints | Not registered in router | Add procedure to `src/lib/orpc/router.ts` |
 | Binary data error in browser | Calling RPC from curl/Postman | Use `/api/openapi` endpoint instead for REST |

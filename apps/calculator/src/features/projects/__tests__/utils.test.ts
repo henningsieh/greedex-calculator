@@ -45,7 +45,7 @@ describe("getProjectStatistics", () => {
         user: {
           id: "user-1",
           name: "Participant One",
-          email: "participant-1@example.com",
+          email: `participant-1-${Date.now()}@sieh.org`,
           image: null,
         },
       },
@@ -60,7 +60,7 @@ describe("getProjectStatistics", () => {
         user: {
           id: "user-2",
           name: "Participant Two",
-          email: "participant-2@example.com",
+          email: `participant-2-${Date.now()}@sieh.org`,
           image: null,
         },
       },
@@ -75,7 +75,7 @@ describe("getProjectStatistics", () => {
         user: {
           id: "user-3",
           name: "Participant Three",
-          email: "participant-3@example.com",
+          email: `participant-3-${Date.now()}@sieh.org`,
           image: null,
         },
       },

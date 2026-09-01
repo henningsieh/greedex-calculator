@@ -47,10 +47,10 @@ const distanceKmType = customType<{ data: number; driverData: string }>({
  * Projects belong to organizations and access is controlled through
  * Better Auth's organization membership system.
  *
- * Members with "member" role can READ projects
- * Members with "admin" or "owner" role can CREATE, READ, UPDATE, DELETE projects
- *   - Owners can delete any projects in the organization
- *   - Admins can only delete projects they created (where they are the responsible team member)
+ * Project Participants can read projects in their organization.
+ * Project Coordinators can create projects and manage only projects for which
+ * they are responsible. Organization Administrators can manage every project.
+ * Only Organization Administrators can delete projects.
  */
 export const projectsTable = pgTable("project", {
   id: text("id")

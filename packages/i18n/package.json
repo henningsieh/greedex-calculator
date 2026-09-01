@@ -10,8 +10,9 @@
     "./locales/*.json": "./src/locales/*.json"
   },
   "scripts": {
-    "format": "oxfmt",
-    "lint": "oxlint --fix --fix-suggestions --fix-dangerously",
+    "format": "oxfmt --check",
+    "lint": "oxlint",
+    "type-check": "tsc --noEmit",
     "clean": "rm -rf node_modules .turbo"
   },
   "dependencies": {
@@ -20,8 +21,7 @@
   "devDependencies": {
     "next": "catalog:",
     "next-intl": "catalog:",
-    "oxfmt": "^0.64.0",
-    "oxlint": "^1.79.0"
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "next": "catalog:",

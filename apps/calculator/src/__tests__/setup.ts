@@ -3,6 +3,13 @@
 
 import { vi } from "vitest";
 
+declare global {
+  var IS_REACT_ACT_ENVIRONMENT: boolean;
+}
+
+// Tell React that Vitest's jsdom environment supports act().
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
 // Environment variables are loaded in global-setup.ts
 
 // Mock the auth client to avoid environment variable validation during tests
@@ -34,7 +41,7 @@ vi.mock("@/env", () => ({
       GITHUB_CLIENT_SECRET: "test-github-client-secret-40-chars",
       SMTP_HOST: "localhost",
       SMTP_PORT: 587,
-      SMTP_SENDER: "test@example.com",
+      SMTP_SENDER: "greendex@sieh.org",
       SMTP_USERNAME: "test",
       SMTP_PASSWORD: "test",
       SMTP_SECURE: false,
@@ -42,6 +49,9 @@ vi.mock("@/env", () => ({
       PORT: 3000,
       ORPC_DEV_DELAY_MS: 0,
       SOCKET_PORT: 4000,
+      get CANDIDATE_BASE_URL() {
+        return process.env.CANDIDATE_BASE_URL;
+      },
     };
   },
 }));

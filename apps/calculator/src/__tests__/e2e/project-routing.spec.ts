@@ -45,6 +45,9 @@ test.describe("project routing", () => {
     await page.goto(`/en/org/projects/${project.id}`);
 
     await expect(page.getByRole("heading", { name: project.name })).toBeVisible();
+    await expect(page.locator('input[readonly][value*="/project/"]')).toHaveValue(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/project/${project.id}/participate`,
+    );
     await expect(
       page.getByRole("heading", { name: "This page could not be found." }),
     ).not.toBeVisible();

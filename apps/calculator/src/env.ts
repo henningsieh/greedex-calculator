@@ -63,6 +63,8 @@ export const env = createEnv({
       (val) => (typeof val === "string" ? Number(val) : val),
       z.number().int().min(1).max(65_535),
     ),
+    CANDIDATE_BASE_URL: z.url().optional(),
+    RUNTIME_IMAGE_GATE_FILE: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.url(),
@@ -89,5 +91,7 @@ export const env = createEnv({
     PORT: process.env.PORT,
     ORPC_DEV_DELAY_MS: process.env.ORPC_DEV_DELAY_MS,
     SOCKET_PORT: process.env.SOCKET_PORT,
+    CANDIDATE_BASE_URL: process.env.CANDIDATE_BASE_URL,
+    RUNTIME_IMAGE_GATE_FILE: process.env.RUNTIME_IMAGE_GATE_FILE,
   },
 });

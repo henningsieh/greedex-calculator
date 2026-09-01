@@ -67,25 +67,79 @@ async function globalSetup(config: FullConfig) {
 
     console.log("✅ Sign-in page loaded with expected content");
 
-    // Wait for the login form inputs to be rendered (client-side)
-    await page.waitForSelector('input[name="email"]', { timeout: 10000 });
-    await page.waitForSelector('input[name="password"]', { timeout: 10000 });
-    await page.waitForSelector('button[type="submit"]', { timeout: 10000 });
+    if (process.env.CANDIDATE_BASE_URL) {
+      // Seed the candidate context without following the public post-login
+      // callback. Better Auth derives secure cookie attributes from its public
+      // server base URL, so normalize those attributes for the loopback origin.
+      const response = await page.request.post(
+        new URL("/api/auth/sign-in/email", baseURL).toString(),
+        {
+          data: {
+            callbackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/org/dashboard`,
+            email: SEED_USER.email,
+            password: SEED_USER.password,
+          },
+          headers: {
+            Origin: process.env.NEXT_PUBLIC_BASE_URL!,
+          },
+        },
+      );
+      if (!response.ok()) {
+        throw new Error(
+          `Candidate sign-in failed with HTTP ${response.status()}.`,
+        );
+      }
 
-    // Login with seed user
-    await page.fill('input[name="email"]', SEED_USER.email);
-    await page.fill('input[name="password"]', SEED_USER.password);
+      const cookies = response
+        .headersArray()
+        .filter(({ name }) => name.toLowerCase() === "set-cookie")
+        .map(({ value }) => {
+          const [nameValue, ...attributes] = value.split(";");
+          const separatorIndex = nameValue.indexOf("=");
+          if (separatorIndex === -1) {
+            throw new Error(
+              "Candidate sign-in returned an invalid session cookie.",
+            );
+          }
 
-    // Wait a bit for any animations to settle
-    await page.waitForTimeout(500);
+          const candidateUsesHttps = new URL(baseURL).protocol === "https:";
+          const responseCookieName = nameValue.slice(0, separatorIndex);
 
-    // Click with force to bypass animation stability check
-    const submitButton = page.locator('button[type="submit"]');
-    await submitButton.waitFor({ state: "visible", timeout: 10_000 });
-    await submitButton.click({ force: true, timeout: 10_000 });
+          return {
+            name: candidateUsesHttps
+              ? responseCookieName
+              : responseCookieName.replace(/^__Secure-/, ""),
+            value: nameValue.slice(separatorIndex + 1),
+            url: baseURL,
+            httpOnly: attributes.some(
+              (attribute) => attribute.trim().toLowerCase() === "httponly",
+            ),
+            secure: candidateUsesHttps,
+          };
+        });
+      await page.context().addCookies(cookies);
+      await page.goto(new URL("/en/org/dashboard", baseURL).toString());
+    } else {
+      // Wait for the login form inputs to be rendered (client-side)
+      await page.waitForSelector('input[name="email"]', { timeout: 10_000 });
+      await page.waitForSelector('input[name="password"]', { timeout: 10_000 });
+      await page.waitForSelector('button[type="submit"]', { timeout: 10_000 });
 
-    // Wait for redirect to dashboard
-    await page.waitForURL("**/org/dashboard", { timeout: 30_000 });
+      // Login with seed user
+      await page.fill('input[name="email"]', SEED_USER.email);
+      await page.fill('input[name="password"]', SEED_USER.password);
+
+      // Wait a bit for any animations to settle
+      await page.waitForTimeout(500);
+
+      // Click with force to bypass animation stability check
+      const submitButton = page.locator('button[type="submit"]');
+      await submitButton.waitFor({ state: "visible", timeout: 10_000 });
+      await submitButton.click({ force: true, timeout: 10_000 });
+
+      // Wait for redirect to dashboard
+      await page.waitForURL("**/org/dashboard", { timeout: 30_000 });
+    }
 
     // Quick verification that dashboard is loaded
     const h1Text = (await page.locator("h1").first().textContent()) ?? "";

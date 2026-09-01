@@ -75,44 +75,35 @@ http://localhost:3000/api/docs
 
 ## Project notes (Greendex)
 
-### SRI Security for Scalar Bundle
+### Self-Hosted Scalar Bundle
 
-Greendex uses **Subresource Integrity (SRI)** to ensure the Scalar bundle loaded from CDN matches the expected version.
+Greendex does not load the Scalar browser bundle from a CDN. The exact
+`@scalar/api-reference` dependency is pinned by `pnpm-lock.yaml`, and a
+same-origin Next.js route serves its standalone browser bundle. Default Scalar
+web fonts are disabled so the page does not fetch third-party font assets:
 
-**How it works:**
-1. Version defined in [`package.json`](../../package.json):
-   ```json
-   {
-     "config": {
-       "scalarVersion": "1.25.0"
-     }
-   }
-   ```
+```typescript
+new OpenAPIReferencePlugin({
+  docsProvider: "scalar",
+  docsPath: "/api/docs",
+  docsScriptUrl: "/api/scalar-reference",
+  docsConfig: { withDefaultFonts: false },
+  specPath: "/api/openapi-spec",
+})
+```
 
-2. Build time: `scripts/generate-sri.js` computes hash
-   ```bash
-   pnpm run generate:sri
-   # → Fetches exact bundle from CDN
-   # → Computes SHA-384 hash
-   # → Writes to src/lib/orpc/scalar-sri.ts
-   ```
-
-3. Runtime: Scalar UI uses SRI when loading from CDN
-   ```html
-   <script 
-     src="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.25.0/.../standalone.js"
-     integrity="sha384-xxxxx..." 
-     crossorigin="anonymous">
-   </script>
-   ```
+The custom documentation HTML embeds the generated OpenAPI document in the
+format expected by the installed standalone bundle. This path is used without
+environment-specific overrides in local development, candidate images, and
+Coolify deployments.
 
 **Benefits:**
-- ✅ Ensures exact version is loaded
-- ✅ Prevents tampering (man-in-the-middle attacks)
-- ✅ Single source of truth (package.json)
-- ✅ Automatic on every build (prebuild hook)
+- ✅ Removes runtime dependence on jsDelivr
+- ✅ Uses lockfile integrity verification and an exact package version
+- ✅ Keeps clean-checkout and local image inputs equivalent
+- ✅ Makes candidate browser tests deterministic without request interception
 
 **Files involved:**
-- [`package.json`](../../package.json) — Version source
-- [`scripts/generate-sri.js`](../../scripts/generate-sri.js) — SRI generator
-- [`src/lib/orpc/scalar-sri.ts`](../../src/lib/orpc/scalar-sri.ts) — Generated (git-ignored)
+- [`package.json`](../../apps/calculator/package.json) — Exact Scalar dependency
+- [`src/lib/orpc/openapi-handler.ts`](../../apps/calculator/src/lib/orpc/openapi-handler.ts) — Documentation HTML and script URL
+- [`src/app/api/scalar-reference/route.ts`](../../apps/calculator/src/app/api/scalar-reference/route.ts) — Same-origin bundle endpoint

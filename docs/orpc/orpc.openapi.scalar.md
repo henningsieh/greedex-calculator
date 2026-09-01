@@ -7,7 +7,7 @@ description: Create a beautiful API documentation UI using Scalar
 
 [Scalar](https://github.com/scalar/scalar) is a modern alternative to Swagger UI for browsing OpenAPI specifications.
 
-**⚠️ For Greendex**: Use the [`OpenAPIReferencePlugin`](./orpc.openapi-reference.md) instead of this manual setup. The plugin is simpler and handles SRI security automatically.
+**⚠️ For Greendex**: Use the [`OpenAPIReferencePlugin`](./orpc.openapi-reference.md) instead of this manual setup. Greendex configures the plugin to use its same-origin, lockfile-pinned Scalar bundle.
 
 ---
 
@@ -78,10 +78,10 @@ new OpenAPIReferencePlugin({
 })
 ```
 
-**Benefits over manual approach:**
-- ✅ Automatic SRI generation for bundle integrity
-- ✅ Single configuration point
-- ✅ Handles versioning automatically
-- ✅ No custom HTML to maintain
+**Benefits over the CDN example:**
+- ✅ One same-origin bundle path in every environment
+- ✅ Exact version and package integrity are controlled by `pnpm-lock.yaml`
+- ✅ No external CDN dependency at runtime or during candidate tests
+- ✅ OpenAPI generation remains centralized in the plugin
 
 See [OpenAPI Reference Plugin](./orpc.openapi-reference.md) for details.

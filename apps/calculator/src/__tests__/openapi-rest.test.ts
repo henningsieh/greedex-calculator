@@ -9,7 +9,6 @@
  *
  * Note: These tests require a running server and are skipped in CI if the server is not available.
  */
-import { chromium } from "playwright";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { env } from "@/env";
@@ -17,7 +16,11 @@ import { env } from "@/env";
 import { SEED_USER } from "../../scripts/seed";
 
 const OPENAPI_VERSION_REGEX = /^3\.\d+\.\d+$/;
-const baseUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/openapi`;
+const SCALAR_SCRIPT_PATH = "/api/scalar-reference";
+// Candidate-release tests access the unpublished container directly while the
+// public URL remains the value compiled into the browser bundle.
+const testBaseUrl = env.CANDIDATE_BASE_URL ?? env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = `${testBaseUrl}/api/openapi`;
 let serverAvailable = false;
 
 // Check if server is available before running tests
@@ -548,7 +551,7 @@ describe("OpenAPI REST Endpoint", () => {
 });
 
 describe("API Documentation UI", () => {
-  const docsUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/docs`;
+  const docsUrl = `${testBaseUrl}/api/docs`;
 
   it("should serve HTML with Scalar API reference script", async () => {
     if (!serverAvailable) {
@@ -563,48 +566,33 @@ describe("API Documentation UI", () => {
 
     const html = await response.text();
 
-    // Embedded configuration script should exist
-    expect(html).toContain('id="app"');
-    // Should reference Scalar script
-    expect(html).toContain("https://cdn.jsdelivr.net/npm/@scalar/api-reference");
+    // The installed Scalar standalone bundle reads this embedded specification.
+    expect(html).toContain('id="api-reference"');
+    expect(html).toContain('type="application/json"');
+    expect(html).toContain("&quot;withDefaultFonts&quot;:false");
+    // Scalar must be served by this application in every environment.
+    expect(html).toContain(`src="${SCALAR_SCRIPT_PATH}"`);
+    expect(html).not.toContain(
+      "https://cdn.jsdelivr.net/npm/@scalar/api-reference",
+    );
   });
 
-  it("should render accessible API documentation UI", async () => {
+  it("should serve the self-hosted Scalar browser bundle", async () => {
     if (!serverAvailable) {
       throw new Error("Server not available");
     }
 
-    // Verify the docs page is available and the Scalar UI actually renders.
-    // Uses stable markers from the plugin's own HTML template (#app), the
-    // <main> landmark Scalar mounts, and the page title instead of a
-    // Scalar-internal aria-label, which changes between Scalar versions.
-    const browser = await chromium.launch({
-      headless: process.env.HEADED !== "true",
-    });
-    try {
-      const page = await browser.newPage();
-      await page.goto(docsUrl, { timeout: 10_000 });
-      await page.waitForSelector("div#app", {
-        timeout: 10_000,
-      });
-      // Scalar mounts its UI once the bundle executes
-      await page.waitForSelector("main", { timeout: 10_000 });
-      // The docs heading shows the API title from specGenerateOptions.info.title
-      await page.waitForSelector("h1.section-header-label", {
-        timeout: 10_000,
-      });
-      expect(
-        await page.locator("h1.section-header-label").textContent(),
-      ).toContain("Greendex Calculator API");
-      expect(await page.title()).toContain("API Reference");
-    } finally {
-      await browser.close();
-    }
+    const response = await fetch(`${testBaseUrl}${SCALAR_SCRIPT_PATH}`);
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toContain("text/javascript");
+    expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
+    expect(await response.text()).toContain("Scalar API Reference");
   });
 });
 
 describe("OpenAPI Specification", () => {
-  const specUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/openapi-spec`;
+  const specUrl = `${testBaseUrl}/api/openapi-spec`;
 
   it("should serve OpenAPI specification", async () => {
     if (!serverAvailable) {

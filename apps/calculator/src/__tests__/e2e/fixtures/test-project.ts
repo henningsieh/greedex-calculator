@@ -25,7 +25,7 @@ export class TestProjectFixture {
     await db.insert(user).values({
       id: this.userId,
       name: "E2E Test User",
-      email: `e2e-test-${Date.now()}-${randomUUID().slice(0, 8)}@example.com`,
+      email: `e2e-test-${Date.now()}-${randomUUID().slice(0, 8)}@sieh.org`,
       emailVerified: true,
       createdAt: new Date(),
       updatedAt: new Date(),

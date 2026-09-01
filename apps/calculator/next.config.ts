@@ -1,9 +1,15 @@
+import path from "node:path";
+
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig = {
+  output: "standalone",
+  outputFileTracingRoot: path.join(import.meta.dirname, "../.."),
   typedRoutes: true,
   reactCompiler: true,
+  // Allow local browser tooling to request development-only Next.js assets.
+  allowedDevOrigins: ["127.0.0.1"],
   devIndicators: {
     position: "top-right",
   },

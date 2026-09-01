@@ -6,8 +6,8 @@
     "build": "fumadocs-mdx && next build",
     "dev": "PORT=3001 next dev",
     "start": "next start --port 3001",
-    "format": "oxfmt",
-    "lint": "oxlint --fix --fix-suggestions --fix-dangerously",
+    "format": "oxfmt --check",
+    "lint": "oxlint",
     "type-check": "fumadocs-mdx && next typegen && tsc --noEmit",
     "postinstall": "fumadocs-mdx",
     "clean": "rm -rf .next .turbo node_modules"

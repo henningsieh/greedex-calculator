@@ -13,9 +13,11 @@ catalog:
   next-intl: 4.14.1
   better-auth: 1.7.2
   typescript: 7.0.2
+  oxfmt: 0.65.0
+  oxlint: 1.80.0
   "@types/node": 26.4.0
   "@types/react": 19.2.18
-  "@types/react-dom": 19.2.4
+  "@types/react-dom": 19.2.5
 
 hoistPattern:
   - typescript
@@ -28,6 +30,7 @@ allowBuilds:
   "@swc/core": true
   esbuild: true
   sharp: true
+  vue-demi: false
 
 minimumReleaseAgeExclude:
   - "@turbo/darwin-64@2.10.12"

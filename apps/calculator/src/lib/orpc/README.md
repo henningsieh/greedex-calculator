@@ -12,13 +12,13 @@ This document describes the end-to-end type-safe API layer implementation using 
 
 ## 📚 Documentation Structure
 
-| Document                                                               | Purpose                            |
-| ---------------------------------------------------------------------- | ---------------------------------- |
-| [QUICKSTART.md](../../docs/orpc/QUICKSTART.md)                         | Quick mental model + decision tree |
-| [DUAL-SETUP.md](../../docs/orpc/DUAL-SETUP.md)                         | Full architecture + best practices |
-| [orpc.openapi-reference.md](../../docs/orpc/orpc.openapi-reference.md) | Plugin details + SRI security      |
-| [orpc.openapi.scalar.md](../../docs/orpc/orpc.openapi.scalar.md)       | Scalar UI + alternatives           |
-| [README.md](./README.md)                                               | This file — implementation guide   |
+| Document                                                               | Purpose                             |
+| ---------------------------------------------------------------------- | ----------------------------------- |
+| [QUICKSTART.md](../../docs/orpc/QUICKSTART.md)                         | Quick mental model + decision tree  |
+| [DUAL-SETUP.md](../../docs/orpc/DUAL-SETUP.md)                         | Full architecture + best practices  |
+| [orpc.openapi-reference.md](../../docs/orpc/orpc.openapi-reference.md) | Plugin details + self-hosted Scalar |
+| [orpc.openapi.scalar.md](../../docs/orpc/orpc.openapi.scalar.md)       | Scalar UI + alternatives            |
+| [README.md](./README.md)                                               | This file — implementation guide    |
 
 ---
 
@@ -50,7 +50,8 @@ src/app/api/
 ├── rpc/[[...rest]]/route.ts       # RPC endpoint (application use)
 ├── openapi/[[...rest]]/route.ts   # REST API endpoint (external use)
 ├── openapi-spec/route.ts          # OpenAPI spec JSON
-└── docs/route.ts                  # Scalar UI endpoint
+├── docs/route.ts                  # Scalar UI endpoint
+└── scalar-reference/route.ts      # Self-hosted Scalar browser bundle
 ```
 
 ### Two Endpoints for Different Purposes

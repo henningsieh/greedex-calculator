@@ -46,7 +46,7 @@ Key concepts:
 **Reference this for details.** Shows:
 - How OpenAPI handler is configured
 - Where Scalar UI comes from
-- How SRI security works
+- How the self-hosted Scalar bundle works
 
 ---
 
@@ -154,7 +154,7 @@ What it is:
 - Interactive web UI for testing API endpoints
 - Auto-generated from OpenAPI specification
 - Hosted by `OpenAPIReferencePlugin`
-- Loads Scalar from CDN with SRI integrity check
+- Loads the lockfile-pinned Scalar bundle from the same application origin
 
 What you can do:
 - Test endpoints without code
@@ -179,9 +179,7 @@ What you can do:
 - `src/app/api/rpc/[[...rest]]/route.ts` — RPC endpoint
 - `src/app/api/openapi/[[...rest]]/route.ts` — REST endpoint
 - `src/app/api/docs/route.ts` — Scalar UI endpoint
-
-**Scripts**:
-- `scripts/generate-sri.js` — Computes SRI hash for Scalar bundle
+- `src/app/api/scalar-reference/route.ts` — Self-hosted Scalar browser bundle
 
 **Documentation**:
 - [DUAL-SETUP.md](./DUAL-SETUP.md) — Full architecture
