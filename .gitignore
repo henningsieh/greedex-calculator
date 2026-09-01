@@ -25,6 +25,8 @@ docs/greendex-clickdummy/
 
 # production
 /build
+dist/
+**/dist/
 
 # .next-inspect for testing / debugging
 .next-inspect/

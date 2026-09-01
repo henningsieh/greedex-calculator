@@ -35,6 +35,10 @@ describe("environment entrypoints", () => {
     "utf8",
   );
   const nextConfig = readFileSync(path.resolve("next.config.ts"), "utf8");
+  const documentationNextConfig = readFileSync(
+    path.resolve("../documentation/next.config.mjs"),
+    "utf8",
+  );
   const turboConfig = JSON.parse(
     readFileSync(path.resolve("../../turbo.json"), "utf8"),
   ) as {
@@ -51,6 +55,14 @@ describe("environment entrypoints", () => {
   );
   const releaseEmailScript = readFileSync(
     path.resolve("scripts/verify-release-gate-email.ts"),
+    "utf8",
+  );
+  const socketBuildScript = readFileSync(
+    path.resolve("scripts/build-socket-runtime.mjs"),
+    "utf8",
+  );
+  const runtimeStartScript = readFileSync(
+    path.resolve("../../docker/runtime-start.sh"),
     "utf8",
   );
   const dockerfile = readFileSync(path.resolve("../../Dockerfile"), "utf8");
@@ -90,6 +102,15 @@ describe("environment entrypoints", () => {
     );
     expect(rootPackage.scripts.start).toBe(
       "dotenv -v NODE_ENV=production -e .env -- turbo run start",
+    );
+  });
+
+  it("builds the Socket.IO runtime with a CommonJS bridge", () => {
+    expect(calculatorPackage.scripts.build).toBe(
+      "next build && node scripts/build-socket-runtime.mjs",
+    );
+    expect(socketBuildScript).toContain(
+      "const require = createRequire(import.meta.url);",
     );
   });
 
@@ -140,13 +161,41 @@ describe("environment entrypoints", () => {
     expect(calculatorPackage.scripts.prestart).toBe(directMigrationCommand);
     expect(calculatorPackage.scripts.prebuild).not.toContain("pnpx");
     expect(calculatorPackage.scripts.prestart).not.toContain("pnpx");
-    expect(runtimeDockerfile).toContain(
-      'CMD ["node", "node_modules/pnpm/bin/pnpm.cjs", "run", "start"]',
+    expect(runtimeStartScript).toContain(
+      "node node_modules/drizzle-kit/bin.cjs migrate",
     );
+    expect(
+      runtimeStartScript.indexOf("drizzle-kit/bin.cjs migrate"),
+    ).toBeLessThan(runtimeStartScript.indexOf("apps/calculator/server.js"));
+    expect(runtimeDockerfile).toContain('CMD ["/app/docker/runtime-start.sh"]');
     expect(runtimeDockerfile).not.toContain("corepack enable");
     expect(candidateTestScript).toContain(
       "runuser -u node --preserve-environment",
     );
+  });
+
+  it("assembles traced standalone applications without the development workspace", () => {
+    expect(nextConfig).toContain('output: "standalone"');
+    expect(nextConfig).toContain("outputFileTracingRoot");
+    expect(documentationNextConfig).toContain('output: "standalone"');
+    expect(documentationNextConfig).toContain("outputFileTracingRoot");
+    expect(runtimeDockerfile).toContain(
+      "COPY --from=runtime-assets --chown=node:node /runtime/ /app/",
+    );
+    expect(runtimeDockerfile).not.toContain("COPY --from=test /app /app");
+    expect(runtimeDockerfile).not.toContain("chown -R");
+    expect(runtimeDockerfile).not.toContain("node_modules/pnpm");
+  });
+
+  it("keeps dependency and browser layers reusable across source-only changes", () => {
+    const sourceCopyIndex = dockerfile.indexOf("COPY . .");
+
+    expect(dockerfile.indexOf("pnpm install --frozen-lockfile")).toBeLessThan(
+      sourceCopyIndex,
+    );
+    expect(
+      dockerfile.indexOf("playwright install --with-deps chromium"),
+    ).toBeLessThan(sourceCopyIndex);
   });
 
   it("runs final-image validation through the unprivileged runtime entrypoint", () => {

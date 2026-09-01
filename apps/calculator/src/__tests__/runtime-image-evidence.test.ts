@@ -10,6 +10,7 @@ const temporaryDirectories: string[] = [];
 type EvidenceFixtureOptions = {
   gateStatus?: "failed" | "passed";
   healthStatus?: "healthy" | "unhealthy";
+  imageSize?: string;
 };
 
 function writeExecutable(filePath: string, content: string) {
@@ -27,6 +28,10 @@ function runEvidenceCollector(options: EvidenceFixtureOptions = {}) {
 set -Eeuo pipefail
 if [[ "$1" == "logs" ]]; then
   printf '{"event":"greendex.runtime-image-gate","container":"abcdef123456","status":"%s","phase":"terminal"}\\n' "$FAKE_GATE_STATUS"
+  exit 0
+fi
+if [[ "$1" == "image" && "$2" == "ls" ]]; then
+  printf '%s\\n' "$FAKE_IMAGE_SIZE"
   exit 0
 fi
 if [[ "$1" == "image" ]]; then format="$4"; else format="$3"; fi
@@ -50,6 +55,7 @@ esac
         env: {
           FAKE_GATE_STATUS: options.gateStatus ?? "passed",
           FAKE_HEALTH_STATUS: options.healthStatus ?? "healthy",
+          FAKE_IMAGE_SIZE: options.imageSize ?? "1.099GB",
           NODE_ENV: "test",
           PATH: `${binDirectory}:/usr/bin:/bin`,
         },
@@ -85,11 +91,28 @@ describe("runtime image deployment evidence", () => {
       container: "abcdef1234567890",
       imageReference: "greendex:commit",
       imageDigest: "sha256:image-id",
+      imageSizeBytes: 1_099_000_000,
+      maxImageSizeBytes: 1_100_000_000,
       repositoryDigest: "greendex@sha256:registry-digest",
       gateStatus: "passed",
       healthStatus: "healthy",
       user: "node",
     });
+  });
+
+  it("rejects a runtime image larger than the release budget", async () => {
+    const result = await runEvidenceCollector({
+      imageSize: "1.100000001GB",
+    });
+
+    expect(result.code).toBe(1);
+    expect(JSON.parse(result.output)).toMatchObject({
+      imageSizeBytes: 1_100_000_001,
+      maxImageSizeBytes: 1_100_000_000,
+    });
+    expect(result.error).toContain(
+      "The selected runtime image exceeds the 1100000000-byte size budget.",
+    );
   });
 
   it("records the selected digest when the terminal gate result failed", async () => {

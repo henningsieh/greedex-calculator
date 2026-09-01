@@ -11,3 +11,5 @@ node_modules
 **/.turbo
 coverage
 **/coverage
+dist
+**/dist

@@ -96,10 +96,12 @@ verify_runtime_identity_and_permissions() {
 
   local read_only_paths=(
     "."
-    "package.json"
-    "apps/calculator/src"
+    "apps/calculator/server.js"
+    "apps/calculator/socket-server.mjs"
+    "apps/documentation/server.js"
+    "packages/database/node_modules"
     "docker/runtime-entrypoint.sh"
-    "node_modules"
+    "docker/runtime-start.sh"
   )
   local read_only_path
   for read_only_path in "${read_only_paths[@]}"; do

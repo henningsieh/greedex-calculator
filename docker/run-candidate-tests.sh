@@ -8,6 +8,7 @@ pg_ctlcluster "$postgres_version" main start
 runuser -u postgres -- psql -c "ALTER USER postgres PASSWORD 'test-password';"
 runuser -u postgres -- createdb greendex_test
 
+readonly candidate_readiness_timeout_seconds=180
 server_pid=""
 
 cleanup() {
@@ -105,7 +106,7 @@ runuser -u node --preserve-environment -- \
   env HOME=/home/node node node_modules/pnpm/bin/pnpm.cjs run start &
 server_pid=$!
 
-for attempt in $(seq 1 60); do
+for attempt in $(seq 1 "$candidate_readiness_timeout_seconds"); do
   if wget -q -O /dev/null http://127.0.0.1:3000/api/rpc/health; then
     break
   fi
@@ -114,8 +115,8 @@ for attempt in $(seq 1 60); do
     wait "$server_pid"
   fi
 
-  if [[ "$attempt" == "60" ]]; then
-    echo "Candidate did not become ready within 60 seconds." >&2
+  if [[ "$attempt" == "$candidate_readiness_timeout_seconds" ]]; then
+    echo "Candidate did not become ready within $candidate_readiness_timeout_seconds seconds." >&2
     exit 1
   fi
 

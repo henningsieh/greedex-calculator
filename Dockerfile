@@ -1,14 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:22-bookworm AS test
-
-# Non-sensitive identifiers may arrive as plain build args.
-ARG GOOGLE_CLIENT_ID
-ARG DISCORD_CLIENT_ID
-ARG GITHUB_CLIENT_ID
-ARG SMTP_HOST
-ARG SMTP_PORT
-ARG SMTP_SENDER
-ARG SMTP_SECURE
+FROM node:22-bookworm AS dependencies
 
 WORKDIR /app
 
@@ -27,9 +18,27 @@ COPY packages/i18n/package.json packages/i18n/package.json
 
 RUN corepack enable && pnpm install --frozen-lockfile
 
+# Build the migration-only production dependency tree before source is copied,
+# so source-only deployments reuse this package-install work.
+FROM dependencies AS runtime-dependencies
+
+RUN pnpm --filter @greendex/database deploy --prod --legacy --ignore-scripts /runtime/packages/database \
+  && chmod -R a-w /runtime/packages/database
+
+FROM dependencies AS test
+
 # Browser binaries and system libraries are intentionally confined to this test
 # stage. They are never copied into the production runtime image.
 RUN pnpm --filter @greendex/calculator exec playwright install --with-deps chromium
+
+# Non-sensitive identifiers may arrive as plain build args.
+ARG GOOGLE_CLIENT_ID
+ARG DISCORD_CLIENT_ID
+ARG GITHUB_CLIENT_ID
+ARG SMTP_HOST
+ARG SMTP_PORT
+ARG SMTP_SENDER
+ARG SMTP_SECURE
 
 COPY . .
 
@@ -53,44 +62,53 @@ RUN --mount=type=secret,id=NEXT_PUBLIC_BASE_URL \
     --mount=type=secret,id=EMAIL_TEST_RECIPIENT \
     ./docker/run-candidate-tests.sh
 
+# Merge both traced Next.js deployments and the small non-Next runtime assets
+# into one tree. Permissions are finalized here so the runtime stage does not
+# add a second large recursive chown/chmod layer.
+FROM test AS runtime-assets
+
+RUN set -eux; \
+  mkdir -p /runtime; \
+  cp -a apps/calculator/.next/standalone/. /runtime/; \
+  cp -a apps/documentation/.next/standalone/. /runtime/; \
+  mkdir -p \
+    /runtime/apps/calculator/.next \
+    /runtime/apps/documentation/.next \
+    /runtime/apps/documentation/.source \
+    /runtime/packages/database/src \
+    /runtime/docker; \
+  cp -a apps/calculator/.next/static /runtime/apps/calculator/.next/static; \
+  cp -a apps/calculator/public /runtime/apps/calculator/public; \
+  cp -a apps/calculator/dist/socket-server.mjs /runtime/apps/calculator/socket-server.mjs; \
+  cp -a apps/documentation/.next/static /runtime/apps/documentation/.next/static; \
+  cp -a apps/documentation/.source/. /runtime/apps/documentation/.source/; \
+  cp -a packages/database/drizzle.config.ts packages/database/package.json /runtime/packages/database/; \
+  cp -a packages/database/src/. /runtime/packages/database/src/; \
+  cp -a docker/runtime-entrypoint.sh docker/runtime-start.sh /runtime/docker/; \
+  touch /runtime/.env; \
+  chmod -R a-w /runtime; \
+  chmod -R u+w \
+    /runtime/apps/calculator/.next \
+    /runtime/apps/documentation/.next \
+    /runtime/apps/documentation/.source
+
 FROM node:22-bookworm-slim AS runtime
 
 WORKDIR /app
 ENV NODE_ENV=production
 
-# The pinned pnpm package is installed in the test stage and copied with the
-# workspace. Runtime invokes it directly with Node, so Corepack cannot fetch a
-# package manager during a cold start.
 RUN apt-get update \
   && apt-get install -y --no-install-recommends curl \
   && rm -rf /var/lib/apt/lists/*
 
-COPY --from=test /app /app
-
-# The .next output is coupled to the exact node_modules layout it was built
-# against (Turbopack bakes resolved package identities into chunks), so the
-# full workspace tree ships as-is: building against a production-only tree is
-# not possible (TypeScript/tailwind/dotenv-cli are devDependencies) and a
-# production-only relink breaks every baked chunk reference. Switching to
-# Next.js output:"standalone" is the follow-up refactor that would change
-# this. Only the disposable Next.js build cache is dropped.
-RUN touch /app/.env \
-  && rm -rf /app/apps/*/.next/cache
-
-# Application files stay root-owned (read/execute only). Only the trees the
-# runtime legitimately writes (Next.js caches and the documentation app's
-# fumadocs codegen) are writable by the unprivileged process.
-RUN chown -R node:node /app/apps/calculator/.next \
-  /app/apps/documentation/.next \
-  /app/apps/documentation/.source
+COPY --from=runtime-dependencies /runtime/ /app/
+COPY --from=runtime-assets --chown=node:node /runtime/ /app/
 
 USER node
 
-# The runtime gate is PID 1 in the exact final image. It starts the unchanged
-# release command below, withholds Calculator health until all three services
-# pass validation, proves graceful shutdown, and then starts the promotable
-# process topology. The upstream Node entrypoint remains in front so its normal
-# command handling is preserved.
+# The runtime gate is PID 1 in the exact final image. It validates migration,
+# both standalone Next.js servers, Socket.IO, permissions, and shutdown before
+# starting the promotable topology through the same command.
 EXPOSE 3000 3001 4000
 ENTRYPOINT ["docker-entrypoint.sh", "/app/docker/runtime-entrypoint.sh"]
-CMD ["node", "node_modules/pnpm/bin/pnpm.cjs", "run", "start"]
+CMD ["/app/docker/runtime-start.sh"]

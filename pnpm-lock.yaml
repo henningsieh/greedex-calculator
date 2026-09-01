@@ -352,6 +352,9 @@ importers:
       dotenv-cli:
         specifier: ^11.0.0
         version: 11.0.0
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
       imapflow:
         specifier: ^1.7.6
         version: 1.7.6
@@ -502,6 +505,9 @@ importers:
       '@paralleldrive/cuid2':
         specifier: ^3.3.0
         version: 3.3.0
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       drizzle-kit:
         specifier: ^0.31.10
         version: 0.31.10
@@ -515,9 +521,6 @@ importers:
       '@types/pg':
         specifier: ^8.23.1
         version: 8.23.1
-      dotenv:
-        specifier: ^17.4.2
-        version: 17.4.2
 
   packages/email:
     dependencies:

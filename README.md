@@ -378,26 +378,32 @@ instructions before exercising the full Vitest suite against a real candidate
 never promoted. Credentials are injected as Docker build secrets (Coolify
 "Build Variables" + `use_build_secrets`) and exist only in the test stage.
 
-The final image then validates itself as the unprivileged `node` user through
-its unchanged release command. Its runtime entrypoint exercises
-migration-before-start, Calculator health, Documentation, Socket.IO, writable
-cache/codegen paths, read-only application files, and graceful termination. It
-starts the promotable process topology only after that validation run. The
-Calculator health endpoint returns `503` while the other services are still
-being checked, so Coolify cannot promote a partial or failed topology and the
-previous release stays active. A secret-safe terminal JSON event identifies
-the validating container. On the Docker host,
-`docker/collect-runtime-evidence.sh <container>` pairs that event with the
-selected container's immutable Docker image ID and matching repository digest.
-It emits the deployment evidence without reading the container environment,
-proving that the tested image is the image selected for promotion.
+Dependency installation and the Playwright browser download happen before the
+source tree is copied, so source-only deployments reuse Docker's base-image,
+package-install, and browser layers. The final image contains only both Next.js
+standalone outputs, static/public assets, the bundled Socket.IO server, and the
+production migration dependencies; it does not contain the development
+workspace or Playwright browsers. The release budget is 1,100,000,000 bytes.
 
-Coolify injects runtime environment variables into that final image;
-Turborepo forwards them to the application processes via the `"env": ["*"]`
-setting on the `build` and `start` tasks in [`turbo.json`](turbo.json).
+The final image validates itself as the unprivileged `node` user through
+[`docker/runtime-start.sh`](docker/runtime-start.sh). Its runtime entrypoint
+exercises migration-before-start, Calculator health, Documentation, Socket.IO,
+writable cache/codegen paths, read-only application files, and graceful
+termination. It starts the promotable process topology only after that
+validation run. The Calculator health endpoint returns `503` while the other
+services are still being checked, so Coolify cannot promote a partial or failed
+topology and the previous release stays active.
 
-Every calculator deployment runs the existing Drizzle `db:migrate` command in
-`prestart`, before Next.js and Socket.IO start. If a migration fails, the
+A secret-safe terminal JSON event identifies the validating container. On the
+Docker host, `docker/collect-runtime-evidence.sh <container>` pairs that event
+with the selected container's immutable Docker image ID and matching repository
+digest. It also records `imageSizeBytes` and enforces the 1,100,000,000-byte
+runtime-image budget. Evidence is emitted without reading the container
+environment, proving that the tested image is the image selected for promotion.
+
+Coolify injects runtime environment variables directly into the final image's
+standalone Node.js processes. Every calculator deployment runs the existing
+Drizzle migration before Next.js and Socket.IO start. If a migration fails, the
 process exits non-zero and Coolify cannot mark the new calculator container
 healthy. This is the repository's database-as-code deployment contract.
 

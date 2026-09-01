@@ -28,7 +28,7 @@ type RuntimeFixture = {
 
 type RuntimeFixtureOptions = {
   failUrlFragment?: string;
-  writablePackage?: boolean;
+  writableRuntimeStart?: boolean;
 };
 
 const fixtureRoots: string[] = [];
@@ -50,17 +50,23 @@ function createRuntimeFixture(
   const requestsFile = path.join(runtimeStateDirectory, "requests.log");
   mkdirSync(binDirectory);
   mkdirSync(runtimeStateDirectory, { recursive: true });
-  mkdirSync(path.join(root, "apps/calculator/src"), { recursive: true });
   mkdirSync(path.join(root, "apps/documentation/.next"), { recursive: true });
   mkdirSync(path.join(root, "apps/documentation/.source"), { recursive: true });
-  mkdirSync(path.join(root, "docker"));
-  mkdirSync(path.join(root, "node_modules"));
-  writeFileSync(path.join(root, "docker/runtime-entrypoint.sh"), "fixture\n", {
-    mode: 0o555,
+  mkdirSync(path.join(root, "packages/database/node_modules"), {
+    recursive: true,
   });
-  const packageMode = options.writablePackage === true ? 0o644 : 0o444;
-  writeFileSync(path.join(root, "package.json"), "{}\n", {
-    mode: packageMode,
+  mkdirSync(path.join(root, "docker"));
+  for (const runtimeFile of [
+    "apps/calculator/server.js",
+    "apps/calculator/socket-server.mjs",
+    "apps/documentation/server.js",
+    "docker/runtime-entrypoint.sh",
+  ]) {
+    writeFileSync(path.join(root, runtimeFile), "fixture\n", { mode: 0o444 });
+  }
+  const runtimeStartMode = options.writableRuntimeStart === true ? 0o744 : 0o544;
+  writeFileSync(path.join(root, "docker/runtime-start.sh"), "fixture\n", {
+    mode: runtimeStartMode,
   });
 
   writeExecutable(
@@ -106,12 +112,13 @@ while true; do sleep 0.1; done
       path.join(root, "apps"),
       path.join(root, "apps/calculator"),
       path.join(root, "apps/calculator/.next"),
-      path.join(root, "apps/calculator/src"),
       path.join(root, "apps/documentation"),
       path.join(root, "apps/documentation/.next"),
       path.join(root, "apps/documentation/.source"),
+      path.join(root, "packages"),
+      path.join(root, "packages/database"),
+      path.join(root, "packages/database/node_modules"),
       path.join(root, "docker"),
-      path.join(root, "node_modules"),
     ]) {
       chownSync(directory, NODE_USER_ID, NODE_GROUP_ID);
     }
@@ -119,18 +126,20 @@ while true; do sleep 0.1; done
       path.join(binDirectory, "curl"),
       path.join(binDirectory, "hostname"),
       fakeRuntime,
-      path.join(root, "package.json"),
+      path.join(root, "apps/calculator/server.js"),
+      path.join(root, "apps/calculator/socket-server.mjs"),
+      path.join(root, "apps/documentation/server.js"),
       path.join(root, "docker/runtime-entrypoint.sh"),
+      path.join(root, "docker/runtime-start.sh"),
     ]) {
       chownSync(file, NODE_USER_ID, NODE_GROUP_ID);
     }
-    chmodSync(path.join(root, "package.json"), packageMode);
+    chmodSync(path.join(root, "docker/runtime-start.sh"), runtimeStartMode);
   }
   for (const readOnlyPath of [
     root,
-    path.join(root, "apps/calculator/src"),
+    path.join(root, "packages/database/node_modules"),
     path.join(root, "docker"),
-    path.join(root, "node_modules"),
   ]) {
     chmodSync(readOnlyPath, 0o555);
   }
@@ -206,9 +215,8 @@ afterEach(async () => {
   for (const root of fixtureRoots.splice(0)) {
     for (const readOnlyPath of [
       root,
-      path.join(root, "apps/calculator/src"),
+      path.join(root, "packages/database/node_modules"),
       path.join(root, "docker"),
-      path.join(root, "node_modules"),
     ]) {
       if (existsSync(readOnlyPath)) {
         chmodSync(readOnlyPath, 0o755);
@@ -272,14 +280,14 @@ describe("final runtime image gate", () => {
   });
 
   it("blocks startup when application files are writable by the runtime user", async () => {
-    const fixture = createRuntimeFixture({ writablePackage: true });
+    const fixture = createRuntimeFixture({ writableRuntimeStart: true });
 
     const exit = await waitForExit(fixture.process);
 
     expect(exit).toEqual({ code: 1, signal: null });
     expect(existsSync(fixture.eventsFile)).toBe(false);
     expect(fixture.output()).toContain(
-      "Read-only runtime path is missing or writable: package.json",
+      "Read-only runtime path is missing or writable: docker/runtime-start.sh",
     );
     expect(fixture.output()).toContain('"status":"failed"');
   });
