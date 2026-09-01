@@ -19,7 +19,7 @@
     "lucide-react": "1.37.0"
   },
   "devDependencies": {
-    "@types/node": "26.4.0",
+    "@types/node": "catalog:",
     "next": "catalog:",
     "typescript": "catalog:"
   },

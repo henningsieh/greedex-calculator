@@ -2,15 +2,6 @@
   "name": "greendex-monorepo",
   "version": "0.1.0",
   "private": true,
-  "intent": {
-    "skills": [
-      "workspace:@greendex/auth",
-      "workspace:@greendex/config",
-      "@tanstack/react-table",
-      "@tanstack/table-core",
-      "dotenv"
-    ]
-  },
   "scripts": {
     "build": "dotenv -v NODE_ENV=production -e .env -- turbo run build",
     "dev": "dotenv -v NODE_ENV=development -e .env -- turbo run dev",
@@ -39,7 +30,7 @@
     "turbo": "^2.10.12"
   },
   "devDependencies": {
-    "@types/node": "26.4.0",
+    "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "husky": "^9.1.7",
@@ -51,5 +42,14 @@
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "pnpm@11.24.0"
+  "packageManager": "pnpm@11.24.0",
+  "intent": {
+    "skills": [
+      "workspace:@greendex/auth",
+      "workspace:@greendex/config",
+      "@tanstack/react-table",
+      "@tanstack/table-core",
+      "dotenv"
+    ]
+  }
 }

@@ -15,6 +15,7 @@ catalog:
   typescript: 7.0.2
   oxfmt: 0.65.0
   oxlint: 1.80.0
+  "@types/node": 26.4.0
   "@types/react": 19.2.18
   "@types/react-dom": 19.2.5
 
@@ -32,10 +33,10 @@ allowBuilds:
   vue-demi: false
 
 minimumReleaseAgeExclude:
-  - '@turbo/darwin-64@2.10.12'
-  - '@turbo/darwin-arm64@2.10.12'
-  - '@turbo/linux-64@2.10.12'
-  - '@turbo/linux-arm64@2.10.12'
-  - '@turbo/windows-64@2.10.12'
-  - '@turbo/windows-arm64@2.10.12'
+  - "@turbo/darwin-64@2.10.12"
+  - "@turbo/darwin-arm64@2.10.12"
+  - "@turbo/linux-64@2.10.12"
+  - "@turbo/linux-arm64@2.10.12"
+  - "@turbo/windows-64@2.10.12"
+  - "@turbo/windows-arm64@2.10.12"
   - turbo@2.10.12
