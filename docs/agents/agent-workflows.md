@@ -14,7 +14,7 @@ This opt-in router complements the always-loaded rules in `AGENTS.md`. Use it wh
 | Change database schema | [Repository conventions](../../.github/instructions/conventions.instructions.md) | [Database docs](../database/) | `packages/database/src/schemas/` and generated migration |
 | Add or update a UI component/form | [UI components](../../.github/instructions/shadcn.instructions.md) | [shadcn docs](../shadcn/) | Shared or feature component directory |
 | Add translations or locale behavior | [Internationalization](../../.github/instructions/i18n.instructions.md) | [i18n docs](../i18n/) | `packages/i18n/src/locales/` and calculator routing |
-| Change email templates or delivery | [Architecture](../../.github/instructions/architecture.instructions.md) | [React Email docs](../react-email/) | `packages/email/`; calculator transport wiring stays app-specific |
+| Change email templates or delivery | [Email](../../.github/instructions/email.instructions.md) | [React Email](https://react.email/llms.txt) | `packages/email/`; calculator transport wiring stays app-specific |
 | Change dependencies or Turbo tasks | [Workspace and Turborepo](../../.github/instructions/turborepo-package-management.instructions.md) | Inspect manifests, `pnpm-workspace.yaml`, and `turbo.json` | Owning workspace plus lockfile |
 | Fix or extend questionnaire calculations | [Code standards](../../.github/instructions/code-standards.instructions.md) | [Participation docs](../participate/) | `apps/calculator/src/features/participate/` |
 | Add tests | [Code standards](../../.github/instructions/code-standards.instructions.md) | [Participation testing](../participate/testing.md) or relevant feature docs | Unit/integration or E2E test directory |

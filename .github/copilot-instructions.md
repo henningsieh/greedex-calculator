@@ -149,6 +149,7 @@ The instruction files below live under the repository-root [`.github/instruction
 | `better-auth.instructions.md`                  | Authentication, organizations, sessions, permissions, auth schema | Auth/organization implementation      |
 | `code-standards.instructions.md`               | TypeScript, React, persistence, errors, tests                     | App and package source files          |
 | `conventions.instructions.md`                  | Manifests, configuration, environment, quality workflow           | Repository configuration              |
+| `email.instructions.md`                        | Templates, localization, delivery, and SMTP injection              | Email package and Calculator adapter  |
 | `i18n.instructions.md`                         | Messages, locale routing/navigation, country presentation         | i18n package and localized app routes |
 | `orpc.instructions.md`                         | Procedures, middleware, router, OpenAPI, SSR clients              | oRPC, feature procedures, app routes  |
 | `shadcn.instructions.md`                       | Shared/feature components, forms, accessibility                   | Calculator component files            |
@@ -183,7 +184,7 @@ This repository has one domain context. Before changing domain language, read `d
 | Database schemas and migrations      | `docs/database/` and `packages/database/`                                  |
 | Questionnaire flows and calculations | `docs/participate/`                                                        |
 | Permissions and access control       | `docs/projects/permissions.md`                                             |
-| Email templates and transport        | `docs/react-email/`, `packages/email/`, `apps/calculator/src/lib/email.ts` |
+| Email templates and transport        | `.github/instructions/email.instructions.md`                       |
 | Code standards and tooling           | `.github/instructions/conventions.instructions.md`                         |
 
 ---

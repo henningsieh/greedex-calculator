@@ -399,7 +399,7 @@ Important areas include:
 - `docs/i18n/` — locale and country handling
 - `docs/participate/` — questionnaire and emissions flows
 - `docs/projects/` — permissions and project behavior
-- `docs/react-email/` — templates and transport
+- `.github/instructions/email.instructions.md` — templates and transport
 - `docs/shadcn/` — UI patterns
 - `.github/instructions/conventions.instructions.md` — linting and formatting
 

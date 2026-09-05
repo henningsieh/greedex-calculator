@@ -25,6 +25,7 @@ const retiredDocumentationRoots = [
   path.join("docs", "better-auth"),
   path.join("docs", "clickdummy"),
   path.join("docs", "next"),
+  path.join("docs", "react-email"),
   path.join("docs", "oxc"),
   path.join("docs", "orpc"),
   path.join("docs", "tanstack-react-query"),
@@ -40,6 +41,8 @@ const expectedScopes = {
     "apps/*/src/**/*.ts,apps/*/src/**/*.tsx,apps/*/src/**/*.js,apps/*/src/**/*.jsx,packages/*/src/**/*.ts,packages/*/src/**/*.tsx,packages/*/src/**/*.js,packages/*/src/**/*.jsx,scripts/**/*.js,scripts/**/*.mjs",
   "conventions.instructions.md":
     "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version,.env.example,.oxfmtrc.json,.oxlintrc.json,**/*.config.ts,**/*.config.mjs",
+  "email.instructions.md":
+    "packages/email/src/**/*.ts,packages/email/src/**/*.tsx,apps/calculator/src/lib/email.ts",
   "i18n.instructions.md":
     "packages/i18n/src/**/*.ts,packages/i18n/src/locales/*.json,packages/config/src/languages.ts,apps/calculator/src/lib/i18n/**/*.ts,apps/calculator/src/proxy.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx,apps/calculator/src/app/sitemap.ts",
   "orpc.instructions.md":
@@ -111,11 +114,11 @@ const stalePatterns = [
 
 const retiredPointerPatterns = [
   {
-    pattern: /docs\/(?:better-auth|clickdummy|next|oxc|orpc|tanstack-react-query)(?:\/|\b)/u,
+    pattern: /docs\/(?:better-auth|clickdummy|next|oxc|orpc|react-email|tanstack-react-query)(?:\/|\b)/u,
     message: "replace pointers to retired vendor-documentation roots",
   },
   {
-    pattern: /\]\((?:\.\.\/)*(?:better-auth|clickdummy|next|oxc|orpc|tanstack-react-query)\//u,
+    pattern: /\]\((?:\.\.\/)*(?:better-auth|clickdummy|next|oxc|orpc|react-email|tanstack-react-query)\//u,
     message: "replace relative pointers to retired vendor-documentation roots",
   },
 ];

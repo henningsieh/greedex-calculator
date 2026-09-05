@@ -18,7 +18,7 @@
 - [ ] Internationalization vendor guidance (`docs/i18n/`): next-intl, i18n-iso-countries, and country-flag-icons; preserve Greendex locale and country architecture.
 - [x] Next.js duplicate reference: upstream cache retired in favor of the generated `.next-docs` route.
 - [x] Oxc: upstream linting and formatting cache retired; repository commands remain in conventions.
-- [ ] React Email and Nodemailer (`docs/react-email/`).
+- [x] React Email and Nodemailer: upstream cache retired; template and Calculator transport ownership are scoped.
 - [ ] shadcn/ui (`docs/shadcn/`), including copied component and data-table guidance.
 - [x] Clickdummy prototype: obsolete historical prototype retired; current questionnaire behavior remains owned by the participate documentation and implementation.
 
