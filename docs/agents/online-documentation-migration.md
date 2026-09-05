@@ -13,7 +13,7 @@
 
 ### Open
 
-- [ ] Better Auth (`docs/better-auth/`)
+- [x] Better Auth: upstream cache retired; project rules live in the scoped instruction.
 - [ ] Fumadocs (`docs/fumadocs/`)
 - [ ] Internationalization vendor guidance (`docs/i18n/`): next-intl, i18n-iso-countries, and country-flag-icons; preserve Greendex locale and country architecture.
 - [x] Next.js duplicate reference: upstream cache retired in favor of the generated `.next-docs` route.

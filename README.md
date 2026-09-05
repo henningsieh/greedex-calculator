@@ -394,7 +394,7 @@ Important areas include:
 
 - `.github/instructions/orpc.instructions.md` — Greendex RPC/OpenAPI rules and official v1 routes
 - `.github/instructions/tanstack-react-query.instructions.md` — Greendex Query rules and official v5 routes
-- `docs/better-auth/` — authentication and organizations
+- `.github/instructions/better-auth.instructions.md` — authentication and organizations
 - `docs/database/` — Drizzle/PostgreSQL notes
 - `docs/i18n/` — locale and country handling
 - `docs/participate/` — questionnaire and emissions flows

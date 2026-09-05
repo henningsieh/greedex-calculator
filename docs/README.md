@@ -21,6 +21,7 @@ Vendor API documentation is retrieved from versioned official sources instead of
 | --- | --- | --- |
 | oRPC procedures, clients, SSR, and OpenAPI | [oRPC instruction](../.github/instructions/orpc.instructions.md) | [oRPC v1](https://v1.orpc.dev/llms.txt) |
 | TanStack Query caching, prefetching, and hydration | [TanStack Query instruction](../.github/instructions/tanstack-react-query.instructions.md) | [TanStack Query v5](https://tanstack.com/query/v5/llms.txt) |
+| Better Auth and organizations | [Better Auth instruction](../.github/instructions/better-auth.instructions.md) | [Better Auth v1.7](https://better-auth.com/docs/llms.txt) |
 
 The scoped instructions own Greendex invariants and route each task to the smallest relevant official Markdown page.
 
@@ -34,10 +35,7 @@ The scoped instructions own Greendex invariants and route each task to the small
 
 ### Authentication and authorization
 
-- [Better Auth options](better-auth/better-auth.options.md)
-- [Email/password](better-auth/better-auth.credentials.email_password.md)
-- [Organizations](better-auth/better-auth.organizations.md)
-- [Last login method](better-auth/better-auth.utility.LastLoginMethod.md)
+- [Better Auth project rules](../.github/instructions/better-auth.instructions.md)
 - [Project permissions](projects/permissions.md)
 
 ### Database, locale, and delivery

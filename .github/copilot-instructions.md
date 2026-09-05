@@ -177,7 +177,7 @@ This repository has one domain context. Before changing domain language, read `d
 | ------------------------------------ | -------------------------------------------------------------------------- |
 | API endpoints and procedures         | `.github/instructions/orpc.instructions.md` → <https://v1.orpc.dev/llms.txt> |
 | Query caching, prefetch, and hydration | `.github/instructions/tanstack-react-query.instructions.md` → <https://tanstack.com/query/v5/llms.txt> |
-| Authentication and organizations     | `docs/better-auth/`                                                        |
+| Authentication and organizations     | `.github/instructions/better-auth.instructions.md`                         |
 | UI components and forms              | `docs/shadcn/`                                                             |
 | Internationalization                 | `docs/i18n/`                                                               |
 | Database schemas and migrations      | `docs/database/` and `packages/database/`                                  |
