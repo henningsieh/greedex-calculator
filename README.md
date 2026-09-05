@@ -413,8 +413,6 @@ current branch/PR state, deployment model, and remaining cleanup decisions.
 - Close or resolve stale PR #11, which targets an old Copilot branch.
 - Remove merged/orphaned dependency branches after review.
 - Decide whether to delete the old `bun-runtime` branch.
-- Replace the remaining executable `bunx` references to make the pnpm-only
-  decision fully consistent.
 - Merge or further review open PR #57 (`migrate-email-to-package`), which
   centralizes transactional email in `@greendex/email`.
 - Make the OpenAPI integration suite select/skip tests correctly when no server

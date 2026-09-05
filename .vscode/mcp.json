@@ -2,8 +2,8 @@
   "servers": {
     "next-devtools-mcp": {
       "type": "stdio",
-      "command": "bunx",
-      "args": ["next-devtools-mcp@latest"]
+      "command": "pnpm",
+      "args": ["dlx", "next-devtools-mcp@latest"]
     }
   },
   "inputs": []
