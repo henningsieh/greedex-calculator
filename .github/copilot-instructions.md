@@ -181,7 +181,7 @@ This repository has one domain context. Before changing domain language, read `d
 | Query caching, prefetch, and hydration | `.github/instructions/tanstack-react-query.instructions.md` → <https://tanstack.com/query/v5/llms.txt> |
 | Authentication and organizations     | `.github/instructions/better-auth.instructions.md`                         |
 | UI components and forms              | `.github/instructions/shadcn.instructions.md`                              |
-| Internationalization                 | `docs/i18n/`                                                               |
+| Internationalization                 | `.github/instructions/i18n.instructions.md`                                |
 | Database schemas and migrations      | `docs/database/` and `packages/database/`                                  |
 | Questionnaire flows and calculations | `docs/participate/`                                                        |
 | Permissions and access control       | `docs/projects/permissions.md`                                             |

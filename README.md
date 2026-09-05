@@ -396,7 +396,7 @@ Important areas include:
 - `.github/instructions/tanstack-react-query.instructions.md` — Greendex Query rules and official v5 routes
 - `.github/instructions/better-auth.instructions.md` — authentication and organizations
 - `docs/database/` — Drizzle/PostgreSQL notes
-- `docs/i18n/` — locale and country handling
+- `.github/instructions/i18n.instructions.md` — locale and country handling
 - `docs/participate/` — questionnaire and emissions flows
 - `docs/projects/` — permissions and project behavior
 - `.github/instructions/email.instructions.md` — templates and transport

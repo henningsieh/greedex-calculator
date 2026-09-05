@@ -45,8 +45,7 @@ The scoped instructions own Greendex invariants and route each task to the small
 
 - [Database documentation](database/README.md)
 - [Coolify SSL connection](database/coolify-ssl-connection.md)
-- [Internationalization](i18n/next-intl.internationalization.md)
-- [Country flag data](i18n/Dynamic-Country_Flag-Data.md)
+- [Internationalization project rules](../.github/instructions/i18n.instructions.md)
 - [Email project rules](../.github/instructions/email.instructions.md)
 
 ### Features and UI
