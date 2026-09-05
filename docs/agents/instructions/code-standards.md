@@ -19,7 +19,7 @@ Oxfmt and Oxlint enforce mechanical style. This file records decisions tooling c
 
 ## Imports and environment
 
-- Let Oxfmt sort imports. Preserve side-effect imports and the oRPC initialization invariant described in `.github/instructions/architecture.instructions.md`.
+- Let Oxfmt sort imports. Preserve side-effect imports and the oRPC initialization invariant described in `docs/agents/instructions/architecture.md`.
 - Use `@/` for calculator app imports rather than relative parent traversal.
 - Read runtime configuration through `apps/calculator/src/env.ts`. Source files must not access `process.env` directly except `apps/calculator/src/env.ts` and `apps/calculator/src/instrumentation.ts`.
 - Keep modules ESM.
@@ -65,5 +65,5 @@ Document reasons and invariants that are not obvious from configuration. Avoid c
 References:
 
 - [Official Oxc index](https://oxc.rs/llms.txt)
-- [`docs/participate/testing.md`](../../docs/participate/testing.md)
-- [Architecture instructions](architecture.instructions.md)
+- [`docs/participate/testing.md`](../../participate/testing.md)
+- [Architecture instructions](architecture.md)

@@ -47,4 +47,4 @@ Review generated dependencies and code before retaining them.
 - Preserve focus management supplied by Radix primitives.
 - Verify loading, empty, error, disabled, and narrow-screen states.
 
-Local component source and `components.json` override upstream examples. [Code standards](code-standards.instructions.md) remain applicable.
+Local component source and `components.json` override upstream examples. [Code standards](code-standards.md) remain applicable.

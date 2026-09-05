@@ -18,12 +18,12 @@ Vendor API documentation is retrieved from versioned official sources instead of
 
 | Concern | Project rules | Official index |
 | --- | --- | --- |
-| oRPC procedures, clients, SSR, and OpenAPI | [oRPC instruction](../.github/instructions/orpc.instructions.md) | [oRPC v1](https://v1.orpc.dev/llms.txt) |
-| TanStack Query caching, prefetching, and hydration | [TanStack Query instruction](../.github/instructions/tanstack-react-query.instructions.md) | [TanStack Query v5](https://tanstack.com/query/v5/llms.txt) |
-| Better Auth and organizations | [Better Auth instruction](../.github/instructions/better-auth.instructions.md) | [Better Auth v1.7](https://better-auth.com/docs/llms.txt) |
-| Oxc linting and formatting | [Repository conventions](../.github/instructions/conventions.instructions.md) | [Oxc](https://oxc.rs/llms.txt) |
-| React Email templates and Nodemailer transport | [Email instruction](../.github/instructions/email.instructions.md) | [React Email](https://react.email/llms.txt) |
-| Documentation application | [Documentation app instruction](../.github/instructions/documentation-app.instructions.md) | [Fumadocs](https://fumadocs.vercel.app/llms.txt) |
+| oRPC procedures, clients, SSR, and OpenAPI | [oRPC instruction](agents/instructions/orpc.md) | [oRPC v1](https://v1.orpc.dev/llms.txt) |
+| TanStack Query caching, prefetching, and hydration | [TanStack Query instruction](agents/instructions/tanstack-query.md) | [TanStack Query v5](https://tanstack.com/query/v5/llms.txt) |
+| Better Auth and organizations | [Better Auth instruction](agents/instructions/better-auth.md) | [Better Auth v1.7](https://better-auth.com/docs/llms.txt) |
+| Oxc linting and formatting | [Repository conventions](agents/instructions/conventions.md) | [Oxc](https://oxc.rs/llms.txt) |
+| React Email templates and Nodemailer transport | [Email instruction](agents/instructions/email.md) | [React Email](https://react.email/llms.txt) |
+| Documentation application | [Documentation app instruction](agents/instructions/documentation-app.md) | [Fumadocs](https://fumadocs.vercel.app/llms.txt) |
 
 The scoped instructions own Greendex invariants and route each task to the smallest relevant official Markdown page.
 
@@ -37,15 +37,15 @@ The scoped instructions own Greendex invariants and route each task to the small
 
 ### Authentication and authorization
 
-- [Better Auth project rules](../.github/instructions/better-auth.instructions.md)
+- [Better Auth project rules](agents/instructions/better-auth.md)
 - [Project permissions](projects/permissions.md)
 
 ### Database, locale, and delivery
 
 - [Database documentation](database/README.md)
 - [Coolify SSL connection](database/coolify-ssl-connection.md)
-- [Internationalization project rules](../.github/instructions/i18n.instructions.md)
-- [Email project rules](../.github/instructions/email.instructions.md)
+- [Internationalization project rules](agents/instructions/i18n.md)
+- [Email project rules](agents/instructions/email.md)
 
 ### Features and UI
 
@@ -54,8 +54,8 @@ The scoped instructions own Greendex invariants and route each task to the small
 - [Conditional logic](participate/conditional-logic.md)
 - [Participation testing](participate/testing.md)
 - [Projects](projects/README.md)
-- [shadcn project rules](../.github/instructions/shadcn.instructions.md)
+- [shadcn project rules](agents/instructions/shadcn.md)
 
 ### Tooling
 
-- [Oxc project rules](../.github/instructions/conventions.instructions.md)
+- [Oxc project rules](agents/instructions/conventions.md)

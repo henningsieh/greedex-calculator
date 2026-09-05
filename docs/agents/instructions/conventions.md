@@ -15,7 +15,7 @@ Use this instruction for manifests, configuration, scripts, environment setup, a
 - Commit `pnpm-lock.yaml` whenever dependency resolution changes.
 - Workspace modules use ESM. Follow each package's `type` field and use `import`/`export`.
 
-Read `.github/instructions/turborepo-package-management.instructions.md` before modifying dependencies, package manifests, `pnpm-workspace.yaml`, or `turbo.json`.
+Read `docs/agents/instructions/workspace.md` before modifying dependencies, package manifests, `pnpm-workspace.yaml`, or `turbo.json`.
 
 ## Environment
 

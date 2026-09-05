@@ -6,7 +6,7 @@ applyTo: "apps/*/src/**/*.ts,apps/*/src/**/*.tsx,packages/*/src/**/*.ts,packages
 
 # Architecture
 
-Use this instruction when placing code, crossing workspace boundaries, or changing server/client data flow. Read [`docs/README.md`](../../docs/README.md) and the topic-specific documentation before changing an integration.
+Use this instruction when placing code, crossing workspace boundaries, or changing server/client data flow. Read [`docs/README.md`](../../README.md) and the topic-specific documentation before changing an integration.
 
 ## Workspace boundaries
 
@@ -40,7 +40,7 @@ Preserve both initialization paths and their effective evaluation order:
 1. `apps/calculator/src/instrumentation.ts` dynamically imports `@/lib/orpc/client.server` in the Node.js runtime.
 2. `apps/calculator/src/app/[locale]/layout.tsx` side-effect-imports `@/lib/orpc/client.server` before local SSR consumers.
 
-The [oRPC instruction](orpc.instructions.md) owns the full project invariant. Read it and the [official v1 SSR guide](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md) before editing this seam, then validate with `apps/calculator/src/__tests__/e2e/project-routing.spec.ts`.
+The [oRPC instruction](orpc.md) owns the full project invariant. Read it and the [official v1 SSR guide](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md) before editing this seam, then validate with `apps/calculator/src/__tests__/e2e/project-routing.spec.ts`.
 
 ## Server and client data flow
 

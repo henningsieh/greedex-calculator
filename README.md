@@ -100,7 +100,7 @@ side-effect-import `@/lib/orpc/client.server`, alongside the import in
 back to the browser-only RPC link and existing project pages render as
 spurious Next.js 404s — a regression diagnosed and fixed in August 2026. Do
 not reorder these initialization imports. See `AGENTS.md`, the
-[oRPC scoped instruction](.github/instructions/orpc.instructions.md), and the
+[oRPC scoped instruction](docs/agents/instructions/orpc.md), and the
 [official oRPC v1 SSR guide](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md)
 before changing this area.
 
@@ -255,7 +255,7 @@ settings.
 Server Components call the server-side oRPC client directly; browser consumers
 use the JSON-over-HTTP client and TanStack Query. See the
 [implementation map](apps/calculator/src/lib/orpc/README.md),
-[oRPC project rules](.github/instructions/orpc.instructions.md), and
+[oRPC project rules](docs/agents/instructions/orpc.md), and
 [official oRPC v1 index](https://v1.orpc.dev/llms.txt).
 
 ### Authentication and authorization
@@ -392,16 +392,16 @@ index. Agents can use [`docs/agents/agent-workflows.md`](docs/agents/agent-workf
 route cross-cutting tasks to the required scoped instructions and topic docs.
 Important areas include:
 
-- `.github/instructions/orpc.instructions.md` — Greendex RPC/OpenAPI rules and official v1 routes
-- `.github/instructions/tanstack-react-query.instructions.md` — Greendex Query rules and official v5 routes
-- `.github/instructions/better-auth.instructions.md` — authentication and organizations
+- `docs/agents/instructions/orpc.md` — Greendex RPC/OpenAPI rules and official v1 routes
+- `docs/agents/instructions/tanstack-query.md` — Greendex Query rules and official v5 routes
+- `docs/agents/instructions/better-auth.md` — authentication and organizations
 - `docs/database/` — Drizzle/PostgreSQL notes
-- `.github/instructions/i18n.instructions.md` — locale and country handling
+- `docs/agents/instructions/i18n.md` — locale and country handling
 - `docs/participate/` — questionnaire and emissions flows
 - `docs/projects/` — permissions and project behavior
-- `.github/instructions/email.instructions.md` — templates and transport
-- `.github/instructions/shadcn.instructions.md` — UI patterns
-- `.github/instructions/conventions.instructions.md` — linting and formatting
+- `docs/agents/instructions/email.md` — templates and transport
+- `docs/agents/instructions/shadcn.md` — UI patterns
+- `docs/agents/instructions/conventions.md` — linting and formatting
 
 `PROJECT_STATE_REPORT.md` contains the detailed August 20–23 commit ledger,
 current branch/PR state, deployment model, and remaining cleanup decisions.

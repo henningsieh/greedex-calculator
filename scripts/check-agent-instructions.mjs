@@ -1,10 +1,10 @@
-import { lstat, readFile, readdir, readlink, stat } from "node:fs/promises";
+import { lstat, readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const instructionDirectory = path.join(root, ".github", "instructions");
-const routerPath = path.join(root, ".github", "copilot-instructions.md");
+const instructionDirectory = path.join(root, "docs", "agents", "instructions");
+const routerPath = path.join(root, "AGENTS.md");
 const workflowPath = path.join(root, "docs", "agents", "agent-workflows.md");
 const legacyWorkflowPath = path.join(root, "docs", "agent-workflows.md");
 const referenceFiles = [
@@ -13,43 +13,44 @@ const referenceFiles = [
   workflowPath,
   path.join(root, "apps", "calculator", "src", "lib", "orpc", "README.md"),
   path.join(root, "docs", "projects", "README.md"),
+  path.join(root, "docs", "database", "README.md"),
 ];
 const retiredDocumentationRoots = [
-  path.join("docs", "better-auth"),
-  path.join("docs", "clickdummy"),
-  path.join("docs", "fumadocs"),
-  path.join("docs", "i18n"),
-  path.join("docs", "next"),
-  path.join("docs", "react-email"),
-  path.join("docs", "shadcn"),
-  path.join("docs", "oxc"),
-  path.join("docs", "orpc"),
-  path.join("docs", "tanstack-react-query"),
-];
+  "better-auth",
+  "clickdummy",
+  "fumadocs",
+  "i18n",
+  "next",
+  "oxc",
+  "orpc",
+  "react-email",
+  "shadcn",
+  "tanstack-react-query",
+].map((directory) => path.join("docs", directory));
 const errors = [];
 
 const expectedScopes = {
-  "architecture.instructions.md":
+  "architecture.md":
     "apps/*/src/**/*.ts,apps/*/src/**/*.tsx,packages/*/src/**/*.ts,packages/*/src/**/*.tsx",
-  "better-auth.instructions.md":
+  "better-auth.md":
     "apps/calculator/src/lib/better-auth/**/*.ts,apps/calculator/src/features/authentication/**/*.ts,apps/calculator/src/features/authentication/**/*.tsx,apps/calculator/src/features/organizations/**/*.ts,apps/calculator/src/features/organizations/**/*.tsx,apps/calculator/src/features/projects/permissions.ts,apps/calculator/src/lib/orpc/middleware.ts,apps/calculator/src/lib/orpc/procedures.ts,apps/calculator/src/app/api/auth/**/*.ts,packages/database/src/schemas/auth-schema.ts",
-  "code-standards.instructions.md":
+  "code-standards.md":
     "apps/*/src/**/*.ts,apps/*/src/**/*.tsx,apps/*/src/**/*.js,apps/*/src/**/*.jsx,packages/*/src/**/*.ts,packages/*/src/**/*.tsx,packages/*/src/**/*.js,packages/*/src/**/*.jsx,scripts/**/*.js,scripts/**/*.mjs",
-  "conventions.instructions.md":
+  "conventions.md":
     "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version,.env.example,.oxfmtrc.json,.oxlintrc.json,**/*.config.ts,**/*.config.mjs",
-  "documentation-app.instructions.md":
+  "documentation-app.md":
     "apps/documentation/src/**/*.ts,apps/documentation/src/**/*.tsx,apps/documentation/source.config.ts",
-  "email.instructions.md":
+  "email.md":
     "packages/email/src/**/*.ts,packages/email/src/**/*.tsx,apps/calculator/src/lib/email.ts",
-  "i18n.instructions.md":
+  "i18n.md":
     "packages/i18n/src/**/*.ts,packages/i18n/src/locales/*.json,packages/config/src/languages.ts,apps/calculator/src/lib/i18n/**/*.ts,apps/calculator/src/proxy.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx,apps/calculator/src/app/sitemap.ts",
-  "orpc.instructions.md":
+  "orpc.md":
     "apps/calculator/src/lib/orpc/**/*.ts,apps/calculator/src/app/api/rpc/**/*.ts,apps/calculator/src/app/api/openapi/**/*.ts,apps/calculator/src/features/**/procedures.ts,apps/calculator/src/features/**/validation-schemas.ts,apps/calculator/src/instrumentation.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx",
-  "tanstack-react-query.instructions.md":
-    "apps/calculator/src/lib/tanstack-react-query/**/*.ts,apps/calculator/src/lib/tanstack-react-query/**/*.tsx,apps/calculator/src/components/providers/query-provider.tsx,apps/calculator/src/lib/orpc/orpc.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx,apps/calculator/src/features/**/components/**/*.ts,apps/calculator/src/features/**/components/**/*.tsx,apps/calculator/src/features/**/hooks/**/*.ts,apps/calculator/src/features/**/hooks/**/*.tsx",
-  "shadcn.instructions.md":
+  "shadcn.md":
     "apps/calculator/src/components/**/*.ts,apps/calculator/src/components/**/*.tsx,apps/calculator/src/features/**/components/**/*.ts,apps/calculator/src/features/**/components/**/*.tsx",
-  "turborepo-package-management.instructions.md":
+  "tanstack-query.md":
+    "apps/calculator/src/lib/tanstack-react-query/**/*.ts,apps/calculator/src/lib/tanstack-react-query/**/*.tsx,apps/calculator/src/components/providers/query-provider.tsx,apps/calculator/src/lib/orpc/orpc.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx,apps/calculator/src/features/**/components/**/*.ts,apps/calculator/src/features/**/components/**/*.tsx,apps/calculator/src/features/**/hooks/**/*.ts,apps/calculator/src/features/**/hooks/**/*.tsx",
+  "workspace.md":
     "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version",
 };
 
@@ -74,6 +75,7 @@ const requiredRepositoryPaths = [
   "apps/calculator/src/lib/orpc/orpc.ts",
   "apps/calculator/src/lib/orpc/router.ts",
   "docs/agents/agent-workflows.md",
+  "docs/agents/instructions",
   "packages/config/src/languages.ts",
   "packages/database/src/schemas/auth-schema.ts",
   "packages/email/src/templates",
@@ -87,6 +89,10 @@ const stalePatterns = [
   { pattern: /\bbunx\b/iu, message: "replace stale bunx guidance with pnpm" },
   { pattern: /\bpnpmx\b/iu, message: "replace the invalid pnpmx command" },
   { pattern: /pnpm\.lockb/iu, message: "use pnpm-lock.yaml" },
+  {
+    pattern: /\.github\/(?:copilot-instructions\.md|instructions|prompts)(?:\/|\b)/u,
+    message: "replace pointers to retired GitHub Copilot agent guidance",
+  },
   {
     pattern: /`src\/lib\/drizzle(?:\/|`)/u,
     message: "use packages/database paths",
@@ -111,19 +117,18 @@ const stalePatterns = [
 
 const retiredPointerPatterns = [
   {
-    pattern: /docs\/(?:better-auth|clickdummy|fumadocs|i18n|next|oxc|orpc|react-email|shadcn|tanstack-react-query)(?:\/|\b)/u,
+    pattern:
+      /docs\/(?:better-auth|clickdummy|fumadocs|i18n|next|oxc|orpc|react-email|shadcn|tanstack-react-query)(?:\/|\b)/u,
     message: "replace pointers to retired vendor-documentation roots",
   },
   {
-    pattern: /\]\((?:\.\.\/)*(?:better-auth|clickdummy|fumadocs|i18n|next|oxc|orpc|react-email|shadcn|tanstack-react-query)\//u,
+    pattern:
+      /\]\((?:\.\.\/)*(?:better-auth|clickdummy|fumadocs|i18n|next|oxc|orpc|react-email|shadcn|tanstack-react-query)\//u,
     message: "replace relative pointers to retired vendor-documentation roots",
   },
 ];
 
-const addError = (message) => {
-  errors.push(message);
-};
-
+const addError = (message) => errors.push(message);
 const readUtf8 = async (filePath) => readFile(filePath, "utf8");
 
 const pathExists = async (targetPath) => {
@@ -136,20 +141,14 @@ const pathExists = async (targetPath) => {
 };
 
 const findFiles = async (directoryPath) => {
-  if (!(await pathExists(directoryPath))) {
-    return [];
-  }
+  if (!(await pathExists(directoryPath))) return [];
 
   const files = [];
   for (const entry of await readdir(directoryPath, { withFileTypes: true })) {
     const entryPath = path.join(directoryPath, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...(await findFiles(entryPath)));
-    } else {
-      files.push(entryPath);
-    }
+    if (entry.isDirectory()) files.push(...(await findFiles(entryPath)));
+    else files.push(entryPath);
   }
-
   return files;
 };
 
@@ -163,18 +162,13 @@ const parseFrontmatter = (content, fileName) => {
   const values = {};
   for (const line of match[1].split("\n")) {
     const separator = line.indexOf(":");
-    if (separator === -1) {
-      continue;
-    }
-
+    if (separator === -1) continue;
     const key = line.slice(0, separator).trim();
-    const value = line
+    values[key] = line
       .slice(separator + 1)
       .trim()
       .replace(/^(["'])(.*)\1$/u, "$2");
-    values[key] = value;
   }
-
   return values;
 };
 
@@ -198,9 +192,7 @@ const validateMarkdownLinks = async (
       continue;
     }
 
-    const withoutAnchor = rawTarget.split("#", 1)[0];
-    const decodedTarget = decodeURIComponent(withoutAnchor);
-    // Resolve root-relative Markdown URLs against the repository root.
+    const decodedTarget = decodeURIComponent(rawTarget.split("#", 1)[0]);
     const absoluteTarget = decodedTarget.startsWith("/")
       ? path.resolve(root, `.${decodedTarget}`)
       : path.resolve(baseDirectory, decodedTarget);
@@ -216,10 +208,9 @@ const validateMarkdownLinks = async (
 };
 
 const instructionFiles = (await readdir(instructionDirectory))
-  .filter((fileName) => fileName.endsWith(".instructions.md"))
+  .filter((fileName) => fileName.endsWith(".md"))
   .sort();
 const expectedFiles = Object.keys(expectedScopes).sort();
-
 if (JSON.stringify(instructionFiles) !== JSON.stringify(expectedFiles)) {
   addError(
     `instruction inventory mismatch\n  expected: ${expectedFiles.join(", ")}\n  actual:   ${instructionFiles.join(", ")}`,
@@ -238,6 +229,16 @@ if (await pathExists(legacyWorkflowPath)) {
   );
 }
 
+for (const retiredPath of [
+  ".github/copilot-instructions.md",
+  ".github/instructions",
+  ".github/prompts",
+]) {
+  if (await pathExists(path.join(root, retiredPath))) {
+    addError(`${retiredPath}: retired agent-guidance path still exists`);
+  }
+}
+
 for (const relativeRoot of retiredDocumentationRoots) {
   const files = await findFiles(path.join(root, relativeRoot));
   if (files.length > 0) {
@@ -253,16 +254,12 @@ const router = await readUtf8(routerPath);
 const indexMatch = router.match(
   /<!-- AGENT-INSTRUCTION-INDEX-START -->([\s\S]*?)<!-- AGENT-INSTRUCTION-INDEX-END -->/u,
 );
-
 if (!indexMatch) {
-  addError("copilot-instructions.md: missing scoped instruction index markers");
+  addError("AGENTS.md: missing scoped instruction index markers");
 } else {
-  const indexedFiles = [
-    ...indexMatch[1].matchAll(/`([^`]+\.instructions\.md)`/gu),
-  ]
+  const indexedFiles = [...indexMatch[1].matchAll(/`([^`]+\.md)`/gu)]
     .map((match) => match[1])
     .sort();
-
   if (JSON.stringify(indexedFiles) !== JSON.stringify(instructionFiles)) {
     addError(
       `scoped instruction index mismatch\n  expected: ${instructionFiles.join(", ")}\n  actual:   ${indexedFiles.join(", ")}`,
@@ -270,20 +267,10 @@ if (!indexMatch) {
   }
 }
 
-const agentPath = path.join(root, "AGENTS.md");
 try {
-  const agentStats = await lstat(agentPath);
-  if (!agentStats.isSymbolicLink()) {
-    addError(
-      "AGENTS.md must remain a symlink to .github/copilot-instructions.md",
-    );
-  } else {
-    const target = await readlink(agentPath);
-    if (target !== ".github/copilot-instructions.md") {
-      addError(
-        `AGENTS.md points to ${JSON.stringify(target)} instead of .github/copilot-instructions.md`,
-      );
-    }
+  const agentStats = await lstat(routerPath);
+  if (!agentStats.isFile() || agentStats.isSymbolicLink()) {
+    addError("AGENTS.md must be a regular tracked file");
   }
 } catch {
   addError("AGENTS.md is missing");
@@ -297,61 +284,50 @@ for (const fileName of instructionFiles) {
 
   const frontmatter = parseFrontmatter(content, fileName);
   for (const requiredKey of ["name", "description", "applyTo"]) {
-    if (!frontmatter[requiredKey]) {
-      addError(`${fileName}: missing ${requiredKey} frontmatter`);
-    }
+    if (!frontmatter[requiredKey]) addError(`${fileName}: missing ${requiredKey} frontmatter`);
   }
-
   if (frontmatter.applyTo !== expectedScopes[fileName]) {
     addError(
       `${fileName}: applyTo drifted\n  expected: ${expectedScopes[fileName]}\n  actual:   ${frontmatter.applyTo ?? "<missing>"}`,
     );
   }
-
   const lineCount = content.split("\n").length;
   if (lineCount > 180) {
-    addError(
-      `${fileName}: ${lineCount} lines exceeds the 180-line instruction budget`,
-    );
+    addError(`${fileName}: ${lineCount} lines exceeds the 180-line instruction budget`);
   }
 }
 
 for (const filePath of scannedFiles) {
   const content = await readUtf8(filePath);
   const relativePath = path.relative(root, filePath);
-
   for (const { pattern, message } of stalePatterns) {
-    if (pattern.test(content)) {
-      addError(`${relativePath}: ${message}`);
-    }
+    if (pattern.test(content)) addError(`${relativePath}: ${message}`);
   }
 }
 
+const agentPointerPattern = {
+  pattern:
+    /\.github\/(?:copilot-instructions\.md|instructions|prompts)(?:\/|\b)/u,
+  message: "replace pointers to retired GitHub Copilot agent guidance",
+};
 const pointerFiles = new Set([...scannedFiles, ...referenceFiles]);
 for (const filePath of pointerFiles) {
   const content = await readUtf8(filePath);
   const relativePath = path.relative(root, filePath);
-
-  for (const { pattern, message } of retiredPointerPatterns) {
-    if (pattern.test(content)) {
-      addError(`${relativePath}: ${message}`);
-    }
+  for (const { pattern, message } of [
+    agentPointerPattern,
+    ...retiredPointerPatterns,
+  ]) {
+    if (pattern.test(content)) addError(`${relativePath}: ${message}`);
   }
-
-  // Agents consume copilot-instructions.md through the root AGENTS.md symlink.
-  // Resolve its links only from that repository-root perspective.
-  const linkBaseDirectory =
-    filePath === routerPath ? root : path.dirname(filePath);
-  await validateMarkdownLinks(filePath, content, linkBaseDirectory);
+  await validateMarkdownLinks(filePath, content);
 }
 
 const instrumentation = await readUtf8(
   path.join(root, "apps/calculator/src/instrumentation.ts"),
 );
 if (!instrumentation.includes('await import("@/lib/orpc/client.server")')) {
-  addError(
-    "calculator instrumentation no longer initializes the server oRPC client",
-  );
+  addError("calculator instrumentation no longer initializes the server oRPC client");
 }
 
 const localeLayout = await readUtf8(
@@ -371,9 +347,7 @@ for (const taskName of ["build", "start"]) {
 
 if (errors.length > 0) {
   console.error("Agent instruction drift detected:\n");
-  for (const error of errors) {
-    console.error(`- ${error}`);
-  }
+  for (const error of errors) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
   console.log(

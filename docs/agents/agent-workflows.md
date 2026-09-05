@@ -6,18 +6,18 @@ This opt-in router complements the always-loaded rules in `AGENTS.md`. Use it wh
 
 | Task | Required instruction | Read next | Primary implementation |
 | --- | --- | --- | --- |
-| Place or split a module | [Architecture](../../.github/instructions/architecture.instructions.md) | [Developer documentation index](../README.md) | `apps/*/src/`, `packages/*/src/` |
-| Add or change an oRPC procedure | [oRPC](../../.github/instructions/orpc.instructions.md) | [oRPC v1 index](https://v1.orpc.dev/llms.txt) | Owning feature `procedures.ts`, then `lib/orpc/router.ts` |
-| Change Query caching, mutations, prefetching, or hydration | [TanStack Query](../../.github/instructions/tanstack-react-query.instructions.md) | [TanStack Query v5 index](https://tanstack.com/query/v5/llms.txt) | Query client/hydration utilities and owning consumer |
-| Change SSR data fetching | [Architecture](../../.github/instructions/architecture.instructions.md), [oRPC](../../.github/instructions/orpc.instructions.md), and [TanStack Query](../../.github/instructions/tanstack-react-query.instructions.md) | [oRPC optimized SSR](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md), [Query advanced SSR](https://tanstack.com/query/v5/docs/framework/react/guides/advanced-ssr.md), and matching `.next-docs` pages | Server page/layout, hydration utilities, oRPC client seam |
-| Change authentication or organizations | [Better Auth](../../.github/instructions/better-auth.instructions.md) | [Better Auth v1.7](https://better-auth.com/docs/llms.txt) and [permissions](../projects/permissions.md) | Calculator Better Auth library and owning feature |
-| Change database schema | [Repository conventions](../../.github/instructions/conventions.instructions.md) | [Database docs](../database/) | `packages/database/src/schemas/` and generated migration |
-| Add or update a UI component/form | [UI components](../../.github/instructions/shadcn.instructions.md) | [shadcn](https://ui.shadcn.com/docs) | Shared or feature component directory |
-| Add translations or locale behavior | [Internationalization](../../.github/instructions/i18n.instructions.md) | [next-intl](https://next-intl.dev/docs) | `packages/i18n/src/locales/` and calculator routing |
-| Change email templates or delivery | [Email](../../.github/instructions/email.instructions.md) | [React Email](https://react.email/llms.txt) | `packages/email/`; calculator transport wiring stays app-specific |
-| Change dependencies or Turbo tasks | [Workspace and Turborepo](../../.github/instructions/turborepo-package-management.instructions.md) | Inspect manifests, `pnpm-workspace.yaml`, and `turbo.json` | Owning workspace plus lockfile |
-| Fix or extend questionnaire calculations | [Code standards](../../.github/instructions/code-standards.instructions.md) | [Participation docs](../participate/) | `apps/calculator/src/features/participate/` |
-| Add tests | [Code standards](../../.github/instructions/code-standards.instructions.md) | [Participation testing](../participate/testing.md) or relevant feature docs | Unit/integration or E2E test directory |
+| Place or split a module | [Architecture](instructions/architecture.md) | [Developer documentation index](../README.md) | `apps/*/src/`, `packages/*/src/` |
+| Add or change an oRPC procedure | [oRPC](instructions/orpc.md) | [oRPC v1 index](https://v1.orpc.dev/llms.txt) | Owning feature `procedures.ts`, then `lib/orpc/router.ts` |
+| Change Query caching, mutations, prefetching, or hydration | [TanStack Query](instructions/tanstack-query.md) | [TanStack Query v5 index](https://tanstack.com/query/v5/llms.txt) | Query client/hydration utilities and owning consumer |
+| Change SSR data fetching | [Architecture](instructions/architecture.md), [oRPC](instructions/orpc.md), and [TanStack Query](instructions/tanstack-query.md) | [oRPC optimized SSR](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md), [Query advanced SSR](https://tanstack.com/query/v5/docs/framework/react/guides/advanced-ssr.md), and matching `.next-docs` pages | Server page/layout, hydration utilities, oRPC client seam |
+| Change authentication or organizations | [Better Auth](instructions/better-auth.md) | [Better Auth v1.7](https://better-auth.com/docs/llms.txt) and [permissions](../projects/permissions.md) | Calculator Better Auth library and owning feature |
+| Change database schema | [Repository conventions](instructions/conventions.md) | [Database docs](../database/) | `packages/database/src/schemas/` and generated migration |
+| Add or update a UI component/form | [UI components](instructions/shadcn.md) | [shadcn](https://ui.shadcn.com/docs) | Shared or feature component directory |
+| Add translations or locale behavior | [Internationalization](instructions/i18n.md) | [next-intl](https://next-intl.dev/docs) | `packages/i18n/src/locales/` and calculator routing |
+| Change email templates or delivery | [Email](instructions/email.md) | [React Email](https://react.email/llms.txt) | `packages/email/`; calculator transport wiring stays app-specific |
+| Change dependencies or Turbo tasks | [Workspace and Turborepo](instructions/workspace.md) | Inspect manifests, `pnpm-workspace.yaml`, and `turbo.json` | Owning workspace plus lockfile |
+| Fix or extend questionnaire calculations | [Code standards](instructions/code-standards.md) | [Participation docs](../participate/) | `apps/calculator/src/features/participate/` |
+| Add tests | [Code standards](instructions/code-standards.md) | [Participation testing](../participate/testing.md) or relevant feature docs | Unit/integration or E2E test directory |
 
 ## Cross-cutting sequence
 

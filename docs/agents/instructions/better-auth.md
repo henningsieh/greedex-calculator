@@ -22,4 +22,4 @@ applyTo: "apps/calculator/src/lib/better-auth/**/*.ts,apps/calculator/src/featur
 
 Update the auth configuration, run `pnpm --filter @greendex/calculator auth:generate`, inspect `packages/database/src/schemas/auth-schema.ts`, generate and inspect the Drizzle migration, and update integration tests. A new database needs migrations before auth testing; OAuth initiation writes to `verification` before provider redirect.
 
-[Project permissions](../../docs/projects/permissions.md) remain the authority for permission semantics.
+[Project permissions](../../projects/permissions.md) remain the authority for permission semantics.

@@ -40,7 +40,7 @@ For every Query change:
 - Client components consume matching generated query options and use generated mutation options when available.
 - Invalidate with oRPC-generated query keys or options rather than reconstructing keys independently.
 - Keep server-prefetched data and client-owned revalidation under one ownership model so rendered values cannot diverge.
-- Follow [oRPC project rules](orpc.instructions.md) when changing generated utilities, server clients, or procedure consumers.
+- Follow [oRPC project rules](orpc.md) when changing generated utilities, server clients, or procedure consumers.
 
 ## Official v5 entry points
 

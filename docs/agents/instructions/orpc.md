@@ -50,7 +50,7 @@ The direct router client must exist before `apps/calculator/src/lib/orpc/orpc.ts
 4. Constrain tenant-owned persistence by `context.session.activeOrganizationId`.
 5. Throw errors from the typed error map and test procedure and consumer behavior.
 6. Server Components call `orpc` directly or prefetch `orpcQuery.*.queryOptions()` into the request QueryClient.
-7. Client Components use `orpcQuery` with TanStack Query; follow [TanStack Query project rules](tanstack-react-query.instructions.md).
+7. Client Components use `orpcQuery` with TanStack Query; follow [TanStack Query project rules](tanstack-query.md).
 8. Hydrate prefetched data before suspense consumers render, and handle typed navigation errors explicitly.
 9. Use `projects.getForParticipation` for public participation reads; keep internal project reads authenticated and organization-scoped.
 

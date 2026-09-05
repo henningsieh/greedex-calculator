@@ -35,5 +35,5 @@ Greendex exposes one router through two protocol surfaces and two documentation 
 
 ## Further guidance
 
-- [Greendex oRPC rules](../../../../../.github/instructions/orpc.instructions.md)
+- [Greendex oRPC rules](../../../../../docs/agents/instructions/orpc.md)
 - [Official oRPC v1 documentation index](https://v1.orpc.dev/llms.txt)

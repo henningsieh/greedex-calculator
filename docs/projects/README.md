@@ -26,6 +26,6 @@ Use these documents when changing project-list sorting or authorization.
 ## External references
 
 - [TanStack Table React V9 migration guide](https://tanstack.com/table/v9/docs/framework/react/guide/migrating.md)
-- [Greendex oRPC rules](../../.github/instructions/orpc.instructions.md) and [official oRPC v1 documentation](https://v1.orpc.dev/llms.txt)
-- [UI component rules](../../.github/instructions/shadcn.instructions.md)
-- [Internationalization rules](../../.github/instructions/i18n.instructions.md)
+- [Greendex oRPC rules](../agents/instructions/orpc.md) and [official oRPC v1 documentation](https://v1.orpc.dev/llms.txt)
+- [UI component rules](../agents/instructions/shadcn.md)
+- [Internationalization rules](../agents/instructions/i18n.md)
