@@ -11,10 +11,12 @@ applyTo: "apps/calculator/src/lib/orpc/**/*.ts,apps/calculator/src/app/api/rpc/*
 For every oRPC change:
 
 1. Confirm the installed `@orpc/*` major in `apps/calculator/package.json` and `pnpm-lock.yaml`.
-2. Route through the [oRPC v1 index](https://v1.orpc.dev/llms.txt).
+2. Use the [oRPC product index](https://orpc.dev/llms.txt) for discovery and the [oRPC v1 index](https://v1.orpc.dev/llms.txt) for installed-major guidance. Begin with the direct [v1 getting-started page](https://v1.orpc.dev/docs/getting-started.md) when orienting to the API.
 3. Fetch only the Markdown pages for the active branch.
 4. Compare examples with Greendex source and installed declarations; source and installed types win.
 5. Finish when every changed oRPC concern has an authoritative source.
+
+No official oRPC project skill is adopted. Use the versioned official pages and installed declarations. The [integration registry](../integrations.md#orpc) is only the aggregate navigation surface.
 
 ## Project sources of truth
 

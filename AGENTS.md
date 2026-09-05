@@ -134,7 +134,8 @@ The live database has SSL disabled because Coolify’s generated SSL mount was i
 
 1. Start at [`docs/README.md`](docs/README.md) for project documentation.
 2. For an unfamiliar or cross-cutting task, use [`docs/agents/agent-workflows.md`](docs/agents/agent-workflows.md).
-3. Before editing a matching concern, read every scoped instruction below. Its `applyTo` value is a machine-readable scope; this table is the agent router.
+3. For vendor APIs, use [`docs/agents/integrations.md`](docs/agents/integrations.md). Confirm the installed version before following an online example.
+4. Before editing a matching concern, read every scoped instruction below. Its `applyTo` value is a machine-readable scope; this table is the agent router.
 
 ### Scoped instruction index
 
@@ -148,12 +149,15 @@ The instruction files below live under [`docs/agents/instructions/`](docs/agents
 | `better-auth.md` | Authentication, organizations, sessions, permissions, auth schema | Auth/organization implementation |
 | `code-standards.md` | TypeScript, React, persistence, errors, tests | App and package source files |
 | `conventions.md` | Manifests, configuration, environment, quality workflow | Repository configuration |
+| `coolify.md` | Deployment resources, environment values, managed databases | Deployment configuration and operational documentation |
 | `documentation-app.md` | Fumadocs application ownership and integration | Documentation application source |
+| `drizzle.md` | Schemas, migrations, and Drizzle ORM/Kit usage | Database source and auth schema generation |
 | `email.md` | Templates, localization, delivery, and SMTP injection | Email package and Calculator adapter |
 | `i18n.md` | Messages, locale routing/navigation, country presentation | i18n package and localized app routes |
 | `orpc.md` | Procedures, middleware, router, OpenAPI, SSR clients | oRPC, feature procedures, app routes |
 | `shadcn.md` | Shared/feature components, forms, accessibility | Calculator component files |
 | `tanstack-query.md` | Query caching, options, mutations, prefetching, SSR, hydration | Query integration surfaces |
+| `tanstack-table.md` | Table v9 features, state, columns, and table tests | Feature tables and table tests |
 | `workspace.md` | Dependencies, catalog, workspace packages, Turbo tasks/env | Manifests, workspace and Turbo config |
 
 <!-- AGENT-INSTRUCTION-INDEX-END -->
@@ -176,12 +180,15 @@ This repository has one domain context. Before changing domain language, read `d
 
 | Task | Read |
 | --- | --- |
+| Vendor APIs and installed skills | [Integration reference routes](docs/agents/integrations.md) |
 | API endpoints and procedures | [oRPC instruction](docs/agents/instructions/orpc.md) |
 | Query caching, prefetching, and hydration | [TanStack Query instruction](docs/agents/instructions/tanstack-query.md) |
+| Data tables | [TanStack Table instruction](docs/agents/instructions/tanstack-table.md) |
 | Authentication and organizations | [Better Auth instruction](docs/agents/instructions/better-auth.md) |
 | UI components and forms | [shadcn instruction](docs/agents/instructions/shadcn.md) |
 | Internationalization | [Internationalization instruction](docs/agents/instructions/i18n.md) |
-| Database schemas and migrations | `docs/database/` and `packages/database/` |
+| Database schemas and migrations | [Drizzle instruction](docs/agents/instructions/drizzle.md) and `packages/database/` |
+| Deployment and managed resources | [Coolify instruction](docs/agents/instructions/coolify.md) |
 | Questionnaire flows and calculations | `docs/participate/` |
 | Permissions and access control | `docs/projects/permissions.md` |
 | Email templates and transport | [Email instruction](docs/agents/instructions/email.md) |

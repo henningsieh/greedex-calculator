@@ -4,7 +4,8 @@ Use these documents when changing database schemas, migrations, or the connectio
 
 ## Documents
 
-- [Coolify SSL connection](./coolify-ssl-connection.md) — configuring `sslmode=require` for PostgreSQL databases hosted on Coolify.
+- [Coolify database connections](./coolify-ssl-connection.md) — private-network connection boundary for the deployed database.
+- [Drizzle map](../agents/instructions/drizzle.md) — official lookup route and schema/migration workflow.
 
 ## Source of truth
 
@@ -32,4 +33,4 @@ Better Auth schema generation uses the calculator's `auth:generate` script and w
 
 ## Connection
 
-The client reads `DATABASE_URL` from the environment and creates a `pg` connection pool lazily on first query. See [Coolify SSL connection](./coolify-ssl-connection.md) for the required `sslmode`/`uselibpqcompat` parameters when connecting to Coolify-hosted PostgreSQL.
+The client reads `DATABASE_URL` from the environment and creates a `pg` connection pool lazily on first query. See [Coolify database connections](./coolify-ssl-connection.md) for the current platform boundary; retrieve resource-specific settings from Coolify rather than preserving a connection-string recipe in the repository.

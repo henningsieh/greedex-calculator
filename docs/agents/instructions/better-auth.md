@@ -6,9 +6,12 @@ applyTo: "apps/calculator/src/lib/better-auth/**/*.ts,apps/calculator/src/featur
 
 # Better Auth
 
-1. Confirm the installed `better-auth` 1.7 major in `pnpm-workspace.yaml`.
-2. Read the [official v1.7 index](https://better-auth.com/docs/llms.txt), then fetch only the relevant official page.
-3. Compare examples with installed declarations and Greendex source. The official `better-auth-best-practices` skill, listed by `npx skills list`, is supplementary workflow guidance.
+## Official documentation and skill
+
+1. Confirm the installed `better-auth` 1.7 major in `pnpm-workspace.yaml` and `pnpm-lock.yaml`.
+2. Start with the official [Better Auth `llms.txt` index](https://better-auth.com/llms.txt), then use the [documentation index](https://better-auth.com/docs/llms.txt) to select the relevant page.
+3. Fetch only pages compatible with the installed major and compare them with installed declarations and Greendex source.
+4. Use the official `better-auth-best-practices` skill, listed by `npx skills list`, as supplementary workflow guidance.
 
 ## Greendex rules
 

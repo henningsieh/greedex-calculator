@@ -15,7 +15,7 @@ Use this instruction for manifests, configuration, scripts, environment setup, a
 - Commit `pnpm-lock.yaml` whenever dependency resolution changes.
 - Workspace modules use ESM. Follow each package's `type` field and use `import`/`export`.
 
-Read `docs/agents/instructions/workspace.md` before modifying dependencies, package manifests, `pnpm-workspace.yaml`, or `turbo.json`.
+Read [workspace instructions](workspace.md) before modifying dependencies, package manifests, `pnpm-workspace.yaml`, or `turbo.json`.
 
 ## Environment
 
@@ -24,7 +24,9 @@ Read `docs/agents/instructions/workspace.md` before modifying dependencies, pack
 - Keep secrets in local or platform-managed configuration; commit only documented placeholders.
 - Turbo's `build` and `start` tasks require `"env": ["*"]` so injected variables reach workspace processes.
 
-## Quality commands
+## Oxc documentation and quality commands
+
+For Oxlint or Oxfmt behavior, start with the official [Oxc `llms.txt` index](https://oxc.rs/llms.txt), fetch only the relevant tool page, and compare it with `.oxlintrc.json`, `.oxfmtrc.json`, and the installed versions. Oxc migration-only skills are not routine linting or formatting guidance.
 
 Run commands from the repository root unless a task requires an explicit workspace:
 

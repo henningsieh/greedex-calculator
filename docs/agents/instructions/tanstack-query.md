@@ -11,10 +11,12 @@ applyTo: "apps/calculator/src/lib/tanstack-react-query/**/*.ts,apps/calculator/s
 For every Query change:
 
 1. Confirm the installed `@tanstack/react-query` major in `apps/calculator/package.json` and `pnpm-lock.yaml`.
-2. Route through the [TanStack Query v5 index](https://tanstack.com/query/v5/llms.txt); use the [product index](https://tanstack.com/llms.txt) only for discovery.
+2. Use the requested [TanStack Query latest index](https://tanstack.com/query/latest/llms.txt) for discovery, then use the installed major's [v5 index](https://tanstack.com/query/v5/llms.txt) for version-matched guidance. Use the [TanStack product index](https://tanstack.com/llms.txt) only to locate another TanStack product.
 3. Fetch only the versioned Markdown pages for the active branch.
 4. Compare examples with Greendex source and installed declarations; source and installed types win.
 5. Finish when every changed Query concern has an authoritative source.
+
+No dedicated Query skill is installed; use the versioned official pages and installed declarations. The [integration registry](../integrations.md#tanstack-query) is only the aggregate navigation surface.
 
 ## Project sources of truth
 

@@ -14,6 +14,7 @@ const referenceFiles = [
   path.join(root, "apps", "calculator", "src", "lib", "orpc", "README.md"),
   path.join(root, "docs", "projects", "README.md"),
   path.join(root, "docs", "database", "README.md"),
+  path.join(root, "docs", "agents", "integrations.md"),
 ];
 const retiredDocumentationRoots = [
   "better-auth",
@@ -38,8 +39,12 @@ const expectedScopes = {
     "apps/*/src/**/*.ts,apps/*/src/**/*.tsx,apps/*/src/**/*.js,apps/*/src/**/*.jsx,packages/*/src/**/*.ts,packages/*/src/**/*.tsx,packages/*/src/**/*.js,packages/*/src/**/*.jsx,scripts/**/*.js,scripts/**/*.mjs",
   "conventions.md":
     "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version,.env.example,.oxfmtrc.json,.oxlintrc.json,**/*.config.ts,**/*.config.mjs",
+  "coolify.md":
+    "apps/*/Dockerfile,apps/*/Dockerfile.*,docker-compose*.yml,docker-compose*.yaml,docs/database/**/*.md,.env.example,turbo.json",
   "documentation-app.md":
     "apps/documentation/src/**/*.ts,apps/documentation/src/**/*.tsx,apps/documentation/source.config.ts",
+  "drizzle.md":
+    "packages/database/src/**/*.ts,packages/database/drizzle.config.ts,apps/calculator/src/lib/better-auth/index.ts,packages/database/src/schemas/auth-schema.ts",
   "email.md":
     "packages/email/src/**/*.ts,packages/email/src/**/*.tsx,apps/calculator/src/lib/email.ts",
   "i18n.md":
@@ -50,8 +55,44 @@ const expectedScopes = {
     "apps/calculator/src/components/**/*.ts,apps/calculator/src/components/**/*.tsx,apps/calculator/src/features/**/components/**/*.ts,apps/calculator/src/features/**/components/**/*.tsx",
   "tanstack-query.md":
     "apps/calculator/src/lib/tanstack-react-query/**/*.ts,apps/calculator/src/lib/tanstack-react-query/**/*.tsx,apps/calculator/src/components/providers/query-provider.tsx,apps/calculator/src/lib/orpc/orpc.ts,apps/calculator/src/app/**/page.tsx,apps/calculator/src/app/**/layout.tsx,apps/calculator/src/features/**/components/**/*.ts,apps/calculator/src/features/**/components/**/*.tsx,apps/calculator/src/features/**/hooks/**/*.ts,apps/calculator/src/features/**/hooks/**/*.tsx",
+  "tanstack-table.md":
+    "apps/calculator/src/features/**/components/**/*table*.ts,apps/calculator/src/features/**/components/**/*table*.tsx,apps/calculator/src/features/**/__tests__/**/*table*.ts,apps/calculator/src/features/**/__tests__/**/*table*.tsx",
   "workspace.md":
     "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version",
+};
+
+const requiredOnlineRoutes = {
+  "better-auth.md": [
+    "https://better-auth.com/llms.txt",
+    "https://better-auth.com/docs/llms.txt",
+  ],
+  "conventions.md": ["https://oxc.rs/llms.txt"],
+  "coolify.md": [
+    "https://coolify.io/docs/llms.txt",
+    "https://coolify.io/docs/llms-full.txt",
+  ],
+  "documentation-app.md": ["https://fumadocs.vercel.app/llms.txt"],
+  "drizzle.md": [
+    "https://orm.drizzle.team/llms.txt",
+    "https://orm.drizzle.team/llms-full.txt",
+  ],
+  "email.md": ["https://react.email/llms.txt", "https://nodemailer.com/"],
+  "i18n.md": [
+    "https://next-intl.dev/docs",
+    "https://github.com/michaelwittig/node-i18n-iso-countries",
+    "https://gitlab.com/catamphetamine/country-flag-icons",
+  ],
+  "orpc.md": [
+    "https://v1.orpc.dev/docs/getting-started.md",
+    "https://orpc.dev/llms.txt",
+    "https://v1.orpc.dev/llms.txt",
+  ],
+  "shadcn.md": ["https://ui.shadcn.com/llms.txt"],
+  "tanstack-query.md": [
+    "https://tanstack.com/query/latest/llms.txt",
+    "https://tanstack.com/query/v5/llms.txt",
+  ],
+  "tanstack-table.md": ["https://tanstack.com/table/latest/llms.txt"],
 };
 
 const requiredRepositoryPaths = [
@@ -76,6 +117,10 @@ const requiredRepositoryPaths = [
   "apps/calculator/src/lib/orpc/router.ts",
   "docs/agents/agent-workflows.md",
   "docs/agents/instructions",
+  "docs/agents/integrations.md",
+  ".agents/skills/better-auth-best-practices/SKILL.md",
+  ".agents/skills/shadcn/SKILL.md",
+  "skills-lock.json",
   "packages/config/src/languages.ts",
   "packages/database/src/schemas/auth-schema.ts",
   "packages/email/src/templates",
@@ -294,6 +339,41 @@ for (const fileName of instructionFiles) {
   const lineCount = content.split("\n").length;
   if (lineCount > 180) {
     addError(`${fileName}: ${lineCount} lines exceeds the 180-line instruction budget`);
+  }
+}
+
+const integrationRegistry = await readUtf8(
+  path.join(root, "docs", "agents", "integrations.md"),
+);
+for (const [fileName, routes] of Object.entries(requiredOnlineRoutes)) {
+  const instruction = await readUtf8(path.join(instructionDirectory, fileName));
+  for (const route of routes) {
+    if (!instruction.includes(route)) {
+      addError(`${fileName}: missing direct official route ${route}`);
+    }
+    if (!integrationRegistry.includes(route)) {
+      addError(`docs/agents/integrations.md: missing official route ${route}`);
+    }
+  }
+}
+
+const skillLock = JSON.parse(
+  await readUtf8(path.join(root, "skills-lock.json")),
+);
+const officialSkillSources = {
+  "better-auth-best-practices": "better-auth/skills",
+  shadcn: "shadcn-ui/ui",
+};
+for (const [skillName, source] of Object.entries(officialSkillSources)) {
+  if (skillLock.skills?.[skillName]?.source !== source) {
+    addError(`${skillName}: expected official skill source ${source}`);
+  }
+}
+
+const rootManifest = JSON.parse(await readUtf8(path.join(root, "package.json")));
+for (const tablePackage of ["@tanstack/react-table", "@tanstack/table-core"]) {
+  if (!rootManifest.intent?.skills?.includes(tablePackage)) {
+    addError(`package.json: Intent discovery is missing ${tablePackage}`);
   }
 }
 

@@ -6,7 +6,9 @@ applyTo: "apps/calculator/src/components/**/*.ts,apps/calculator/src/components/
 
 # UI Components
 
-Use existing local primitives before adding another abstraction. Inspect `apps/calculator/components.json`, then read the [official shadcn documentation](https://ui.shadcn.com/docs) for only the needed component.
+## Official documentation and skill
+
+Use existing local primitives before adding another abstraction. Inspect `apps/calculator/components.json`, start with the official [shadcn/ui `llms.txt` index](https://ui.shadcn.com/llms.txt), and fetch only the needed [component documentation](https://ui.shadcn.com/docs). Use the official `shadcn` skill as supplementary project-aware workflow guidance.
 
 ## Locations
 

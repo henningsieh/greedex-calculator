@@ -42,28 +42,28 @@ terms to avoid, is in [`DOMAIN-GLOSSARY.md`](DOMAIN-GLOSSARY.md).
 
 ## Current technology
 
-| Area                 | Technology                                                    |
-| -------------------- | ------------------------------------------------------------- |
-| Web applications     | Next.js `16.3.2`, React `19.2.8`, App Router, React Compiler  |
-| Language             | TypeScript `7.0.2`                                            |
-| Monorepo             | Turborepo `2.10.12`, pnpm workspaces/catalog                  |
-| Package manager      | pnpm `11.23.0`                                                |
-| UI                   | shadcn/ui, Radix UI, cmdk, Tailwind CSS `4.3.3`               |
-| Authentication       | Better Auth `1.7.1` with organization and social-auth plugins |
-| API                  | oRPC `1.15.x`, TanStack Query, OpenAPI/Scalar                 |
-| Database             | PostgreSQL, Drizzle ORM/Kit                                   |
-| Tables               | TanStack Table `9.1.2`                                        |
-| Internationalization | next-intl `4.13.7`                                            |
-| Email                | React Email `6.9.2`, Nodemailer `9.0.5`                       |
-| Real-time POC        | Socket.IO `4.8.3`                                             |
-| Documentation        | Fumadocs + Next.js                                            |
-| Tests                | Vitest `4.1.11`, Playwright `1.62.1`                          |
-| Quality              | Oxlint `1.79.0`, Oxfmt `0.64.0`                               |
+| Area                 | Technology                                         |
+| -------------------- | -------------------------------------------------- |
+| Web applications     | Next.js, React, App Router, React Compiler          |
+| Language             | TypeScript                                         |
+| Monorepo             | Turborepo and pnpm workspaces/catalog              |
+| UI                   | shadcn/ui, Radix UI, cmdk, Tailwind CSS             |
+| Authentication       | Better Auth with organization and social providers |
+| API                  | oRPC, TanStack Query, OpenAPI/Scalar                |
+| Database             | PostgreSQL and Drizzle ORM/Kit                     |
+| Tables               | TanStack Table                                     |
+| Internationalization | next-intl                                          |
+| Email                | React Email and Nodemailer                         |
+| Real-time POC        | Socket.IO                                          |
+| Documentation        | Fumadocs and Next.js                               |
+| Tests                | Vitest and Playwright                              |
+| Quality              | Oxlint and Oxfmt                                   |
 
-Core framework versions are centralized in the catalog in
-`pnpm-workspace.yaml`. Formatter behavior — including import sorting — is
-centralized in the root `.oxfmtrc.json`; per-app formatter configs were
-removed.
+The owning workspace manifests, `pnpm-workspace.yaml`, and `pnpm-lock.yaml` are
+the version authorities. Formatter behavior, including import sorting, is
+centralized in the root `.oxfmtrc.json`. See the
+[integration registry](docs/agents/integrations.md) for project maps, official
+online documentation, and skill choices.
 
 ---
 
@@ -115,7 +115,7 @@ Use the current project toolchain where possible:
 - Node.js 22+ (Node.js 24 recommended) — enforced via `engines.node >= 22` in
   the root `package.json` and pinned to `22` in `.node-version`
 - Corepack
-- pnpm `10.28.2` (declared by `packageManager`)
+- The pnpm version declared by root `package.json#packageManager`
 - PostgreSQL
 
 ### Install
@@ -390,12 +390,12 @@ are documented in `AGENTS.md`.
 Start with [`docs/README.md`](docs/README.md) for the developer-documentation
 index. Agents can use [`docs/agents/agent-workflows.md`](docs/agents/agent-workflows.md) to
 route cross-cutting tasks to the required scoped instructions and topic docs.
-Important areas include:
+For each vendor integration, use the [online reference registry](docs/agents/integrations.md) with its linked Greendex map. Important project areas include:
 
-- `docs/agents/instructions/orpc.md` — Greendex RPC/OpenAPI rules and official v1 routes
-- `docs/agents/instructions/tanstack-query.md` — Greendex Query rules and official v5 routes
+- `docs/agents/instructions/orpc.md` — RPC/OpenAPI ownership and v1 routes
+- `docs/agents/instructions/tanstack-query.md` and `tanstack-table.md` — Query and Table v9 rules
 - `docs/agents/instructions/better-auth.md` — authentication and organizations
-- `docs/database/` — Drizzle/PostgreSQL notes
+- `docs/agents/instructions/drizzle.md` and `coolify.md` — database and deployment boundaries
 - `docs/agents/instructions/i18n.md` — locale and country handling
 - `docs/participate/` — questionnaire and emissions flows
 - `docs/projects/` — permissions and project behavior
