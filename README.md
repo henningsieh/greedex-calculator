@@ -401,7 +401,7 @@ Important areas include:
 - `docs/projects/` — permissions and project behavior
 - `docs/react-email/` — templates and transport
 - `docs/shadcn/` — UI patterns
-- `docs/oxc/` — linting and formatting
+- `.github/instructions/conventions.instructions.md` — linting and formatting
 
 `PROJECT_STATE_REPORT.md` contains the detailed August 20–23 commit ledger,
 current branch/PR state, deployment model, and remaining cleanup decisions.

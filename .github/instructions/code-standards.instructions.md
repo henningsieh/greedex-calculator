@@ -64,6 +64,6 @@ Document reasons and invariants that are not obvious from configuration. Avoid c
 
 References:
 
-- [`docs/oxc/`](../../docs/oxc/)
+- [Official Oxc index](https://oxc.rs/llms.txt)
 - [`docs/participate/testing.md`](../../docs/participate/testing.md)
 - [Architecture instructions](architecture.instructions.md)

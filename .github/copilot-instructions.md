@@ -184,7 +184,7 @@ This repository has one domain context. Before changing domain language, read `d
 | Questionnaire flows and calculations | `docs/participate/`                                                        |
 | Permissions and access control       | `docs/projects/permissions.md`                                             |
 | Email templates and transport        | `docs/react-email/`, `packages/email/`, `apps/calculator/src/lib/email.ts` |
-| Code standards and tooling           | `docs/oxc/`                                                                |
+| Code standards and tooling           | `.github/instructions/conventions.instructions.md`                         |
 
 ---
 

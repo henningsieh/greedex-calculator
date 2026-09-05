@@ -25,6 +25,7 @@ const retiredDocumentationRoots = [
   path.join("docs", "better-auth"),
   path.join("docs", "clickdummy"),
   path.join("docs", "next"),
+  path.join("docs", "oxc"),
   path.join("docs", "orpc"),
   path.join("docs", "tanstack-react-query"),
 ];
@@ -110,11 +111,11 @@ const stalePatterns = [
 
 const retiredPointerPatterns = [
   {
-    pattern: /docs\/(?:better-auth|clickdummy|next|orpc|tanstack-react-query)(?:\/|\b)/u,
+    pattern: /docs\/(?:better-auth|clickdummy|next|oxc|orpc|tanstack-react-query)(?:\/|\b)/u,
     message: "replace pointers to retired vendor-documentation roots",
   },
   {
-    pattern: /\]\((?:\.\.\/)*(?:better-auth|clickdummy|next|orpc|tanstack-react-query)\//u,
+    pattern: /\]\((?:\.\.\/)*(?:better-auth|clickdummy|next|oxc|orpc|tanstack-react-query)\//u,
     message: "replace relative pointers to retired vendor-documentation roots",
   },
 ];
