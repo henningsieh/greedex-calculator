@@ -32,6 +32,6 @@
   "intent": {
     "version": 1,
     "repo": "henningsieh/greendex-calculator",
-    "docs": "https://github.com/henningsieh/greendex-calculator/blob/main/docs/agents/instructions/better-auth.md"
+    "docs": "https://github.com/henningsieh/greendex-calculator/tree/main/docs/better-auth"
   }
 }

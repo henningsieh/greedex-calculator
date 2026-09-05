@@ -1,17 +1,2 @@
 reviews:
   request_changes_workflow: true
-  path_filters:
-    # Review project-authored migration maps and guards, not retired caches or
-    # verbatim vendor-owned skill payloads.
-    - "!.agents/skills/**"
-    - "!.github/prompts/**"
-    - "!docs/better-auth/**"
-    - "!docs/clickdummy/**"
-    - "!docs/fumadocs/**"
-    - "!docs/i18n/**"
-    - "!docs/next/**"
-    - "!docs/orpc/**"
-    - "!docs/oxc/**"
-    - "!docs/react-email/**"
-    - "!docs/shadcn/**"
-    - "!docs/tanstack-react-query/**"
