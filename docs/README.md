@@ -8,7 +8,6 @@ description: "Developer documentation index and online vendor-reference routes"
 ## Agent navigation
 
 - [Task routes for agents](agents/agent-workflows.md)
-- **Vendor-documentation migration:** follow the [temporary online migration instructions](agents/online-documentation-migration.md) before retiring checked-in upstream docs.
 - [Domain documentation and glossary](agents/domain.md)
 - [Canonical domain glossary](../DOMAIN-GLOSSARY.md)
 - Repository-wide rules and scoped instruction index: [`AGENTS.md`](../AGENTS.md)
