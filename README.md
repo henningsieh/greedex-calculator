@@ -42,28 +42,28 @@ terms to avoid, is in [`DOMAIN-GLOSSARY.md`](DOMAIN-GLOSSARY.md).
 
 ## Current technology
 
-| Area                 | Technology                                                    |
-| -------------------- | ------------------------------------------------------------- |
-| Web applications     | Next.js `16.3.2`, React `19.2.8`, App Router, React Compiler  |
-| Language             | TypeScript `7.0.2`                                            |
-| Monorepo             | Turborepo `2.10.12`, pnpm workspaces/catalog                  |
-| Package manager      | pnpm `11.23.0`                                                |
-| UI                   | shadcn/ui, Radix UI, cmdk, Tailwind CSS `4.3.3`               |
-| Authentication       | Better Auth `1.7.1` with organization and social-auth plugins |
-| API                  | oRPC `1.15.x`, TanStack Query, OpenAPI/Scalar                 |
-| Database             | PostgreSQL, Drizzle ORM/Kit                                   |
-| Tables               | TanStack Table `9.1.2`                                        |
-| Internationalization | next-intl `4.13.7`                                            |
-| Email                | React Email `6.9.2`, Nodemailer `9.0.5`                       |
-| Real-time POC        | Socket.IO `4.8.3`                                             |
-| Documentation        | Fumadocs + Next.js                                            |
-| Tests                | Vitest `4.1.11`, Playwright `1.62.1`                          |
-| Quality              | Oxlint `1.79.0`, Oxfmt `0.64.0`                               |
+| Area                 | Technology                                         |
+| -------------------- | -------------------------------------------------- |
+| Web applications     | Next.js, React, App Router, React Compiler          |
+| Language             | TypeScript                                         |
+| Monorepo             | Turborepo and pnpm workspaces/catalog              |
+| UI                   | shadcn/ui, Radix UI, cmdk, Tailwind CSS             |
+| Authentication       | Better Auth with organization and social providers |
+| API                  | oRPC, TanStack Query, OpenAPI/Scalar                |
+| Database             | PostgreSQL and Drizzle ORM/Kit                     |
+| Tables               | TanStack Table                                     |
+| Internationalization | next-intl                                          |
+| Email                | React Email and Nodemailer                         |
+| Real-time POC        | Socket.IO                                          |
+| Documentation        | Fumadocs and Next.js                               |
+| Tests                | Vitest and Playwright                              |
+| Quality              | Oxlint and Oxfmt                                   |
 
-Core framework versions are centralized in the catalog in
-`pnpm-workspace.yaml`. Formatter behavior — including import sorting — is
-centralized in the root `.oxfmtrc.json`; per-app formatter configs were
-removed.
+The owning workspace manifests, `pnpm-workspace.yaml`, and `pnpm-lock.yaml` are
+the version authorities. Formatter behavior, including import sorting, is
+centralized in the root `.oxfmtrc.json`. See the
+[integration registry](docs/agents/integrations.md) for project maps, official
+online documentation, and skill choices.
 
 ---
 
@@ -96,12 +96,13 @@ The calculator's business features live under
 Server-side oRPC initialization must happen before SSR consumers use the client.
 The locale layout (`apps/calculator/src/app/[locale]/layout.tsx`) must
 side-effect-import `@/lib/orpc/client.server`, alongside the import in
-`src/instrumentation.ts`. If that import is missing, Server Components fall
+`apps/calculator/src/instrumentation.ts`. If that import is missing, Server Components fall
 back to the browser-only RPC link and existing project pages render as
 spurious Next.js 404s — a regression diagnosed and fixed in August 2026. Do
-not reorder these initialization imports. See
-`AGENTS.md` and `docs/orpc/DUAL-SETUP.md` before
-changing this area.
+not reorder these initialization imports. See `AGENTS.md`, the
+[oRPC scoped instruction](docs/agents/instructions/orpc.md), and the
+[official oRPC v1 SSR guide](https://v1.orpc.dev/docs/best-practices/optimize-ssr.md)
+before changing this area.
 
 ---
 
@@ -114,7 +115,7 @@ Use the current project toolchain where possible:
 - Node.js 22+ (Node.js 24 recommended) — enforced via `engines.node >= 22` in
   the root `package.json` and pinned to `22` in `.node-version`
 - Corepack
-- pnpm `10.28.2` (declared by `packageManager`)
+- The pnpm version declared by root `package.json#packageManager`
 - PostgreSQL
 
 ### Install
@@ -252,8 +253,10 @@ settings.
 | `/api/auth/[...all]` | Better Auth route                              |
 
 Server Components call the server-side oRPC client directly; browser consumers
-use the HTTP client and TanStack Query. See `docs/orpc/QUICKSTART.md` and
-`docs/orpc/DUAL-SETUP.md`.
+use the JSON-over-HTTP client and TanStack Query. See the
+[implementation map](apps/calculator/src/lib/orpc/README.md),
+[oRPC project rules](docs/agents/instructions/orpc.md), and
+[official oRPC v1 index](https://v1.orpc.dev/llms.txt).
 
 ### Authentication and authorization
 
@@ -385,19 +388,20 @@ are documented in `AGENTS.md`.
 ## Documentation
 
 Start with [`docs/README.md`](docs/README.md) for the developer-documentation
-index. Agents can use [`docs/agent-workflows.md`](docs/agent-workflows.md) to
+index. Agents can use [`docs/agents/agent-workflows.md`](docs/agents/agent-workflows.md) to
 route cross-cutting tasks to the required scoped instructions and topic docs.
-Important areas include:
+For each vendor integration, use the [online reference registry](docs/agents/integrations.md) with its linked Greendex map. Important project areas include:
 
-- `docs/orpc/` — RPC/OpenAPI architecture
-- `docs/better-auth/` — authentication and organizations
-- `docs/database/` — Drizzle/PostgreSQL notes
-- `docs/i18n/` — locale and country handling
+- `docs/agents/instructions/orpc.md` — RPC/OpenAPI ownership and v1 routes
+- `docs/agents/instructions/tanstack-query.md` and `tanstack-table.md` — Query and Table v9 rules
+- `docs/agents/instructions/better-auth.md` — authentication and organizations
+- `docs/agents/instructions/drizzle.md` and `coolify.md` — database and deployment boundaries
+- `docs/agents/instructions/i18n.md` — locale and country handling
 - `docs/participate/` — questionnaire and emissions flows
 - `docs/projects/` — permissions and project behavior
-- `docs/react-email/` — templates and transport
-- `docs/shadcn/` — UI patterns
-- `docs/oxc/` — linting and formatting
+- `docs/agents/instructions/email.md` — templates and transport
+- `docs/agents/instructions/shadcn.md` — UI patterns
+- `docs/agents/instructions/conventions.md` — linting and formatting
 
 `PROJECT_STATE_REPORT.md` contains the detailed August 20–23 commit ledger,
 current branch/PR state, deployment model, and remaining cleanup decisions.
