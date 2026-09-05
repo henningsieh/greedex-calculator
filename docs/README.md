@@ -56,7 +56,6 @@ The scoped instructions own Greendex invariants and route each task to the small
 - [Participation testing](participate/testing.md)
 - [Projects](projects/README.md)
 - [shadcn/ui](shadcn/)
-- [Click dummy](clickdummy/App.js)
 
 ### Tooling
 

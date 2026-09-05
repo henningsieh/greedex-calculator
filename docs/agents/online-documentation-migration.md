@@ -16,11 +16,11 @@
 - [ ] Better Auth (`docs/better-auth/`)
 - [ ] Fumadocs (`docs/fumadocs/`)
 - [ ] Internationalization vendor guidance (`docs/i18n/`): next-intl, i18n-iso-countries, and country-flag-icons; preserve Greendex locale and country architecture.
-- [ ] Next.js duplicate reference (`docs/next/`): consolidate into the generated `.next-docs` route rather than creating another online pointer.
+- [x] Next.js duplicate reference: upstream cache retired in favor of the generated `.next-docs` route.
 - [ ] Oxc (`docs/oxc/`): Oxlint and Oxfmt.
 - [ ] React Email and Nodemailer (`docs/react-email/`).
 - [ ] shadcn/ui (`docs/shadcn/`), including copied component and data-table guidance.
-- [ ] Create React App boilerplate (`docs/greendex-clickdummy/README.md`): classify as obsolete or replace with the current owner documentation.
+- [x] Clickdummy prototype: obsolete historical prototype retired; current questionnaire behavior remains owned by the participate documentation and implementation.
 
 Project-authored documentation under `database`, `deployment`, `participate`, `projects`, and `schemas` is outside this migration unless classification finds cached upstream prose.
 
