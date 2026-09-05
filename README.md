@@ -135,10 +135,10 @@ put the canonical environment file inside an individual app.
 cp .env.example .env
 ```
 
-Fill every required value in `.env.example`. The calculator validates variables
-with `@t3-oss/env-nextjs`, including:
+Fill every required value in `.env.example`. The calculator validates its
+variables with `@t3-oss/env-nextjs`; the development configuration includes:
 
-- Application URLs and ports
+- Application URLs and ports (`PORT`, `DOCUMENTATION_PORT`, and `SOCKET_PORT`)
 - `DATABASE_URL`
 - `BETTER_AUTH_SECRET`
 - Google, GitHub, and Discord OAuth credentials
