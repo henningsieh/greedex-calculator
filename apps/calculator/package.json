@@ -9,14 +9,13 @@
     "./lib/i18n/types": "./src/lib/i18n/types.ts"
   },
   "scripts": {
-    "predev": "pnpx kill-port 3000 4000 || true",
     "dev": "concurrently --kill-others \"pnpm run dev:next\" \"pnpm run dev:socket\"",
-    "dev:next": "NODE_ENV=development next dev",
+    "dev:next": "NODE_ENV=development next dev --port $PORT",
     "dev:socket": "NODE_ENV=development tsx --watch src/socket-server.ts",
     "prebuild": "pnpm run generate:sri && pnpm run check:sri && turbo run db:migrate",
     "build": "next build",
-    "prestart": "pnpx kill-port 3000 4000 || true && sleep 1 && pnpm --filter @greendex/database run db:migrate",
-    "start": "concurrently --kill-others \"next start\" \"cross-env NODE_ENV=production tsx src/socket-server.ts\"",
+    "prestart": "pnpx kill-port $PORT $SOCKET_PORT || true && sleep 1 && pnpm --filter @greendex/database run db:migrate",
+    "start": "concurrently --kill-others \"next start --port $PORT\" \"cross-env NODE_ENV=production tsx src/socket-server.ts\"",
     "format": "oxfmt",
     "lint": "oxlint --fix --fix-suggestions --fix-dangerously",
     "type-check": "next typegen && tsc --noEmit",

@@ -21,17 +21,39 @@ import {
 import { organization, user, member } from "./auth-schema";
 
 /**
- * Custom Drizzle type for distance values
- * Stores as DECIMAL(10,1) in DB, exposes as number in TypeScript
- * Database handles rounding natively via DECIMAL(10,1)
+ * Custom Drizzle type for distance values.
+ *
+ * `data` is the application-facing TypeScript type (`number`), while
+ * `driverData` is the database-driver representation (`string`). PostgreSQL
+ * returns DECIMAL values as strings to preserve their precision.
+ * Values are stored as DECIMAL(10,1) in the database, with precision and
+ * scale enforced by PostgreSQL.
  */
 const distanceKmType = customType<{ data: number; driverData: string }>({
+  /**
+   * Returns the SQL type declaration used when Drizzle creates the column.
+   * This describes the database representation; it does not convert values.
+   */
   dataType() {
     return `decimal(${DECIMAL_PRECISION}, ${DECIMAL_SCALE})`;
   },
+  /**
+   * Converts a value read from the database driver into the application type.
+   *
+   * @param value The DECIMAL value returned by PostgreSQL, represented as a
+   * string by the database driver.
+   * @returns The distance as a JavaScript number.
+   */
   fromDriver(value: string): number {
     return Number.parseFloat(value);
   },
+  /**
+   * Converts the application value into the representation expected by the
+   * database driver before an insert or update.
+   *
+   * @param value The distance in kilometers as a JavaScript number.
+   * @returns The distance serialized as a string for PostgreSQL DECIMAL.
+   */
   toDriver(value: number): string {
     return value.toString();
   },
@@ -47,10 +69,10 @@ const distanceKmType = customType<{ data: number; driverData: string }>({
  * Projects belong to organizations and access is controlled through
  * Better Auth's organization membership system.
  *
- * Members with "member" role can READ projects
- * Members with "admin" or "owner" role can CREATE, READ, UPDATE, DELETE projects
- *   - Owners can delete any projects in the organization
- *   - Admins can only delete projects they created (where they are the responsible team member)
+ * Project Participants can read projects in their organization.
+ * Project Coordinators can create projects and manage only projects for which
+ * they are responsible. Organization Administrators can manage every project.
+ * Only Organization Administrators can delete projects.
  */
 export const projectsTable = pgTable("project", {
   id: text("id")

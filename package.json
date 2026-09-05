@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "dotenv -v NODE_ENV=production -e .env -- turbo run build",
+    "predev": "dotenv -v NODE_ENV=development -e .env -- node scripts/prepare-dev-ports.mjs",
     "dev": "dotenv -v NODE_ENV=development -e .env -- turbo run dev",
     "lint": "turbo run lint --concurrency 1 && pnpm run check:agent-instructions",
     "check:agent-instructions": "node scripts/check-agent-instructions.mjs",
@@ -41,7 +42,7 @@
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "pnpm@11.23.0",
+  "packageManager": "pnpm@11.25.0",
   "intent": {
     "skills": [
       "workspace:@greendex/auth",

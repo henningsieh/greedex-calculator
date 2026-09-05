@@ -10,13 +10,16 @@ type PackageManifest = {
 
 describe("environment entrypoints", () => {
   const content = readFileSync(path.resolve("src/socket-server.ts"), "utf8");
-  const calculatorPackage = JSON.parse(
-    readFileSync(path.resolve("package.json"), "utf8"),
-  ) as PackageManifest;
   const rootPackage = JSON.parse(
     readFileSync(path.resolve("../../package.json"), "utf8"),
   ) as PackageManifest;
   const nextConfig = readFileSync(path.resolve("next.config.ts"), "utf8");
+  const calculatorPackage = JSON.parse(
+    readFileSync(path.resolve("package.json"), "utf8"),
+  ) as PackageManifest;
+  const documentationPackage = JSON.parse(
+    readFileSync(path.resolve("../../apps/documentation/package.json"), "utf8"),
+  ) as PackageManifest;
   const turboConfig = JSON.parse(
     readFileSync(path.resolve("../../turbo.json"), "utf8"),
   ) as {
@@ -48,6 +51,22 @@ describe("environment entrypoints", () => {
     );
     expect(rootPackage.scripts.start).toBe(
       "dotenv -v NODE_ENV=production -e .env -- turbo run start",
+    );
+  });
+
+  it("configures every service port from the environment", () => {
+    expect(calculatorPackage.scripts["dev:next"]).toBe(
+      "NODE_ENV=development next dev --port $PORT",
+    );
+    expect(calculatorPackage.scripts.prestart).toContain(
+      "pnpx kill-port $PORT $SOCKET_PORT",
+    );
+    expect(calculatorPackage.scripts.start).toContain("next start --port $PORT");
+    expect(documentationPackage.scripts.dev).toBe(
+      "next dev --port $DOCUMENTATION_PORT",
+    );
+    expect(documentationPackage.scripts.start).toBe(
+      "next start --port $DOCUMENTATION_PORT",
     );
   });
 
