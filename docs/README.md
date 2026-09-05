@@ -56,7 +56,7 @@ The scoped instructions own Greendex invariants and route each task to the small
 - [Conditional logic](participate/conditional-logic.md)
 - [Participation testing](participate/testing.md)
 - [Projects](projects/README.md)
-- [shadcn/ui](shadcn/)
+- [shadcn project rules](../.github/instructions/shadcn.instructions.md)
 
 ### Tooling
 

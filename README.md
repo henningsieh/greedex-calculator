@@ -400,7 +400,7 @@ Important areas include:
 - `docs/participate/` — questionnaire and emissions flows
 - `docs/projects/` — permissions and project behavior
 - `.github/instructions/email.instructions.md` — templates and transport
-- `docs/shadcn/` — UI patterns
+- `.github/instructions/shadcn.instructions.md` — UI patterns
 - `.github/instructions/conventions.instructions.md` — linting and formatting
 
 `PROJECT_STATE_REPORT.md` contains the detailed August 20–23 commit ledger,

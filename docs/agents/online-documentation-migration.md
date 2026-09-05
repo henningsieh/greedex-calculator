@@ -19,7 +19,7 @@
 - [x] Next.js duplicate reference: upstream cache retired in favor of the generated `.next-docs` route.
 - [x] Oxc: upstream linting and formatting cache retired; repository commands remain in conventions.
 - [x] React Email and Nodemailer: upstream cache retired; template and Calculator transport ownership are scoped.
-- [ ] shadcn/ui (`docs/shadcn/`), including copied component and data-table guidance.
+- [x] shadcn/ui: upstream component cache retired; local components and configuration remain authoritative.
 - [x] Clickdummy prototype: obsolete historical prototype retired; current questionnaire behavior remains owned by the participate documentation and implementation.
 
 Project-authored documentation under `database`, `deployment`, `participate`, `projects`, and `schemas` is outside this migration unless classification finds cached upstream prose.

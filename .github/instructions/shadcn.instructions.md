@@ -6,7 +6,7 @@ applyTo: "apps/calculator/src/components/**/*.ts,apps/calculator/src/components/
 
 # UI Components
 
-Use existing local primitives before adding another abstraction. Component references live in [`docs/shadcn/`](../../docs/shadcn/).
+Use existing local primitives before adding another abstraction. Inspect `apps/calculator/components.json`, then read the [official shadcn documentation](https://ui.shadcn.com/docs) for only the needed component.
 
 ## Locations
 
@@ -47,10 +47,4 @@ Review generated dependencies and code before retaining them.
 - Preserve focus management supplied by Radix primitives.
 - Verify loading, empty, error, disabled, and narrow-screen states.
 
-References:
-
-- [Field](../../docs/shadcn/shadcn-ui.new-field.documentation.md)
-- [Data table](../../docs/shadcn/shadcn-ui.data-table.md)
-- [Empty state](../../docs/shadcn/shadcn.empty.component.md)
-- [Sidebar](../../docs/shadcn/shadcn-ui.sidebar.md)
-- [Code standards](code-standards.instructions.md)
+Local component source and `components.json` override upstream examples. [Code standards](code-standards.instructions.md) remain applicable.
