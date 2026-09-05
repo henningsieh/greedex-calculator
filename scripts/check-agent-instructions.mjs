@@ -29,6 +29,7 @@ const retiredDocumentationRoots = [
   "tanstack-react-query",
 ].map((directory) => path.join("docs", directory));
 const errors = [];
+const instructionLineBudget = 180;
 
 const expectedScopes = {
   "architecture.md":
@@ -76,7 +77,7 @@ const requiredOnlineRoutes = {
     "https://orm.drizzle.team/llms.txt",
     "https://orm.drizzle.team/llms-full.txt",
   ],
-  "email.md": ["https://react.email/llms.txt", "https://nodemailer.com/"],
+  "email.md": ["https://react.email/docs/llms.txt", "https://nodemailer.com/"],
   "i18n.md": [
     "https://next-intl.dev/docs",
     "https://github.com/michaelwittig/node-i18n-iso-countries",
@@ -94,6 +95,19 @@ const requiredOnlineRoutes = {
   ],
   "tanstack-table.md": ["https://tanstack.com/table/latest/llms.txt"],
 };
+
+const requiredIntegrationAnchors = [
+  "better-auth",
+  "coolify-deployment-and-api",
+  "drizzle-orm-and-kit",
+  "fumadocs",
+  "next-intl-and-country-data",
+  "orpc",
+  "react-email",
+  "shadcnui",
+  "tanstack-query",
+  "tanstack-table",
+];
 
 const requiredRepositoryPaths = [
   ".env.example",
@@ -240,7 +254,17 @@ const validateMarkdownLinks = async (
       continue;
     }
 
-    const decodedTarget = decodeURIComponent(rawTarget.split("#", 1)[0]);
+    let decodedTarget;
+    try {
+      decodedTarget = decodeURIComponent(rawTarget.split("#", 1)[0]);
+    } catch (error) {
+      if (!(error instanceof URIError)) throw error;
+      addError(
+        `${path.relative(root, filePath)}: malformed link ${JSON.stringify(rawTarget)}`,
+      );
+      continue;
+    }
+
     const absoluteTarget = decodedTarget.startsWith("/")
       ? path.resolve(root, `.${decodedTarget}`)
       : path.resolve(baseDirectory, decodedTarget);
@@ -340,14 +364,22 @@ for (const fileName of instructionFiles) {
     );
   }
   const lineCount = content.split("\n").length;
-  if (lineCount > 180) {
-    addError(`${fileName}: ${lineCount} lines exceeds the 180-line instruction budget`);
+  if (lineCount > instructionLineBudget) {
+    addError(
+      `${fileName}: ${lineCount} lines exceeds the ${instructionLineBudget}-line instruction budget`,
+    );
   }
 }
 
 const integrationRegistry = await readUtf8(
   path.join(root, "docs", "agents", "integrations.md"),
 );
+for (const anchor of requiredIntegrationAnchors) {
+  if (!integrationRegistry.includes(`<a id="${anchor}"></a>`)) {
+    addError(`docs/agents/integrations.md: missing integration anchor #${anchor}`);
+  }
+}
+
 for (const [fileName, routes] of Object.entries(requiredOnlineRoutes)) {
   const instruction = await readUtf8(path.join(instructionDirectory, fileName));
   for (const route of routes) {

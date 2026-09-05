@@ -31,7 +31,7 @@ Greendex exposes one router through two protocol surfaces and two documentation 
 - Consumers import `orpc` or `orpcQuery` from `@/lib/orpc/orpc`.
 - Procedure files import `base` from `@/lib/orpc/context` and authenticated or permission middleware from `@/lib/orpc/middleware`.
 - Router and context types come from their owning modules; there is no `@/lib/orpc` barrel.
-- `@/lib/orpc/client.server` is a server-only initialization import, not a consumer API.
+- `@/lib/orpc/client.server` creates the direct in-process server client and is imported for server-only initialization; consumers import `orpc` from `@/lib/orpc/orpc`, which uses that initialized client during SSR.
 
 ## Further guidance
 

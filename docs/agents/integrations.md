@@ -11,18 +11,18 @@ For every integration change:
 | Integration | Direct official route | Greendex map | Skill strategy |
 | --- | --- | --- | --- |
 | Next.js | Generated version-matched index in `AGENTS.md` and `.next-docs/` | [Architecture](instructions/architecture.md) | Generated local vendor corpus; regenerate with the command embedded in `AGENTS.md` |
-| Coolify | [`llms.txt`](https://coolify.io/docs/llms.txt) · [`llms-full.txt`](https://coolify.io/docs/llms-full.txt) | [Coolify](instructions/coolify.md) | Online documentation; no official project skill adopted |
-| Drizzle ORM and Kit | [`llms.txt`](https://orm.drizzle.team/llms.txt) · [`llms-full.txt`](https://orm.drizzle.team/llms-full.txt) | [Drizzle](instructions/drizzle.md) | Online documentation and installed declarations; no official project skill adopted |
-| TanStack Query | [`latest`](https://tanstack.com/query/latest/llms.txt) · [`v5`](https://tanstack.com/query/v5/llms.txt) | [TanStack Query](instructions/tanstack-query.md) | Versioned online documentation |
-| TanStack Table | [`latest`](https://tanstack.com/table/latest/llms.txt) | [TanStack Table](instructions/tanstack-table.md) | Package-provided Intent skills for the installed v9 API plus online documentation |
-| oRPC | [getting started](https://v1.orpc.dev/docs/getting-started.md) · [product index](https://orpc.dev/llms.txt) · [v1 index](https://v1.orpc.dev/llms.txt) | [oRPC](instructions/orpc.md) | Versioned online documentation; no official project skill adopted |
-| Better Auth | [`llms.txt`](https://better-auth.com/llms.txt) · [documentation index](https://better-auth.com/docs/llms.txt) | [Better Auth](instructions/better-auth.md) | Official `better-auth-best-practices` skill plus online documentation |
+| <a id="coolify-deployment-and-api"></a>Coolify | [`llms.txt`](https://coolify.io/docs/llms.txt) · [`llms-full.txt`](https://coolify.io/docs/llms-full.txt) | [Coolify](instructions/coolify.md) | Online documentation; no official project skill adopted |
+| <a id="drizzle-orm-and-kit"></a>Drizzle ORM and Kit | [`llms.txt`](https://orm.drizzle.team/llms.txt) · [`llms-full.txt`](https://orm.drizzle.team/llms-full.txt) | [Drizzle](instructions/drizzle.md) | Online documentation and installed declarations; no official project skill adopted |
+| <a id="tanstack-query"></a>TanStack Query | [`latest`](https://tanstack.com/query/latest/llms.txt) · [`v5`](https://tanstack.com/query/v5/llms.txt) | [TanStack Query](instructions/tanstack-query.md) | Versioned online documentation |
+| <a id="tanstack-table"></a>TanStack Table | [`latest`](https://tanstack.com/table/latest/llms.txt) | [TanStack Table](instructions/tanstack-table.md) | Package-provided Intent skills for the installed v9 API plus online documentation |
+| <a id="orpc"></a>oRPC | [getting started](https://v1.orpc.dev/docs/getting-started.md) · [product index](https://orpc.dev/llms.txt) · [v1 index](https://v1.orpc.dev/llms.txt) | [oRPC](instructions/orpc.md) | Versioned online documentation; no official project skill adopted |
+| <a id="better-auth"></a>Better Auth | [`llms.txt`](https://better-auth.com/llms.txt) · [documentation index](https://better-auth.com/docs/llms.txt) | [Better Auth](instructions/better-auth.md) | Official `better-auth-best-practices` skill plus online documentation |
 | Oxc | [`llms.txt`](https://oxc.rs/llms.txt) | [Conventions](instructions/conventions.md) | Online documentation; migration-only skills are not routine guidance |
-| React Email | [`llms.txt`](https://react.email/llms.txt) | [Email](instructions/email.md) | Online documentation; broad provider/editor skill is not installed |
+| <a id="react-email"></a>React Email | [`llms.txt`](https://react.email/docs/llms.txt) | [Email](instructions/email.md) | Online documentation; broad provider/editor skill is not installed |
 | Nodemailer | [documentation](https://nodemailer.com/) | [Email](instructions/email.md) | Online documentation and installed declarations |
-| Fumadocs | [`llms.txt`](https://fumadocs.vercel.app/llms.txt) | [Documentation application](instructions/documentation-app.md) | Online documentation; generic site-reading skill is not API authority |
-| shadcn/ui | [`llms.txt`](https://ui.shadcn.com/llms.txt) | [UI components](instructions/shadcn.md) | Official `shadcn` skill plus online component documentation |
-| next-intl | [documentation](https://next-intl.dev/docs) | [Internationalization](instructions/i18n.md) | Official pages because no working `llms.txt` route is available |
+| <a id="fumadocs"></a>Fumadocs | [`llms.txt`](https://fumadocs.vercel.app/llms.txt) | [Documentation application](instructions/documentation-app.md) | Online documentation; generic site-reading skill is not API authority |
+| <a id="shadcnui"></a>shadcn/ui | [`llms.txt`](https://ui.shadcn.com/llms.txt) | [UI components](instructions/shadcn.md) | Official `shadcn` skill plus online component documentation |
+| <a id="next-intl-and-country-data"></a>next-intl | [documentation](https://next-intl.dev/docs) | [Internationalization](instructions/i18n.md) | Official pages because no working `llms.txt` route is available |
 | Country data and flags | [`i18n-iso-countries`](https://github.com/michaelwittig/node-i18n-iso-countries) · [`country-flag-icons`](https://gitlab.com/catamphetamine/country-flag-icons) | [Internationalization](instructions/i18n.md) | Installed declarations and official repositories; no third-party skill |
 
 ## Why there is no one-skill-per-package rule

@@ -33,4 +33,4 @@ This opt-in router complements `AGENTS.md`. Start at the matching row, then foll
 
 ## Next.js work
 
-For any Next.js task, start at the [local Next.js documentation index](../../.next-docs/index.mdx). If the ignored corpus is absent, regenerate it with `npx @next/codemod agents-md --output AGENTS.md`, then follow the smallest relevant page set.
+For any Next.js task, start at the [local Next.js documentation index](../../.next-docs/index.mdx). If the ignored corpus is absent, regenerate it with `pnpm dlx @next/codemod agents-md --output AGENTS.md`, then follow the smallest relevant page set.

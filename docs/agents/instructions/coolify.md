@@ -10,7 +10,7 @@ applyTo: "apps/*/Dockerfile,apps/*/Dockerfile.*,docker-compose*.yml,docker-compo
 
 Start with the [Coolify `llms.txt` index](https://coolify.io/docs/llms.txt). Use the [full index](https://coolify.io/docs/llms-full.txt) only when the focused index does not expose the required page. Fetch only the pages needed for the current deployment task.
 
-No official Coolify project skill is adopted. These official pages and the live managed-resource state are the authorities. The [integration registry](../integrations.md#coolify) is only the aggregate navigation surface.
+No official Coolify project skill is adopted. These official pages and the live managed-resource state are the authorities. The [integration registry](../integrations.md#coolify-deployment-and-api) is only the aggregate navigation surface.
 
 - Coolify is the owner of persistent deployment configuration. Make changes through its UI or API; generated compose files are outputs, not source.
 - The Calculator uses the shared `development` environment described in `AGENTS.md`. Keep credentials and resource identifiers out of repository files and logs.
