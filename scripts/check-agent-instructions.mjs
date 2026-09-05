@@ -130,14 +130,17 @@ const requiredRepositoryPaths = [
   "turbo.json",
 ];
 
+const agentPointerPattern = {
+  pattern:
+    /\.github\/(?:copilot-instructions\.md|instructions|prompts)(?:\/|\b)/u,
+  message: "replace pointers to retired GitHub Copilot agent guidance",
+};
+
 const stalePatterns = [
   { pattern: /\bbunx\b/iu, message: "replace stale bunx guidance with pnpm" },
   { pattern: /\bpnpmx\b/iu, message: "replace the invalid pnpmx command" },
   { pattern: /pnpm\.lockb/iu, message: "use pnpm-lock.yaml" },
-  {
-    pattern: /\.github\/(?:copilot-instructions\.md|instructions|prompts)(?:\/|\b)/u,
-    message: "replace pointers to retired GitHub Copilot agent guidance",
-  },
+  agentPointerPattern,
   {
     pattern: /`src\/lib\/drizzle(?:\/|`)/u,
     message: "use packages/database paths",
@@ -385,11 +388,6 @@ for (const filePath of scannedFiles) {
   }
 }
 
-const agentPointerPattern = {
-  pattern:
-    /\.github\/(?:copilot-instructions\.md|instructions|prompts)(?:\/|\b)/u,
-  message: "replace pointers to retired GitHub Copilot agent guidance",
-};
 const pointerFiles = new Set([...scannedFiles, ...referenceFiles]);
 for (const filePath of pointerFiles) {
   const content = await readUtf8(filePath);
