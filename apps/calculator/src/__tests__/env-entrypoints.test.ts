@@ -59,9 +59,12 @@ describe("environment entrypoints", () => {
       "NODE_ENV=development next dev --port $PORT",
     );
     expect(calculatorPackage.scripts.prestart).toContain(
-      "pnpx kill-port $PORT $SOCKET_PORT",
+      "pnpm dlx kill-port $PORT $SOCKET_PORT",
     );
     expect(calculatorPackage.scripts.start).toContain("next start --port $PORT");
+    expect(calculatorPackage.scripts["test:e2e:report"]).toBe(
+      "pnpm dlx kill-port 9323 || true && pnpm exec playwright show-report src/__tests__/e2e/.playwright/report",
+    );
     expect(documentationPackage.scripts.dev).toBe(
       "next dev --port $DOCUMENTATION_PORT",
     );

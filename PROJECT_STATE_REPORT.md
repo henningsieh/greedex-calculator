@@ -343,18 +343,13 @@ removed locally and remotely.
 
 ## 10. Known inconsistencies and next decisions
 
-1. **Executable bun references remain:**
-   - `apps/calculator/package.json` uses `bunx` in `test:e2e:report`.
-   - `.vscode/mcp.json` uses `bunx` to launch an MCP server.
-     These conflict with the project's pnpm-only convention. Documentation examples
-     from upstream libraries are not runtime dependencies and are less urgent.
-2. **Migration `0009`:** confirm live schema/application status and backfill safety.
-3. **OpenAPI integration tests are not hermetic:** `openapi-rest.test.ts` expects a
+1. **Migration `0009`:** confirm live schema/application status and backfill safety.
+2. **OpenAPI integration tests are not hermetic:** `openapi-rest.test.ts` expects a
    server on `localhost:3000`. Its collection/skip behavior still depends on server
    availability and should be separated from the hermetic unit suite.
-4. **Stale PR/branches/stashes:** #11, `bun-runtime`, the merged dependency branch,
+3. **Stale PR/branches/stashes:** #11, `bun-runtime`, the merged dependency branch,
    the orphaned Dependabot branch, and eight stashes remain cleanup candidates.
-5. **No license selected:** the repository still has no finalized license.
+4. **No license selected:** the repository still has no finalized license.
 
 ---
 
