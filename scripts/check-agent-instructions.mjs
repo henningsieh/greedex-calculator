@@ -174,6 +174,9 @@ const parseFrontmatter = (content, fileName) => {
   return values;
 };
 
+const isOptionalGeneratedNextDocumentationIndex = (filePath, rawTarget) =>
+  filePath === workflowPath && rawTarget === "../../.next-docs/index.mdx";
+
 const validateMarkdownLinks = async (
   filePath,
   content,
@@ -197,7 +200,10 @@ const validateMarkdownLinks = async (
     const absoluteTarget = decodedTarget.startsWith("/")
       ? path.resolve(root, `.${decodedTarget}`)
       : path.resolve(baseDirectory, decodedTarget);
-    if (!(await pathExists(absoluteTarget))) {
+    if (
+      !(await pathExists(absoluteTarget)) &&
+      !isOptionalGeneratedNextDocumentationIndex(filePath, rawTarget)
+    ) {
       addError(
         `${path.relative(root, filePath)}: broken link ${JSON.stringify(rawTarget)}`,
       );
