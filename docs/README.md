@@ -24,6 +24,7 @@ Vendor API documentation is retrieved from versioned official sources instead of
 | Better Auth and organizations | [Better Auth instruction](../.github/instructions/better-auth.instructions.md) | [Better Auth v1.7](https://better-auth.com/docs/llms.txt) |
 | Oxc linting and formatting | [Repository conventions](../.github/instructions/conventions.instructions.md) | [Oxc](https://oxc.rs/llms.txt) |
 | React Email templates and Nodemailer transport | [Email instruction](../.github/instructions/email.instructions.md) | [React Email](https://react.email/llms.txt) |
+| Documentation application | [Documentation app instruction](../.github/instructions/documentation-app.instructions.md) | [Fumadocs](https://fumadocs.vercel.app/llms.txt) |
 
 The scoped instructions own Greendex invariants and route each task to the smallest relevant official Markdown page.
 

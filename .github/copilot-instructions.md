@@ -149,6 +149,7 @@ The instruction files below live under the repository-root [`.github/instruction
 | `better-auth.instructions.md`                  | Authentication, organizations, sessions, permissions, auth schema | Auth/organization implementation      |
 | `code-standards.instructions.md`               | TypeScript, React, persistence, errors, tests                     | App and package source files          |
 | `conventions.instructions.md`                  | Manifests, configuration, environment, quality workflow           | Repository configuration              |
+| `documentation-app.instructions.md`            | Fumadocs application ownership and integration                    | Documentation application source      |
 | `email.instructions.md`                        | Templates, localization, delivery, and SMTP injection              | Email package and Calculator adapter  |
 | `i18n.instructions.md`                         | Messages, locale routing/navigation, country presentation         | i18n package and localized app routes |
 | `orpc.instructions.md`                         | Procedures, middleware, router, OpenAPI, SSR clients              | oRPC, feature procedures, app routes  |
