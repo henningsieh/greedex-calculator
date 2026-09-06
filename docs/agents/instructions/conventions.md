@@ -1,7 +1,7 @@
 ---
 name: "Repository Conventions"
 description: "pnpm, ESM, environment, quality, and repository configuration conventions"
-applyTo: "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version,.env.example,.oxfmtrc.json,.oxlintrc.json,**/*.config.ts,**/*.config.mjs"
+applyTo: "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version,apps/*/.env.example,.oxfmtrc.json,.oxlintrc.json,**/*.config.ts,**/*.config.mjs"
 ---
 
 # Repository Conventions
@@ -19,7 +19,7 @@ Read [workspace instructions](workspace.md) before modifying dependencies, packa
 
 ## Environment
 
-- Local development uses the repository-root `.env`, created from `.env.example`.
+- Each application owns its local environment file, created from the `.env.example` in that application's directory.
 - The calculator validates environment variables in `apps/calculator/src/env.ts`.
 - Keep secrets in local or platform-managed configuration; commit only documented placeholders.
 - Turbo's `build` and `start` tasks require `"env": ["*"]` so injected variables reach workspace processes.

@@ -46,13 +46,15 @@ Do not edit `pnpm-lock.yaml` manually.
 
 ## Critical environment forwarding
 
-Coolify and local shells provide environment variables to Turbo. The `build` and `start` tasks in `turbo.json` require:
+Coolify and local application scripts provide environment variables to Turbo. The `build` and `start` tasks in `turbo.json` require:
 
 ```json
 "env": ["*"]
 ```
 
 This setting is critical: without it, workspace processes do not receive the injected environment expected by application validation and build/start code. Preserve it when editing the task graph.
+
+Each application owns its local `.env` and `.env.example`; do not recreate a repository-root environment file. Turbo does not load these files. Next.js loads the documentation environment, while Calculator package scripts use `dotenv-cli` so its Next.js and Socket.IO processes receive one consistent environment. Keep `.env*` in the build task inputs so changes invalidate the correct package's cache.
 
 ## Runtime consistency
 

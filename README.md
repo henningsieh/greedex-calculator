@@ -81,7 +81,7 @@ online documentation, and skill choices.
 │   ├── email/               # Shared React Email templates and SMTP helpers
 │   └── i18n/                # next-intl exports and locale JSON files
 ├── docs/                    # Developer/reference documentation
-├── .env.example             # Canonical environment-variable inventory
+├── apps/*/.env.example      # Per-application environment-variable inventories
 ├── pnpm-workspace.yaml      # Workspaces and shared dependency catalog
 ├── turbo.json               # Task graph, caching, and env forwarding
 └── package.json             # Root task entrypoints
@@ -129,25 +129,26 @@ pnpm install
 
 ### Configure the environment
 
-The project uses one repository-root `.env` file for local development. Do not
-put the canonical environment file inside an individual app.
+Each application owns its local environment file:
 
 ```bash
-cp .env.example .env
+cp apps/calculator/.env.example apps/calculator/.env
+cp apps/documentation/.env.example apps/documentation/.env
 ```
 
-Fill every required value in `.env.example`. The calculator validates its
-variables with `@t3-oss/env-nextjs`; the development configuration includes:
+Fill every required Calculator value in its example. The calculator validates
+its variables with `@t3-oss/env-nextjs`; the development configuration includes:
 
-- Application URLs and ports (`PORT`, `DOCUMENTATION_PORT`, and `SOCKET_PORT`)
+- Application URLs and ports (`PORT` and `SOCKET_PORT`)
 - `DATABASE_URL`
 - `BETTER_AUTH_SECRET`
 - Google, GitHub, and Discord OAuth credentials
 - SMTP connection credentials
 - `NEXT_PUBLIC_SOCKET_URL`
 
-Local scripts load the root file where needed. In Coolify, values are injected
-by the platform and remain outside Git.
+Calculator scripts load its app-local file where needed; Next.js loads the
+Documentation file. In Coolify, each application receives only its own values
+from the platform, and those values remain outside Git.
 
 ### Prepare the database
 
@@ -325,8 +326,9 @@ package API; transport uses Nodemailer.
 ### Real-time proof of concept
 
 `apps/calculator/src/socket-server.ts` is a separate Socket.IO process. It reads
-validated process environment from `@/env`; local scripts inject the root `.env`
-through `dotenv-cli`, while Coolify injects runtime values directly.
+validated process environment from `@/env`; Calculator scripts inject its
+app-local `.env` through `dotenv-cli`, while Coolify injects runtime values
+directly.
 
 Clients connect through `NEXT_PUBLIC_SOCKET_URL`, so local ports and the deployed
 socket hostname do not need URL-rewriting logic.
