@@ -56,6 +56,9 @@ describe("environment entrypoints", () => {
       "dotenv -v NODE_ENV=development -e .env --",
     );
     expect(calculatorPackage.scripts.prebuild).toContain("dotenv -e .env --");
+    expect(calculatorPackage.scripts.build).toBe(
+      "NODE_ENV=production next build",
+    );
     expect(calculatorPackage.scripts.prestart).toContain("dotenv -e .env --");
     expect(calculatorPackage.scripts.start).toContain(
       "dotenv -v NODE_ENV=production -e .env --",

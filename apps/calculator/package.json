@@ -13,7 +13,7 @@
     "dev:next": "next dev --port $PORT",
     "dev:socket": "tsx --watch src/socket-server.ts",
     "prebuild": "dotenv -e .env -- pnpm run generate:sri && dotenv -e .env -- pnpm run check:sri && dotenv -e .env -- turbo run db:migrate",
-    "build": "next build",
+    "build": "NODE_ENV=production next build",
     "prestart": "dotenv -e .env -- pnpm dlx kill-port $PORT $SOCKET_PORT || true && sleep 1 && dotenv -e .env -- pnpm --filter @greendex/database run db:migrate",
     "start": "dotenv -v NODE_ENV=production -e .env -- concurrently --kill-others \"next start --port $PORT\" \"tsx src/socket-server.ts\"",
     "format": "oxfmt",
