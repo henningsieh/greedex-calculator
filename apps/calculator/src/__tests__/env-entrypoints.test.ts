@@ -56,9 +56,7 @@ describe("environment entrypoints", () => {
       "dotenv -v NODE_ENV=development -e .env --",
     );
     expect(calculatorPackage.scripts.prebuild).toContain("dotenv -e .env --");
-    expect(calculatorPackage.scripts.build).toBe(
-      "NODE_ENV=production next build",
-    );
+    expect(calculatorPackage.scripts.build).toBe("next build");
     expect(calculatorPackage.scripts.prestart).toContain("dotenv -e .env --");
     expect(calculatorPackage.scripts.start).toContain(
       "dotenv -v NODE_ENV=production -e .env --",
@@ -70,10 +68,16 @@ describe("environment entrypoints", () => {
 
   it("configures every service port from the environment", () => {
     expect(calculatorPackage.scripts["dev:next"]).toBe("next dev --port $PORT");
-    expect(calculatorPackage.scripts.prestart).toContain(
-      "pnpm dlx kill-port $PORT $SOCKET_PORT",
+    expect(calculatorPackage.scripts.prestart).toBe(
+      "dotenv -e .env -- pnpm run start:prepare",
     );
-    expect(calculatorPackage.scripts.start).toContain("next start --port $PORT");
+    expect(calculatorPackage.scripts["start:prepare"]).toContain(
+      'pnpm dlx kill-port "$PORT" "$SOCKET_PORT"',
+    );
+    expect(calculatorPackage.scripts.start).toBe(
+      "dotenv -v NODE_ENV=production -e .env -- pnpm run serve",
+    );
+    expect(calculatorPackage.scripts.serve).toContain("next start --port $PORT");
     expect(calculatorPackage.scripts["test:e2e:report"]).toBe(
       "pnpm dlx kill-port 9323 || true && pnpm exec playwright show-report src/__tests__/e2e/.playwright/report",
     );
