@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { createEmailSender, createTransporter } from "@greendex/email";
 import { config } from "dotenv";
 
-config({ path: resolve(import.meta.dirname, "../../../.env") });
+config({ path: resolve(import.meta.dirname, "../.env") });
 
 const getRequiredEnvironmentVariable = (name: string): string => {
   const value = process.env[name];

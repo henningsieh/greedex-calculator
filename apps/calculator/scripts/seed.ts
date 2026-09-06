@@ -27,7 +27,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
 // Load environment variables from .env file
-config({ path: "../../.env" });
+config({ path: ".env" });
 
 // Validate DATABASE_URL is available
 const DATABASE_URL = process.env.DATABASE_URL;

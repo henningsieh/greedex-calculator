@@ -1,7 +1,7 @@
 ---
 name: "Coolify"
 description: "Greendex deployment ownership, managed resources, and operational boundaries"
-applyTo: "apps/*/Dockerfile,apps/*/Dockerfile.*,docker-compose*.yml,docker-compose*.yaml,docs/database/**/*.md,.env.example,turbo.json"
+applyTo: "apps/*/Dockerfile,apps/*/Dockerfile.*,docker-compose*.yml,docker-compose*.yaml,docs/database/**/*.md,apps/*/.env.example,turbo.json"
 ---
 
 # Coolify

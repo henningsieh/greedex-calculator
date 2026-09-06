@@ -39,9 +39,9 @@ const expectedScopes = {
   "code-standards.md":
     "apps/*/src/**/*.ts,apps/*/src/**/*.tsx,apps/*/src/**/*.js,apps/*/src/**/*.jsx,packages/*/src/**/*.ts,packages/*/src/**/*.tsx,packages/*/src/**/*.js,packages/*/src/**/*.jsx,scripts/**/*.js,scripts/**/*.mjs",
   "conventions.md":
-    "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version,.env.example,.oxfmtrc.json,.oxlintrc.json,**/*.config.ts,**/*.config.mjs",
+    "package.json,apps/*/package.json,packages/*/package.json,pnpm-workspace.yaml,turbo.json,.node-version,apps/*/.env.example,.oxfmtrc.json,.oxlintrc.json,**/*.config.ts,**/*.config.mjs",
   "coolify.md":
-    "apps/*/Dockerfile,apps/*/Dockerfile.*,docker-compose*.yml,docker-compose*.yaml,docs/database/**/*.md,.env.example,turbo.json",
+    "apps/*/Dockerfile,apps/*/Dockerfile.*,docker-compose*.yml,docker-compose*.yaml,docs/database/**/*.md,apps/*/.env.example,turbo.json",
   "documentation-app.md":
     "apps/documentation/src/**/*.ts,apps/documentation/src/**/*.tsx,apps/documentation/source.config.ts",
   "drizzle.md":
@@ -110,8 +110,9 @@ const requiredIntegrationAnchors = [
 ];
 
 const requiredRepositoryPaths = [
-  ".env.example",
   ".node-version",
+  "apps/calculator/.env.example",
+  "apps/documentation/.env.example",
   ".oxfmtrc.json",
   ".oxlintrc.json",
   "apps/calculator/components.json",

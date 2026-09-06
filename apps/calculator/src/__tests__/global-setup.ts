@@ -4,8 +4,8 @@ import { resolve } from "node:path";
 import { config } from "dotenv";
 
 // Load environment variables from monorepo root BEFORE any tests run
-// In Turborepo, the .env file is at the repository root, not in apps/calculator
-const envPath = resolve(process.cwd(), "../../.env");
+// Calculator owns the environment used by its test suite.
+const envPath = resolve(process.cwd(), ".env");
 
 if (!existsSync(envPath)) {
   console.error(`❌ .env file not found at: ${envPath}`);
